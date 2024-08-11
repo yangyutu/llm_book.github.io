@@ -174,18 +174,19 @@ phrase *denied the offer*. Our model will incorrectly estimate that <span style=
 
 ````
 
-A simply remedy is to add $\alpha$ **imaginary** counts to all the n-gram that can be constructed from the vocabulary, on top of the actual counts observed in the corpus.[^myref]
+A simply remedy is to add $\alpha$ **imaginary** counts to all the n-gram that can be constructed from the vocabulary, on top of the actual counts observed in the corpus.[^myref1]
 
 [^myref1]: When $\alpha=1$, this is called \textbf{Laplace smoothing}; when $\alpha=0.5$, this is called Jeffreys-Perks law. 
 
 Take bigram language model as an example, the resulting estimation is given by
 
-$$P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}\right)=\frac{\operatorname{count}\left(w_{n-1}, w_{n}\right)+\alpha}{\sum_{w_{n}'\in \cV}(\operatorname{count}\left(w_{n-1}, w_{n}'\right)+ \alpha)}=\frac{\operatorname{count}\left(w_{n-1}, w_{n}\right)+\alpha}{\operatorname{count}\left(w_{n-1}\right)+ V\alpha}.$$
+$$P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}\right)=\frac{\operatorname{count}\left(w_{n-1}, w_{n}\right)+\alpha}{\sum_{w_{n}'\in |V|}(\operatorname{count}\left(w_{n-1}, w_{n}'\right)+ \alpha)}=\frac{\operatorname{count}\left(w_{n-1}, w_{n}\right)+\alpha}{\operatorname{count}\left(w_{n-1}\right)+ |V|\alpha}.$$
 
-Here in the numerator, we add $\alpha$ imaginary counts to the actual counts. In the denomerator, we add $V\alpha$ to ensure that the probabilities are properly normalized, where $\cV$ is the vocabulary and $V$ is the vocabulary size. Note that it is possible that $\operatorname{count}(w_{n-1}) = 0$. We also have $\operatorname{count}(w_{n-1}, w_n) = 0$ and $P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}\right) = 1/|V|$.
+Here in the numerator, we add $\alpha$ imaginary counts to the actual counts. In the denomerator, we add $|V|\alpha$ to ensure that the probabilities are properly normalized, where $|V|$ is the vocabulary size. Note that it is possible that $\operatorname{count}(w_{n-1}) = 0$. We also have $\operatorname{count}(w_{n-1}, w_n) = 0$ and $P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}\right) = 1/|V|$.
 
 Similarly, for a trigram language model, we have
-$$P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}, w_{n-2}\right)=\frac{\operatorname{count}\left(w_{n-2}, w_{n-1}, w_{n}\right)+\alpha}{\sum_{w_{n}'\in \cV}(\operatorname{count}\left(w_{n-2}, w_{n-1}, w_{n}'\right)+ \alpha)}=\frac{\operatorname{count}\left(w_{n-2}, w_{n-1}, w_{n}\right)+\alpha}{\operatorname{count}\left(w_{n-2}, w_{n-1}\right)+ V\alpha}.$$
+
+$$P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}, w_{n-2}\right)=\frac{\operatorname{count}\left(w_{n-2}, w_{n-1}, w_{n}\right)+\alpha}{\sum_{w_{n}'\in |V|}(\operatorname{count}\left(w_{n-2}, w_{n-1}, w_{n}'\right)+ \alpha)}=\frac{\operatorname{count}\left(w_{n-2}, w_{n-1}, w_{n}\right)+\alpha}{\operatorname{count}\left(w_{n-2}, w_{n-1}\right)+ |V|\alpha}.$$
 
 When $\operatorname{count}\left(w_{n-2}, w_{n-1}\right) = 0$, we have $P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}, w_{n-2}\right) = 1/|V|.$
 
@@ -211,6 +212,185 @@ $$
  
 The bias we add to the n-gram model is reflected on the value of $d_i$. When $\alpha = 0, d_i = 1.0$, there is no bias in the n-gram model estimation. For non-zero $\alpha$, $d_i < 1$. The smaller the $d_i$, the large the bias we introduce. For example, when the vocabulary size $|V|$ is large, but the total number of tokens $M$ is small, $d_i$ approaches zero and the bias is thus large.
 
+
+
+
+````{prf:example}
+
+Consider following 7 events with a total count of 20. The following table demonstrates the effects of adding 1 smoothing.
+| event | counts | new counts | effective counts | unsmoothed probability | smoothed probability |
+|-------|--------|------------|------------------|------------------------|----------------------|
+| $c_0$ | 8      | 9          | 6.67             | 0.4                    | 0.33                 |
+| $c_1$ | 5      | 6          | 4.44             | 0.25                   | 0.22                 |
+| $c_2$ | 4      | 5          | 3.70             | 0.2                    | 0.19                 |
+| $c_3$ | 2      | 3          | 2.22             | 0.1                    | 0.11                 |
+| $c_4$ | 1      | 2          | 1.48             | 0.05                   | 0.07                 |
+| $c_5$ | 0      | 1          | 0.74             | 0                      | 0.04                 |
+| $c_6$ | 0      | 1          | 0.74             | 0                      | 0.04                 |
+
+````
+
+
+### Katz's back-off
+
+
+The smoothing method discussed above borrows probability mass from observed $n$-grams and redistributes it to all $n-$grams, including both observed ones and unobserved ones. The borrowed amount is controlled by the parameter $\alpha$. A variation of such re-distribution is to just redistribute the borrowed probablity mass to those unobserved one. A key characteristic of these redistribution methods is that redistribution is carried out **equally**. 
+
+Another popular smoothing approach is \textbf{back-off}. The key idea is that the redistribution of the probability mass to an unobserved $n$-gram is dependent on the statistics of its constituent $n-1$ gram. The latest development of $n$-gram language modeling is to use modified Kneser Ney smoothing\cite{chen1999empirical}. 
+
+In the $n$-gram Katz's backoff model, 
+
+$$P\left(w_i \mid w_{i-n+1:i-1}\right) 
+	= \begin{cases}d_{w_{i-n+1:i}} \frac{\operatorname{count}\left(w_{i-n+1: i}\right)}{\operatorname{count}\left(w_{i-n+1:i-1}\right)} & \text { if } \operatorname{count}\left(w_{i-n+1:i}\right) > k \\
+		\beta_{w_{i-n+1:i-1}} \lambda\left(w_i \mid w_{i-n+2:i-1}\right) & \text { otherwise }\end{cases}
+	$$
+
+Here the quantity $\beta$ is the left-over probability mass for the $(n-1)$-gram given by:	
+
+$$
+\beta_{w_{i-n+1:i-1}}=1- \sum_{\left\{w_i: \operatorname{count}\left(w_{i-n+1:i}\right)>k\right\}}d_{w_{i-n+1:i}} \frac{\operatorname{count}\left(w_{i-n+1:i}\right)}{\operatorname{count}\left(w_{i-n+1:i-1}\right)}
+	$$
+
+
+Then the back-off redistribution weight, $\lambda$, is computed as follows:
+
+$$
+\lambda(w_i \mid w_{i-n+2:i-1}=\frac{P\left(w_i \mid w_{i-n+2:i-1}\right)}{\sum_{\left\{w_i: \operatorname{count}\left(w_{i-n+1} \cdots w_i\right) \leq k\right\}} P\left(w_i \mid w_{i-n+2:i-1}\right)}
+$$
+
+We can interpret the back-off formula in the following way
+* $\beta$ is the amount of probability mass that has been borrowed from non-zero events.
+* $\lambda$ specifies how the borrowed weight should be re-distributed into zero event, and $\lambda$ is proportional to the $n-1$-gram conditional probability
+
+
+In the simple case of backing off from bigrams to unigrams, the bigram probabilities are,
+
+$$P(i \mid j)= \begin{cases}d\frac{\operatorname{count}(i, j)}{\operatorname{count}(j)} & \text { if } \operatorname{count}(i, j)>0 \\ \beta(j) \times \frac{P(i)}{\sum_{i^{\prime}: \operatorname{count}\left(i^{\prime}, j\right)=0} {P}^{\left(i^{\prime}\right)}} & \text { if } \operatorname{count}(i, j)=0\end{cases}.$$
+
+````{prf:remark} Practical simple back-off
+So far we have discussed the back-off idea of redistributing probability mass to unobserved n-grams based on their corresponding lower-order grams. All probabilities will be re-normalized after redistribution. In the practical applications, there are even simpler back-off strategy by satisfying some degree of accuracy. Consider a trigram language model.
+* If we have trigram probability, use it; 
+* If we don’t have trigram probability, use its bigram probabilities;
+* if we don’t even have bigram probabilities, then use unigram probabilities.
+````
+
+## Model evaluation
+
+
+### Evaluation metrics
+
+Given a training corpus, we can build different language models with different $n$-gram settings as well as other model smoothing hyperparameter. There model training hyperparameters give different bias and variance trade-off and we need an evaluation method to gauge which hyperparameter is better for intended applications.
+
+One principled way is to evaluate the model predicted likelihood on an unseen test set, which consist of natural language sentences, from the intended applications. with unseen sentences and then compare the probability or its variant computed from different candidate models on the test set. A language model that assigns a higher probability to the test set is considered a better one.
+We define \textbf{perplexity} of a language model on a test set as the inverse probability of the test set, normalized by the number of words. For a test set $W = (w_{1} w_{2} \ldots w_{N})$ ($N$ can be millions), 
+
+$$\operatorname{perplexity}(W) =\exp\left(-\frac{1}{N}\sum_{i=1}^N \ln P\left(w_{1} w_{2} \ldots w_{N}\right)\right), $$
+
+where $P\left(w_{1} w_{2} \ldots w_{N}\right)$ can be estimated in an $n$-gram model via
+
+$$
+P\left(w_{1:n}\right) \approx \prod_{i=1}^{N} P\left(w_{i} | w_{i-n+1:n-1}\right).
+$$
+
+Intuitively, perplexity is roughly the \textbf{inverse probability} of the test set. Therefore, a good larnguage model will assign high probability to the test set and produce a low perplexity value. Since $\ln P(w_{1:N}) \le 0$, the perplexity is always greater than or equal to 1.0.  Since the longer the sentence, the more negative $\ln P$ tends to be, the normalization by sentence length $N$ reduces such impact.
+
+````{prf:remark} Caveats
+To compare the performance of two different language models, it is necessary to **keep the vocabulary and the actual word to special token mapping the same. **
+	
+Suppose we construct the vocabulary by mapping words whose frequencies are below certain threshold to the <UNK> token. When we use a large threshold, we will get a smaller vocabulary. 
+	
+In the inference stage, rare words in the test corpus will be mapped to the <UNK> token and we tend to overestimate their transition probabilities, thus causing the final perplexity to be lower.  
+````
+
+### More on perplexity
+
+A state-of-the-art language model typically can achieve perplexity value ranging from 20 to 200 on a general test set. How do we interpret the perplexity value? Perplexity can be thought of as the effective vocabulary size under the model, that is, given the context, the number of possible options for the next word.
+
+Some intuition behind such interpretation of perplexity is as follows. Say we have a vocabulary $\mathcal{V}$ whose size is $V$, and a trigram model simply predicts a uniform distribution given by
+
+$$
+p(w \mid u, v)=\frac{1}{V}
+$$
+
+for all $u, v, w$. In this case, it can be shown that the perplexity is equal to $N$. 
+
+$$\operatorname{perplexity} = \exp(-\frac{1}{N}\sum_{i=1}^N \ln \frac{1}{V}).$$
+
+If, for example, the perplexity of the model is 120 (even though the vocabulary size is say 10,000), then this is roughly equivalent to having an effective vocabulary size of 120 for the next word given the context.
+
+
+
+````{prf:remark} Relationship to Cross Entropy
+Given a test set $W$, we can also write 
+
+$$\operatorname{perplexity}(W) \approx \exp(CE(P_{true}, P)),$$
+
+where $CE(P_{true}, P)$ is the cross-entropy of the true distribution $P_{true}$ and  our estimate $P$, given by
+
+$$CE = -E_{W\sim P_{True}}[\ln P] =\lim_{N\to\infty} -\frac{1}{N}\sum_{w_i\in W} \ln P(w_i|w_{1:i-1}).$$
+	
+This means that, training a language model over well-written sentences means we are maximizing the normalized sentence probabilities given by the language model, which is more or less equivalent to minimizing the cross entropy loss of the model predicted distribution and the distribution of well-written sentences.
+
+We know that cross-entorpy loss is at its minimal when the two distributions are exactly matched.
+````
+### Benchmarking
+#### Datasets
+
+The Penn Tree Bank (PTB) {cite:p}`marcinkiewicz1994building` dataset is an early dataset for training and evaluating language model. The Penn Tree Bank dataset is made of articles from the Wall Street Journal, contains around $929 \mathrm{k}$ training tokens, and has a vocabulary size of $10 \mathrm{k}$. 
+
+In the Penn Tree Bank dataset, words were lower-cased, numbers were replaced with N, newlines were replaced with <eos>, and all other punctuation was removed. The vocabulary is the most frequent 10k words with the rest of the tokens being replaced by an unk token
+
+
+| No | Sentence |
+|----|----------|
+| 1  | aer banknote berlitz calloway centrust cluett fromstein gitano guterman hydro-quebec ipo kia |
+| 2  | memotec mlx nahb punts rake regatta rubens sim snack-food ssangyong swapo wachter |
+| 3  | pierre <unk> N years old will join the board as a nonexecutive director nov. N |
+| 4  | mr. <unk> is chairman of <unk> n.v. the dutch publishing group |
+| 5  | rudolph <unk> N years old and former chairman of consolidated gold fields plc was named a |
+| 6  | nonexecutive director of this british industrial conglomerate |
+
+
+
+	
+While the processed version of the PTB above has been frequently used for language modeling, it has many limitations. The tokens in PTB are all lower case, stripped of any punctuation, and limited to a vocabulary of only $10 \mathrm{k}$ words. These limitations mean that the PTB is unrealistic for real language use, especially when far larger vocabularies with many rare words are involved.	
+
+Given that accurately predicting rare words, such as named entities, is an important task for many applications, the lack of a long tail for the vocabulary is problematic.
+
+The wikitext 2 dataset is derived from Wikipedia articles, contains $2 \mathrm{M}$ training tokens and has a vocabulary size of $33 \mathrm{k}$. These datasets contain non-shuffled documents, therefore requiring models to capture inter-sentences dependencies to perform well.
+
+Compared to the preprocessed version of Penn Treebank (PTB), WikiText-2 is over 2 times larger and WikiText-103 is over 110 times larger. The WikiText dataset also features a far larger vocabulary and retains the original case, punctuation and numbers - all of which are removed in PTB. As it is composed of full articles, the dataset is well suited for models that can take advantage of long term dependencies.
+
+
+In comparison to the Mikolov processed version of the Penn Treebank (PTB), the WikiText datasets are larger. WikiText-2 aims to be of a similar size to the PTB while WikiText-103 contains all articles extracted from Wikipedia. The WikiText datasets also retain numbers (as opposed to replacing them with N), case (as opposed to all text being lowercased), and punctuation (as opposed to stripping them out).
+
+````{tab-set}
+```{tab-item} PennTree
+| Metric | Train | Valid | Test |
+|--------|-------|-------|------|
+| Articles | - | - | - |
+| Number of tokens | 887,521 | 70,390 | 78,669 |
+| Vocabulary size | 10,000 | | |
+| OOV ratio | 4.8% | | |
+```
+
+```{tab-item} WikiText-2,
+| Metric | Train | Valid | Test |
+|--------|-------|-------|------|
+| Articles | 600 | 60 | 60 |
+| Number of tokens | 2,088,628 | 217,646 | 245,569 |
+| Vocabulary size | 33,278 | | |
+| OOV ratio | 2.6% | | |
+```
+```{tab-item} WikiText-103
+| Metric | Train | Valid | Test |
+|--------|-------|-------|------|
+| Articles | 28,475 | 60 | 60 |
+| Number of tokens | 103,227,021 | 217,646 | 245,569 |
+| Vocabulary size | 267,735 | | |
+| OOV ratio | 0.4% | | |
+```
+````
 ## Neural language models
 
 
