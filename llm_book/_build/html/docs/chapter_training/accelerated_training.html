@@ -1,0 +1,621 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>LLM Training Acceleration &#8212; LLM Foundations</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_training/accelerated_training';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="LLM Inference" href="../chapter_inference/inference_fundamentals.html" />
+    <link rel="prev" title="LLM alignement" href="alignment.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/qe-logo-large.png" class="logo__image only-light" alt="LLM Foundations - Home"/>
+    <script>document.write(`<img src="../../_static/qe-logo-large.png" class="logo__image only-dark" alt="LLM Foundations - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers.html">Transformers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">LLM Dense Architectures Fundamentals</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">MOE sparse models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="training_fundamentals.html">LLM training fundamentals</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="finetuning.html">LLM finetuning</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="alignment.html">LLM alignement</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">LLM Training Acceleration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">LLM Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">Basic prompt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">Advanced prompt techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">Basic RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">Advanced rag techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">Multimodality fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">Vision transformers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">Application of LLM in IR</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/docs/chapter_training/accelerated_training.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>LLM Training Acceleration</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flash-attention">Flash Attention</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#online-softmax-motivation">Online Softmax Motivation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#online-softmax-algorithm">Online Softmax Algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-online-softmax-to-flash-attention">From Online Softmax to Flash Attention</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="llm-training-acceleration">
+<h1>LLM Training Acceleration<a class="headerlink" href="#llm-training-acceleration" title="Link to this heading">#</a></h1>
+<section id="flash-attention">
+<h2>Flash Attention<a class="headerlink" href="#flash-attention" title="Link to this heading">#</a></h2>
+<section id="online-softmax-motivation">
+<h3>Online Softmax Motivation<a class="headerlink" href="#online-softmax-motivation" title="Link to this heading">#</a></h3>
+<p>A typical computation of Softmax
+$<span class="math notranslate nohighlight">\(a_i = \mathbf{Softmax} (x_i | x_1,...,x_N) = \frac{\exp(x_i)}{\sum_{j}^N \exp(x_j)}\)</span>$
+within the self-attention module involves the following three steps:</p>
+<ol class="arabic simple">
+<li><p>Motivated by preventing overflow, we first find the maximum value <span class="math notranslate nohighlight">\(m\)</span> of <span class="math notranslate nohighlight">\(\{x_1,...,x_N\}\)</span>
+$<span class="math notranslate nohighlight">\(
+\begin{aligned}
+\text{for }  i &amp; \leftarrow 1, N \text{ do} \\
+m &amp; = \max(m, x_i)
+\end{aligned}
+\)</span>$</p></li>
+<li><p>Calculate the denominator of Softmax (with offset to <span class="math notranslate nohighlight">\(m\)</span>)
+$<span class="math notranslate nohighlight">\(
+\begin{aligned}
+\text{for } i &amp; \leftarrow 1, N \text{ do} \\
+d_i &amp; = d_{i-1} + \exp(x_i-m)
+\end{aligned}
+\)</span>$</p></li>
+<li><p>Calculate the Softmax for each corresponding position
+$<span class="math notranslate nohighlight">\(
+\begin{aligned}
+\text{for } i &amp; \leftarrow 1, N \text{ do} \\
+a_i &amp; = \frac{\exp(x_i-m)}{d_N}
+\end{aligned}
+\)</span>$</p></li>
+</ol>
+<p>Without any optimization, at least six communications with the GPU are required (three writes and three reads). If we apply some parallel partitioning to each step of the for loop, we would also need to add the communication costs of operations like reduce_sum and reduce_max. Is it possible to fuse certain operations to reduce communication?</p>
+<p>Based on previous experience with layernorm parallelization, we need to look for an Online Algorithm.</p>
+</section>
+<section id="online-softmax-algorithm">
+<h3>Online Softmax Algorithm<a class="headerlink" href="#online-softmax-algorithm" title="Link to this heading">#</a></h3>
+<p>Nvidia :cite:<code class="docutils literal notranslate"><span class="pre">milakov2018onlinenormalizercalculationsoftmax</span></code></p>
+<p>Since we’re looking for an Online algorithm, we need to find a recursive expression.
+For the second step, <span class="math notranslate nohighlight">\(d_i=d_{i-1}+e^{x_i-m_N}\)</span>, we aim to remove its dependency on <span class="math notranslate nohighlight">\(m_N\)</span>.
+Let <span class="math notranslate nohighlight">\(d_i^{\prime}=\sum_j^i e^{x_j-m_i}\)</span>, note that here we subtract the current maximum instead of the global maximum. This expression has the following property:
+$<span class="math notranslate nohighlight">\(
+\begin{aligned}
+d_i^{\prime} &amp; =\sum_j^i e^{x_j-m_i} \\
+&amp; =\sum_j^{i-1} e^{x_j-m_i}+e^{x_i-m_i} \\
+&amp; =\sum_j^{i-1} e^{x_j-m_{i-1}+m_{i-1}-m_i}+e^{x_i-m_i} \\
+&amp; =\left(\sum_j^{i-1} e^{x_j-m_{i-1}}\right) e^{m_{i-1}-m_i}+e^{x_i-m_i} \\
+&amp; =d_{i-1}^{\prime} e^{m_{i-1}-m_i}+e^{x_i-m_i}
+\end{aligned}
+\)</span><span class="math notranslate nohighlight">\(
+We can see that the calculation of \)</span>d_i^{\prime}<span class="math notranslate nohighlight">\( depends on \)</span>d_{i-1}^{\prime}, m_i, m_{i-1}$, allowing us to merge the first two steps. The previous three steps can be reduced to two:</p>
+<p>Find the maximum value <span class="math notranslate nohighlight">\(m\)</span> of <span class="math notranslate nohighlight">\(x\)</span>, calculate the denominator of softmax.
+$<span class="math notranslate nohighlight">\(
+\begin{aligned}
+&amp; \text { for } i \leftarrow 1, N \text { do } \\
+&amp; \quad m_i=\max \left(m_i, x_i\right) \\
+&amp; \quad d_i^{\prime}=d_{i-1}^{\prime} e^{m_{i-1}-m_i}+e^{x_i-m_i}
+\end{aligned}
+\)</span>$</p>
+<p>Calculate the softmax for each position
+$<span class="math notranslate nohighlight">\(
+\begin{aligned}
+\text { for } i &amp; \leftarrow 1, N \text { do } \\
+a_i &amp; =\frac{e^{x_i-m_N}}{d_N}
+\end{aligned}
+\)</span>$</p>
+<p>Can we further fuse operators? Not really, because the denominator in the second step depends on the calculation from the first step.
+However, we can use GPU shared memory to store intermediate results and implement the above two steps in a single kernel. This way, we only need to communicate with global memory twice: once to write data and once to read results.</p>
+</section>
+<section id="from-online-softmax-to-flash-attention">
+<h3>From Online Softmax to Flash Attention<a class="headerlink" href="#from-online-softmax-to-flash-attention" title="Link to this heading">#</a></h3>
+<p>Using a method similar to Online Softmax, we can place all Attention operations into a single for loop (implementable in one Kernel).
+Let’s first look at how it’s calculated:
+$<span class="math notranslate nohighlight">\(
+\begin{aligned}
+\text { for } i &amp; \leftarrow 1, N \text { do } \\
+a_i &amp; =\frac{e^{x_i-m_N}}{d_N^{\prime}} \\
+o_i &amp; =\sum_j^i a_j v_j=\sum_j^i \frac{e^{x_j-m_N}}{d_N^{\prime}} v_j
+\end{aligned}
+\)</span><span class="math notranslate nohighlight">\(
+We can see that \)</span>o_i<span class="math notranslate nohighlight">\( contains \)</span>m_N<span class="math notranslate nohighlight">\( and \)</span>d_N^{\prime}<span class="math notranslate nohighlight">\(. We want to eliminate these dependencies. Similar to Online Softmax, we define:
+\)</span><span class="math notranslate nohighlight">\(
+o_i^{\prime}=\sum_j^i \frac{e^{x_j-m_i}}{d_i^{\prime}} v_j
+\)</span>$</p>
+<p>Let’s find the recursive expression. The key is to identify <span class="math notranslate nohighlight">\(o_{i-1}^{\prime}\)</span>:
+$<span class="math notranslate nohighlight">\(
+\begin{aligned}
+\sigma_i^{\prime} &amp; =\sum_j^i \frac{e^{x_j-m_i}}{d_i^{\prime}} v_j \\
+&amp; =\sum_j^{i-1} \frac{e^{x_j-m_i}}{d_i^{\prime}} v_j+\frac{e^{x_i-m_i}}{d_i^{\prime}} v_i \\
+&amp; =\sum_j^{i-1} \frac{e^{x_j-m_{i-1}}}{d_{i-1}^{\prime}} \frac{e^{x_j-m_i}}{e^{x_j-m_{i-1}}} \frac{d_{i-1}^{\prime}}{d_i^{\prime}} v_j+\frac{e^{x_i-m_i}}{d_i^{\prime}} v_i \\
+&amp; =\left(\sum_j^{i-1} \frac{e^{x_j-m_{i-1}}}{d_{i-1}^{\prime}} v_j\right) \frac{e^{x_j-m_i}}{e^{x_j-m_{i-1}}} \frac{d_{i-1}^{\prime}}{d_i^{\prime}}+\frac{e^{x_i-m_i}}{d_i^{\prime}} v_i \\
+&amp; =o_{i-1}^{\prime}\left(e^{m_{i-1}-m_i}\right) \frac{d_{i-1}^{\prime}}{d_i^{\prime}}+\frac{e^{x_i-m_i}}{d_i^{\prime}} v_i
+\end{aligned}
+\)</span><span class="math notranslate nohighlight">\(
+We can see that the calculation of \)</span>o_i<span class="math notranslate nohighlight">\( depends on \)</span>o_{i-1}, m_i, m_{i-1}, d_i^{\prime}, d_{i-1}^{\prime}<span class="math notranslate nohighlight">\(. This allows us to place the entire Attention calculation into a single for loop:
+\)</span><span class="math notranslate nohighlight">\(
+\begin{aligned}
+\text { for } i &amp; \leftarrow 1, N  \text{ do } \\
+m_i &amp; =\max \left(m_i, x_i\right) \\
+d_i^{\prime} &amp; =d_{i-1}^{\prime} e^{m_{i-1}-m_i}+e^{x_i-m_i} \\
+o_i^{\prime} &amp; =o_{i-1}^{\prime}\left(e^{m_{i-1}-m_i}\right) \frac{d_{i-1}^{\prime}}{d_i^{\prime}}+\frac{e^{x_i-m_i}}{d_i^{\prime}} v_i
+\end{aligned}
+\)</span>$
+From the above, we can see that all operations within the for loop satisfy the associative property. This means the for loop can be block-processed, allowing for more efficient parallel computation on GPUs.
+This is the mathematical principle behind Flash Attention’s parallel acceleration.</p>
+<p>:bibliography:<code class="docutils literal notranslate"><span class="pre">../llm_book.bib</span></code></p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs/chapter_training"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="alignment.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">LLM alignement</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter_inference/inference_fundamentals.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">LLM Inference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flash-attention">Flash Attention</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#online-softmax-motivation">Online Softmax Motivation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#online-softmax-algorithm">Online Softmax Algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-online-softmax-to-flash-attention">From Online Softmax to Flash Attention</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuguang Yang
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
