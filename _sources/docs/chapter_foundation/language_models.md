@@ -182,7 +182,7 @@ Take bigram language model as an example, the resulting estimation is given by
 
 $$P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}\right)=\frac{\operatorname{count}\left(w_{n-1}, w_{n}\right)+\alpha}{\sum_{w_{n}'\in |V|}(\operatorname{count}\left(w_{n-1}, w_{n}'\right)+ \alpha)}=\frac{\operatorname{count}\left(w_{n-1}, w_{n}\right)+\alpha}{\operatorname{count}\left(w_{n-1}\right)+ |V|\alpha}.$$
 
-Here in the numerator, we add $\alpha$ imaginary counts to the actual counts. In the denomerator, we add $|V|\alpha$ to ensure that the probabilities are properly normalized, where $\cV$ is the vocabulary and $|V|$ is the vocabulary size. Note that it is possible that $\operatorname{count}(w_{n-1}) = 0$. We also have $\operatorname{count}(w_{n-1}, w_n) = 0$ and $P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}\right) = 1/|V|$.
+Here in the numerator, we add $\alpha$ imaginary counts to the actual counts. In the denomerator, we add $|V|\alpha$ to ensure that the probabilities are properly normalized, where $|V|$ is the vocabulary size. Note that it is possible that $\operatorname{count}(w_{n-1}) = 0$. We also have $\operatorname{count}(w_{n-1}, w_n) = 0$ and $P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}\right) = 1/|V|$.
 
 Similarly, for a trigram language model, we have
 
@@ -274,10 +274,10 @@ So far we have discussed the back-off idea of redistributing probability mass to
 * if we don’t even have bigram probabilities, then use unigram probabilities.
 ````
 
-** Model evaluation
+## Model evaluation
 
 
-*** Evaluation metrics
+### Evaluation metrics
 
 Given a training corpus, we can build different language models with different $n$-gram settings as well as other model smoothing hyperparameter. There model training hyperparameters give different bias and variance trade-off and we need an evaluation method to gauge which hyperparameter is better for intended applications.
 
@@ -323,15 +323,74 @@ If, for example, the perplexity of the model is 120 (even though the vocabulary 
 ````{prf:remark} Relationship to Cross Entropy
 Given a test set $W$, we can also write 
 
-	$$\operatorname{perplexity}(W) \approx \exp(CE(P_{true}, P)),$$
+$$\operatorname{perplexity}(W) \approx \exp(CE(P_{true}, P)),$$
 
 where $CE(P_{true}, P)$ is the cross-entropy of the true distribution $P_{true}$ and  our estimate $P$, given by
 
-	$$CE = -E_{W\sim P_{True}}[\ln P] =\lim_{N\to\infty} -\frac{1}{N}\sum_{w_i\in W} \ln P(w_i|w_{1:i-1}).$$
+$$CE = -E_{W\sim P_{True}}[\ln P] =\lim_{N\to\infty} -\frac{1}{N}\sum_{w_i\in W} \ln P(w_i|w_{1:i-1}).$$
 	
-This means that, training a language model over well-written sentences means we are maximizing the normalized sentence probabilities given by the language model, which is more or less equivalent to minimizing the cross entropy of the model predicted distribution and the distribution of well-written sentences.
-````
+This means that, training a language model over well-written sentences means we are maximizing the normalized sentence probabilities given by the language model, which is more or less equivalent to minimizing the cross entropy loss of the model predicted distribution and the distribution of well-written sentences.
 
+We know that cross-entorpy loss is at its minimal when the two distributions are exactly matched.
+````
+### Benchmarking
+#### Datasets
+
+The Penn Tree Bank (PTB) {cite:p}`marcinkiewicz1994building` dataset is an early dataset for training and evaluating language model. The Penn Tree Bank dataset is made of articles from the Wall Street Journal, contains around $929 \mathrm{k}$ training tokens, and has a vocabulary size of $10 \mathrm{k}$. 
+
+In the Penn Tree Bank dataset, words were lower-cased, numbers were replaced with N, newlines were replaced with <eos>, and all other punctuation was removed. The vocabulary is the most frequent 10k words with the rest of the tokens being replaced by an unk token
+
+
+| No | Sentence |
+|----|----------|
+| 1  | aer banknote berlitz calloway centrust cluett fromstein gitano guterman hydro-quebec ipo kia |
+| 2  | memotec mlx nahb punts rake regatta rubens sim snack-food ssangyong swapo wachter |
+| 3  | pierre <unk> N years old will join the board as a nonexecutive director nov. N |
+| 4  | mr. <unk> is chairman of <unk> n.v. the dutch publishing group |
+| 5  | rudolph <unk> N years old and former chairman of consolidated gold fields plc was named a |
+| 6  | nonexecutive director of this british industrial conglomerate |
+
+
+
+	
+While the processed version of the PTB above has been frequently used for language modeling, it has many limitations. The tokens in PTB are all lower case, stripped of any punctuation, and limited to a vocabulary of only $10 \mathrm{k}$ words. These limitations mean that the PTB is unrealistic for real language use, especially when far larger vocabularies with many rare words are involved.	
+
+Given that accurately predicting rare words, such as named entities, is an important task for many applications, the lack of a long tail for the vocabulary is problematic.
+
+The wikitext 2 dataset is derived from Wikipedia articles, contains $2 \mathrm{M}$ training tokens and has a vocabulary size of $33 \mathrm{k}$. These datasets contain non-shuffled documents, therefore requiring models to capture inter-sentences dependencies to perform well.
+
+Compared to the preprocessed version of Penn Treebank (PTB), WikiText-2 is over 2 times larger and WikiText-103 is over 110 times larger. The WikiText dataset also features a far larger vocabulary and retains the original case, punctuation and numbers - all of which are removed in PTB. As it is composed of full articles, the dataset is well suited for models that can take advantage of long term dependencies.
+
+
+In comparison to the Mikolov processed version of the Penn Treebank (PTB), the WikiText datasets are larger. WikiText-2 aims to be of a similar size to the PTB while WikiText-103 contains all articles extracted from Wikipedia. The WikiText datasets also retain numbers (as opposed to replacing them with N), case (as opposed to all text being lowercased), and punctuation (as opposed to stripping them out).
+
+````{tab-set}
+```{tab-item} PennTree
+| Metric | Train | Valid | Test |
+|--------|-------|-------|------|
+| Articles | - | - | - |
+| Number of tokens | 887,521 | 70,390 | 78,669 |
+| Vocabulary size | 10,000 | | |
+| OOV ratio | 4.8% | | |
+```
+
+```{tab-item} WikiText-2,
+| Metric | Train | Valid | Test |
+|--------|-------|-------|------|
+| Articles | 600 | 60 | 60 |
+| Number of tokens | 2,088,628 | 217,646 | 245,569 |
+| Vocabulary size | 33,278 | | |
+| OOV ratio | 2.6% | | |
+```
+```{tab-item} WikiText-103
+| Metric | Train | Valid | Test |
+|--------|-------|-------|------|
+| Articles | 28,475 | 60 | 60 |
+| Number of tokens | 103,227,021 | 217,646 | 245,569 |
+| Vocabulary size | 267,735 | | |
+| OOV ratio | 0.4% | | |
+```
+````
 ## Neural language models
 
 

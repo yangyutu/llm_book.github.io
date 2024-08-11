@@ -178,7 +178,10 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="chapter_foundation/language_models.html">Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter_foundation/neural_language_models.html">Early Neural Language Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chapter_foundation/transformers.html">Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter_foundation/word_embeddings_and_bert.html">Word Embeddings and BERT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter_foundation/t5.html">T5</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
@@ -388,10 +391,12 @@ document.write(`
 <h2>The Rise of Large Language Models<a class="headerlink" href="#the-rise-of-large-language-models" title="Link to this heading">#</a></h2>
 <p>Large Language Models represent a significant leap forward in AI capabilities. Unlike their predecessors, which were often limited to specific tasks, LLMs demonstrate remarkable versatility across a wide range of language-related challenges. From generating human-like text to understanding complex queries, translating between languages, and even assisting in creative writing, LLMs have proven to be powerful tools that are reshaping our interaction with technology.
 The development of LLMs is driven by several key factors:</p>
-<p>Exponential growth in computing power: Modern hardware capabilities allow for the training of models with billions of parameters.
-Availability of vast datasets: The digital age has provided an unprecedented amount of text data for training.
-Advancements in neural network architectures: Innovations like the Transformer model have revolutionized how we process sequential data.
-Discovery of scaling laws: A crucial breakthrough in LLM development has been the identification of predictable scaling laws governing model performance.</p>
+<ul class="simple">
+<li><p><strong>Exponential growth in computing power</strong>: Modern hardware capabilities allow for the training of models with billions of parameters.</p></li>
+<li><p><strong>Availability of vast datasets</strong>: The digital age has provided an unprecedented amount of text data for training.</p></li>
+<li><p><strong>Advancements in neural network architectures</strong>: Innovations like the Transformer model have revolutionized how we process sequential data.</p></li>
+<li><p><strong>Discovery of scaling laws</strong>: A crucial breakthrough in LLM development has been the identification of predictable scaling laws governing model performance.</p></li>
+</ul>
 <p>The discovery of scaling laws in language models has been a game-changer in the field. Researchers found that key performance metrics of language models, such as perplexity and accuracy, improve in a predictable manner as the model size (number of parameters), dataset size, and computational resources increase. This discovery, pioneered by OpenAI and further validated by subsequent studies, has had profound implications:</p>
 <p>Predictable improvements: It became possible to forecast the performance gains from larger models, guiding investment in more powerful systems.
 Focus on scale: The field shifted towards training increasingly larger models, as the scaling laws suggested that bigger models would consistently outperform smaller ones across a wide range of tasks.
