@@ -533,10 +533,33 @@ $<span class="math notranslate nohighlight">\(P(w_i) = \frac{\operatorname{count
 <div class="proof example admonition" id="example-0">
 <p class="admonition-title"><span class="caption-number">Example 1 </span></p>
 <section class="example-content" id="proof-content">
-<p>Suppose in the training corpus we have only seen following phrases starting with <em>denied</em>: <em>denied the allegations</em>, *denied the speculation, <em>denied the rumors</em>, <em>denied the report</em>. Now suppose a sentence in the test set has the
+<p>Suppose in the training corpus we have only seen following phrases starting with <em>denied</em>: <em>denied the allegations</em>, <em>denied the speculation</em>, <em>denied the rumors</em>, <em>denied the report</em>. Now suppose a sentence in the test set has the
 phrase <em>denied the offer</em>. Our model will incorrectly estimate that <span style="color:red"><strong>the probability of the sentence is 0</strong></span>, which is obviously not true.</p>
 </section>
-</div></section>
+</div><p>A simply remedy is to add <span class="math notranslate nohighlight">\(\alpha\)</span> <strong>imaginary</strong> counts to all the n-gram that can be constructed from the vocabulary, on top of the actual counts observed in the corpus.[^myref]</p>
+<p>Take bigram language model as an example, the resulting estimation is given by</p>
+<div class="math notranslate nohighlight">
+\[P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}\right)=\frac{\operatorname{count}\left(w_{n-1}, w_{n}\right)+\alpha}{\sum_{w_{n}'\in \cV}(\operatorname{count}\left(w_{n-1}, w_{n}'\right)+ \alpha)}=\frac{\operatorname{count}\left(w_{n-1}, w_{n}\right)+\alpha}{\operatorname{count}\left(w_{n-1}\right)+ V\alpha}.\]</div>
+<p>Here in the numerator, we add <span class="math notranslate nohighlight">\(\alpha\)</span> imaginary counts to the actual counts. In the denomerator, we add <span class="math notranslate nohighlight">\(V\alpha\)</span> to ensure that the probabilities are properly normalized, where <span class="math notranslate nohighlight">\(\cV\)</span> is the vocabulary and <span class="math notranslate nohighlight">\(V\)</span> is the vocabulary size. Note that it is possible that <span class="math notranslate nohighlight">\(\operatorname{count}(w_{n-1}) = 0\)</span>. We also have <span class="math notranslate nohighlight">\(\operatorname{count}(w_{n-1}, w_n) = 0\)</span> and <span class="math notranslate nohighlight">\(P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}\right) = 1/|V|\)</span>.</p>
+<p>Similarly, for a trigram language model, we have
+$<span class="math notranslate nohighlight">\(P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}, w_{n-2}\right)=\frac{\operatorname{count}\left(w_{n-2}, w_{n-1}, w_{n}\right)+\alpha}{\sum_{w_{n}'\in \cV}(\operatorname{count}\left(w_{n-2}, w_{n-1}, w_{n}'\right)+ \alpha)}=\frac{\operatorname{count}\left(w_{n-2}, w_{n-1}, w_{n}\right)+\alpha}{\operatorname{count}\left(w_{n-2}, w_{n-1}\right)+ V\alpha}.\)</span>$</p>
+<p>When <span class="math notranslate nohighlight">\(\operatorname{count}\left(w_{n-2}, w_{n-1}\right) = 0\)</span>, we have <span class="math notranslate nohighlight">\(P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}, w_{n-2}\right) = 1/|V|.\)</span></p>
+<p>To better understand the bias introduced from adding <span class="math notranslate nohighlight">\(\alpha\)</span> imaginary counts, we can compute the effective count of an event. Let  <span class="math notranslate nohighlight">\(c_i\)</span> is the count of event <span class="math notranslate nohighlight">\(i\)</span>. Let <span class="math notranslate nohighlight">\(M=\sum_{i=1}^E c_i\)</span> be the total counts of all possible events E in the corpus.
+The effective count for event <span class="math notranslate nohighlight">\(i\)</span> is given by:</p>
+<div class="math notranslate nohighlight">
+\[
+c_i^*=\left(c_i+\alpha\right) \frac{M}{M+E \alpha},
+\]</div>
+<p>Note that the effective counts defined this way ensures that total count <span class="math notranslate nohighlight">\(M\)</span> satisfies <span class="math notranslate nohighlight">\(\sum_{i=1}^E c_i^*=\sum_{i=1}^E c_i=M\)</span> and the probability of the event <span class="math notranslate nohighlight">\(i\)</span> is <span class="math notranslate nohighlight">\(c_i^*/\sum_i c_i^* = c_i/M\)</span>.</p>
+<p>In general, if <span class="math notranslate nohighlight">\(c_i &gt; 0\)</span>, then <span class="math notranslate nohighlight">\(c_i* &lt; c_i\)</span>; if <span class="math notranslate nohighlight">\(c_i = 0\)</span>, then <span class="math notranslate nohighlight">\(c_i^* &gt; c_i = 0\)</span>. Therefore, when we are adding imaginary counts to all the events, the effective counts of all observed events are decreased and the effective counts for all unobserved events are increased. From the probability mass perspective, add-<span class="math notranslate nohighlight">\(\alpha\)</span> smoothing is equivalent to remove some probability mass from observed events and re-distribute the collected probability mass to all unobserved events.</p>
+<p>We can also use the concept of discounting\footnote{A related definition is absolute discounting, which is given by <span class="math notranslate nohighlight">\(d_i = c_i - c_i^*\)</span>. } to reflect the change between <span class="math notranslate nohighlight">\(c^*_i\)</span> and <span class="math notranslate nohighlight">\(c_i\)</span>, which is given by
+The discount for each <span class="math notranslate nohighlight">\(\mathrm{n}\)</span>-gram is then computed as,</p>
+<div class="math notranslate nohighlight">
+\[
+d_i=\frac{c_i^*}{c_i}=\frac{\left(c_i+\alpha\right)}{c_i} \frac{M}{(M+E \alpha)}.
+\]</div>
+<p>The bias we add to the n-gram model is reflected on the value of <span class="math notranslate nohighlight">\(d_i\)</span>. When <span class="math notranslate nohighlight">\(\alpha = 0, d_i = 1.0\)</span>, there is no bias in the n-gram model estimation. For non-zero <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(d_i &lt; 1\)</span>. The smaller the <span class="math notranslate nohighlight">\(d_i\)</span>, the large the bias we introduce. For example, when the vocabulary size <span class="math notranslate nohighlight">\(|V|\)</span> is large, but the total number of tokens <span class="math notranslate nohighlight">\(M\)</span> is small, <span class="math notranslate nohighlight">\(d_i\)</span> approaches zero and the bias is thus large.</p>
+</section>
 </section>
 <section id="neural-language-models">
 <h2>Neural language models<a class="headerlink" href="#neural-language-models" title="Link to this heading">#</a></h2>

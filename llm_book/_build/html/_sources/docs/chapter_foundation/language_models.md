@@ -169,10 +169,47 @@ Note that how the vocabulary is constructed and how we map rare words to <UNK> a
 One fundamental limit of the baseline counting method is the zero probability assigned to $n$-grams that do not appear in the training corpus. This has a significant impact when we use the model to score a sentence. For example,  one zero probability of any unseen bigram $w_{i-1},w_i$ will cause the probability of the sequence $w_1,...,w_i,...,w_n$ to be zero. 
 
 ````{prf:example}
-Suppose in the training corpus we have only seen following phrases starting with *denied*: *denied the allegations*, *denied the speculation, *denied the rumors*, *denied the report*. Now suppose a sentence in the test set has the 
+Suppose in the training corpus we have only seen following phrases starting with *denied*: *denied the allegations*, *denied the speculation*, *denied the rumors*, *denied the report*. Now suppose a sentence in the test set has the 
 phrase *denied the offer*. Our model will incorrectly estimate that <span style="color:red">**the probability of the sentence is 0**</span>, which is obviously not true.
 
 ````
+
+A simply remedy is to add $\alpha$ **imaginary** counts to all the n-gram that can be constructed from the vocabulary, on top of the actual counts observed in the corpus.[^myref]
+
+[^myref1]: When $\alpha=1$, this is called \textbf{Laplace smoothing}; when $\alpha=0.5$, this is called Jeffreys-Perks law. 
+
+Take bigram language model as an example, the resulting estimation is given by
+
+$$P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}\right)=\frac{\operatorname{count}\left(w_{n-1}, w_{n}\right)+\alpha}{\sum_{w_{n}'\in \cV}(\operatorname{count}\left(w_{n-1}, w_{n}'\right)+ \alpha)}=\frac{\operatorname{count}\left(w_{n-1}, w_{n}\right)+\alpha}{\operatorname{count}\left(w_{n-1}\right)+ V\alpha}.$$
+
+Here in the numerator, we add $\alpha$ imaginary counts to the actual counts. In the denomerator, we add $V\alpha$ to ensure that the probabilities are properly normalized, where $\cV$ is the vocabulary and $V$ is the vocabulary size. Note that it is possible that $\operatorname{count}(w_{n-1}) = 0$. We also have $\operatorname{count}(w_{n-1}, w_n) = 0$ and $P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}\right) = 1/|V|$.
+
+Similarly, for a trigram language model, we have
+$$P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}, w_{n-2}\right)=\frac{\operatorname{count}\left(w_{n-2}, w_{n-1}, w_{n}\right)+\alpha}{\sum_{w_{n}'\in \cV}(\operatorname{count}\left(w_{n-2}, w_{n-1}, w_{n}'\right)+ \alpha)}=\frac{\operatorname{count}\left(w_{n-2}, w_{n-1}, w_{n}\right)+\alpha}{\operatorname{count}\left(w_{n-2}, w_{n-1}\right)+ V\alpha}.$$
+
+When $\operatorname{count}\left(w_{n-2}, w_{n-1}\right) = 0$, we have $P_{\text{Add-}\alpha}^{*}\left(w_{n} | w_{n-1}, w_{n-2}\right) = 1/|V|.$
+
+
+To better understand the bias introduced from adding $\alpha$ imaginary counts, we can compute the effective count of an event. Let  $c_i$ is the count of event $i$. Let $M=\sum_{i=1}^E c_i$ be the total counts of all possible events E in the corpus. 
+The effective count for event $i$ is given by:
+
+$$
+c_i^*=\left(c_i+\alpha\right) \frac{M}{M+E \alpha},
+$$
+
+Note that the effective counts defined this way ensures that total count $M$ satisfies $\sum_{i=1}^E c_i^*=\sum_{i=1}^E c_i=M$ and the probability of the event $i$ is $c_i^*/\sum_i c_i^* = c_i/M$. 
+
+In general, if $c_i > 0$, then $c_i* < c_i$; if $c_i = 0$, then $c_i^* > c_i = 0$. Therefore, when we are adding imaginary counts to all the events, the effective counts of all observed events are decreased and the effective counts for all unobserved events are increased. From the probability mass perspective, add-$\alpha$ smoothing is equivalent to remove some probability mass from observed events and re-distribute the collected probability mass to all unobserved events. 
+
+We can also use the concept of discounting\footnote{A related definition is absolute discounting, which is given by $d_i = c_i - c_i^*$. } to reflect the change between $c^*_i$ and $c_i$, which is given by
+The discount for each $\mathrm{n}$-gram is then computed as,
+
+$$
+d_i=\frac{c_i^*}{c_i}=\frac{\left(c_i+\alpha\right)}{c_i} \frac{M}{(M+E \alpha)}.
+$$
+
+ 
+The bias we add to the n-gram model is reflected on the value of $d_i$. When $\alpha = 0, d_i = 1.0$, there is no bias in the n-gram model estimation. For non-zero $\alpha$, $d_i < 1$. The smaller the $d_i$, the large the bias we introduce. For example, when the vocabulary size $|V|$ is large, but the total number of tokens $M$ is small, $d_i$ approaches zero and the bias is thus large.
 
 ## Neural language models
 
