@@ -1,0 +1,631 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>LLM Inference &#8212; LLM Foundations</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_inference/inference_fundamentals';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Inference acceleration" href="inference_acceleration.html" />
+    <link rel="prev" title="LLM Training Acceleration" href="../chapter_training/accelerated_training.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/qe-logo-large.png" class="logo__image only-light" alt="LLM Foundations - Home"/>
+    <script>document.write(`<img src="../../_static/qe-logo-large.png" class="logo__image only-dark" alt="LLM Foundations - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers.html">Transformers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">LLM Dense Architectures Fundamentals</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">MOE sparse models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">LLM training fundamentals</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">LLM finetuning</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">LLM alignement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">LLM Training Acceleration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">LLM Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inference_acceleration.html">Inference acceleration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">Basic prompt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">Advanced prompt techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">Basic RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">Advanced rag techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">Multimodality fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">Vision transformers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">Application of LLM in IR</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/docs/chapter_inference/inference_fundamentals.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>LLM Inference</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoding-fundamentals">Decoding Fundamentals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#greedy-decoding">Greedy decoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#beam-search-decoding">Beam search decoding</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#basics">Basics</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#controling-beam-search-behavior">Controling beam search behavior</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature-controlled-sampling">Temperature-controlled sampling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-basics">The basics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-k-and-top-p-sampling">Top-k and top-p sampling</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="llm-inference">
+<h1>LLM Inference<a class="headerlink" href="#llm-inference" title="Link to this heading">#</a></h1>
+<section id="decoding-fundamentals">
+<h2>Decoding Fundamentals<a class="headerlink" href="#decoding-fundamentals" title="Link to this heading">#</a></h2>
+<p>In typical language modeling frameworks, a language model takes preceding words as context and outputs a probabilistic distribution of the next word over a pre-defined vocabulary.
+The overall goal of decoding is to convert the probabilistic outputs iteratively to generate a sequence of words that meet the requirement of intended applications.</p>
+<p>Decoding introduces a few challenges that are vastly different from typical NLU (natural language understanding) tasks:</p>
+<ul class="simple">
+<li><p>The decoding involves iterative forword pass of a model taking updated inputs. As a result, decoding has significantly more computation cost than typical NLU tasks that simply involves one forward pass of a model.</p></li>
+<li><p>The quality (i.e., fluency and cohesion) and diversity of the generated text depends on the choice of language model, decoding methods, and their associated hyper-parameters.</p></li>
+</ul>
+<p>At the heart of decoding is to maximize the probability of the generated sequence of tokens <span class="math notranslate nohighlight">\(y_1,...,y_t\)</span> given the input <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\hat{y} = \underset{y}{\operatorname{argmax}} P(y_1,...,y_t|x).\]</div>
+<p>Since it is difficult optimize <span class="math notranslate nohighlight">\(P(\mathbf{y} \mid \mathbf{x})\)</span> directly, it is common to use the chain rule of probability to factorize it as a product of conditional probabilities</p>
+<div class="math notranslate nohighlight">
+\[
+P\left(y_1, \ldots, y_t \mid \mathbf{x}\right)=\prod_{t=1}^N P\left(y_t \mid y_{&lt;t}, \mathbf{x}\right)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(y_{&lt;t}\)</span> is a shorthand notation for the sequence <span class="math notranslate nohighlight">\(y_1, \ldots, y_{t-1}\)</span>. The problem of generating the most probable sequence now amounts to carefully selecting each word at each step given the preceding words in a sentence such that the probability of final sequence is maximized.</p>
+<p>The model takes the sequence <span class="math notranslate nohighlight">\(y_{&lt;t}, \mathbf{x}\)</span> as the input, and is trained to output the conditional probabilties of <span class="math notranslate nohighlight">\(P\left(y_t \mid y_{&lt;t}, \mathbf{x}\right)\)</span>.</p>
+<section id="greedy-decoding">
+<h3>Greedy decoding<a class="headerlink" href="#greedy-decoding" title="Link to this heading">#</a></h3>
+<p>The simplest decoding method is greedy decoding, in which we at each step greedily select the token with the highest model predicted probability:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{y}_t=\underset{y_t}{\operatorname{argmax}} P\left(y_t \mid y_{&lt;t}, \mathbf{x}\right).
+\]</div>
+<p>For example, suppose the language model produces a conditional probability <span class="math notranslate nohighlight">\(p_{t, i}\)</span> for token <span class="math notranslate nohighlight">\(i\)</span> in the vocabulary at step <span class="math notranslate nohighlight">\(t\)</span> given its preceding words, we will just take the token <span class="math notranslate nohighlight">\(j\)</span> that has the maximum value <span class="math notranslate nohighlight">\(p_{t,j}\)</span>.</p>
+<p><img alt="Greedy decoding demonstrations. " src="../../_images/greedy_decoding_demo.png" />
+:label:<code class="docutils literal notranslate"><span class="pre">chapter_inference_inference_fundamentals_greedy_decoding_demo</span></code></p>
+<p>While being efficient, greedy search decoding often fails to produce sequences that have high probability. The reason is that the token at each step is chosen without considering its impact on the subsequent tokens. In practice, the model may produce repetitive output sequences. In the following, we will introduce beam search and sampling methods to mitigate the drawbacks of greedy decoding.</p>
+</section>
+<section id="beam-search-decoding">
+<h3>Beam search decoding<a class="headerlink" href="#beam-search-decoding" title="Link to this heading">#</a></h3>
+<section id="basics">
+<h4>Basics<a class="headerlink" href="#basics" title="Link to this heading">#</a></h4>
+<p>Instead of decoding the token with the highest probability at each step, beam search keeps track
+of the top <span class="math notranslate nohighlight">\(B\)</span> most probable candidate sequences or hypotheses when selecting next-tokens. Here <span class="math notranslate nohighlight">\(B\)</span> is referred to the beam width or the number of hypotheses. By selecting the <span class="math notranslate nohighlight">\(B\)</span> next tokens from the vocabulary for extensions, we form <span class="math notranslate nohighlight">\(B\)</span> most likely new sequences as the next set of beams. This process is repeated until each sequence reaches the maximum length or an EOS token.</p>
+<p><img alt="Beam Search decoding demonstrations. " src="../../_images/beam_decoding_demo.png" />
+:label:<code class="docutils literal notranslate"><span class="pre">chapter_inference_inference_fundamentals_beam_decoding_demo</span></code></p>
+<p>Formally, we denote the set of <span class="math notranslate nohighlight">\(B\)</span> hypotheses tracked by beam search at the start of step <span class="math notranslate nohighlight">\(n\)</span> as <span class="math notranslate nohighlight">\(Y_{n-1}=\left\{\mathbf{y}_{1:n-1}^{(1)}, \ldots, \mathbf{y}_{1:n-1}^{(B)}\right\}\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{y}_{1:n-1}^{(j)}\)</span> is hypothesis <span class="math notranslate nohighlight">\(j\)</span> consisting of <span class="math notranslate nohighlight">\(n-1\)</span> tokens. At each step, all possible single token extensions of these <span class="math notranslate nohighlight">\(B\)</span> beams given by the set <span class="math notranslate nohighlight">\(\mathcal{Y}_n=Y_{n-1} \times \mathcal{V}\)</span> and selects the <span class="math notranslate nohighlight">\(B\)</span> most likely extensions. At each step, we are selecting top <span class="math notranslate nohighlight">\(B\)</span> scored candidates from all <span class="math notranslate nohighlight">\(B \times|\mathcal{V}|\)</span> members of <span class="math notranslate nohighlight">\(\mathcal{Y}_t\)</span>, given by</p>
+<div class="math notranslate nohighlight">
+\[
+Y_{n}=\underset{Y_{n} \in \mathcal{Y}_t}{\operatorname{argmax}} \operatorname{Score}\left(\mathbf{y}_{1:n}\right).\]</div>
+<p>The most commonly used score function is the sum of log-likelihoods of the sequence.</p>
+<p>Beam search has a computational complexity given by <span class="math notranslate nohighlight">\(O(LB|V|)\)</span>, where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(L\)</span> is the length of the sequence</p></li>
+<li><p><span class="math notranslate nohighlight">\(B\)</span> is the beam width</p></li>
+<li><p><span class="math notranslate nohighlight">\(|V|\)</span> is the vocabulary size (i.e., the search space size on each step).</p></li>
+</ul>
+<p>In principle, beam search cannot guarantee the finding of optimal sequence, but it is much more effective than brute force apporach (which has time complexity of <span class="math notranslate nohighlight">\(O(|V|^L)\)</span>).</p>
+<p>We can tune the diversity or length of generated text by incorporating other elements into the scoring function. For example, we can penalize long sequence by multiplying by log-likelihoods by a length-dependent factor.</p>
+</section>
+<section id="controling-beam-search-behavior">
+<h4>Controling beam search behavior<a class="headerlink" href="#controling-beam-search-behavior" title="Link to this heading">#</a></h4>
+<p>Since beam-decoding is optimizing a user-defined score function, we can incorpoate various penalties or rewards into the score function to control the diversity, brevity, smoothness, etc. of the generated sequence.\cite{vijayakumar2016diverse}
+For example,</p>
+<ul>
+<li><p>Let <span class="math notranslate nohighlight">\(s\)</span> be the original score, we can add length penalty by using score <span class="math notranslate nohighlight">\(s\exp(-\alpha l)\)</span>, where <span class="math notranslate nohighlight">\(\alpha\)</span> is a scalar and <span class="math notranslate nohighlight">\(l\)</span> is the length of the generated sequence. <span class="math notranslate nohighlight">\(\alpha &gt; 0.0\)</span> means that the beam score is penalized by the sequence length; <span class="math notranslate nohighlight">\(\alpha  &lt; 0.0\)</span> is used to encourage the model to generate longer sequence.</p></li>
+<li><p>We can use <code class="docutils literal notranslate"><span class="pre">min\_length</span></code> to force the model to not produce an EOS (end of sentence) token before <code class="docutils literal notranslate"><span class="pre">min\_length</span></code> is reached.</p></li>
+<li><p>One can also introduce n-grams repetition penalty. For example, one can specify a hard penalty to ensure that no n-gram appears twice. Alternatively, one can also introduce soft penalty\cite{keskar2019ctrl}. For instance, given a list of generated tokens <span class="math notranslate nohighlight">\(G\)</span>, the probability distribution for the next token <span class="math notranslate nohighlight">\(p_i\)</span> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+	p_i=\frac{\exp \left(z_i /(T \cdot I(i \in g))\right.}{\sum_j \exp \left(z_j /(T \cdot I(j \in g))\right.} 
+	\]</div>
+<p>where <span class="math notranslate nohighlight">\(I(c)=\theta\)</span> if <span class="math notranslate nohighlight">\(c\)</span> is True else 1.0.</p>
+</li>
+</ul>
+<p>Beam search aims to generate the most probable sequence, which however is not necessary of high quality from human language perspective. Human language does not necessarily follow a distribution of high probability next words, in particularly in creative writing or dialog generation. In other words, as humans, we want generated text to surprise us and not to be boring/predictable.</p>
+<p>For applications like machine translation or summarization, we can specify beam search parameters to generate text of desired length. However, for tasks like story generation, the detailed length is often difficult to predict, which imposes a challenge to beam search.</p>
+</section>
+</section>
+</section>
+<section id="temperature-controlled-sampling">
+<h2>Temperature-controlled sampling<a class="headerlink" href="#temperature-controlled-sampling" title="Link to this heading">#</a></h2>
+<section id="the-basics">
+<h3>The basics<a class="headerlink" href="#the-basics" title="Link to this heading">#</a></h3>
+<p>Alternatively, we can look into stochastic approaches to avoid the response being generic.
+Instead of taking the tokens that deterministic maximizes the probability from the Softmax function, we can perform randomly sample the next token from the vocabulary according to probability of each token from the Softmax function.
+The temperature-controlled sampling randomly samples from the model output’s probability distribution over the full vocabulary at each step:</p>
+<div class="math notranslate nohighlight">
+\[P(y_t=w_i | y_{&lt;t}) = exp(z_{t,i} / T) / sum_{j=1}^{|V|} exp(z_{t,j} / T)\]</div>
+<p>where <span class="math notranslate nohighlight">\(z_{t_i}\)</span> is the logit for token <span class="math notranslate nohighlight">\(i\)</span> at step <span class="math notranslate nohighlight">\(t\)</span>, <span class="math notranslate nohighlight">\(|V|\)</span> denotes the cardinality of the vocabulary. We can easily control the diversity of the output by adding a temperature parameter T that rescales the logits before taking the Softmax. There are two special cases:</p>
+<ul class="simple">
+<li><p>When <span class="math notranslate nohighlight">\(T \to 0\)</span>, the temperature-controlled sampling approaches a greedy decoding.</p></li>
+<li><p>When <span class="math notranslate nohighlight">\(T \to \inf\)</span>, the temperature-controlled sampling approaches the uniformly sampling.</p></li>
+</ul>
+<p>Setting the right temperature is critically to produce rich yet meaningful sentences. For example, a very high temperature would produce has produced mostly gibberish, including the appearance of many rare or even made-up words and uncommon grammar patterns.</p>
+</section>
+<section id="top-k-and-top-p-sampling">
+<h3>Top-k and top-p sampling<a class="headerlink" href="#top-k-and-top-p-sampling" title="Link to this heading">#</a></h3>
+<p>Top-k and top-p sampling are two common extensions to the temperature-controlled sampling. The basic idea of both approaches is to impose additional constraints on the number of possible tokens we can sample from at each step.</p>
+<p>The idea behind top-<span class="math notranslate nohighlight">\(k\)</span> sampling is used to ensure that the less probable words will not be considered at all and only top <span class="math notranslate nohighlight">\(k\)</span> probable tokens will be sampled. This imposes a fixed cut on the long tail of the word distribution and prevent the generation of rare words and going off-topic. One disadvantage of top-<span class="math notranslate nohighlight">\(k\)</span> sampling is that the number <span class="math notranslate nohighlight">\(K\)</span> need to be defined in the beginning. Selecting an universal <span class="math notranslate nohighlight">\(K\)</span> is non-trivial, as shown in the two following cases:</p>
+<ul class="simple">
+<li><p>When the next word has a broad distribution, having a small <span class="math notranslate nohighlight">\(K\)</span> will discard many reasonable options.</p></li>
+<li><p>When the next word has a narrow distribution, having a large <span class="math notranslate nohighlight">\(K\)</span> will cause the generation of rare words.</p></li>
+</ul>
+<p>The top-<span class="math notranslate nohighlight">\(p\)</span> approach aims to adapt <span class="math notranslate nohighlight">\(k\)</span> heuristically based on the distribution shape. Let token <span class="math notranslate nohighlight">\(i=1,...,|V|\)</span> be sorted descendingly according to its probability <span class="math notranslate nohighlight">\(p_i\)</span>. The top-p sampling approach chooses a probability threshold <span class="math notranslate nohighlight">\(p_0\)</span> and sets k to be the lowest value such that <span class="math notranslate nohighlight">\(\sum_i (p_i) &gt; p_0\)</span>. If the next word distribution is narrow (i.e., the model is confident in its next-word prediction), then k will be lower and vice versa.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs/chapter_inference"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter_training/accelerated_training.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">LLM Training Acceleration</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="inference_acceleration.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Inference acceleration</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoding-fundamentals">Decoding Fundamentals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#greedy-decoding">Greedy decoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#beam-search-decoding">Beam search decoding</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#basics">Basics</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#controling-beam-search-behavior">Controling beam search behavior</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature-controlled-sampling">Temperature-controlled sampling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-basics">The basics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-k-and-top-p-sampling">Top-k and top-p sampling</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuguang Yang
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,630 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Advanced prompt techniques &#8212; LLM Foundations</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_prompt/advanced_prompt';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Basic RAG" href="../chapter_rag/basic_rag.html" />
+    <link rel="prev" title="Basic prompt" href="basic_prompt.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/qe-logo-large.png" class="logo__image only-light" alt="LLM Foundations - Home"/>
+    <script>document.write(`<img src="../../_static/qe-logo-large.png" class="logo__image only-dark" alt="LLM Foundations - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers.html">Transformers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">LLM Dense Architectures Fundamentals</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">MOE sparse models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">LLM training fundamentals</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">LLM finetuning</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">LLM alignement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">LLM Training Acceleration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">LLM Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="basic_prompt.html">Basic prompt</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Advanced prompt techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">Basic RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">Advanced rag techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">Multimodality fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">Vision transformers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">Application of LLM in IR</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/docs/chapter_prompt/advanced_prompt.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Advanced prompt techniques</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#med-prompt-paper">Med prompt paper</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-in-context-learning">Dynamic in-context learning</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cot-variants">CoT variants</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-cot-with-self-consistency">ensemble CoT with self-consistency</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#self-generated-chain-of-thought">Self-generated chain of thought</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choice-shuffling-ensembling">Choice Shuffling Ensembling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">Bibliography</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="advanced-prompt-techniques">
+<h1>Advanced prompt techniques<a class="headerlink" href="#advanced-prompt-techniques" title="Link to this heading">#</a></h1>
+<section id="med-prompt-paper">
+<h2>Med prompt paper<a class="headerlink" href="#med-prompt-paper" title="Link to this heading">#</a></h2>
+<p>By using advanced prompting techniques, GPT-4 demonstrated significant capabilities in areas involving significant domain knowledge, such as medicine, which challenges the assumption that it requires intensive domain-specific training to match specialist capabilities​.</p>
+<p>In <span id="id1">[<a class="reference internal" href="#id492" title="Harsha Nori, Yin Tat Lee, Sheng Zhang, Dean Carignan, Richard Edgar, Nicolo Fusi, Nicholas King, Jonathan Larson, Yuanzhi Li, Weishung Liu, and others. Can generalist foundation models outcompete special-purpose tuning? case study in medicine. arXiv preprint arXiv:2311.16452, 2023.">NLZ+23</a>]</span>, authors carried out a systematic exploration of prompt engineering strategies that significantly enhance GPT-4’s performance in medical question-answering tasks. Medprompt integrates techniques like in-context learning and chain-of-thought reasoning, leading to a 27% reduction in error rate on the MedQA dataset compared to specialist models.</p>
+<p>Medprompt employs dynamic few-shot selection, self-generated chain of thought, and choice shuffle ensembling. These techniques collectively contribute to its high performance in medical benchmarks.</p>
+<p>An ablation study highlighted the relative contributions of Medprompt’s components, with chain-of-thought steps being most significant. Interestingly, GPT-4’s self-generated chain-of-thought outperformed expert-crafted prompts​.</p>
+<section id="dynamic-in-context-learning">
+<h3>Dynamic in-context learning<a class="headerlink" href="#dynamic-in-context-learning" title="Link to this heading">#</a></h3>
+<p>In the most common form of in-context learning (also known as few-shot learning), the foundation model is prompted with a few demonstrations, and the foundation models quickly adapt to a specific domain and learn to follow the task format. These few-shot examples applied in prompting for a particular task are typically fixed; they are unchanged across test examples.</p>
+<p>To achieve the best testing performance, it is necessary that these few-shot examples selected are broadly representative and relevant to a wide distribution of text examples.</p>
+<p>In the dynamic few-shot prompting setting, we can select can select different few-shot examples for different task inputs. The selection criterion can be based on the simiarlity to the testing case at hand.</p>
+</section>
+</section>
+<section id="cot-variants">
+<h2>CoT variants<a class="headerlink" href="#cot-variants" title="Link to this heading">#</a></h2>
+<section id="ensemble-cot-with-self-consistency">
+<h3>ensemble CoT with self-consistency<a class="headerlink" href="#ensemble-cot-with-self-consistency" title="Link to this heading">#</a></h3>
+<p><span id="id2">[<a class="reference internal" href="#id493" title="Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language models. arXiv preprint arXiv:2203.11171, 2022.">WWS+22</a>]</span></p>
+<p>Chain-of-thought prompting combined with pre-trained large language models has achieved encouraging results on complex reasoning tasks. In this paper, we propose a new decoding strategy, self-consistency, to replace the naive greedy decoding used in chain-of-thought prompting. It first samples a diverse set of reasoning paths instead of only taking the greedy one, and then selects the most consistent answer by marginalizing out the sampled reasoning paths. Self-consistency leverages the intuition that a complex reasoning problem typically admits multiple different ways of thinking leading to its unique correct answer.</p>
+<p>Self-consistency is far simpler than prior approaches that either train an additional verifier (Cobbe et al., 2021) or train a re-ranker given additional human annotations to improve generation quality
+(Thoppilan et al., 2022). Instead, self-consistency is entirely unsupervised, works off-the-shelf with pre-trained language models, requires no additional human annotation, and avoids any additional training, auxiliary models or fine-tuning.</p>
+<figure class="align-default" id="hapter-prompt-fig-advanced-prompt-cot-self-consistency-num-paths">
+<a class="reference internal image-reference" href="../../_images/cot_self_consistency.png"><img alt="../../_images/cot_self_consistency.png" src="../../_images/cot_self_consistency.png" style="width: 853.6px; height: 397.6px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">CoT with self-consistency.</span><a class="headerlink" href="#hapter-prompt-fig-advanced-prompt-cot-self-consistency-num-paths" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Sampling scheme:
+- for UL2-20B and LaMDA-137B we applied temperature sampling with T = 0.5 and truncated at the top-k (k = 40) tokens with the highest probability,
+- for PaLM-540B we applied T = 0.7, k = 40,
+- for GPT-3 we use T = 0.7 without top-k truncation.</p>
+<figure class="align-default" id="chapter-prompt-fig-advanced-prompt-cot-self-consistency-example">
+<a class="reference internal image-reference" href="../../_images/cot_self_consistency_example.png"><img alt="../../_images/cot_self_consistency_example.png" src="../../_images/cot_self_consistency_example.png" style="width: 876.8000000000001px; height: 284.8px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">CoT with self-consistency examples.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-cot-self-consistency-example" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Self-consistency (blue) significantly improves accuracy over CoT-prompting with greedy
+decoding (orange) across arithmetic and commonsense reasoning tasks, over LaMDA-137B. Sampling
+a higher number of diverse reasoning paths consistently improves reasoning accuracy</p>
+<figure class="align-default" id="chapter-prompt-fig-advanced-prompt-cot-self-consistency-num-paths">
+<a class="reference internal image-reference" href="../../_images/cot_self_consistency_num_paths.png"><img alt="../../_images/cot_self_consistency_num_paths.png" src="../../_images/cot_self_consistency_num_paths.png" style="width: 855.2px; height: 146.4px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">The effect of the number of sampled reasoning paths.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-cot-self-consistency-num-paths" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="self-generated-chain-of-thought">
+<h3>Self-generated chain of thought<a class="headerlink" href="#self-generated-chain-of-thought" title="Link to this heading">#</a></h3>
+<p><a class="reference internal" href="#chapter-prompt-fig-advanced-prompt-self-cot"><span class="std std-numref">Fig. 5</span></a></p>
+<p>During preprocessing, each question in the training dataset is passed through a lightweight embedding model to generate an embedding vector (Line 4 in Algorithm 1). We employed OpenAI’s text-embedding-ada-002 to create an embedding. For each question, GPT-4 is harnessed to create a chain of thought and a prediction of the final answer (Line 5). If the generated answer is correct and matches the ground truth label, we store the associated question, its embedding vector, the chain of thought, and the answer. Otherwise, we discard the question entirely from our retrieval pool, with the assumption that we cannot trust the reasoning if the model ultimately arrives at the wrong final answer.</p>
+<p>At inference time, given a test question, we re-embed the test sample with the same embedding model used during pre-processing, and utilize kNN to retrieve similar examples from the preprocessed pool. These examples, and their corresponding GPT-4 generated reasoning chains, are structured as context for GPT-4. The test question and corresponding answer choices are then appended at the end, which serves as the final prompt (Line 17). The model, following the few shot exemplars, then outputs a chain of thought and a candidate answer.</p>
+<!-- ![Self-generated CoT demonstration. Comparison of expert-crafted and GPT-4-generated chain-of-thought (CoT) prompts.](../img/chapter_prompt/advanced_prompt/medprompt_cot_example.png)
+:label:`chapter_prompt_fig_advanced_prompt_self_cot` -->
+<figure class="align-default" id="chapter-prompt-fig-advanced-prompt-self-cot">
+<a class="reference internal image-reference" href="../../_images/medprompt_cot_example.png"><img alt="../../_images/medprompt_cot_example.png" src="../../_images/medprompt_cot_example.png" style="width: 599.4px; height: 453.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Self-generated CoT demonstration. Comparison of expert-crafted and GPT-4-generated chain-of-thought (CoT) prompts.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-self-cot" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="choice-shuffling-ensembling">
+<h3>Choice Shuffling Ensembling<a class="headerlink" href="#choice-shuffling-ensembling" title="Link to this heading">#</a></h3>
+<p>Combines outputs of multiple model runs to achieve a more robust or accurate result through methods like averaging or majority vote.</p>
+<p>Example: Applying self-consistency techniques to produce multiple outputs and identifying a consensus output.
+Results: While ensembling enhances performance, it was used with consideration for computational demands. Medprompt used simpler techniques to avoid excessive inference costs</p>
+<p>Choise shuffling aims to mitigate the position bias for GPT-4 type of LLM that has exhibited for multiple choices questions.</p>
+<p>Self-consistency replaces the naive single-path or greedy decoding with a diverse set of reasoning paths when prompted multiple times at some non-zero temperature, a setting that introduces a degree of randomness in generations.</p>
+<p>With choice shuffling, we shuffle the relative order of the answer choices before generating each reasoning path. We then select the most consistent answer, i.e., the one that is least sensitive to choice shuffling.</p>
+<p>Choice shuffling has an additional benefit of increasing the diversity of each reasoning path beyond temperature sampling, thereby also improving the quality of the final ensemble</p>
+</section>
+</section>
+<section id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id3">
+<div role="list" class="citation-list">
+<div class="citation" id="id382" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BMR+20<span class="fn-bracket">]</span></span>
+<p>Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. <em>Advances in Neural Information Processing Systems</em>, 33:1877–1901, 2020.</p>
+</div>
+<div class="citation" id="id890" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>MSchutze99<span class="fn-bracket">]</span></span>
+<p>Christopher D Manning and Hinrich Schütze. <em>Foundations of statistical natural language processing</em>. MIT press, 1999.</p>
+</div>
+<div class="citation" id="id492" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">NLZ+23</a><span class="fn-bracket">]</span></span>
+<p>Harsha Nori, Yin Tat Lee, Sheng Zhang, Dean Carignan, Richard Edgar, Nicolo Fusi, Nicholas King, Jonathan Larson, Yuanzhi Li, Weishung Liu, and others. Can generalist foundation models outcompete special-purpose tuning? case study in medicine. <em>arXiv preprint arXiv:2311.16452</em>, 2023.</p>
+</div>
+<div class="citation" id="id1127" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>RNSS18<span class="fn-bracket">]</span></span>
+<p>Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. <em>URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf</em>, 2018.</p>
+</div>
+<div class="citation" id="id1128" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>RWC+19<span class="fn-bracket">]</span></span>
+<p>Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. <em>OpenAI Blog</em>, 1(8):9, 2019.</p>
+</div>
+<div class="citation" id="id493" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">WWS+22</a><span class="fn-bracket">]</span></span>
+<p>Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language models. <em>arXiv preprint arXiv:2203.11171</em>, 2022.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs/chapter_prompt"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="basic_prompt.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Basic prompt</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter_rag/basic_rag.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Basic RAG</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#med-prompt-paper">Med prompt paper</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-in-context-learning">Dynamic in-context learning</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cot-variants">CoT variants</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-cot-with-self-consistency">ensemble CoT with self-consistency</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#self-generated-chain-of-thought">Self-generated chain of thought</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choice-shuffling-ensembling">Choice Shuffling Ensembling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">Bibliography</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuguang Yang
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

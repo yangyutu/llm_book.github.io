@@ -1,0 +1,1090 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>LLM Dense Architectures Fundamentals &#8212; LLM Foundations</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_LLM_arch/LLM_dense_architectures';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="MOE sparse models" href="LLM_moe_sparse_architectures.html" />
+    <link rel="prev" title="Transformers" href="../chapter_foundation/transformers.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/qe-logo-large.png" class="logo__image only-light" alt="LLM Foundations - Home"/>
+    <script>document.write(`<img src="../../_static/qe-logo-large.png" class="logo__image only-dark" alt="LLM Foundations - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers.html">Transformers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">LLM Dense Architectures Fundamentals</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="LLM_moe_sparse_architectures.html">MOE sparse models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">LLM training fundamentals</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">LLM finetuning</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">LLM alignement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">LLM Training Acceleration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">LLM Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">Basic prompt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">Advanced prompt techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">Basic RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">Advanced rag techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">Multimodality fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">Vision transformers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">Application of LLM in IR</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/docs/chapter_LLM_arch/LLM_dense_architectures.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>LLM Dense Architectures Fundamentals</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">LLM Dense Architectures Fundamentals</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization">Tokenization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#position-embeddings">Position Embeddings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#absolute-position">Absolute Position</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotary-postion-embedding">Rotary Postion Embedding</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mechanism">The mechanism</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#practival-implementations">Practival Implementations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization">Layer normalization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization-basics">Layer normalization basics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-norm-root-mean-square-norm">RMS Norm (Root Mean Square Norm)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization-position">Layer normalization position</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization-example-choices">Layer normalization example choices</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-attention">Self-attention</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activation">Activation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization">Optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#number-of-model-parameters">Number of model parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-composition-in-transformer-models">Parameter composition in Transformer models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-layer">Input layer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-layer">Attention layer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feed-forward-layer">Feed-forward layer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-layer">Output layer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#total-weight">Total weight</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#dense-architecture-examples">Dense Architecture Examples</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-architectures">LLama architectures</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="llm-dense-architectures-fundamentals">
+<h1>LLM Dense Architectures Fundamentals<a class="headerlink" href="#llm-dense-architectures-fundamentals" title="Link to this heading">#</a></h1>
+<section id="tokenization">
+<h2>Tokenization<a class="headerlink" href="#tokenization" title="Link to this heading">#</a></h2>
+</section>
+<section id="position-embeddings">
+<h2>Position Embeddings<a class="headerlink" href="#position-embeddings" title="Link to this heading">#</a></h2>
+<section id="absolute-position">
+<h3>Absolute Position<a class="headerlink" href="#absolute-position" title="Link to this heading">#</a></h3>
+</section>
+<section id="rotary-postion-embedding">
+<h3>Rotary Postion Embedding<a class="headerlink" href="#rotary-postion-embedding" title="Link to this heading">#</a></h3>
+<section id="the-mechanism">
+<h4>The mechanism<a class="headerlink" href="#the-mechanism" title="Link to this heading">#</a></h4>
+<p>The key idea of Rotary position embedding (Rope) is to multiply query vector <span class="math notranslate nohighlight">\(\boldsymbol{q}\)</span> (of a token) and key vector <span class="math notranslate nohighlight">\(\boldsymbol{k}\)</span> (of another token) by a rotational matrix <span class="math notranslate nohighlight">\(R(\theta_q)\)</span> and <span class="math notranslate nohighlight">\(R(\theta_k)\)</span>, where <span class="math notranslate nohighlight">\(\theta_q\)</span> and <span class="math notranslate nohighlight">\(\theta_k\)</span> are taking values to indicate the positions of query vector token and key vector token, respectively.</p>
+<p>Specifically, let <span class="math notranslate nohighlight">\(\theta_q = m\theta\)</span> and <span class="math notranslate nohighlight">\(\theta_k = n\theta\)</span>, where <span class="math notranslate nohighlight">\(m\)</span> and <span class="math notranslate nohighlight">\(n\)</span> are integer positions of query vector token and key vector token.
+Now we are showing that the rotated query-key inner product is a function of the relative position <span class="math notranslate nohighlight">\((m - n)\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\left\langle R\left(\theta_q\right) \boldsymbol{q}, R\left(\theta_k\right) \boldsymbol{k}\right\rangle &amp; =\left(R\left(\theta_q\right) \boldsymbol{q}\right)^{\top}\left(R\left(\theta_k\right) \boldsymbol{k}\right) \\
+&amp; =\boldsymbol{q}^{\top} R\left(\theta_q\right)^{\top} R\left(\theta_k\right) \boldsymbol{k} \\
+&amp; =\boldsymbol{q}^{\top} R\left(\theta_k-\theta_q\right) \boldsymbol{k} \\
+&amp; =\left(R\left(\theta_q-\theta_k\right) \boldsymbol{q}\right)^{\top} \boldsymbol{k} \\
+&amp; =\left\langle R\left(\theta_q-\theta_k\right) \boldsymbol{q}, \boldsymbol{k}\right\rangle \\
+&amp; =\left\langle R\left(\theta (m-n)\right) \boldsymbol{q}, \boldsymbol{k}\right\rangle 
+\end{aligned}
+\end{split}\]</div>
+<p>We have used the following important properties of rotational matrix:</p>
+<ol class="arabic simple">
+<li><p>The transpose of a rotation matrix is equal to its inverse: <span class="math notranslate nohighlight">\(R(\theta)^{\top}=R(-\theta)\)</span>.</p></li>
+<li><p>The matrix multiplication of rotational matrices satisfies:
+$<span class="math notranslate nohighlight">\(R(\theta_x)\cdot R(\theta_y) = R(\theta_x + \theta_y)\)</span>$</p></li>
+</ol>
+<p>In other words, the inner product of two rotated vectors is equal to the inner product of one vector rotated by their angle difference and the other original vector.</p>
+</section>
+<section id="practival-implementations">
+<h4>Practival Implementations<a class="headerlink" href="#practival-implementations" title="Link to this heading">#</a></h4>
+<p>First,The rotation matrix is as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+R(\theta)=\left[\begin{array}{cc}
+\cos (\theta) &amp; -\sin (\theta) \\
+\sin (\theta) &amp; \cos (\theta)
+\end{array}\right]
+\end{split}\]</div>
+</section>
+</section>
+</section>
+<section id="layer-normalization">
+<h2>Layer normalization<a class="headerlink" href="#layer-normalization" title="Link to this heading">#</a></h2>
+<section id="layer-normalization-basics">
+<h3>Layer normalization basics<a class="headerlink" href="#layer-normalization-basics" title="Link to this heading">#</a></h3>
+<p>The calculation formula for Layer Norm is given by</p>
+<div class="math notranslate nohighlight" id="equation-chapter-llm-arch-layer-nomalization-formula">
+<span class="eqno">(1)<a class="headerlink" href="#equation-chapter-llm-arch-layer-nomalization-formula" title="Link to this equation">#</a></span>\[\begin{split}
+\begin{aligned}
+\mu &amp;= \frac{1}{H} \sum_{i=1}^H x_i \\
+\sigma &amp;=\sqrt{\frac{1}{H} \sum_{i=1}^H\left(x_i-\mu\right)^2+\epsilon} \\
+LayerNorm(x) &amp;=\frac{x-\mu}{\sqrt{\sigma+\epsilon}} \cdot \gamma+\beta
+\end{aligned}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\gamma\)</span> is a trainable rescaling parameter and <span class="math notranslate nohighlight">\(\beta\)</span> is a trainable re-shifting parameter.</p>
+</section>
+<section id="rms-norm-root-mean-square-norm">
+<h3>RMS Norm (Root Mean Square Norm)<a class="headerlink" href="#rms-norm-root-mean-square-norm" title="Link to this heading">#</a></h3>
+<p>The calculation formula for RMS Norm:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+RMSNorm(x)&amp;=\sqrt{\frac{1}{H} \sum_{i=1}^H x_i^2} \\
+x&amp;=\frac{x}{RMS(x)} \cdot \gamma
+\end{aligned}
+\end{split}\]</div>
+<p>The advantages RMS Norm simplifies Layer Norm from the two following aspects and the performance is basically not impacted.</p>
+<ol class="arabic simple">
+<li><p>RMS Norm simplifies Layer Norm by removing the part that calculates the mean for shifting.</p></li>
+<li><p>RMS Norm calculates faster. The effect is basically equivalent, and even slightly improved.</p></li>
+</ol>
+</section>
+<section id="layer-normalization-position">
+<h3>Layer normalization position<a class="headerlink" href="#layer-normalization-position" title="Link to this heading">#</a></h3>
+</section>
+<section id="layer-normalization-example-choices">
+<h3>Layer normalization example choices<a class="headerlink" href="#layer-normalization-example-choices" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>LLM model</p></th>
+<th class="head text-center"><p>normalization</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>GPT3</p></td>
+<td class="text-center"><p>Pre layer Norm</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>LLaMA</p></td>
+<td class="text-center"><p>Pre RMS Norm</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>baichuan</p></td>
+<td class="text-center"><p>Pre RMS Norm</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>ChatGLM-6B</p></td>
+<td class="text-center"><p>Post Deep Norm</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>ChatGLM2-6B</p></td>
+<td class="text-center"><p>Post RMS Norm</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Bloom</p></td>
+<td class="text-center"><p>Pre layer Norm</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Falcon</p></td>
+<td class="text-center"><p>Pre layer Norm</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="self-attention">
+<h2>Self-attention<a class="headerlink" href="#self-attention" title="Link to this heading">#</a></h2>
+<p>Certainly! I’ll provide a detailed summary of different attention modules used in Large Language Models (LLMs), including Multi-Head Attention (MHA), Grouped Query Attention (GQA), and others. I’ll explain their mechanisms, advantages, and use cases.</p>
+<ol class="arabic simple">
+<li><p>Multi-Head Attention (MHA)</p></li>
+</ol>
+<p>Multi-Head Attention is the foundation of many transformer-based models, including the original transformer architecture.</p>
+<p>Key components:</p>
+<ul class="simple">
+<li><p>Query (Q), Key (K), and Value (V) matrices</p></li>
+<li><p>Multiple attention heads</p></li>
+</ul>
+<p>Formula:
+$<span class="math notranslate nohighlight">\(
+\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O
+\)</span><span class="math notranslate nohighlight">\(
+where each head is computed as:
+\)</span><span class="math notranslate nohighlight">\(
+\text{head}_i = \text{Attention}(QW^Q_i, KW^K_i, VW^V_i)
+\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(
+\text{Attention}(Q, K, V) = \text{softmax}(\frac{QK^T}{\sqrt{d_k}})V
+\)</span>$</p>
+<p>Advantages:</p>
+<ul class="simple">
+<li><p>Allows the model to jointly attend to information from different representation subspaces</p></li>
+<li><p>Improves the model’s ability to capture various aspects of the input</p></li>
+</ul>
+<p>Drawbacks:</p>
+<ul class="simple">
+<li><p>Computational complexity scales quadratically with sequence length</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>Grouped Query Attention (GQA)</p></li>
+</ol>
+<p>GQA is an optimization of MHA that reduces computational complexity while maintaining performance.</p>
+<p>Key idea:</p>
+<ul class="simple">
+<li><p>Group key and value projections while keeping separate query projections</p></li>
+</ul>
+<p>Formula:
+$<span class="math notranslate nohighlight">\(
+\text{GQA}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O
+\)</span><span class="math notranslate nohighlight">\(
+where:
+\)</span><span class="math notranslate nohighlight">\(
+\text{head}_i = \text{Attention}(QW^Q_i, KW^K_{g(i)}, VW^V_{g(i)})
+\)</span><span class="math notranslate nohighlight">\(
+\)</span>g(i)$ is a function that maps head index to group index.</p>
+<p>Advantages:</p>
+<ul class="simple">
+<li><p>Reduces parameters and computation compared to MHA</p></li>
+<li><p>Maintains most of the performance of MHA</p></li>
+</ul>
+<p>Use cases:</p>
+<ul class="simple">
+<li><p>Large-scale language models where efficiency is crucial</p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p>Sliding Window Attention</p></li>
+</ol>
+<p>This method restricts attention to a local window around each token.</p>
+<p>Key idea:</p>
+<ul class="simple">
+<li><p>Each token attends only to a fixed number of neighboring tokens</p></li>
+</ul>
+<p>Formula:
+$<span class="math notranslate nohighlight">\(
+\text{Attention}(Q_i, K_{i-w:i+w}, V_{i-w:i+w})
+\)</span><span class="math notranslate nohighlight">\(
+where \)</span>w$ is the window size.</p>
+<p>Advantages:</p>
+<ul class="simple">
+<li><p>Linear complexity with sequence length</p></li>
+<li><p>Useful for tasks requiring local context</p></li>
+</ul>
+<p>Drawbacks:</p>
+<ul class="simple">
+<li><p>Limited in capturing long-range dependencies</p></li>
+</ul>
+<ol class="arabic simple" start="4">
+<li><p>Sparse Attention</p></li>
+</ol>
+<p>Sparse Attention introduces patterns of sparsity in the attention matrix.</p>
+<p>Key idea:</p>
+<ul class="simple">
+<li><p>Predefined or learned patterns determine which tokens can attend to which other tokens</p></li>
+</ul>
+<p>Advantages:</p>
+<ul class="simple">
+<li><p>Can capture both local and global context</p></li>
+<li><p>Reduces computational complexity</p></li>
+</ul>
+<p>Examples:</p>
+<ul class="simple">
+<li><p>Longformer: combines sliding window attention with global attention</p></li>
+<li><p>Big Bird: uses random, window, and global attention patterns</p></li>
+</ul>
+<ol class="arabic simple" start="5">
+<li><p>Linformer</p></li>
+</ol>
+<p>Linformer reduces the complexity of self-attention from O(n^2) to O(n) by projecting the keys and values to a lower-dimensional space.</p>
+<p>Key idea:</p>
+<ul class="simple">
+<li><p>Project keys and values to a fixed lower dimension</p></li>
+</ul>
+<p>Formula:
+$<span class="math notranslate nohighlight">\(
+\text{Attention}(Q, EK, EV)
+\)</span>$
+where E is a projection matrix.</p>
+<p>Advantages:</p>
+<ul class="simple">
+<li><p>Linear complexity in sequence length</p></li>
+<li><p>Maintains performance for many tasks</p></li>
+</ul>
+<p>Drawbacks:</p>
+<ul class="simple">
+<li><p>May lose some fine-grained information in the projection</p></li>
+</ul>
+<ol class="arabic simple" start="6">
+<li><p>Performer (FAVOR+)</p></li>
+</ol>
+<p>Performer uses Fast Attention Via Orthogonal Random features (FAVOR+) to approximate the attention mechanism.</p>
+<p>Key idea:</p>
+<ul class="simple">
+<li><p>Approximate the softmax function using random orthogonal features</p></li>
+</ul>
+<p>Advantages:</p>
+<ul class="simple">
+<li><p>Linear time and space complexity</p></li>
+<li><p>Unbiased estimation of standard attention</p></li>
+</ul>
+<p>Drawbacks:</p>
+<ul class="simple">
+<li><p>Approximation may not be exact for all cases</p></li>
+</ul>
+<ol class="arabic simple" start="7">
+<li><p>Rotary Position Embedding (RoPE)</p></li>
+</ol>
+<p>While not strictly an attention module, RoPE is an important technique used in conjunction with attention mechanisms.</p>
+<p>Key idea:</p>
+<ul class="simple">
+<li><p>Encode position information directly into the attention computation using complex rotations</p></li>
+</ul>
+<p>Formula:
+$<span class="math notranslate nohighlight">\(
+q' = q(\cos(\theta) + i\sin(\theta)), k' = k(\cos(\theta) + i\sin(\theta))
+\)</span>$</p>
+<p>Advantages:</p>
+<ul class="simple">
+<li><p>Allows for extrapolation to longer sequences</p></li>
+<li><p>Preserves relative positional information effectively</p></li>
+</ul>
+<p>These attention modules and related techniques represent ongoing research in improving the efficiency and effectiveness of LLMs. Each has its own trade-offs between computational complexity, memory usage, and model performance. The choice of attention mechanism often depends on the specific requirements of the task, available computational resources, and desired model capabilities.</p>
+<p>Would you like me to elaborate on any specific attention module or aspect of their implementation in LLMs?</p>
+</section>
+<section id="activation">
+<h2>Activation<a class="headerlink" href="#activation" title="Link to this heading">#</a></h2>
+<p>Certainly! I’ll expand on each of these activation functions and their formulas, providing more context and explanations.</p>
+<ol class="arabic simple">
+<li><p>FFN (Feed-Forward Network) Block:
+$<span class="math notranslate nohighlight">\(
+FFN(x)=f(xW_1+b_1)W_2+b_2
+\)</span>$</p></li>
+</ol>
+<p>The FFN block is a crucial component in many transformer-based architectures. It typically consists of two linear transformations with a non-linear activation function in between.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x\)</span> is the input vector</p></li>
+<li><p><span class="math notranslate nohighlight">\(W_1\)</span> and <span class="math notranslate nohighlight">\(W_2\)</span> are weight matrices</p></li>
+<li><p><span class="math notranslate nohighlight">\(b_1\)</span> and <span class="math notranslate nohighlight">\(b_2\)</span> are bias vectors</p></li>
+<li><p><span class="math notranslate nohighlight">\(f\)</span> is an activation function (often ReLU or GELU)</p></li>
+</ul>
+<p>The FFN block helps in capturing complex patterns and increasing the model’s capacity. The first transformation (<span class="math notranslate nohighlight">\(xW_1+b_1\)</span>) usually projects the input to a higher dimensional space (often 4 times the input dimension), and the second transformation projects it back to the original dimension.</p>
+<ol class="arabic simple" start="2">
+<li><p>GeLU (Gaussian Error Linear Unit):
+$<span class="math notranslate nohighlight">\(
+\operatorname{GeLU}(x) \approx 0.5x\left(1+\tanh \left(\sqrt{\frac{2}{\pi}}\left(x+0.044715x^3\right)\right)\right)
+\)</span>$</p></li>
+</ol>
+<p>GeLU is a smooth approximation of the ReLU function that incorporates properties of the Gaussian cumulative distribution function.</p>
+<ul class="simple">
+<li><p>It’s differentiable everywhere, unlike ReLU</p></li>
+<li><p>For positive inputs, it behaves similarly to ReLU</p></li>
+<li><p>For negative inputs, it has a small, smooth curve instead of being zero</p></li>
+</ul>
+<p>The formula provided is an approximation of the true GeLU function, which is computationally efficient while maintaining the key properties of GeLU. It’s used in models like BERT and GPT-3, often outperforming ReLU in deep networks.</p>
+<ol class="arabic simple" start="3">
+<li><p>Swish:
+$<span class="math notranslate nohighlight">\(
+\operatorname{Swish}_\beta(x)=x \cdot \sigma(\beta x)
+\)</span>$</p></li>
+</ol>
+<p>Swish is a self-gated activation function introduced by Google Brain.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span> is the sigmoid function: <span class="math notranslate nohighlight">\(\sigma(x) = \frac{1}{1+e^{-x}}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta\)</span> is a trainable parameter or can be set to 1</p></li>
+</ul>
+<p>Properties of Swish:</p>
+<ul class="simple">
+<li><p>Smooth and non-monotonic</p></li>
+<li><p>Unbounded above and bounded below</p></li>
+<li><p>Approaches linear function for large positive inputs</p></li>
+<li><p>Can outperform ReLU in very deep networks</p></li>
+</ul>
+<ol class="arabic simple" start="4">
+<li><p>GLU (Gated Linear Unit) in FFN:
+$<span class="math notranslate nohighlight">\(
+\begin{aligned}
+&amp; GLU(x)=\sigma(xW+b) \otimes xV \\
+&amp; FFN_{GLU}=(f(xW_1) \otimes xV)W_2
+\end{aligned}
+\)</span>$</p></li>
+</ol>
+<p>GLU introduces a gating mechanism to the FFN block.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span> is the sigmoid function</p></li>
+<li><p><span class="math notranslate nohighlight">\(\otimes\)</span> represents element-wise multiplication</p></li>
+<li><p><span class="math notranslate nohighlight">\(f\)</span> is an activation function (often GeLU)</p></li>
+<li><p><span class="math notranslate nohighlight">\(W\)</span>, <span class="math notranslate nohighlight">\(V\)</span>, <span class="math notranslate nohighlight">\(W_1\)</span>, and <span class="math notranslate nohighlight">\(W_2\)</span> are weight matrices</p></li>
+</ul>
+<p>The gating mechanism allows the network to control information flow, potentially capturing more complex dependencies. The sigmoid function acts as a gate, determining how much of the linear transformation should pass through.</p>
+<ol class="arabic simple" start="5">
+<li><p>GeGLU (GeLU-based Gated Linear Unit):
+$<span class="math notranslate nohighlight">\(
+GeGLU(x)=GeLU(xW) \otimes xV
+\)</span>$</p></li>
+</ol>
+<p>GeGLU combines the GeLU activation with the gating mechanism of GLU.</p>
+<ul class="simple">
+<li><p>GeLU is applied to one branch (<span class="math notranslate nohighlight">\(xW\)</span>)</p></li>
+<li><p>The other branch (<span class="math notranslate nohighlight">\(xV\)</span>) remains linear</p></li>
+<li><p>Element-wise multiplication combines the two branches</p></li>
+</ul>
+<p>This formulation can provide the benefits of both GeLU activation and gated mechanisms, potentially leading to improved performance in some tasks.</p>
+<ol class="arabic simple" start="6">
+<li><p>SwiGLU (Swish-based Gated Linear Unit):
+$<span class="math notranslate nohighlight">\(
+SwiGLU=\text{Swish}_\beta(xW) \otimes xV
+\)</span>$</p></li>
+</ol>
+<p>SwiGLU replaces the GeLU function in GeGLU with the Swish activation.</p>
+<ul class="simple">
+<li><p>Swish is applied to one branch (<span class="math notranslate nohighlight">\(xW\)</span>)</p></li>
+<li><p>The other branch (<span class="math notranslate nohighlight">\(xV\)</span>) remains linear</p></li>
+<li><p>Element-wise multiplication combines the two branches</p></li>
+</ul>
+<p>The use of Swish can potentially provide different dynamics compared to GeLU, and the trainable parameter <span class="math notranslate nohighlight">\(\beta\)</span> in Swish adds an extra degree of flexibility to the model.</p>
+<p>These variations on activation functions and gating mechanisms represent ongoing research in improving the performance and capabilities of neural networks, especially in the context of large language models. Each has its own strengths and may be more suitable for different types of tasks or model architectures.</p>
+<p>Examples in LLM:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>LLM</p></th>
+<th class="head text-center"><p>Activation Function</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>GPT3</p></td>
+<td class="text-center"><p>GeLU</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>LLaMA</p></td>
+<td class="text-center"><p>SwiGLU</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>LLaMA2</p></td>
+<td class="text-center"><p>SwiGLU</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>baichuan</p></td>
+<td class="text-center"><p>SwiGLU</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>ChatGLM- <br> 6B</p></td>
+<td class="text-center"><p>GeLU</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>ChatGLM2- <br> 6B</p></td>
+<td class="text-center"><p>SwiGLU</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Bloom</p></td>
+<td class="text-center"><p>GeLU</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Falcon</p></td>
+<td class="text-center"><p>GeLU</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="optimization">
+<h2>Optimization<a class="headerlink" href="#optimization" title="Link to this heading">#</a></h2>
+</section>
+<section id="number-of-model-parameters">
+<h2>Number of model parameters<a class="headerlink" href="#number-of-model-parameters" title="Link to this heading">#</a></h2>
+</section>
+<section id="parameter-composition-in-transformer-models">
+<h2>Parameter composition in Transformer models<a class="headerlink" href="#parameter-composition-in-transformer-models" title="Link to this heading">#</a></h2>
+<section id="input-layer">
+<h3>Input layer<a class="headerlink" href="#input-layer" title="Link to this heading">#</a></h3>
+<p>Word embedding: <span class="math notranslate nohighlight">\(n_{vocab} \times d_{model}\)</span>
+Position embedding: <span class="math notranslate nohighlight">\(n_{max\_len} \times d_{model}\)</span></p>
+</section>
+<section id="attention-layer">
+<h3>Attention layer<a class="headerlink" href="#attention-layer" title="Link to this heading">#</a></h3>
+<p>In general <span class="math notranslate nohighlight">\(n_{head} \times d_{head} = d_{model}\)</span>
+QKV transformation matrix for <span class="math notranslate nohighlight">\(n_{head}\)</span>: <span class="math notranslate nohighlight">\(3 \times n_{head} \times d_{model} \times d_{head}\)</span>
+There is a transformation matrix takes the multi-head attention output <span class="math notranslate nohighlight">\(n_{head} \times d_{head}\)</span> as the input and outputs a <span class="math notranslate nohighlight">\(d_{model}\)</span> feature vector. This transformation matrix has weight parameters <span class="math notranslate nohighlight">\(n_{head} \times d_{head} \times d_{model}\)</span>
+In total, we have <span class="math notranslate nohighlight">\(4n_{head}d_{head}d_{model} = 4d_{model}^2\)</span>.</p>
+</section>
+<section id="feed-forward-layer">
+<h3>Feed-forward layer<a class="headerlink" href="#feed-forward-layer" title="Link to this heading">#</a></h3>
+<p>The feed-forward network after the attention layer is a two-layer, with two weight matrices of the sizes <span class="math notranslate nohighlight">\(d_{model} \times d_{ff}\)</span> and <span class="math notranslate nohighlight">\(d_{ff} \times d_{model}\)</span> and two bias vectors of the sizes <span class="math notranslate nohighlight">\(d_{model}\)</span> and <span class="math notranslate nohighlight">\(d_{ff}\)</span>.
+In general <span class="math notranslate nohighlight">\(d_{ff} = 4d_{model}\)</span>, so the total number of parameters are <span class="math notranslate nohighlight">\(8d_{model}^2 + 5d_{model}\)</span>.</p>
+</section>
+<section id="output-layer">
+<h3>Output layer<a class="headerlink" href="#output-layer" title="Link to this heading">#</a></h3>
+<p>The weight-matrix in the output Softmax layer is tied to the embedding layer.</p>
+</section>
+<section id="total-weight">
+<h3>Total weight<a class="headerlink" href="#total-weight" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[n_{vocab} \times d_{model} + n_{max\_len} \times d_{model} + n_{layer}(4d_{model}^2 + 8d_{model}^2 + 5d_{model})\]</div>
+<p><span class="math notranslate nohighlight">\(n_{max\_len} = 2048\)</span> in GPT-3</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model Name</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(n_{\text{params}}\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(n_{\text{layers}}\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(d_{\text{model}}\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(n_{\text{heads}}\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(d_{\text{head}}\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GPT-3 Small</p></td>
+<td><p>125M</p></td>
+<td><p>12</p></td>
+<td><p>768</p></td>
+<td><p>12</p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPT-3 Medium</p></td>
+<td><p>350M</p></td>
+<td><p>24</p></td>
+<td><p>1024</p></td>
+<td><p>16</p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-even"><td><p>GPT-3 Large</p></td>
+<td><p>760M</p></td>
+<td><p>24</p></td>
+<td><p>1536</p></td>
+<td><p>16</p></td>
+<td><p>96</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPT-3 XL</p></td>
+<td><p>1.3B</p></td>
+<td><p>24</p></td>
+<td><p>2048</p></td>
+<td><p>24</p></td>
+<td><p>128</p></td>
+</tr>
+<tr class="row-even"><td><p>GPT-3 2.7B</p></td>
+<td><p>2.7B</p></td>
+<td><p>32</p></td>
+<td><p>2560</p></td>
+<td><p>32</p></td>
+<td><p>80</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPT-3 6.7B</p></td>
+<td><p>6.7B</p></td>
+<td><p>32</p></td>
+<td><p>4096</p></td>
+<td><p>32</p></td>
+<td><p>128</p></td>
+</tr>
+<tr class="row-even"><td><p>GPT-3 13B</p></td>
+<td><p>13.0B</p></td>
+<td><p>40</p></td>
+<td><p>5140</p></td>
+<td><p>40</p></td>
+<td><p>128</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPT-3 175B or “GPT-3”</p></td>
+<td><p>175.0B</p></td>
+<td><p>96</p></td>
+<td><p>12288</p></td>
+<td><p>96</p></td>
+<td><p>128</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="dense-architecture-examples">
+<h1>Dense Architecture Examples<a class="headerlink" href="#dense-architecture-examples" title="Link to this heading">#</a></h1>
+<section id="llama-architectures">
+<h2>LLama architectures<a class="headerlink" href="#llama-architectures" title="Link to this heading">#</a></h2>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs/chapter_LLM_arch"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter_foundation/transformers.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Transformers</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="LLM_moe_sparse_architectures.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MOE sparse models</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">LLM Dense Architectures Fundamentals</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization">Tokenization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#position-embeddings">Position Embeddings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#absolute-position">Absolute Position</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotary-postion-embedding">Rotary Postion Embedding</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mechanism">The mechanism</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#practival-implementations">Practival Implementations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization">Layer normalization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization-basics">Layer normalization basics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-norm-root-mean-square-norm">RMS Norm (Root Mean Square Norm)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization-position">Layer normalization position</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization-example-choices">Layer normalization example choices</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-attention">Self-attention</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activation">Activation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization">Optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#number-of-model-parameters">Number of model parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-composition-in-transformer-models">Parameter composition in Transformer models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-layer">Input layer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-layer">Attention layer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feed-forward-layer">Feed-forward layer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-layer">Output layer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#total-weight">Total weight</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#dense-architecture-examples">Dense Architecture Examples</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-architectures">LLama architectures</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuguang Yang
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
