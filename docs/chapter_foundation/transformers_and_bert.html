@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Multimodality fundamentals &#8212; LLM Foundations</title>
+    <title>Transformers and BERT &#8212; LLM Foundations</title>
   
   
   
@@ -58,11 +58,11 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_multimodality/multimodality_fundamentals';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_foundation/transformers_and_bert';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Vision transformers" href="vision_transformers.html" />
-    <link rel="prev" title="Advanced rag techniques" href="../chapter_rag/advanced_rag.html" />
+    <link rel="next" title="Word Embeddings" href="word_embeddings.html" />
+    <link rel="prev" title="Early Neural Language Models" href="neural_language_models.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -173,12 +173,12 @@
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">Language Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/neural_language_models.html">Early Neural Language Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers_and_bert.html">Transformers and BERT</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/word_embeddings.html">Word Embeddings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/t5.html">T5</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="language_models.html">Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neural_language_models.html">Early Neural Language Models</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Transformers and BERT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="word_embeddings.html">Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="t5.html">T5</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
@@ -212,9 +212,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">Advanced rag techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Multimodality fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vision_transformers.html">Vision transformers</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">Multimodality fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">Vision transformers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
@@ -274,7 +274,7 @@
       
       
       
-      <li><a href="../../_sources/docs/chapter_multimodality/multimodality_fundamentals.md" target="_blank"
+      <li><a href="../../_sources/docs/chapter_foundation/transformers_and_bert.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -356,7 +356,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Multimodality fundamentals</h1>
+    <h1>Transformers and BERT</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -370,8 +370,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="multimodality-fundamentals">
-<h1>Multimodality fundamentals<a class="headerlink" href="#multimodality-fundamentals" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="transformers-and-bert">
+<h1>Transformers and BERT<a class="headerlink" href="#transformers-and-bert" title="Link to this heading">#</a></h1>
 </section>
 
     <script type="text/x-thebe-config">
@@ -387,7 +387,7 @@ document.write(`
         },
         kernelOptions: {
             name: "python3",
-            path: "./docs/chapter_multimodality"
+            path: "./docs/chapter_foundation"
         },
         predefinedOutput: true
     }
@@ -405,20 +405,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../chapter_rag/advanced_rag.html"
+       href="neural_language_models.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Advanced rag techniques</p>
+        <p class="prev-next-title">Early Neural Language Models</p>
       </div>
     </a>
     <a class="right-next"
-       href="vision_transformers.html"
+       href="word_embeddings.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Vision transformers</p>
+        <p class="prev-next-title">Word Embeddings</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
