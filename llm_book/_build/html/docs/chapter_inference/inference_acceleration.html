@@ -372,7 +372,16 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-concepts">Basic Concepts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rtn-quantization">RTN quantization</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-quantization-performance-trade-off-in-language-models">Basic Quantization-performance trade-off in language models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-quantization-techniques">Advanced quantization techniques</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-int8">LLM.int8()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smooth-quant">Smooth Quant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#awq">AWQ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gptq">GPTQ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8">FP8</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references-and-software">References and software</a></li>
 </ul>
             </nav>
         </div>
@@ -410,14 +419,104 @@ document.write(`
 </section>
 <section id="rtn-quantization">
 <h2>RTN quantization<a class="headerlink" href="#rtn-quantization" title="Link to this heading">#</a></h2>
-<p>The Round-to-Nearest (RTN) quantization is a basic method used in the process of quantizing neural networks.</p>
+<p>The <strong>Round-to-Nearest (RTN) quantization</strong> is a basic method used in the process of quantizing neural networks.</p>
 <p>For a given numerical value <span class="math notranslate nohighlight">\(r\)</span>, RTN applies the following quantization formula</p>
 <div class="math notranslate nohighlight">
-\[q = \operatorname{Clip}(\operatorname{Round(\frac{r}{s})} + z, q_{min}, q_max)\]</div>
+\[q = \operatorname{Clip}(\operatorname{Round}(\frac{r}{s}) + z, q_{min}, q_max)\]</div>
 <p>where <span class="math notranslate nohighlight">\(s\)</span> is scaling parameter, <span class="math notranslate nohighlight">\(z\)</span> is the shifting parameter, and <span class="math notranslate nohighlight">\(q_{min}, q_{max}\)</span> are the clipping range.</p>
 </section>
-<section id="references">
-<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<section id="basic-quantization-performance-trade-off-in-language-models">
+<h2>Basic Quantization-performance trade-off in language models<a class="headerlink" href="#basic-quantization-performance-trade-off-in-language-models" title="Link to this heading">#</a></h2>
+<p>Early research [<span id="id1">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1493" title="Yelysei Bondarenko, Markus Nagel, and Tijmen Blankevoort. Understanding and overcoming the challenges of efficient transformer quantization. 2021. URL: https://arxiv.org/abs/2109.12948, arXiv:2109.12948.">BNB21</a>]</span>] during the BERT era revealed significant challenges in quantizing large language models. <span id="id2">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1493" title="Yelysei Bondarenko, Markus Nagel, and Tijmen Blankevoort. Understanding and overcoming the challenges of efficient transformer quantization. 2021. URL: https://arxiv.org/abs/2109.12948, arXiv:2109.12948.">BNB21</a>]</span> demonstrated that applying round-to-nearest (RTN) quantization to both weights and activations of BERT models, reducing them to 8-bit precision, resulted in substantial performance deterioration on language understanding benchmarks.</p>
+<p>Further ablation shows that quantization on activation is major cause of the performance drop and quantization on the model weights have minimal impact. The reason is that activation values from FFN’s input and output can have strong outliers, which can directly cause notable error in the quantization process.</p>
+<p>As summary in the following table [<span id="id3">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1493" title="Yelysei Bondarenko, Markus Nagel, and Tijmen Blankevoort. Understanding and overcoming the challenges of efficient transformer quantization. 2021. URL: https://arxiv.org/abs/2109.12948, arXiv:2109.12948.">BNB21</a>]</span>], a strategy of quantizing only the model weights to 8-bit precision while maintaining 32-bit precision for activations (referred to as ‘W8A32’) achieved performance comparable to full-precision models. This finding highlights the importance of selective quantization strategies that preserve critical information in activations while still benefiting from the efficiency gains of weight quantization.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Configuration</p></th>
+<th class="head text-center"><p>CoLA</p></th>
+<th class="head text-center"><p>SST-2</p></th>
+<th class="head text-center"><p>MRPC</p></th>
+<th class="head text-center"><p>STS-B</p></th>
+<th class="head text-center"><p>QQP</p></th>
+<th class="head text-center"><p>MNLI</p></th>
+<th class="head text-center"><p>QNLI</p></th>
+<th class="head text-center"><p>RTE</p></th>
+<th class="head text-center"><p>GLUE</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>FP32</p></td>
+<td class="text-center"><p>57.27</p></td>
+<td class="text-center"><p>93.12</p></td>
+<td class="text-center"><p>88.36</p></td>
+<td class="text-center"><p>89.09</p></td>
+<td class="text-center"><p>89.72</p></td>
+<td class="text-center"><p>84.91</p></td>
+<td class="text-center"><p>91.58</p></td>
+<td class="text-center"><p>70.40</p></td>
+<td class="text-center"><p>83.06</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>W8A8</p></td>
+<td class="text-center"><p>54.74</p></td>
+<td class="text-center"><p>92.55</p></td>
+<td class="text-center"><p>88.53</p></td>
+<td class="text-center"><p>81.02</p></td>
+<td class="text-center"><p>83.81</p></td>
+<td class="text-center"><p>50.31</p></td>
+<td class="text-center"><p>52.32</p></td>
+<td class="text-center"><p>64.98</p></td>
+<td class="text-center"><p>71.03</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>W32A8</p></td>
+<td class="text-center"><p>56.70</p></td>
+<td class="text-center"><p>92.43</p></td>
+<td class="text-center"><p>86.98</p></td>
+<td class="text-center"><p>82.87</p></td>
+<td class="text-center"><p>84.70</p></td>
+<td class="text-center"><p>52.80</p></td>
+<td class="text-center"><p>52.44</p></td>
+<td class="text-center"><p>53.07</p></td>
+<td class="text-center"><p>70.25</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>W8A32</p></td>
+<td class="text-center"><p>58.63</p></td>
+<td class="text-center"><p>92.55</p></td>
+<td class="text-center"><p>88.74</p></td>
+<td class="text-center"><p>89.05</p></td>
+<td class="text-center"><p>89.72</p></td>
+<td class="text-center"><p>84.58</p></td>
+<td class="text-center"><p>91.43</p></td>
+<td class="text-center"><p>71.12</p></td>
+<td class="text-center"><p>83.23</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>As the model size continues to grow to billions of parameters, outlier features of high magnitude start to emerge in all transformer layers, causing failure of simple low-bit quantization. Dettmers et al. (2022) observed such a phenomenon for OPT models larger than 6.7B parameters. Larger models have more layers with extreme outliers and these outlier features have a significant impact on the model performance. The scale of activation outliers in a few dimensions can be <span class="math notranslate nohighlight">\(\sim 100 \times\)</span> larger than most of the other values.</p>
+<p>As language models grow to encompass billions of parameters, a significant challenge emerges: the appearance of high-magnitude outlier features across all transformer layers. This phenomenon compromises the effectiveness of simple low-bit quantization techniques. <span id="id4">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1494" title="Tim Dettmers, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. Llm.int8(): 8-bit matrix multiplication for transformers at scale. 2022. URL: https://arxiv.org/abs/2208.07339, arXiv:2208.07339.">DLBZ22</a>]</span> identified this issue in OPT models exceeding 6.7 billion parameters.</p>
+<p>The problem intensifies with model size; larger models exhibit more layers with extreme outliers. These outlier features disproportionately influence model performance. In some dimensions, the scale of activation outliers can be approximately 100 times larger than the majority of other values.</p>
+<p>This disparity poses a significant challenge for quantization, as traditional methods struggle to accurately represent both the outliers and the more typical values within the same low-bit format. Consequently, addressing these outliers has become a critical focus in the development of quantization techniques for large language models.</p>
+</section>
+<section id="advanced-quantization-techniques">
+<h2>Advanced quantization techniques<a class="headerlink" href="#advanced-quantization-techniques" title="Link to this heading">#</a></h2>
+<section id="llm-int8">
+<h3>LLM.int8()<a class="headerlink" href="#llm-int8" title="Link to this heading">#</a></h3>
+</section>
+<section id="smooth-quant">
+<h3>Smooth Quant<a class="headerlink" href="#smooth-quant" title="Link to this heading">#</a></h3>
+</section>
+<section id="awq">
+<h3>AWQ<a class="headerlink" href="#awq" title="Link to this heading">#</a></h3>
+</section>
+<section id="gptq">
+<h3>GPTQ<a class="headerlink" href="#gptq" title="Link to this heading">#</a></h3>
+</section>
+<section id="fp8">
+<h3>FP8<a class="headerlink" href="#fp8" title="Link to this heading">#</a></h3>
+</section>
+</section>
+<section id="references-and-software">
+<h2>References and software<a class="headerlink" href="#references-and-software" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://lilianweng.github.io/posts/2023-01-10-inference-optimization/">https://lilianweng.github.io/posts/2023-01-10-inference-optimization/</a></p>
 <p>:bibliography:<code class="docutils literal notranslate"><span class="pre">../llm_book.bib</span></code></p>
 </section>
@@ -489,7 +588,16 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-concepts">Basic Concepts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rtn-quantization">RTN quantization</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-quantization-performance-trade-off-in-language-models">Basic Quantization-performance trade-off in language models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-quantization-techniques">Advanced quantization techniques</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-int8">LLM.int8()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smooth-quant">Smooth Quant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#awq">AWQ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gptq">GPTQ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8">FP8</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references-and-software">References and software</a></li>
 </ul>
   </nav></div>
 

@@ -176,8 +176,8 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">Language Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/neural_language_models.html">Early Neural Language Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers_and_bert.html">Transformers and BERT</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/word_embeddings.html">Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers_and_bert.html">Transformers and BERT</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/t5.html">T5</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
@@ -199,7 +199,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">LLM Inference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration: Quantization</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="current nav bd-sidenav">
@@ -417,7 +417,7 @@ document.write(`
 <a class="reference internal image-reference" href="../../_images/cot_self_consistency.png"><img alt="../../_images/cot_self_consistency.png" src="../../_images/cot_self_consistency.png" style="width: 853.6px; height: 397.6px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 2 </span><span class="caption-text">CoT with self-consistency.</span><a class="headerlink" href="#hapter-prompt-fig-advanced-prompt-cot-self-consistency-num-paths" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">CoT with self-consistency.</span><a class="headerlink" href="#hapter-prompt-fig-advanced-prompt-cot-self-consistency-num-paths" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Sampling scheme:
@@ -428,7 +428,7 @@ document.write(`
 <a class="reference internal image-reference" href="../../_images/cot_self_consistency_example.png"><img alt="../../_images/cot_self_consistency_example.png" src="../../_images/cot_self_consistency_example.png" style="width: 876.8000000000001px; height: 284.8px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 3 </span><span class="caption-text">CoT with self-consistency examples.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-cot-self-consistency-example" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">CoT with self-consistency examples.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-cot-self-consistency-example" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Self-consistency (blue) significantly improves accuracy over CoT-prompting with greedy
@@ -438,13 +438,13 @@ a higher number of diverse reasoning paths consistently improves reasoning accur
 <a class="reference internal image-reference" href="../../_images/cot_self_consistency_num_paths.png"><img alt="../../_images/cot_self_consistency_num_paths.png" src="../../_images/cot_self_consistency_num_paths.png" style="width: 855.2px; height: 146.4px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 4 </span><span class="caption-text">The effect of the number of sampled reasoning paths.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-cot-self-consistency-num-paths" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">The effect of the number of sampled reasoning paths.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-cot-self-consistency-num-paths" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="self-generated-chain-of-thought">
 <h3>Self-generated chain of thought<a class="headerlink" href="#self-generated-chain-of-thought" title="Link to this heading">#</a></h3>
-<p><a class="reference internal" href="#chapter-prompt-fig-advanced-prompt-self-cot"><span class="std std-numref">Fig. 5</span></a></p>
+<p><a class="reference internal" href="#chapter-prompt-fig-advanced-prompt-self-cot"><span class="std std-numref">Fig. 7</span></a></p>
 <p>During preprocessing, each question in the training dataset is passed through a lightweight embedding model to generate an embedding vector (Line 4 in Algorithm 1). We employed OpenAI’s text-embedding-ada-002 to create an embedding. For each question, GPT-4 is harnessed to create a chain of thought and a prediction of the final answer (Line 5). If the generated answer is correct and matches the ground truth label, we store the associated question, its embedding vector, the chain of thought, and the answer. Otherwise, we discard the question entirely from our retrieval pool, with the assumption that we cannot trust the reasoning if the model ultimately arrives at the wrong final answer.</p>
 <p>At inference time, given a test question, we re-embed the test sample with the same embedding model used during pre-processing, and utilize kNN to retrieve similar examples from the preprocessed pool. These examples, and their corresponding GPT-4 generated reasoning chains, are structured as context for GPT-4. The test question and corresponding answer choices are then appended at the end, which serves as the final prompt (Line 17). The model, following the few shot exemplars, then outputs a chain of thought and a candidate answer.</p>
 <!-- ![Self-generated CoT demonstration. Comparison of expert-crafted and GPT-4-generated chain-of-thought (CoT) prompts.](../img/chapter_prompt/advanced_prompt/medprompt_cot_example.png)
@@ -453,7 +453,7 @@ a higher number of diverse reasoning paths consistently improves reasoning accur
 <a class="reference internal image-reference" href="../../_images/medprompt_cot_example.png"><img alt="../../_images/medprompt_cot_example.png" src="../../_images/medprompt_cot_example.png" style="width: 599.4px; height: 453.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Self-generated CoT demonstration. Comparison of expert-crafted and GPT-4-generated chain-of-thought (CoT) prompts.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-self-cot" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Self-generated CoT demonstration. Comparison of expert-crafted and GPT-4-generated chain-of-thought (CoT) prompts.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-self-cot" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -472,9 +472,29 @@ Results: While ensembling enhances performance, it was used with consideration f
 <h2>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id3">
 <div role="list" class="citation-list">
+<div class="citation" id="id1171" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BDVJ03<span class="fn-bracket">]</span></span>
+<p>Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. <em>Journal of machine learning research</em>, 3(Feb):1137–1155, 2003.</p>
+</div>
+<div class="citation" id="id856" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BGJM17<span class="fn-bracket">]</span></span>
+<p>Piotr Bojanowski, Edouard Grave, Armand Joulin, and Tomas Mikolov. Enriching word vectors with subword information. <em>Transactions of the Association for Computational Linguistics</em>, 5:135–146, 2017.</p>
+</div>
+<div class="citation" id="id1493" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BNB21<span class="fn-bracket">]</span></span>
+<p>Yelysei Bondarenko, Markus Nagel, and Tijmen Blankevoort. Understanding and overcoming the challenges of efficient transformer quantization. 2021. URL: <a class="reference external" href="https://arxiv.org/abs/2109.12948">https://arxiv.org/abs/2109.12948</a>, <a class="reference external" href="https://arxiv.org/abs/2109.12948">arXiv:2109.12948</a>.</p>
+</div>
 <div class="citation" id="id382" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>BMR+20<span class="fn-bracket">]</span></span>
 <p>Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. <em>Advances in Neural Information Processing Systems</em>, 33:1877–1901, 2020.</p>
+</div>
+<div class="citation" id="id1494" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DLBZ22<span class="fn-bracket">]</span></span>
+<p>Tim Dettmers, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. Llm.int8(): 8-bit matrix multiplication for transformers at scale. 2022. URL: <a class="reference external" href="https://arxiv.org/abs/2208.07339">https://arxiv.org/abs/2208.07339</a>, <a class="reference external" href="https://arxiv.org/abs/2208.07339">arXiv:2208.07339</a>.</p>
+</div>
+<div class="citation" id="id1252" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>JGBM16<span class="fn-bracket">]</span></span>
+<p>Armand Joulin, Edouard Grave, Piotr Bojanowski, and Tomas Mikolov. Bag of tricks for efficient text classification. <em>arXiv preprint arXiv:1607.01759</em>, 2016.</p>
 </div>
 <div class="citation" id="id890" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>MSchutze99<span class="fn-bracket">]</span></span>
@@ -484,9 +504,17 @@ Results: While ensembling enhances performance, it was used with consideration f
 <span class="label"><span class="fn-bracket">[</span>Mar94<span class="fn-bracket">]</span></span>
 <p>Mary Ann Marcinkiewicz. Building a large annotated corpus of english: the penn treebank. <em>Using Large Corpora</em>, 1994.</p>
 </div>
+<div class="citation" id="id1086" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>MCCD13<span class="fn-bracket">]</span></span>
+<p>Tomas Mikolov, Kai Chen, Greg Corrado, and Jeffrey Dean. Efficient estimation of word representations in vector space. <em>arXiv preprint arXiv:1301.3781</em>, 2013.</p>
+</div>
 <div class="citation" id="id1172" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>MKB+10<span class="fn-bracket">]</span></span>
 <p>Tomas Mikolov, Martin Karafiát, Lukás Burget, Jan Cernocký, and Sanjeev Khudanpur. Recurrent neural network based language model. In Takao Kobayashi, Keikichi Hirose, and Satoshi Nakamura, editors, <em>INTERSPEECH</em>, 1045–1048. ISCA, 2010. URL: <a class="reference external" href="http://dblp.uni-trier.de/db/conf/interspeech/interspeech2010.html#MikolovKBCK10">http://dblp.uni-trier.de/db/conf/interspeech/interspeech2010.html#MikolovKBCK10</a>.</p>
+</div>
+<div class="citation" id="id1085" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>MSC+13<span class="fn-bracket">]</span></span>
+<p>Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg S Corrado, and Jeff Dean. Distributed representations of words and phrases and their compositionality. In <em>Advances in neural information processing systems</em>, 3111–3119. 2013.</p>
 </div>
 <div class="citation" id="id492" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">NLZ+23</a><span class="fn-bracket">]</span></span>
