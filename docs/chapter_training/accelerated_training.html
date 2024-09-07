@@ -178,8 +178,8 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">Language Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/neural_language_models.html">Early Neural Language Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers_and_bert.html">Transformers and BERT</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/word_embeddings.html">Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers_and_bert.html">Transformers and BERT</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/t5.html">T5</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
@@ -201,7 +201,8 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">LLM Inference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration: Overview</a></li>
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
@@ -370,6 +371,16 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-memory-requirement-for-training-llm">The memory requirement for training LLM</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-states">Model states</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activations">Activations</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mlp-part">MLP part</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#self-attention-part">Self-attention part</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-checkpointing-techniques">Activation checkpointing techniques</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flash-attention">Flash Attention</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#online-softmax-motivation">Online Softmax Motivation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#online-softmax-algorithm">Online Softmax Algorithm</a></li>
@@ -389,6 +400,99 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="llm-training-acceleration">
 <h1>LLM Training Acceleration<a class="headerlink" href="#llm-training-acceleration" title="Link to this heading">#</a></h1>
+<section id="the-memory-requirement-for-training-llm">
+<h2>The memory requirement for training LLM<a class="headerlink" href="#the-memory-requirement-for-training-llm" title="Link to this heading">#</a></h2>
+<!-- % https://medium.com/@maxshapp/understanding-and-estimating-gpu-memory-demands-for-training-llms-in-practise-c5ef20a4baff -->
+<p>We will discuss the following in this section</p>
+<ul class="simple">
+<li><p>How much GPU memory do you need to train <span class="math notranslate nohighlight">\(X\)</span> billion Transformer based LLM per each GPU device.</p></li>
+<li><p>What is the formula to estimate memory requirements.</p></li>
+<li><p>What would you do in practise to reduce the memory needs if the model does not fit.</p></li>
+</ul>
+<section id="model-states">
+<h3>Model states<a class="headerlink" href="#model-states" title="Link to this heading">#</a></h3>
+<p>Consider the case that we train a LLM using Adam optimizer, we need to have enough GPU memory to store</p>
+<ul class="simple">
+<li><p>Copy of model parameter</p></li>
+<li><p>Copy of model parameter gradients</p></li>
+<li><p>Copy of optimizer states, include copy of the model parameters, momentum, and variance.</p></li>
+</ul>
+<p>Assume that</p>
+<ul class="simple">
+<li><p>Model parameters and graidents are stored in FP16 (2 bytes),</p></li>
+<li><p>Optimizer states are stored in FP32 (4 bytes) for stable training
+then training a <span class="math notranslate nohighlight">\(X\)</span> billion model requires following GPU memory amount just to store the model and training states</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[(2 + 2 + 12) X ~\text{(GB)}.\]</div>
+<p>The following table gives the example for the memory requirement for the common 7B and 70B models.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Model Size</p></th>
+<th class="head text-right"><p>GPU Memory (GB)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>7B</p></td>
+<td class="text-right"><p>112 B</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>70B</p></td>
+<td class="text-right"><p>1120 B</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="activations">
+<h3>Activations<a class="headerlink" href="#activations" title="Link to this heading">#</a></h3>
+<p>First, let’s have the following notations:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(L\)</span> - number of transformer layers</p></li>
+<li><p><span class="math notranslate nohighlight">\(s\)</span> - sequence length</p></li>
+<li><p><span class="math notranslate nohighlight">\(b\)</span> - batch size</p></li>
+<li><p><span class="math notranslate nohighlight">\(h\)</span> - hidden dimension size</p></li>
+<li><p><span class="math notranslate nohighlight">\(a\)</span> - number of attention heads</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span> - precision</p></li>
+</ul>
+<section id="mlp-part">
+<h4>MLP part<a class="headerlink" href="#mlp-part" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>The output of the first linear layer, which is <span class="math notranslate nohighlight">\(4psbh\)</span> (as this linear enlarges the output dimension to <span class="math notranslate nohighlight">\(4h\)</span>).</p></li>
+<li><p>The output of the GeLU activation, which is <span class="math notranslate nohighlight">\(4psbh\)</span> bytes.</p></li>
+<li><p>The output of the second linear layer, which is <span class="math notranslate nohighlight">\(psbh\)</span> bytes</p></li>
+<li><p>The binary dropout marks specifies which dimensions are droped, which is <span class="math notranslate nohighlight">\(sbh\)</span>
+So in total, MLP part will require to store: <span class="math notranslate nohighlight">\(9psbh + sbh\)</span> bytes for activations.</p></li>
+</ul>
+</section>
+<section id="self-attention-part">
+<h4>Self-attention part<a class="headerlink" href="#self-attention-part" title="Link to this heading">#</a></h4>
+<p>Attention block: which includes self attention followed by a linear projection and an attention dropout.</p>
+<ul class="simple">
+<li><p>Before entering the self-attention block, query, key, and value are passed through a linear projection layer, whose outputs requires in totoal <span class="math notranslate nohighlight">\(3psbh\)</span> bytes</p></li>
+<li><p>The Softmax output is a <span class="math notranslate nohighlight">\(b \times s\times s\)</span> attention matrix for each head, which in total is <span class="math notranslate nohighlight">\(pas^2b\)</span> bytes; The Softmax input is the logis, which is also <span class="math notranslate nohighlight">\(pas^2b\)</span> bytes.</p></li>
+<li><p>The Dropout mask after the Softmax layer needs <span class="math notranslate nohighlight">\(as^2b\)</span></p></li>
+<li><p>Output from Self-Attention, which will require <span class="math notranslate nohighlight">\(psbh\)</span> bytes</p></li>
+<li><p>Output from the Linear layer, which will require <span class="math notranslate nohighlight">\(psbh\)</span> bytes.</p></li>
+<li><p>Dropout mask after the linear layer, this will require <span class="math notranslate nohighlight">\(sbh\)</span> bytes.</p></li>
+</ul>
+<p>To sum up, we need <span class="math notranslate nohighlight">\(5psbh + sbh + 2pas²b + as²b\)</span> bytes for Attention part.</p>
+<p>Additionally, there are 2 Norm Layers in the Transformer Layer, the output from each such layer will require to store psbh bytes, so in total 2psbh bytes.</p>
+<p>total amount of bytes required to store the activations will be approximately:</p>
+<div class="math notranslate nohighlight">
+\[Lpsbh\left(16+\frac{2}{p}+\frac{2 a s}{h}+\frac{a s}{p h}\right)\]</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">activations_memory</span><span class="p">(</span><span class="n">num_layers</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="s2">&quot;Returns amount of GPU VRAM (in GB) required to store intermediate activations for traditional Transformer Encoder block&quot;</span>
+    <span class="n">mem_bytes</span> <span class="o">=</span> <span class="n">num_layers</span> <span class="o">*</span> <span class="n">precision</span> <span class="o">*</span> <span class="n">seq_len</span> <span class="o">*</span> <span class="n">batch_size</span> <span class="o">*</span> <span class="n">hidden_dim</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="mi">16</span> <span class="o">+</span> <span class="mi">2</span><span class="o">/</span><span class="n">precision</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">num_heads</span><span class="o">*</span><span class="n">seq_len</span><span class="o">/</span><span class="n">hidden_dim</span> <span class="o">+</span> <span class="n">num_heads</span><span class="o">*</span><span class="n">seq_len</span><span class="o">/</span><span class="p">(</span><span class="n">precision</span><span class="o">*</span><span class="n">hidden_dim</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">mem_bytes</span> <span class="o">/</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="activation-checkpointing-techniques">
+<h3>Activation checkpointing techniques<a class="headerlink" href="#activation-checkpointing-techniques" title="Link to this heading">#</a></h3>
+</section>
+</section>
 <section id="flash-attention">
 <h2>Flash Attention<a class="headerlink" href="#flash-attention" title="Link to this heading">#</a></h2>
 <section id="online-softmax-motivation">
@@ -561,6 +665,16 @@ This is the mathematical principle behind Flash Attention’s parallel accelerat
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-memory-requirement-for-training-llm">The memory requirement for training LLM</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-states">Model states</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activations">Activations</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mlp-part">MLP part</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#self-attention-part">Self-attention part</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-checkpointing-techniques">Activation checkpointing techniques</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flash-attention">Flash Attention</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#online-softmax-motivation">Online Softmax Motivation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#online-softmax-algorithm">Online Softmax Algorithm</a></li>

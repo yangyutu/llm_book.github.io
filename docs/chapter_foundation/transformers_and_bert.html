@@ -61,8 +61,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_foundation/transformers_and_bert';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Word Embeddings" href="word_embeddings.html" />
-    <link rel="prev" title="Early Neural Language Models" href="neural_language_models.html" />
+    <link rel="next" title="T5" href="t5.html" />
+    <link rel="prev" title="Word Embeddings" href="word_embeddings.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -176,8 +176,8 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="language_models.html">Language Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="neural_language_models.html">Early Neural Language Models</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Transformers and BERT</a></li>
 <li class="toctree-l1"><a class="reference internal" href="word_embeddings.html">Word Embeddings</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Transformers and BERT</a></li>
 <li class="toctree-l1"><a class="reference internal" href="t5.html">T5</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
@@ -199,7 +199,8 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">LLM Inference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration: Overview</a></li>
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
@@ -345,7 +346,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -361,6 +364,18 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretrained-language-models">Pretrained Language Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformers">Transformers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-architecture">Overall architecture</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -372,6 +387,42 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="transformers-and-bert">
 <h1>Transformers and BERT<a class="headerlink" href="#transformers-and-bert" title="Link to this heading">#</a></h1>
+<section id="pretrained-language-models">
+<h2>Pretrained Language Models<a class="headerlink" href="#pretrained-language-models" title="Link to this heading">#</a></h2>
+<p>Pretrained language models are a key technology in modern natural language processing (NLP) that leverages large scale of un-labelled text data and computational power to drastically improve language understanding and generation tasks.</p>
+<p>At their core, pretrained language models are large neural networks that have been exposed to enormous amounts of text data – including millions of books, articles, and websites. Through this exposure, they learn to recognize patterns in language, grasp context, and even pick up on subtle nuances in meaning.</p>
+<p>The key advantage of pretrained language model lies in the fact that it can be universally adapted (i.e., fine-tuning) to all sorts of specific tasks with a small amount of labeled data. As a comparison, training a task-specific model from scratch would require large amount of labeled data, which can be expensive to obtain.</p>
+<p>Pretrained language models typically use neural network architectures designed to process sequential data like text. The most prominent architectures in recent years have been based on the Transformer model, but there have been other important designs as well. Let’s explore some of the key architectures:
+Transformer-based models:
+The Transformer architecture, introduced in 2017, has become the foundation for most modern language models. It uses a mechanism called self-attention to process input sequences in parallel, allowing the model to capture long-range dependencies in text more effectively than previous approaches.</p>
+<p>BERT (Bidirectional Encoder Representations from Transformers):
+BERT uses the encoder portion of the Transformer. It’s bidirectional, meaning it looks at context from both sides of each word when processing text. This makes it particularly good at tasks like sentence classification and named entity recognition.
+GPT (Generative Pre-trained Transformer):
+GPT models use the decoder portion of the Transformer. They process text from left to right, making them well-suited for text generation tasks. Each version (GPT, GPT-2, GPT-3, etc.) has scaled up in size and capability.</p>
+<p>Other architectures:</p>
+<p>ELMo (Embeddings from Language Models):
+Before Transformers, ELMo used bidirectional LSTMs (Long Short-Term Memory networks) to create contextual word embeddings. While less common now, it was an important step in the evolution of language models.</p>
+</section>
+<section id="transformers">
+<h2>Transformers<a class="headerlink" href="#transformers" title="Link to this heading">#</a></h2>
+<section id="overall-architecture">
+<h3>Overall architecture<a class="headerlink" href="#overall-architecture" title="Link to this heading">#</a></h3>
+<p>Since 2007, Transformer <span id="id1">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1125" title="Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Advances in neural information processing systems, 5998–6008. 2017.">VSP+17</a>]</span> has emerged as one of most successful architectures in tackling challenging seq2seq NLP tasks like machine translation, text summarization, etc.</p>
+<p>Traditionally, seq2seq tasks heavily use RNN-based encoder-decoder architectures, plus attention mechanisms, to transform one sequence into another sequence. Transformer, on the other hand, does not rely on any recurrent structure and is able to process all tokens in a sequence at the same time. This enables computation efficiency optimization via parallel optimization and address long-range dependency, both of which mitigate the shortages of RNN-based encoder-decoder architectures.</p>
+<p>On a high level, Transformer falls into the category of encoder-decoder architecture [\autoref{ch:neural-network-and-deep-learning:Advanced:NLP:fig:transformer}], where the encoder encodes an input token sequence into low-dimensional embeddings, and the decoder takes the embeddings as input, plus some additional prompts, outputs an output sequence probabilities. The position information among tokens, originally stored in recurrent network structure, is now provided through position encoding added at the entry point of the encoder and decoder modules.</p>
+<p>Attention mechanisms are the most crucial components in the Transformer architecture to learn contextualized embeddings and overcome the limitation of recurrent neural network in learning long-term dependencies (e.g., seq2seq model with attention).</p>
+<p>The encoder module on the left [<a class="reference internal" href="#chapter-foundation-fig-pretrained-lm-transformer-arch"><span class="std std-ref">The transformer architecture, which consists of an Encoder (left) and a Decoder (right).</span></a>] consists of blocks that are stacked on top of each other to obtain the embeddings that retain rich information in the input. Multi-head self-attentions are used in each block to enable the extraction of contextual information into the final embedding.
+Similarly, the decoder module on the right also consists of blocks that are stacked on top of each other to obtain the embeddings. Two different types of multi-head attentions are used in each docder block, one is self-attention to capture contextual information among output sequence and one is to encoder-decoder attention to capture the dynamic information between input and output sequence.</p>
+<p>In the following, we will discuss each component of transformer architecture in detail.</p>
+<figure class="align-default" id="chapter-foundation-fig-pretrained-lm-transformer-arch">
+<a class="reference internal image-reference" href="../../_images/transformer_arch.png"><img alt="../../_images/transformer_arch.png" src="../../_images/transformer_arch.png" style="width: 805.2px; height: 948.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">The transformer architecture, which consists of an Encoder (left) and a Decoder (right).</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-lm-transformer-arch" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -405,20 +456,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="neural_language_models.html"
+       href="word_embeddings.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Early Neural Language Models</p>
+        <p class="prev-next-title">Word Embeddings</p>
       </div>
     </a>
     <a class="right-next"
-       href="word_embeddings.html"
+       href="t5.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Word Embeddings</p>
+        <p class="prev-next-title">T5</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -428,6 +479,25 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretrained-language-models">Pretrained Language Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformers">Transformers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-architecture">Overall architecture</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

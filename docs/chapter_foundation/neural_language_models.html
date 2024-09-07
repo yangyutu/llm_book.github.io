@@ -411,9 +411,9 @@ document.write(`
 <p>The core idea of <span class="math notranslate nohighlight">\(n\)</span>-gram model is nothing but a mechanical counter of co-occurrence of words. In natural language, there are many words that are similar in their meaning as wells as their grammar rules.
 For example, \textit{A cat is walking in the living room} vs. \textit{a dog is running in the bedroom} have similar word pairs (cat, dog), (walking, running), (living room, bedroom) and use similar patterns.
 These similarities or word semantic meaning (i.e., the latent representation of words) can be exploited to construct model with much smaller model parameters.</p>
-<p><span id="id2">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1171" title="Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. Journal of machine learning research, 3(Feb):1137–1155, 2003.">BDVJ03</a>]</span> proposed neural language models, which predict and generate next word based on its context and operating at a low dimensional dense vector space (i.e., word embedding). In the early development of neural language model, there are two important attempts.</p>
+<p><span id="id2">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1171" title="Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. Journal of machine learning research, 3(Feb):1137–1155, 2003.">BDVJ03</a>]</span> proposed neural language models, which predict and generate next word based on its context and operating at a low dimensional dense vector space (i.e., word embedding).</p>
 <p>The core idea is that by projecting words into low dimensional space (via learning and gradient descent), words with similar semantics are automatically clustered together, thus providing opportunities for effecient parameterization and mitigating the the curse of dimensionality in <span class="math notranslate nohighlight">\(n\)</span>-gram language models.</p>
-<p>In feed-forward network model, each word, together with its preceding <span class="math notranslate nohighlight">\(n - 1\)</span> words as context are projected into low-dimensional space and further predict the next word probability. Note that the context has a fixed length of <span class="math notranslate nohighlight">\(n\)</span>, which it is limited in the same way as in <span class="math notranslate nohighlight">\(n\)</span>-gram models.</p>
+<p>In the feed-forward network model, each word, together with its preceding <span class="math notranslate nohighlight">\(n - 1\)</span> words as context are projected into low-dimensional space and further predict the next word probability. Note that the context has a fixed length of <span class="math notranslate nohighlight">\(n\)</span>, which it is limited in the same way as in <span class="math notranslate nohighlight">\(n\)</span>-gram models [<span class="xref std std-ref">chapter_foundation_fig_language_model_feedforward_model</span>].</p>
 <p>Formally, the model is optimized to maximize</p>
 <div class="math notranslate nohighlight">
 \[{P}\left(w_{t} \mid w_{t-1}, \cdots w_{t-n+1}\right)=\frac{e^{y_{w_{t}}}}{\sum_{i} e^{y_{i}}}.\]</div>
@@ -424,18 +424,17 @@ y=b+We+U \tanh(d+He)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(W, H\)</span> are matrices and <span class="math notranslate nohighlight">\(b, d\)</span> are biases. Here <span class="math notranslate nohighlight">\(W\)</span> can optionally zero, meaning no direct connections. <span class="math notranslate nohighlight">\(e = (e_1,...,e_{n-1})\)</span> is the concatenations of word embeddings of each preceding token.</p>
 <p>Feed-forward neural language model brings several improvements over the traditional <span class="math notranslate nohighlight">\(n\)</span>-gram language model: it provides a compact and efficient parameterization to capture word dependencies among text data. Recall that <span class="math notranslate nohighlight">\(n\)</span>-gram model would have to store all observed <span class="math notranslate nohighlight">\(n\)</span>-grams. However, feed-forward neural language model still meet challenges to capture long-distance dependencies in natural language. In the feed-forward neural language model, capturing long-distance dependencies will require an increase of the context window size, which linearly scales with model parameters <span class="math notranslate nohighlight">\(W\)</span>. Another drawback is that a word that appears at different locations will be multiplied by different weights to get its embedding, which is inconsistent.</p>
-<figure class="align-default" id="chapter-foundation-fig-language-model-feedforward-model">
-<a class="reference internal image-reference" href="../../_images/FeedForwardModel_v2.png"><img alt="../../_images/FeedForwardModel_v2.png" src="../../_images/FeedForwardModel_v2.png" style="width: 1396.8000000000002px; height: 1310.4px;" />
-</a>
+<figure class="align-default" id="id3">
+<img alt="../../_images/FeedForwardModel_v2.png" src="../../_images/FeedForwardModel_v2.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Feedforward neural netowk based language model.</span><a class="headerlink" href="#chapter-foundation-fig-language-model-feedforward-model" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Feedforward neural netowk based language model.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 </section>
 <section id="recurrent-neural-language-model">
 <h2>Recurrent neural language model<a class="headerlink" href="#recurrent-neural-language-model" title="Link to this heading">#</a></h2>
-<p>In recurrent network model [\autoref{ch:neural-network-and-deep-learning:ApplicationsNLP:fig:recurrentmodelv2}], context is extended via recurrent connections and context length is theoretically unlimited.
+<p>In recurrent network model [<a class="reference internal" href="#chapter-foundation-fig-language-model-recurrent-model"><span class="std std-ref">Recurrent neural network based language model.</span></a>], context is extended via recurrent connections and context length is theoretically unlimited.
 Specially, let the recurrent network input be <span class="math notranslate nohighlight">\(x\)</span>, hidden layer output be <span class="math notranslate nohighlight">\(h\)</span>  and output probabilities be <span class="math notranslate nohighlight">\(y\)</span>. Input vector <span class="math notranslate nohighlight">\(x_t\)</span> is a concatenation of a word vector <span class="math notranslate nohighlight">\(w_t\)</span> and the previous hidden layer output <span class="math notranslate nohighlight">\(s_{t-1}\)</span>, which represents the context. To summarize, we have recurrent computation given by</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -448,14 +447,14 @@ Specially, let the recurrent network input be <span class="math notranslate nohi
 <div class="math notranslate nohighlight">
 \[	p(y_{k}(t) =\operatorname{Softmax}\left(W_ys(t) + b_y\right).\]</div>
 <figure class="align-default" id="chapter-foundation-fig-language-model-recurrent-model">
-<a class="reference internal image-reference" href="../../_images/RecurrentModel_v2.png"><img alt="../../_images/RecurrentModel_v2.png" src="../../_images/RecurrentModel_v2.png" style="width: 1298.4px; height: 1339.2px;" />
+<a class="reference internal image-reference" href="../../_images/RecurrentModel_v2.png"><img alt="../../_images/RecurrentModel_v2.png" src="../../_images/RecurrentModel_v2.png" style="width: 649.2px; height: 669.6px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 3 </span><span class="caption-text">Recurrent neural network based language model.</span><a class="headerlink" href="#chapter-foundation-fig-language-model-recurrent-model" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Compared with <span class="math notranslate nohighlight">\(n\)</span>-gram language model and feed-forward neural language model, RNN language model can in principle process input of any length without increasing the model size.
-RNN language model also has several drawbacks: Computing a conditional probability <span class="math notranslate nohighlight">\(p(w_t|w_{1:t-1})\)</span> is expensive. One mitigating strategy is to cache and re-use previous computed results or to pre-compute conditional probabilities for frequent <span class="math notranslate nohighlight">\(n\)</span>-grams.  some In practical applications, RNN language models from different domains are not easy to merge.</p>
+<p>Compared with <span class="math notranslate nohighlight">\(n\)</span>-gram language model and feed-forward neural language model, RNN language model can in principle process input of any length without increasing the model size.</p>
+<p>RNN language model also has several drawbacks: Computing a conditional probability <span class="math notranslate nohighlight">\(p(w_t|w_{1:t-1})\)</span> is expensive. One mitigating strategy is to cache and re-use previous computed results or to pre-compute conditional probabilities for frequent <span class="math notranslate nohighlight">\(n\)</span>-grams.  some In practical applications, RNN language models from different domains are not easy to merge.</p>
 </section>
 </section>
 
