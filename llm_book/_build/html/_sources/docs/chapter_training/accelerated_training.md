@@ -1,5 +1,85 @@
 # LLM Training Acceleration
 
+## The memory requirement for training LLM
+<!-- % https://medium.com/@maxshapp/understanding-and-estimating-gpu-memory-demands-for-training-llms-in-practise-c5ef20a4baff -->
+
+We will discuss the following in this section
+* How much GPU memory do you need to train $X$ billion Transformer based LLM per each GPU device.
+* What is the formula to estimate memory requirements.
+* What would you do in practise to reduce the memory needs if the model does not fit.
+
+
+
+### Model states
+Consider the case that we train a LLM using Adam optimizer, we need to have enough GPU memory to store
+* Copy of model parameter
+* Copy of model parameter gradients
+* Copy of optimizer states, include copy of the model parameters, momentum, and variance.
+
+Assume that 
+* Model parameters and graidents are stored in FP16 (2 bytes), 
+* Optimizer states are stored in FP32 (4 bytes) for stable training
+then training a $X$ billion model requires following GPU memory amount just to store the model and training states
+
+$$(2 + 2 + 12) X ~\text{(GB)}.$$
+
+The following table gives the example for the memory requirement for the common 7B and 70B models. 
+| Model Size   | GPU Memory (GB)    |
+| :--- | ---: |
+| 7B    | 112 B    |
+| 70B    | 1120 B    |
+
+
+### Activations
+
+First, let's have the following notations:
+* $L$ - number of transformer layers
+* $s$ - sequence length
+* $b$ - batch size
+* $h$ - hidden dimension size
+* $a$ - number of attention heads
+* $p$ - precision
+
+
+
+#### MLP part
+
+* The output of the first linear layer, which is $4psbh$ (as this linear enlarges the output dimension to $4h$).
+* The output of the GeLU activation, which is $4psbh$ bytes.
+* The output of the second linear layer, which is $psbh$ bytes
+* The binary dropout marks specifies which dimensions are droped, which is $sbh$ 
+So in total, MLP part will require to store: $9psbh + sbh$ bytes for activations.
+
+#### Self-attention part
+
+Attention block: which includes self attention followed by a linear projection and an attention dropout. 
+* Before entering the self-attention block, query, key, and value are passed through a linear projection layer, whose outputs requires in totoal $3psbh$ bytes
+* The Softmax output is a $b \times s\times s$ attention matrix for each head, which in total is $pas^2b$ bytes; The Softmax input is the logis, which is also $pas^2b$ bytes.
+* The Dropout mask after the Softmax layer needs $as^2b$
+* Output from Self-Attention, which will require $psbh$ bytes
+* Output from the Linear layer, which will require $psbh$ bytes. 
+* Dropout mask after the linear layer, this will require $sbh$ bytes.
+
+To sum up, we need $5psbh + sbh + 2pas²b + as²b$ bytes for Attention part.
+
+Additionally, there are 2 Norm Layers in the Transformer Layer, the output from each such layer will require to store psbh bytes, so in total 2psbh bytes.
+
+total amount of bytes required to store the activations will be approximately:
+
+$$Lpsbh\left(16+\frac{2}{p}+\frac{2 a s}{h}+\frac{a s}{p h}\right)$$
+
+```
+def activations_memory(num_layers, seq_len, batch_size, hidden_dim, num_heads, precision=2):
+    "Returns amount of GPU VRAM (in GB) required to store intermediate activations for traditional Transformer Encoder block"
+    mem_bytes = num_layers * precision * seq_len * batch_size * hidden_dim * (
+        16 + 2/precision + 2*num_heads*seq_len/hidden_dim + num_heads*seq_len/(precision*hidden_dim))
+    return round(mem_bytes / 10**9, 2)
+```
+
+### Activation checkpointing techniques
+
+
+
 
 ## Flash Attention
 

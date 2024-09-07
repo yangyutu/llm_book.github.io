@@ -111,3 +111,5 @@ The idea behind top-$k$ sampling is used to ensure that the less probable words 
 The top-$p$ approach aims to adapt $k$ heuristically based on the distribution shape. Let token $i=1,...,|V|$ be sorted descendingly according to its probability $p_i$. The top-p sampling approach chooses a probability threshold $p_0$ and sets k to be the lowest value such that $\sum_i (p_i) > p_0$. If the next word distribution is narrow (i.e., the model is confident in its next-word prediction), then k will be lower and vice versa.
 
 
+
+
