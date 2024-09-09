@@ -1,0 +1,1134 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>BERT &#8212; LLM Foundations</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_foundation/bert';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Seq2Seq, T5, And BART" href="t5.html" />
+    <link rel="prev" title="Transformers" href="transformers.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/qe-logo-large.png" class="logo__image only-light" alt="LLM Foundations - Home"/>
+    <script>document.write(`<img src="../../_static/qe-logo-large.png" class="logo__image only-dark" alt="LLM Foundations - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="language_models.html">Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neural_language_models.html">Early Neural Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="word_embeddings.html">Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformers.html">Transformers</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">BERT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="t5.html">Seq2Seq, T5, And BART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GPT_series.html">GPT Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">LLM Dense Architectures Fundamentals</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">MOE sparse models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">LLM training fundamentals</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">LLM finetuning</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">LLM alignement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">LLM Training Acceleration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">LLM Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration: Overview</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">Basic prompt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">Advanced prompt techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">Basic RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">Advanced rag techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">Multimodality fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">Vision transformers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">Application of LLM in IR</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/docs/chapter_foundation/bert.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>BERT</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-architecture">BERT Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-architecture-componenents">BERT Architecture Componenents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-embeddings">Input Embeddings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-encoder-anatomy">The Encoder Anatomy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compared-with-elmo">Compared With ELMO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-training-tasks">Pre-training Tasks</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#masked-language-modeling-masked-lm">Masked Language Modeling (Masked LM)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#next-sentence-prediction-nsp">Next Sentence Prediction (NSP)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#put-it-together">Put It Together</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fine-tuning-and-evaluation">Fine-tuning And Evaluation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-bert-models">Efficient BERT Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#albert">ALBERT</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-distillation">Model Distillation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distillbert">DistillBERT</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tinybert">TinyBERT</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mobilebert">MobileBERT</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minilm">MiniLM</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-efficient-electra">Sample Efficient: ELECTRA</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multilingual-models">Multilingual Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multilingual-bert-mbert">Multilingual-BERT (mBERT)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xlm-xlm-r-and-xlm-e">XLM, XLM-R, And XLM-E</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-extreme-benchmark">The EXTREME Benchmark</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="bert">
+<h1>BERT<a class="headerlink" href="#bert" title="Link to this heading">#</a></h1>
+<section id="bert-architecture">
+<h2>BERT Architecture<a class="headerlink" href="#bert-architecture" title="Link to this heading">#</a></h2>
+<p>In natural language processing, although we have seen many successful end-to-end systems , they usually require large scale training examples and the systems require a complete retrain for a different task. Alternatively, we can first learn a good representation of word sequences that not task-specific but would be likely to facilitate downstream specific tasks. Learning a good representation in prior from broadly available unlabeled data also resembles how human perform various intelligent tasks.
+In the context of natural languages, a good representation should capture the implicit linguistic rules, semantic meaning, syntactic structures, and even basic knowledge implied by the text data.</p>
+<p>With a good representation, the downstream tasks can be significantly sped up by fining training the system on top of the representation. Therefore, the process of a learning a good representation from unlabeled data is also known as pre-training a language model.</p>
+<p>Pre-training language models have several advantages: first, it enable the learning of universal language representations that suit different downstream tasks; second, it usually gives better performance in the downstream tasks after fine-tuning on a target task; finally, we can also interpret pre-training as a way of regularization to avoid overfitting on small data set.</p>
+<p>In \autoref{ch:neural-network-and-deep-learning:ApplicationsNLP:Sec:wordEmbedding}, we discussed different approaches (e.g., Word2Vec, GloVe) to learning a low-dimensional dense vector representation of word tokens. One significant drawback of these representations is context-independent or context-free static embedding, meaning the embedding of a word token is fixed no matter the context it is in. By contrast, in natural language, the meaning of a word is usually context-dependent. For example, in sentences  <em>I like to have an apple since I am thirty</em> vs. <em>I like to have an Apple to watch fun movies</em>, the word <em>apple</em> mean the fruit apple and the electronic device, respectively.</p>
+<p>There has been significant efforts directed to learning contextual embedding of word sequences\cite{Qiu2020PreTrained, liu2020survey}. A contextual embedding encoder usually operates at the sequence level. As shown in \autoref{ch:neural-network-and-deep-learning:ApplicationsNLP:fig:contextualizedembedding}, given
+a non-contextual word  embedding sequence <span class="math notranslate nohighlight">\(x_{1}, x_{2}, \cdots, x_{T}\)</span>, the contextual embeddings of the whole sequence are obtained simultaneously via
+$<span class="math notranslate nohighlight">\(\left[{h}_{1}, {h}_{2}, \cdots, {h}_{T}\right]=\operatorname{ContextualEncoder}\left(x_{1}, x_{2}, \cdots, x_{T}\right).\)</span>$</p>
+<figure class="align-default" id="chapter-foundation-fig-bert-staticvscontextualembedding">
+<a class="reference internal image-reference" href="../../_images/static_vs_contextualEmbedding.jpg"><img alt="../../_images/static_vs_contextualEmbedding.jpg" src="../../_images/static_vs_contextualEmbedding.jpg" style="width: 825.0px; height: 485.7px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Static word embedding approach vs. contextualized word embedding approach.</span><a class="headerlink" href="#chapter-foundation-fig-bert-staticvscontextualembedding" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="chapter-foundation-fig-bert-contextualizedembedding">
+<a class="reference internal image-reference" href="../../_images/contextualizedEmbedding.png"><img alt="../../_images/contextualizedEmbedding.png" src="../../_images/contextualizedEmbedding.png" style="width: 298.5px; height: 216.6px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">A generic neural contextual embedding encoder.</span><a class="headerlink" href="#chapter-foundation-fig-bert-contextualizedembedding" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Given large-scale unlabeled data, the most common way to learn a good representation is via self-Supervised learning.  The key idea of self-Supervised learning is to predict part of the input from other parts in some form (e.g., add distortion). By minimizing prediction task loss or other auxiliary task losses, the neural network learns good presentations that can be used to speed up downstream tasks.</p>
+<p>Since the advent of the most successful pretrained language model BERT <span id="id1">[<a class="reference internal" href="language_models.html#id1129" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.">DCLT18</a>]</span>, many follow-up research found that the performance of the pretrained model in downstream tasks highly depend on the self-supervised tasks in the pretraining stage. If the downstream tasks are closely related to self-supervised tasks, a pretrained model can offer significant performance boost. And the fine tuning process can be understood as a process that further improves features relevant to downstream tasks and discards irrelevant features.</p>
+</section>
+<section id="bert-architecture-componenents">
+<h2>BERT Architecture Componenents<a class="headerlink" href="#bert-architecture-componenents" title="Link to this heading">#</a></h2>
+<p>BERT, Bidirectional Encoder Representations from Transformers <span id="id2">[<a class="reference internal" href="language_models.html#id1129" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.">DCLT18</a>]</span>, is one of the most successful pre-trained language model. BERT relies on a Transformer (the attention mechanism that learns contextual relationships between words in a text). BERT model heavily utilizes stacked self-attention modules to contextualize word embeddings.</p>
+<figure class="align-default" id="chapter-foundation-fig-bert-transformerencoder">
+<a class="reference internal image-reference" href="../../_images/transformer_encoder.png"><img alt="../../_images/transformer_encoder.png" src="../../_images/transformer_encoder.png" style="width: 323.09999999999997px; height: 475.2px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">BERT model architecture.</span><a class="headerlink" href="#chapter-foundation-fig-bert-transformerencoder" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In the following, we will go through detailed structure of BERT.</p>
+<section id="input-embeddings">
+<h3>Input Embeddings<a class="headerlink" href="#input-embeddings" title="Link to this heading">#</a></h3>
+<p>The input to the BERT is a
+sequence of token representations. The representation of each token is a dense vector of dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span>, which is the summation of  following components:</p>
+<ul class="simple">
+<li><p><em><strong>Token embedding</strong></em> of dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span>, which is the ordinary dense word embedding. Specifically, a sub-word type of embedding, called wordPiece embedding \cite{wu2016google}, with a 30,000 token vocabulary is used. Note that A [CLS] token is added to the input word tokens at the beginning of the first sentence and a [SEP] token is inserted at the end of each sentence.</p></li>
+<li><p><em><strong>Segment embedding</strong></em> of dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span>, which is a marker 0 or 1 indicating if sentence A precedes sentence B. Segment embedding is typically learned from the training.</p></li>
+<li><p><em><strong>Positional embedding</strong></em>  of dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span>, which encodes information of
+position in the sentence. Positions matters in word and sentence level meanings. For example, <em>I love you</em> and <em>you love me</em> are different. Position embedding is a vector depending on where the token is located in the segment. It is a constant vector throughout the training.</p></li>
+</ul>
+<p>The token, segment, and position embeddings are implemented through a look-up matrix. The token embedding look-up matrix has a size of <span class="math notranslate nohighlight">\((vocab~size, d_{model})\)</span>; the position embedding look-up matrix has a size of <span class="math notranslate nohighlight">\((max~len, d_{model})\)</span>; the segment embedding look-up matrix has a size of <span class="math notranslate nohighlight">\((2, d_{model})\)</span>.</p>
+<figure class="align-default" id="chapter-foundation-fig-bert-bert-input">
+<a class="reference internal image-reference" href="../../_images/BERT_input.png"><img alt="../../_images/BERT_input.png" src="../../_images/BERT_input.png" style="width: 694.8px; height: 213.29999999999998px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Input embedding in BERT, which consists of token embedding, segmenet embedding and positional embedding.</span><a class="headerlink" href="#chapter-foundation-fig-bert-bert-input" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="chapter-foundation-fig-bert-bert-embeddinginterpretation">
+<a class="reference internal image-reference" href="../../_images/embedding_interpretation.png"><img alt="../../_images/embedding_interpretation.png" src="../../_images/embedding_interpretation.png" style="width: 600.3px; height: 119.69999999999999px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Embedding layer interpretation.</span><a class="headerlink" href="#chapter-foundation-fig-bert-bert-embeddinginterpretation" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The addition of token embedding, segment embedding, and position embedding for for each token can be viewed as feature fusion via concatenation of one-hot vectors <span class="math notranslate nohighlight">\((O_{\text {tok }}, O_{\text {seg }}, O_{p o s})\)</span>.
+The resulting feature vector is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+E_{\text {word }}=\left[\begin{array}{lll}
+	O_{\text {tok }} &amp; O_{\text {seg }} &amp; O_{p o s}
+\end{array}\right]\left[\begin{array}{c}
+	W_{t o k}^{|V| \times H} \\
+	W_{s e g}^{|S| \times H} \\
+	W_{p o s}^{|P| \times H}
+\end{array}\right].
+\end{split}\]</div>
+</section>
+<section id="the-encoder-anatomy">
+<h3>The Encoder Anatomy<a class="headerlink" href="#the-encoder-anatomy" title="Link to this heading">#</a></h3>
+<p>Following the detailed description of Transformer architecture in <a class="reference internal" href="transformers.html#chapter-foundation-sec-pretrained-lm-transformer-arch"><span class="std std-ref">Overall Architecture</span></a>, here we summarize the computations happen within each of the BERT Encoder layer.</p>
+<div class="proof definition admonition" id="definition-0">
+<p class="admonition-title"><span class="caption-number">Definition 5 </span> (Encoder layer)</p>
+<section class="definition-content" id="proof-content">
+<p>:label: chapter_foundation_def_pretrained_LM_transformer_bert_encoder_layer</p>
+<p>The BERT encoder with <span class="math notranslate nohighlight">\(n\)</span> sequential inputs can be decomposed into following calculation procedures</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    e_{mid} &amp;= \operatorname{LayerNorm} (e_{in} + \operatorname{MultiHeadAttention}(e_{in}, e_{in}, e_{in}, padMask)) \\
+    e_{out} &amp;= \operatorname{LayerNorm} (e_{mid} + \operatorname{FFN}(e_{mid}))
+\end{align}  
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(e_{mid}, e_{out} \in \mathbb{R}^{n\times d_{model}}, \)</span></p>
+<div class="math notranslate nohighlight">
+\[\operatorname{FFN}(e_{mid}) = \max(0, e_{mid} W_1 + b_1)W_2 + b_2,\]</div>
+<p>with <span class="math notranslate nohighlight">\(W_1\in \mathbb{R}^{d_{model}\times d_{ff}}, W_2\in \mathbb{R}^{d_{ff}\times d_{model}}, b_1 \in \mathbb{R}^{d_{ff}}, b_2\in \mathbb{R}^{d_{model}}\)</span>, and the <span class="math notranslate nohighlight">\(padMask\)</span> excludes padding symbols in the sequence.</p>
+</section>
+</div><p>In a typical setting, we may have <span class="math notranslate nohighlight">\(d_{\text {model }}=512\)</span>, and the inner-layer has dimensionality <span class="math notranslate nohighlight">\(d_{f f}=2048\)</span>. Also note that there is active research on where to optimally add the layer normalization in the encoder.</p>
+<p>The whole computation in the encoder module can be summarized in the following.</p>
+<div class="proof definition admonition" id="chapter_foundation_def_pretrained_LM_transformer_bert_encoder_computation">
+<p class="admonition-title"><span class="caption-number">Definition 6 </span> (computation in encoder module)</p>
+<section class="definition-content" id="proof-content">
+<p>Given an input sequence represented by integer sequence <span class="math notranslate nohighlight">\(s = (i_1,...,i_p,...,i_n)\)</span> and its position <span class="math notranslate nohighlight">\(s^p = (1,..., p, ..., n)\)</span>. The encoder module takes <span class="math notranslate nohighlight">\(s, s^p\)</span> as inputs and produce <span class="math notranslate nohighlight">\(e_N \in \mathbb{R}^{n\times d_{model}}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    e_{0}&amp;=\operatorname{WE}(s)+ \operatorname{PE}(s^p) \\
+    e_1 &amp; = \operatorname{EncoderLayer}(e_0) \\
+    e_2 &amp; = \operatorname{EncoderLayer}(e_1) \\
+    &amp;\cdots \\
+    e_L &amp; = \operatorname{EncoderLayer}(e_{L - 1})
+\end{align}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(e_i \in \mathbb{R}^{n\times d_{model}}\)</span>, <span class="math notranslate nohighlight">\(\operatorname{EncoderLalyer}: \mathbb{R}^{n\times d_{model}}\to \mathbb{R}^{n\times d_{model}}\)</span> is an encoder sub-unit, <span class="math notranslate nohighlight">\(N\)</span> is the number of encoder layers. Specifically, this encoder layer is given by \autoref{ch:neural-network-and-deep-learning:Advanced:NLP:def:BERTencoderLayer}.
+Note that Dropout operations are not shown above. Dropouts are applied after initial embeddings <span class="math notranslate nohighlight">\(e_0\)</span>, every self-attention output, and every point-wise feed-forward network output.</p>
+</section>
+</div><p>Note that Dropout operations are not shown above. Dropouts are applied after initial embeddings <span class="math notranslate nohighlight">\(e_0\)</span>, every self-attention output, and every point-wise feed-forward network output.</p>
+<p>Commonly used BERT models take the following configurations:</p>
+<ul class="simple">
+<li><p>BERT-BASE, <span class="math notranslate nohighlight">\(L=12, d_{model}=768, H=12\)</span>, total Parameters 110M.</p></li>
+<li><p>BERT-LARGE, <span class="math notranslate nohighlight">\(L=24, d_{model} = 1024, H=16\)</span>, total parameters 340M.</p></li>
+</ul>
+<div class="pst-scrollable-table-container"><table class="table" id="id18">
+<caption><span class="caption-number">Table 3 </span><span class="caption-text">The hyperparameter settings of various pretrained BERT configurations.  BERTBase and BERTLarge are the two most commonly used configurations today;</span><a class="headerlink" href="#id18" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Size</p></th>
+<th class="head text-right"><p>Layers</p></th>
+<th class="head text-right"><p>Hidden Size</p></th>
+<th class="head text-right"><p>Attention Heads</p></th>
+<th class="head text-right"><p>Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Tiny</p></td>
+<td class="text-right"><p>2</p></td>
+<td class="text-right"><p>128</p></td>
+<td class="text-right"><p>2</p></td>
+<td class="text-right"><p>4 M</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Mini</p></td>
+<td class="text-right"><p>4</p></td>
+<td class="text-right"><p>256</p></td>
+<td class="text-right"><p>4</p></td>
+<td class="text-right"><p>11 M</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Small</p></td>
+<td class="text-right"><p>4</p></td>
+<td class="text-right"><p>512</p></td>
+<td class="text-right"><p>4</p></td>
+<td class="text-right"><p>29 M</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Medium</p></td>
+<td class="text-right"><p>8</p></td>
+<td class="text-right"><p>512</p></td>
+<td class="text-right"><p>8</p></td>
+<td class="text-right"><p>42 M</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Base</p></td>
+<td class="text-right"><p>12</p></td>
+<td class="text-right"><p>768</p></td>
+<td class="text-right"><p>12</p></td>
+<td class="text-right"><p>110 M</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Large</p></td>
+<td class="text-right"><p>24</p></td>
+<td class="text-right"><p>1024</p></td>
+<td class="text-right"><p>16</p></td>
+<td class="text-right"><p>340 M</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="compared-with-elmo">
+<h3>Compared With ELMO<a class="headerlink" href="#compared-with-elmo" title="Link to this heading">#</a></h3>
+<p>An influential contextualized word embedding model via deep learning is ELMO (Embeddings from Language
+Models) <span id="id3">[<a class="reference internal" href="language_models.html#id1195" title="Matthew E Peters, Mark Neumann, Mohit Iyyer, Matt Gardner, Christopher Clark, Kenton Lee, and Luke Zettlemoyer. Deep contextualized word representations. arXiv preprint arXiv:1802.05365, 2018.">PNI+18</a>]</span>, in which word vectors are learned functions of the internal states of a deep bidirectional LSTM language model [<a class="reference internal" href="#chapter-foundation-fig-bert-bert-elmo"><span class="std std-numref">Fig. 16</span></a>].
+Given a sequence of <span class="math notranslate nohighlight">\(N\)</span> tokens (character-based), <span class="math notranslate nohighlight">\(\left(t_{1}, t_{2}, \ldots, t_{N}\right)\)</span>. Their static word embeddings <span class="math notranslate nohighlight">\((e_1,...,e_N)\)</span> are contextualized by stacked bidirectional LSTM as <span class="math notranslate nohighlight">\((h_1,...,h_N)\)</span>.</p>
+<p>The LSTMs are pre-trained to perform language modeling task, i.e., predicting the next token given preceding tokens in forward and backward directions, respectively. Specifically, an linear plus Softmax layer take LSTM hidden states (two directions) as the input and computes the distribution. The following  log-likelihood of the forward and backward directions is maximized:</p>
+<div class="math notranslate nohighlight">
+\[	\sum_{k=1}^{N}\left(\log p\left(t_{k} \mid t_{1}, \ldots, t_{k-1} ;\Theta\right) +\log p\left(t_{k} \mid t_{k+1}, \ldots, t_{N} ; \Theta\right)\right)\]</div>
+<p>After pretraining, the top layer LSTM hidden states are used as contextualized embeddings.</p>
+<p>\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{../figures/deepLearning/ApplicationsNLP/contextualizedEmbedding/ELMO/ELMO}
+\caption{In ELMO, static word embeddings <span class="math notranslate nohighlight">\((e_1,...,e_N)\)</span> are contextualized by stacked bidirectional LSTM as <span class="math notranslate nohighlight">\((h_1,...,h_N)\)</span>.}
+\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:elmo}
+\end{figure}</p>
+<figure class="align-default" id="chapter-foundation-fig-bert-bert-elmo">
+<a class="reference internal image-reference" href="../../_images/ELMO.png"><img alt="../../_images/ELMO.png" src="../../_images/ELMO.png" style="width: 518.4px; height: 225.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 16 </span><span class="caption-text">In ELMO, static word embeddings <span class="math notranslate nohighlight">\((e_1,...,e_N)\)</span> are contextualized by stacked bidirectional LSTM as <span class="math notranslate nohighlight">\((h_1,...,h_N)\)</span>.</span><a class="headerlink" href="#chapter-foundation-fig-bert-bert-elmo" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Compared to ELMO, BERT is deeply bidirectional due to its novel masked language modeling technique. Having bidirectional context is expected to generate more accurate word representations.</p>
+<p>Another improve of BERT over EMLO is the tokenization strategy. BERT tokenizes words into sub-words (using WordPiece), while ELMO uses character based input. It’s often observed that character level language models don’t perform as well as word based or sub-word based models.</p>
+</section>
+<section id="pre-training-tasks">
+<h3>Pre-training Tasks<a class="headerlink" href="#pre-training-tasks" title="Link to this heading">#</a></h3>
+<section id="masked-language-modeling-masked-lm">
+<h4>Masked Language Modeling (Masked LM)<a class="headerlink" href="#masked-language-modeling-masked-lm" title="Link to this heading">#</a></h4>
+<figure class="align-default" id="chapter-foundation-fig-bert-bertpretrainfinetune">
+<a class="reference internal image-reference" href="../../_images/BERTPretrainFineTune.png"><img alt="../../_images/BERTPretrainFineTune.png" src="../../_images/BERTPretrainFineTune.png" style="width: 338.09999999999997px; height: 135.6px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">BERT pre-training and downstream task fine tuning framework. Image from <span id="id4">[<a class="reference internal" href="language_models.html#id1129" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.">DCLT18</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-bert-bertpretrainfinetune" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>There are two tasks to pretrain the network: <em><strong>masked language modeling (Masked LM)</strong></em> and <em><strong>next sentence prediction (NSP)</strong></em>.
+In the Masked LM, some percentage of randomly sampled words in a sequence are masked, i.e., being replaced by a [MASK] token. The task is to predict (via Softmax) only the masked words, based on the context provided by the other non-masked words in the sequence.</p>
+<p>Masked LM task has this drawback of introducing mismatch between the pre-training task and fine-tuning tasks: in the fine-tuning stage, training sentences do not contain masked tokens. To reduce the mismatch between pre-training and fine-tuning, different masking strategies are explored. It is found one effective strategy is to select 15% of tokens for the following possible replacement. For each token,</p>
+<ul class="simple">
+<li><p>80% probability is replaced by [MASK].</p></li>
+<li><p>10% probability is replaced by a random token.</p></li>
+<li><p>10% probability is left unchanged.</p></li>
+</ul>
+<p>The rationale for this masking strategy is that this forces the model to predict a word without relying on the word at the current position, since the word at the current position only has 10% probability of being correct. As such, the model adapts to make predictions based on contextual information, which helps the model to build up some error correction capability.</p>
+<p>Formally, let <span class="math notranslate nohighlight">\(\mathbf{x}=(x_1,...,x_T)\)</span> be the original input and <span class="math notranslate nohighlight">\(\hat{\mathbf{x}}\)</span> be the masked noise input. The masked LM task aims to minimize the following negative log loss given by</p>
+<div class="math notranslate nohighlight">
+\[\min_{\theta} - \sum_{t=1}^{T} m_{t} \log p\left(x_{t} \mid \hat{\mathbf{x}}\right)=\sum_{t=1}^{T} m_{t} \log \frac{\exp \left(h_{t}^{T} e\left(x_{t}\right)\right)}{\sum_{x_{t'}} \exp \left(h_{t'}^{T} e\left(x_{t'}\right)\right)}\]</div>
+<p>where <span class="math notranslate nohighlight">\(m_t \in \{0, 1\}\)</span> indicates if <span class="math notranslate nohighlight">\(x_t\)</span> is a mask token, <span class="math notranslate nohighlight">\((h_1,...,h_T)\)</span> are contextualized encodings produced by the encoder, <span class="math notranslate nohighlight">\(e(x_t)\)</span> is the weight vector (corresponding to token <span class="math notranslate nohighlight">\(x_t\)</span> in the vocabulary) in the prediction head, which consists of a linear layer and Softmax function.</p>
+<div class="proof remark admonition" id="remark-2">
+<p class="admonition-title"><span class="caption-number">Remark 4 </span></p>
+<section class="remark-content" id="proof-content">
+<p>There are several imperfections of the masking strategy.</p>
+<ul class="simple">
+<li><p>This masked LM task suffers from training inefficiency and slow convergence since each batch only 15% of masked tokens are predicted.</p></li>
+<li><p>The masked LM task is making <em><strong>conditional independence assumption</strong></em>. When we predict the masked tokens, we are assuming that masked tokens are independent conditioning on masked input sequence. For example, suppose the original sentence <em>New York is a city</em> and we mask the <em>New</em> and <em>York</em> two tokens. In our prediction, we assume these two masked tokens are independent, but actually <em>New York</em> is an entity that co-occur frequently. However, it should be noted that this conditional-independence assumption problem has not been a big in practice since the model is often trained on huge corpus to learn the inter-dependencies of these words.</p></li>
+<li><p>Another drawback is that the mask can be applied to a word piece due to fine-grained WordPieces tokenizer. For example, the word <em>probability</em> is tokenized into three parts: <em>pro</em>, <em>#babi</em>, and <em>#lity</em>. One might randomly mask <em>#babi</em> alone. In this case, the model can leverage the word spelling itself for prediction rather than the semantic context.</p></li>
+</ul>
+</section>
+</div></section>
+<section id="next-sentence-prediction-nsp">
+<h4>Next Sentence Prediction (NSP)<a class="headerlink" href="#next-sentence-prediction-nsp" title="Link to this heading">#</a></h4>
+<p>In the NSP, the network is trained to understand relationship between two sentences. A pre-trained model with this kind of understanding is relevant for tasks like question answering and natural language Inference. This task is also reminiscent of human language study exercise, where the learner needs to restore the correct order of sentences in a paragraph consisting of randomly displaced sentences.</p>
+<p>The input for NSP is a pair of segments, which can each contain multiple natural sentences, but the total combined length must be less than 512 tokens. Notably, it is found that using individual natural sentence pairs hurts performance on downstream tasks\cite{liu2019roberta}.</p>
+<p>The model is trained to predict if the second sentence is the next sentence in the original text. In choosing the sentences pair for each pretraining example, <span class="math notranslate nohighlight">\(50 \%\)</span> of the time, the second sentence is the actual next sentence of the first one, and <span class="math notranslate nohighlight">\(50 \%\)</span> of the time, it is a random sentence from the corpus.</p>
+<p>The next sentence prediction task can be illustrated in the following examples.<br />
+<em><strong>Input</strong></em>: [CLS] the man went to [MASK] store [SEP]  he bought a gallon [MASK] milk [SEP] <br />
+<em><strong>Label</strong></em>: IsNext <br />
+<em><strong>Input</strong></em>: [CLS] the man [MASK] to the store [SEP]  penguin [MASK] are flight1ess birds [SEP] \ 
+<em><strong>Label</strong></em>: NotNext</p>
+</section>
+<section id="put-it-together">
+<h4>Put It Together<a class="headerlink" href="#put-it-together" title="Link to this heading">#</a></h4>
+<p>The pre-training is performed in a joint manner with loss function given by</p>
+<div class="math notranslate nohighlight">
+\[
+L\left(\theta, \theta_{1}, \theta_{2}\right)=\underbrace{L_{1}\left(\theta, \theta_{1}\right)}_{\text{Masked LM}}+\underbrace{L_{2}\left(\theta, \theta_{2}\right)}_{\text{NSP}},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\theta\)</span> are the BERT encoder parameters BERT, <span class="math notranslate nohighlight">\(\theta_1\)</span> are the parameters of the output layer (linear layer with Softmax) associated with the Mask-LM task and <span class="math notranslate nohighlight">\(\theta_2\)</span> are the parameters of the output layer associated with NSP task.</p>
+<p>More specifically, for each batch of sentence pair with masks, we have</p>
+<div class="math notranslate nohighlight">
+\[
+L_{1}\left(\theta, \theta_{1}\right)=-\sum_{i=1}^{M} \log p\left(m=m_{i} \mid \theta, \theta_{1}\right), m_{i} \in[1,2, \ldots,|V|]
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(m_1,..,m_M\)</span> are masked tokens and <span class="math notranslate nohighlight">\(|V|\)</span> is the vocabulary size.
+In the NSP task, we have sentence level classification loss</p>
+<div class="math notranslate nohighlight">
+\[
+L_{2}\left(\theta, \theta_{2}\right)=-\sum_{j=1}^{N} \log p\left(n=n_{i} \mid \theta, \theta_{2}\right), n_{i} \in[\text { IsNext, } \text { NotNext }]
+\]</div>
+<p>The joint loss for the two pretaining task is then written by</p>
+<div class="math notranslate nohighlight">
+\[
+L\left(\theta, \theta_{1}, \theta_{2}\right)=-\sum_{i=1}^{M} \log p\left(m=m_{i} \mid \theta, \theta_{1}\right)-\sum_{j=1}^{N} \log p\left(n=n_{i} \mid \theta, \theta_{2}\right).
+\]</div>
+<p>Pre-training data include the BooksCorpus ( <span class="math notranslate nohighlight">\(800 \mathrm{M}\)</span> words) and English Wikipedia <span class="math notranslate nohighlight">\((2,500 \mathrm{M}\)</span> words). The two corpus in total have a size of 16 GB.</p>
+</section>
+</section>
+<section id="fine-tuning-and-evaluation">
+<h3>Fine-tuning And Evaluation<a class="headerlink" href="#fine-tuning-and-evaluation" title="Link to this heading">#</a></h3>
+<p>A pretrained BERT model can be fine-tuned to a wide range of downstream tasks, as we introduced in the previous section [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:sec:BERTDownstreamTasks}]. Depending on the task type, different architecture configurations will be adopted \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:berttasks}:</p>
+<ul class="simple">
+<li><p>For single-sentence tasks, such as sentiment analysis, tokens of a single sentence will be fed into BERT. The embedding output corresponding to the [CLS] token will be used in a linear classifier to predict the class label.</p></li>
+<li><p>For sequence-labeling tasks, where named-entity-recognition, tokens of a single sentence will be fed into BERT. The token embedding outputs will be used in a linear classifier to predict the class label of a token.</p></li>
+<li><p>For sentence-pair tasks, where the relationship between two sentences will be predicted, tokens from two sentences will be fed into BERT. The embedding output corresponding to the [CLS] token will be used in a linear classifier to predict the class label.</p></li>
+<li><p>For questioning-answering tasks, where the start and end span needs to be determined in the context paragraph,  question sentence and context paragraph sentence will be fed into BERT. The token embedding outputs on paragraph side  will be used in a linear classifier to predict the start and end span.</p></li>
+</ul>
+<figure class="align-default" id="chapter-foundation-fig-bert-berttasks">
+<a class="reference internal image-reference" href="../../_images/BERT_tasks.png"><img alt="../../_images/BERT_tasks.png" src="../../_images/BERT_tasks.png" style="width: 1013.4px; height: 812.6999999999999px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">BERT architecture configuration for different downstream tasks.</span><a class="headerlink" href="#chapter-foundation-fig-bert-berttasks" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="efficient-bert-models">
+<h2>Efficient BERT Models<a class="headerlink" href="#efficient-bert-models" title="Link to this heading">#</a></h2>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h3>
+<p>BERT has achieved marked success in tackling challenging NLP tasks such as natural language inference, machine reading comprehension, and question answering. In an end-to-end system, BERT can used as an encoder, which connects back-end task-specific modules (e.g., classifiers). By fine-tuning the BERT, the system can usually achieve satisfactory results even under limited resources setting (e.g., small training set). However, BERT is huge model, the base version has 108M parameters, which prohibits its application in devices with limited memory and computation power.</p>
+<p>In this section, we are going to review different strategies to develop smaller versions of BERT without significant compromise on its performance.</p>
+</section>
+<section id="albert">
+<h3>ALBERT<a class="headerlink" href="#albert" title="Link to this heading">#</a></h3>
+<p>ALBERT <span id="id5">[<a class="reference internal" href="language_models.html#id1498" title="Zhenzhong Lan, Mingda Chen, Sebastian Goodman, Kevin Gimpel, Piyush Sharma, and Radu Soricut. Albert: a lite bert for self-supervised learning of language representations. 2020. URL: https://arxiv.org/abs/1909.11942, arXiv:1909.11942.">LCG+20</a>]</span>, standing for A Lite BERT, is one of the recent achievement that reduces the model parameter number considerably and at the same time improves performance.
+In ALBERT , there are three major improvements on the model architecture and the pretraining process. The first two improvements on the model architecture are</p>
+<ul class="simple">
+<li><p><em><strong>Factorized embedding parameterization</strong></em>. In the original BERT, tokens (represented as one-hot vectors) are directly  projected the hidden space with dimensionality <span class="math notranslate nohighlight">\(H = 768\)</span> or <span class="math notranslate nohighlight">\(1024\)</span>. For large vocabulary size <span class="math notranslate nohighlight">\(V\)</span> at the scale of 10,000, the projection matrix <span class="math notranslate nohighlight">\(W\)</span> has parameters <span class="math notranslate nohighlight">\(HV\)</span>. One way to reduce parameter size is to factorize <span class="math notranslate nohighlight">\(W\)</span> into two lower rank matrices. This is equivalent to two-step projection:</p>
+<ul>
+<li><p>First project one-hot vector to embedding space of dimensionality <span class="math notranslate nohighlight">\(E\)</span>, say <span class="math notranslate nohighlight">\(E= 128\)</span>;</p></li>
+<li><p>Second project the embedding space to the hidden space of dimensionality <span class="math notranslate nohighlight">\(H\)</span>.
+The two-step projection only requires parameters <span class="math notranslate nohighlight">\(VE + EH\)</span> and the reduction is notable when <span class="math notranslate nohighlight">\(E \ll H\)</span>.</p></li>
+</ul>
+</li>
+<li><p><em><strong>Cross-layer parameter sharing</strong></em>. In the original BERT, each encoder sub-unit (which has an attention module and a feed-forward module) has different parameters. In ALBERT, these parameters are shared in different sub-units to reduce model size and improve parameter efficiency.  The authors also mentioned that there are alternative parameter sharing strategies: only sharing feed-forward network parameters; only sharing attention module parameters; sharing both feed-forward network and attention module.</p></li>
+</ul>
+<p>The effect of embedding factorization and parameter sharing can be illustrated in the comparison [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:tab:comparisonBERTvsALBERT}].</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id19">
+<caption><span class="caption-number">Table 4 </span><span class="caption-text">BERT model parameters</span><a class="headerlink" href="#id19" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Model</p></th>
+<th class="head text-center"><p>Parameters</p></th>
+<th class="head text-center"><p>Layers</p></th>
+<th class="head text-center"><p>Hidden</p></th>
+<th class="head text-center"><p>Embedding</p></th>
+<th class="head text-center"><p>Parameter-sharing</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>base</p></td>
+<td class="text-center"><p>108 M</p></td>
+<td class="text-center"><p>12</p></td>
+<td class="text-center"><p>768</p></td>
+<td class="text-center"><p>768</p></td>
+<td class="text-center"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>large</p></td>
+<td class="text-center"><p>334 M</p></td>
+<td class="text-center"><p>24</p></td>
+<td class="text-center"><p>1024</p></td>
+<td class="text-center"><p>1024</p></td>
+<td class="text-center"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The third improvement in ALBERT over BERT is a new sentence-level loss to replace the next sentence prediction task. In the original BERT, the next-sentence prediction (NSP)</p>
+<p>In ALBERT, a new sentence-order prediction (SOP) loss to model inter-sentence coherence, which demonstrated better performance in multi-sentence encoding tasks was motivated to improve performance on downstream tasks involving reasoning about the relationship between sentence pairs such as natural language inference. However, several follow-up studies \cite{liu2019roberta} found that the NSP task has minimal impact and was even eliminated in several BERT variants. One possible reason is that there is a lack of difficulty in the NSP task. Specifically, the sentence pair in a negative example are randomly sampled from the corpus, and there could exist a vast topical difference that makes the prediction task much easier than the intended coherence prediction.</p>
+<p>In ALBERT, a sentence-order prediction (SOP) loss replaces NSP loss. The SOP loss avoids topic prediction and instead focuses on modeling inter-sentence coherence. The positive example consists of two consecutive segments from the same document; the negative example consists of the same two consecutive segments but with their order swapped. This forces the model to learn a fine-grained representation about sentence level coherence properties.</p>
+</section>
+</section>
+<section id="model-distillation">
+<h2>Model Distillation<a class="headerlink" href="#model-distillation" title="Link to this heading">#</a></h2>
+<p>\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:sec:BERT_model_distillation}</p>
+<section id="distillbert">
+<h3>DistillBERT<a class="headerlink" href="#distillbert" title="Link to this heading">#</a></h3>
+<p>Knowledge distillation is a knowledge transfer approach to transfer knowledge to a large BERT model (also called a teacher model), to a smaller, ready-to-deploy BERT model (also called a student model) such that the small model can have performance close to the teacher model.</p>
+<p>DistilBERT <span id="id6">[<a class="reference internal" href="language_models.html#id395" title="Victor Sanh, Lysandre Debut, Julien Chaumond, and Thomas Wolf. DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter. ArXiv:1910.01108, 2019.">SDCW19</a>]</span> applies a knowledge distillation method based on triple loss (TripleLoss). Next, the knowledge distillation method used by DistilBERT is introduced.</p>
+<p>The DistilBERT model has six Transformer layers, which is the half the total number of BERT <span class="math notranslate nohighlight">\(_{\text {BASE }}\)</span>. DistillBERT also removes the token embedding in the input.  Compared with the BERT model, the parameters of DistilBERT are compressed to 40% of the original, and at the same time, the reasoning speed is improved, and it reaches 97% of the effect of the BERT model on multiple downstream tasks. The teacher model directly uses the original BERT-base model. The student model uses the first six layers of the teacher model for initialization.</p>
+<p>To transfer the knowledge from a teacher model to a student model, DistillBERT employs three types of losses: MLM loss, distillation MLM loss, and cosine similarity loss. Next sentence prediction pretraining task is removed.</p>
+<p>The MLM loss is the same as the original BERT model training. The distillation MLM loss is based on the Soft label produced from the teacher model, given by</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{L}_{d-mlm} = - \sum_{i} t_i \log (s_i),\]</div>
+<p>where <span class="math notranslate nohighlight">\(t_i\)</span> is the probability on class label <span class="math notranslate nohighlight">\(i\)</span> from the teacher model and <span class="math notranslate nohighlight">\(s_i\)</span> is the probability on the same class from the student model. Note that when we compute the probabilities, we use a temperature parameter <span class="math notranslate nohighlight">\(\tau\)</span> to control the softness of the distribution. For example,</p>
+<div class="math notranslate nohighlight">
+\[t_i = \frac{\exp(z_i^T/\tau)}{\sum_{j}\exp(z_j^T/\tau)},\]</div>
+<p>where <span class="math notranslate nohighlight">\(z_i\)</span> is the un-normalized teacher model output.</p>
+<p>The Cosine similarity loss is used to align the the directions between the teacher model’s embeddings and the student model’s embeddings, which is given by</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{L}_{cos} = 1 - \operatorname{CosSimilarity}(h^t, s^t)\]</div>
+<p>where <span class="math notranslate nohighlight">\(h^t\)</span> and <span class="math notranslate nohighlight">\(s^t\)</span> are last hidden layer outputs from the teacher model and the student model for the same input example, respectively.</p>
+</section>
+<section id="tinybert">
+<h3>TinyBERT<a class="headerlink" href="#tinybert" title="Link to this heading">#</a></h3>
+<p>TinyBERT <span id="id7">[<a class="reference internal" href="language_models.html#id1450" title="Xiaoqi Jiao, Yichun Yin, Lifeng Shang, Xin Jiang, Xiao Chen, Linlin Li, Fang Wang, and Qun Liu. Tinybert: distilling bert for natural language understanding. arXiv preprint arXiv:1909.10351, 2019.">JYS+19</a>]</span> proposes a novel layer-wise knowledge transfer strategy to transfer more fine-grained knowledge, including hidden states and self-attention distributions of Transformer networks, from the teacher to the student. To perform layer-to-layer distillation, TinyBERT specifies a mapping between the teacher and student layers, and uses a parameter matrix to linearly transform student hidden states.</p>
+<p>Assuming that the student model has <span class="math notranslate nohighlight">\(M\)</span> Transformer layers and teacher model has <span class="math notranslate nohighlight">\(N\)</span> Transformer layers. As we need to choose <span class="math notranslate nohighlight">\(M\)</span> out of <span class="math notranslate nohighlight">\(N\)</span> layers from the teacher model for layerwise knowledge transfer distillation, we choose a mapping function <span class="math notranslate nohighlight">\(n=g(m)\)</span> to specify the correspondence between indices from student layers to teacher layers. We consider knowledge transfer in three different layer types: embedding layer, transformer layer, and prediction layer.</p>
+<p><em><strong>Embedding-layer Distillation</strong></em>. Embedding-layer knowledge transfer is realized by matching embedding matrix via a linear transformation. Specifically, we can impose a training objective given by:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}_{\mathrm{embd}}=\operatorname{MSE}\left(\boldsymbol{E}^{S} \boldsymbol{W}_{e}, \boldsymbol{E}^{T}\right)
+\]</div>
+<p>where the matrices <span class="math notranslate nohighlight">\(\boldsymbol{E}^{S}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{H}^{T}\)</span> refer to the embeddings of student and teacher networks, respectively.  The matrix <span class="math notranslate nohighlight">\(\boldsymbol{W}_{e}\)</span> is a learnable linear transformation.</p>
+<p><em><strong>Transformer-layer Distillation</strong></em>. The Transformer-layer knowledge distillation includes the self-attention based distillation and hidden-state distillation.</p>
+<p>The attention based distillation can transfer rich semantic and syntax knowledge captured in self-attention modules \cite{clark2019does}. Specifically, we impose a training loss to match self-attention matrices between the teacher and the student network, given by:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}_{\text {attn }}=\frac{1}{H} \sum_{i=1}^{H} \operatorname{MSE}\left(\boldsymbol{A}_{i}^{S}, \boldsymbol{A}_{i}^{T}\right),\]</div>
+<p>where <span class="math notranslate nohighlight">\(H\)</span> is the number of attention heads, <span class="math notranslate nohighlight">\(\boldsymbol{A}_{i} \in\)</span> is the attention matrix in the <span class="math notranslate nohighlight">\(i\)</span>-th head of model. It is found that using the unnormalized attention matrix <span class="math notranslate nohighlight">\(\boldsymbol{A}_{i}\)</span> led to a faster convergence rate and better performances.</p>
+<p>Compared to the attention based distillation, hidden-state distillation impose matching condition on outputs of Transformer layers via a training loss given by:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}_{\text {hidn }}=\operatorname{MSE}\left(\boldsymbol{H}^{S} \boldsymbol{W}_{h}, \boldsymbol{H}^{T}\right)\]</div>
+<p>where the matrices <span class="math notranslate nohighlight">\(\boldsymbol{H}^{S}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{H}^{T}\)</span> refer to the hidden states of student and teacher networks after the feed-forward network. The matrix <span class="math notranslate nohighlight">\(\boldsymbol{W}_{h}\)</span> is a learnable linear transformation to match the dimensionality between the student’s hidden state and the teacher’s hidden states.</p>
+<p><em><strong>Prediction-layer Distillation</strong></em>. The final prediction-layer distillation follows the soft target classification task as in \cite{hinton2015distilling}. Specifically, we impose a soft cross-entropy loss between the student network’s logits against the teacher’s logits:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}_{\text {pred }}=\operatorname{CrossEntropy}\left(\boldsymbol{z}^{T} / \tau, \boldsymbol{z}^{S} / \tau\right)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{z}^{S}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{z}^{T}\)</span> are the logits vectors predicted by the student and teacher respectively. <span class="math notranslate nohighlight">\(\tau\)</span> is the temperature.</p>
+<p>For simplicity,</p>
+<p>Finally, we set 0 to be the index of embedding layer and <span class="math notranslate nohighlight">\(M+1\)</span> to be the index of prediction layer, and the corresponding layer mappings are defined as <span class="math notranslate nohighlight">\(0=g(0)\)</span> and <span class="math notranslate nohighlight">\(N+1=g(M+1)\)</span> respectively. Using the above distillation objectives, we can unify the distillation loss of the corresponding layers between the teacher and the student network:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathcal{L}_{\text {layer }}= \begin{cases}\mathcal{L}_{\text {embd }}, &amp; m=0 \\ \mathcal{L}_{\text {hidn }}+\mathcal{L}_{\text {attn }}, &amp; M \geq m&gt;0 \\ \mathcal{L}_{\text {pred }}, &amp; m=M+1\end{cases}.
+\end{split}\]</div>
+</section>
+<section id="mobilebert">
+<h3>MobileBERT<a class="headerlink" href="#mobilebert" title="Link to this heading">#</a></h3>
+<p>MobileBERT <span id="id8">[<a class="reference internal" href="language_models.html#id1451" title="Zhiqing Sun, Hongkun Yu, Xiaodan Song, Renjie Liu, Yiming Yang, and Denny Zhou. Mobilebert: a compact task-agnostic bert for resource-limited devices. arXiv preprint arXiv:2004.02984, 2020.">SYS+20</a>]</span> is designed to be as deep as BERT <span class="math notranslate nohighlight">\(_{\text {LARGE }}\)</span> and make each layer much narrower. A deep and narrow Transformer networks have the strength of large modeling capacity like deep network and maintain a manageable model size. To maintain a good balance between self-attentions and feed-forward networks a bottleneck structures is adopted, which amounts to adding projection layers (with activation) before the entry and after the output of each Transformer layer [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:mobilebertdemo}]. Direct distill knowledge from <span class="math notranslate nohighlight">\(\mathrm{BERT}_{\text {LARGE }}\)</span> to MobileBERT is challenge due to large discrepancy in the architecture. One solution is to first train a specially designed teacher model, an inverted-bottleneck incorporated <span class="math notranslate nohighlight">\(\mathrm{BERT}_{\text {LARGE }}\)</span> model (IB-BERT). Then, we conduct knowledge transfer from IB-BERT to MobileBERT.</p>
+<figure class="align-default" id="chapter-foundation-fig-bert-mobile-bert-demo">
+<a class="reference internal image-reference" href="../../_images/mobile_bert_demo.png"><img alt="../../_images/mobile_bert_demo.png" src="../../_images/mobile_bert_demo.png" style="width: 621.5px; height: 355.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">Illustration of three model architectures for model distillation from BERT to MobileBERT.: (a) BERT; (b) Inverted-Bottleneck BERT (IB-BERT); and (c) MobileBERT.
+We first train IB-BERT and then distill knowledge from IB-BERT to MobileBERT via layerwise knowledge transfer focused on feature map transfer and attention transfer. Image from <span id="id9">[<a class="reference internal" href="language_models.html#id1451" title="Zhiqing Sun, Hongkun Yu, Xiaodan Song, Renjie Liu, Yiming Yang, and Denny Zhou. Mobilebert: a compact task-agnostic bert for resource-limited devices. arXiv preprint arXiv:2004.02984, 2020.">SYS+20</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-bert-mobile-bert-demo" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Model distillation from IB-BERT to the student model relies on two layer-wise knowledge transfer training objectives: feature map transfer and attention transfer.</p>
+<p><em><strong>Feature Map Transfer (FMT)</strong></em>: BERT layers perform multi-head self-attention as well as nonlinear feature transform via feed-forward layers. The layer-wise knowledge transfer can be facilitated by requiring the feature maps of each layer to be as close as possible to those of the teacher. Here feature map is defined as the output of the FFN layer at each position. In particular, the mean squared error between the feature maps of the MobileBERT student and the IB-BERT teacher is used as the knowledge transfer objective:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}_{F M T}^{\ell}=\frac{1}{T N} \sum_{t=1}^{T} \sum_{n=1}^{N}\left(H_{t, \ell, n}^{t r}-H_{t, \ell, n}^{s t}\right)^{2},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\ell\)</span> is the index of layers, <span class="math notranslate nohighlight">\(T\)</span> is the sequence length, and <span class="math notranslate nohighlight">\(N\)</span> is the feature map size.</p>
+<p><em><strong>Attention Transfer (AT)</strong></em>: The attention mechanism plays a crucial role in the modeling capacity of Transformer and BERT. By requiring the similarity between self-attention maps can also help the training of MobileBERT in augmentation to the feature map transfer. In particular, we minimize the KL-divergence between the per-head self-attention distributions of the MobileBERT student and the IB-BERT teacher:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}_{A T}^{\ell}=\frac{1}{T A} \sum_{t=1}^{T} \sum_{a=1}^{A} D_{K L}\left(a_{t, \ell, a}^{t r} \| a_{t, \ell, a}^{s t}\right)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(A\)</span> is the number of attention heads.</p>
+<p>The above two layerwise knowledge transfer loss serves as regularization when we pre-train the MobileBERT. We use a linear combination of the original masked language modeling (MLM) loss, next sentence prediction (NSP) loss, and the new MLM Knowledge Distillation (KD) loss as our total loss, given by:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}=\alpha \mathcal{L}_{MLM} + \mathcal{L}_{NSP} +(1-\alpha) {\mathcal{L}}_{K D}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha\)</span> is a hyperparameter in <span class="math notranslate nohighlight">\((0,1)\)</span> and
+$<span class="math notranslate nohighlight">\(\mathcal{L}_{KD} = \sum_{\ell=1}^L \mathcal{L}^\ell_{FMT} + \mathcal{L}^\ell_{AT}.\)</span>$</p>
+<p>Additional model compression strategy includes <em><strong>embedding factorization</strong></em>. The embedding layer in BERT models accounts for a significant portion of model size. MobileBERT adopts raw token embedding dimension to be 128 and apply a 1D convolution with kernel size 3 on the raw token embedding to produce a 512 dimensional output.</p>
+</section>
+<section id="minilm">
+<h3>MiniLM<a class="headerlink" href="#minilm" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="chapter-foundation-fig-bert-minilmdeepattentiondemo">
+<a class="reference internal image-reference" href="../../_images/MINILM_deep_attention_demo.png"><img alt="../../_images/MINILM_deep_attention_demo.png" src="../../_images/MINILM_deep_attention_demo.png" style="width: 538.5px; height: 239.1px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 20 </span><span class="caption-text">Overview of self-attention knowledge transfer in MiniLM. The student is trained by mimicking the self-attention behavior of the last
+Transformer layer of the teacher. Two loss functions are used to enable the self-attention distribution transfer and the self-attention value-relation transfer. Image from <span id="id10">[<a class="reference internal" href="language_models.html#id1449" title="Wenhui Wang, Furu Wei, Li Dong, Hangbo Bao, Nan Yang, and Ming Zhou. Minilm: deep self-attention distillation for task-agnostic compression of pre-trained transformers. Advances in Neural Information Processing Systems, 33:5776–5788, 2020.">WWD+20</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-bert-minilmdeepattentiondemo" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>MiniLM <span id="id11">[<a class="reference internal" href="language_models.html#id1449" title="Wenhui Wang, Furu Wei, Li Dong, Hangbo Bao, Nan Yang, and Ming Zhou. Minilm: deep self-attention distillation for task-agnostic compression of pre-trained transformers. Advances in Neural Information Processing Systems, 33:5776–5788, 2020.">WWD+20</a>]</span> follows similar line of thought like TinyBERT and MobileBERT and focuses on deep mimicking the self-attention modules, which are the fundamentally important components in the Transformer based models.</p>
+<p>Specifically, MiniLM proposes only distilling the self-attention module of the last Transformer layer alone of the teacher model, rather than performing layer-to-layer knowledge distillation. Performing layer-to-layer knowledge distillation imposes more requirements on the structure similarity between the teacher and the student and finding proper layer mappings, while nonperforming last layer knowledge distillation allows the choice of the student model architecture to be more flexible.</p>
+<p>Compared to self-attention transfer in TinyBERT and MobileBERT, MiniLM performs both <em><strong>Self-Attention Distribution Transfer</strong></em> and <em><strong>Self-Attention Value-Relation Transfer</strong></em> to promote the matching between teacher model and student model in the self-attention module. The additional inner product type of matching is a flexible objective as it does not require the hidden dimensionality between student model and the teach model to be equal.</p>
+<p>In the self-attention distributions transfer, one can minimize the
+KL-divergence between the self-attention distributions, given by</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}_{\mathrm{AT}}=\frac{1}{A_{h}|x|} \sum_{a=1}^{A_{h}} \sum_{t=1}^{|x|} D_{K L}\left(\mathbf{A}_{L, a, t}^{T} \| \mathbf{A}_{M, a, t}^{S}\right)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(|x|\)</span> and <span class="math notranslate nohighlight">\(A_{h}\)</span> are the sequence length and the number of attention heads. <span class="math notranslate nohighlight">\(L\)</span> and <span class="math notranslate nohighlight">\(M\)</span> denote the number of layers for the teacher and student. <span class="math notranslate nohighlight">\(\mathbf{A}_{L}^{T}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{A}_{M}^{S}\)</span> are the attention distributions of the last Transformer layer in the teacher and student, respectively, which are computed by the scaled dot-product of queries and keys.</p>
+<p>The value relation transfer has two steps: first, value relation is computed via the multi-head scaled dot-product between values; second, the KL-divergence between the value relation of the teacher and student is used as the training objective, which is given by
+$<span class="math notranslate nohighlight">\(\mathcal{L}_{\mathrm{VR}}=\frac{1}{A_{h}|x|} \sum_{a=1}^{A_{h}} \sum_{t=1}^{|x|} D_{K L}\left(\mathbf{V R}_{L, a, t}^{T} \| \mathbf{V R}_{M, a, t}^{S}\right)\)</span>$
+where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+	\mathbf{V R}_{L, a}^{T}=\operatorname{Softmax}\left(\frac{\mathbf{V}_{L, a}^{T} \mathbf{V}_{L, a}^{T \top}}{\sqrt{d_{k}}}\right) \\
+	\mathbf{V R}_{M, a}^{S}=\operatorname{Softmax}\left(\frac{\mathbf{V}_{M, a}^{S} \mathbf{V}_{M, a}^{S_{\top}}}{\sqrt{d_{k}^{T}}}\right) 
+\end{align}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{V}_{L, a}^{T} \in \mathbb{R}^{|x| \times d_{k}}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{V}_{M, a}^{S} \in \mathbb{R}^{|x| \times d_{k}^{\prime}}\)</span> are the values of an attention head in self-attention module for the teacher’s and student’s last Transformer layer. VR <span class="math notranslate nohighlight">\(\mathbf{R}_{L}^{T} \in \mathbb{R}^{A_{h} \times|x| \times|x|}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{V R} \mathbf{R}_{M}^{S} \in \mathbb{R}^{A_{h} \times|x| \times|x|}\)</span> are the value relation of the last Transformer layer for teacher and student, respectively.</p>
+<p>Taken together, the distillation loss is the summation between the attention distribution transfer loss and value-relation transfer loss:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}=\mathcal{L}_{\mathrm{AT}}+\mathcal{L}_{\mathrm{VR}}.
+\]</div>
+</section>
+<section id="sample-efficient-electra">
+<h3>Sample Efficient: ELECTRA<a class="headerlink" href="#sample-efficient-electra" title="Link to this heading">#</a></h3>
+<p>\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:sec:ELECTRA}</p>
+<p>ELECTRA (Efficiently Learning an Encoder that Classifies Token Replacements Accurately) \cite{clark2020electra} is proposed to improve the BERT pretraining efficiency when there is a pretraining computation budget.</p>
+<p>The key innovation in ELECTRA is the proposition of a new generator-discriminator training framework. This framework shares some similarity to but not equivalent to adversarial training (e.g., GAN). As shown in \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:electrademo}, The generator <span class="math notranslate nohighlight">\(G\)</span>, typically a masked language model, produces an output distribution over masked tokens for replacement purpose. The generator is trained to predict masked tokens and the discriminator <span class="math notranslate nohighlight">\(D\)</span> is trained to distinguish which token is replaced. In contrast to GAN, the gradient of discrimination loss will not passed down to the generator to train the generator to generate adversarial examples. In addition,  no NSP pre-training task is performed.</p>
+<p>The major benefits arising from novel architectures are two folds.</p>
+<ul class="simple">
+<li><p>The classical masked language modeling (MLM) approaches is not sample efficient since the network only learns from <span class="math notranslate nohighlight">\(15 \%\)</span> of the tokens per example. On the other hand, ELECTRA performs discrimination task on all tokens rather than generative task on just masked tokens.</p></li>
+<li><p>This token replacement procedure reduces the mismatch phenomenon during fine-tuning for BERT models. That is, there is are mask tokens in the input sequence during fine-tuning but there is no mask tokens during inference.</p></li>
+</ul>
+<p>Both generator <span class="math notranslate nohighlight">\(G\)</span> and discriminator <span class="math notranslate nohighlight">\(D\)</span> can use the transformer encoder architecture. The encoder  maps a sequence on input tokens <span class="math notranslate nohighlight">\(x=\)</span> <span class="math notranslate nohighlight">\(\left[x_{1}, \ldots, x_{n}\right]\)</span> into a sequence of contextualized vector representations <span class="math notranslate nohighlight">\(h(\boldsymbol{x})=\left[h_{1}, \ldots, h_{n}\right]\)</span>. For a masked token <span class="math notranslate nohighlight">\(x_{t}\)</span>, the generator outputs a probability distribution via:</p>
+<div class="math notranslate nohighlight">
+\[
+p_{G}\left(x_{t} \mid \boldsymbol{x}\right)=\exp \left(e\left(x_{t}\right)^{T} h_{G}(\boldsymbol{x})_{t}\right) / \sum_{x^{\prime}} \exp \left(e\left(x^{\prime}\right)^{T} h_{G}(\boldsymbol{x})_{t}\right)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(e\)</span> denotes token embeddings. The replaced token is then sampled from this distribution.</p>
+<p>Given an input sequence with sampled replaced token, the discriminator predicts whether each token <span class="math notranslate nohighlight">\(x_{t}\)</span> is replaced or is original via:</p>
+<div class="math notranslate nohighlight">
+\[
+D(\boldsymbol{x}, t)=\operatorname{sigmoid}\left(w^{T} h_{D}(\boldsymbol{x})_{t}\right)
+\]</div>
+<p>The loss function for the generator is the same as masked language modeling loss, given by</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}_{\mathrm{MLM}}\left(\boldsymbol{x}, \theta_{G}\right)=\mathbb{E}\left(\sum_{i \in masked}-\log p_{G}\left(x_{i} \mid \boldsymbol{x}^{\text {masked }}\right)\right).
+\]</div>
+<p>The loss function for the discriminator is
+$<span class="math notranslate nohighlight">\(\mathcal{L}_{Disc}\left(\boldsymbol{x}, \theta_{D}\right)=\mathbb{E}\left(\sum_{t=1}^{n}-y_t \log D\left(\boldsymbol{x}^{\text {replaced }}, t\right)-\left(1 - y_t\right) \log \left(1-D\left(\boldsymbol{x}^{\text {replaced }}, t\right)\right)\right).\)</span><span class="math notranslate nohighlight">\(
+where \)</span>y_t<span class="math notranslate nohighlight">\( is a binary label with 1 indicating \)</span>x_t$ is a replaced token and 0 otherwise.
+As the generator is trained, the replaced tokens is harder and harder to distinguish, which further improves the learning of the discriminator.</p>
+<figure class="align-default" id="chapter-foundation-fig-bert-electrademo">
+<a class="reference internal image-reference" href="../../_images/ELECTRA_demo.png"><img alt="../../_images/ELECTRA_demo.png" src="../../_images/ELECTRA_demo.png" style="width: 634.5px; height: 238.5px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 21 </span><span class="caption-text">Illustration of the generator-discriminator training framework. The generator, typically a masked language model, produces an output distribution over masked tokens for replacement purpose. The generator encoder is trained to predict masked tokens and the discriminator is trained to distinguish which token is replaced. After pre-training, the generator is discarded and only the discriminator encoder is fine-tuned on downstream tasks.</span><a class="headerlink" href="#chapter-foundation-fig-bert-electrademo" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The authors show that when is the compute budget on pretraining, ELECTRA can significantly outperform BERT. Ablation studies show that the major gain is coming from sample efficiency and the minor gain is coming from mismatch reduction.</p>
+</section>
+</section>
+<section id="multilingual-models">
+<h2>Multilingual Models<a class="headerlink" href="#multilingual-models" title="Link to this heading">#</a></h2>
+<section id="id12">
+<h3>Introduction<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>In this section, we discuss the possibility of obtaining a universal representation for different languages <span id="id13">[<a class="reference internal" href="language_models.html#id1442" title="Armen Aghajanyan, Xia Song, and Saurabh Tiwary. Towards language agnostic universal representations. arXiv preprint arXiv:1809.08510, 2018.">AST18</a>]</span>. In other words, when we pretrain a language model on corpus in different languages, the pretrained encoder is able to represent different language symbols and tokens in the same semantic vector space. This unified representation can benefit cross-lingual language processing tasks, such as translation.</p>
+<p>One application of cross-lingual ability is to fine-tune a pretrained multilingual language model on one language for a specific task, and the model automatically acquire the capability to perform the same task in another target language (which is also known as <em><strong>Zero-shot transfer</strong></em>). This application is attractive when we don’t have enough training data in the target language, for example, low-resource languages. Another application scenario is to fine-tuning model in multiple languages at the same time; such cross-lingual training can improve the overall performance on all of these languages. In \cite{garcia2017translanguaging}, it is shown that a single shared sequence-to-sequence LSTM encoder-decoder model can be used to perform machine translation for multiple language pairs.</p>
+<p>For independently learned static word embeddings (e.g., word2vec) in different languages, the embeddings corresponding to similar semantics are usually vastly different. To encode tokens of different languages into the same semantic space, one can align (i.e., translate and rotate) two different semantic vectors space by requiring tokens and their translated tokens have similar embeddings in the same semantic vector. The alignment or conversion can be realized via <em><strong>translation matrix</strong></em>, which maps one’s language embedding vector into another language’s embedding space.</p>
+<p>On the other hand, for independently learned contextualized word embedding (e.g., BERT) in different language, there is no straight forward approach like translation matrix to make this conversion. Instead, one require pretraining a language model on multilingual corpus with parallel sentence pairs (i.e., sentences pairs in different languages but with similar meanings).</p>
+<p>In the section, we will go over different approaches to obtaining cross-lingual ability from pretrained language models.</p>
+</section>
+<section id="multilingual-bert-mbert">
+<h3>Multilingual-BERT (mBERT)<a class="headerlink" href="#multilingual-bert-mbert" title="Link to this heading">#</a></h3>
+<p>When Google published their pretrained BERT model in English, they also published a multilingual-BERT which is trained on the wikipedia in the most popular 104 languages. Although the model is trained on corpus without explicitly aligned parallel sentence, mBERT surprisingly acquire some level of cross-lingual representation and understanding abilities.</p>
+<p>The multilingual BERT model adopts the same pre-training task (i.e., masked language modeling and next sentence prediction) and model structure as the monolingual BERT, and all languages are encoded and represented by the same architecture except that the tokenizer is trained on multi-lingual setting and has a vocabulary size 110k.</p>
+<p>Why simply pre-training on multilingual mixed data can help the model acquire cross-lingual ability and represent the tokens of different language in the same semantic space? This is mainly because the training corpus itself has mixed use and shared subwords across languages. The so-called mixed use, that is, texts in one language are often mixed with other languages, is quite common for languages that have the same origin and share some subset of their vocabularies. Even in languages with vastly different origins, there are mixed usages, either intentionally or unintentionally.</p>
+<p>For example, some scientific article in Chinese might also contains a large number of English terms. The tokenization strategy used by BERT further increases the size of the shared vocabulary as the root of some words from different languages is the same.</p>
+<p>These shared vocabulary or subwords ultimately serve as connections between different languages and enables multiple languages to be represented in the same semantic space. However, if too few words are shared between languages, this can cause problems for this type of training approach.</p>
+<p>Although there is no need to use bilingual parallel sentence pairs, and only the data of each language needs to be sampled separately. Because the imbalance training samples from different languages, specific sampling strategy is needed to improve the performance for small languages.</p>
+</section>
+<section id="xlm-xlm-r-and-xlm-e">
+<h3>XLM, XLM-R, And XLM-E<a class="headerlink" href="#xlm-xlm-r-and-xlm-e" title="Link to this heading">#</a></h3>
+<p>One source where mBERT acquires its cross-lingual ability is from the shared vocabulary and subwords cross languages. However, for some languages, the training might suffer from the lack of shared vocabulary in monolingual dominant corpora (e.g., wikipidia). XLM (Cross-lingual Language Model Pretraining) <span id="id14">[<a class="reference internal" href="language_models.html#id1133" title="Guillaume Lample and Alexis Conneau. Cross-lingual language model pretraining. arXiv preprint arXiv:1901.07291, 2019.">LC19</a>]</span> adapted BERT’s unsupervised pre-training masked language modeling to multi-lingual settings and proposed an additional supervised learning strategy known as Translation Language Modeling (TLM) \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:xlmdemo}.</p>
+<p>Compared to BERT’s masked language modeling, multilingual masked language modeling (MMLM) uses text streams of an arbitrary number of sentences (truncated at 256 tokens) instead of pairs of sentences. To offset the imbalance between rare and frequent tokens (e.g. punctuations or stop words), the probability of a token being masked is adjusted to be proportional to the square root of their invert frequencies.</p>
+<p>TLM is based on predicting masked words on parallel sentence pairs (i.e., sentences that are translated to each other). The idea is that when one language provides insufficient information for prediction, the translation in another language can provide additional supplementary information. Specifically, words in both the source and target sentences are randomly masked. To predict a word masked in an English sentence, the model is allowed to attend both surrounding English words as well as to its French translation. To facilitate the alignment, the positions of target sentences are reset.</p>
+<figure class="align-default" id="chapter-foundation-fig-bert-xlmdemo">
+<a class="reference internal image-reference" href="../../_images/XLM_demo.png"><img alt="../../_images/XLM_demo.png" src="../../_images/XLM_demo.png" style="width: 684.0px; height: 377.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 22 </span><span class="caption-text">Cross-lingual language model pretraining has a unsupervised multi-lingual masked language modeling (MMLM) task (top) as well as a supervised translational language modeling (TLM) task (bottom). The TLM objective extends MMLM to pairs of parallel translated sentences. To predict a masked English word, the model can attend to both the English sentence and its French translation. Position embeddings of the target sentence are reset to facilitate the alignment. Image from <span id="id15">[<a class="reference internal" href="language_models.html#id1133" title="Guillaume Lample and Alexis Conneau. Cross-lingual language model pretraining. arXiv preprint arXiv:1901.07291, 2019.">LC19</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-bert-xlmdemo" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Although XLM achieves better results than mBERT, it relies on bilingual parallel sentence pairs. However, it is difficult to obtain large-scale sentence pair data in many languages. In addition, bilingual parallel data is generally sentence-level, which makes it impossible to use a wider range of contextual information beyond sentences, thus causing a certain loss to the performance of the model. In order to solve this problem, Facebook has improved XLM and proposed the XLM-R (XLM-RoBERTa) model\cite{conneau2019unsupervised}. As the name suggests, the model structure of XLM-R is consistent with RoBERTa, and the biggest difference from XLM is that the pre-training task of the translation language model is removed, so that it no longer relies on bilingual parallel corpora. In order to further improve the effect of the model on small languages, XLM-R also uses the larger CommonCrawl multilingual corpus. In order to improve the cross-lingual ability of the pretrained model, one can also manually perform code-switch to enrich the training data.</p>
+<p>To make XLM more sample efficient in the pretraining process, we can adopt ELECTRA style discriminator training in the multi-lingual setting.  In XLM-E\cite{chi2021xlm},  two discriminative pre-training tasks, namely multilingual replaced token detection, and translation replaced token detection, are introduced. As shown in \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:sec:ELECTRA}, the two tasks build input sequences by replacing tokens in multilingual sentences and translation pairs.  The multilingual replaced token detection task requires the model to distinguish real input tokens from corrupted monolingual sentences in different languages. Both the generator and the discriminator are shared across languages. The vocabulary is also shared for different languages. The task is the same as in monolingual ELECTRA pre-training [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:sec:ELECTRA}].</p>
+<p>In the Translation Replaced Token Detection task, we have parallel translated sentences as the input. The detection of replaced tokens is allowed to attend to surrounding words in the same language and words in the translated input.</p>
+<figure class="align-default" id="chapter-foundation-fig-bert-xlmedemo">
+<a class="reference internal image-reference" href="../../_images/XLM_E_demo.png"><img alt="../../_images/XLM_E_demo.png" src="../../_images/XLM_E_demo.png" style="width: 663.5px; height: 194.5px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 23 </span><span class="caption-text">The multilingual replaced token detection and translation replaced token detection pretraining tasks for XLM-E pre-training. The generator predicts the masked tokens given a masked sentence or a masked translation pair, and the discriminator distinguishes whether the tokens are replaced by the generator. Image from <span id="id16">[<a class="reference internal" href="language_models.html#id1447" title="Zewen Chi, Shaohan Huang, Li Dong, Shuming Ma, Saksham Singhal, Payal Bajaj, Xia Song, and Furu Wei. Xlm-e: cross-lingual language model pre-training via electra. arXiv preprint arXiv:2106.16138, 2021.">CHD+21</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-bert-xlmedemo" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="the-extreme-benchmark">
+<h3>The EXTREME Benchmark<a class="headerlink" href="#the-extreme-benchmark" title="Link to this heading">#</a></h3>
+<p>One of the most common benchmark test for cross-lingual transferability is the XTREME benchmark <span id="id17">[<a class="reference internal" href="language_models.html#id1440" title="Junjie Hu, Sebastian Ruder, Aditya Siddhant, Graham Neubig, Orhan Firat, and Melvin Johnson. Xtreme: a massively multilingual multi-task benchmark for evaluating cross-lingual generalisation. In International Conference on Machine Learning, 4411–4421. PMLR, 2020.">HRS+20</a>]</span>, which stands for Cross-lingual TRansfer Evaluation of Multilingual Encoders. This benchmark covers 40 typologically diverse languages that span 12 language families, and it includes 9 tasks that require reasoning on different levels of syntax or semantics.</p>
+<p>The tasks included in XTREME includes sentence text classification, structured prediction, sentence retrieval and cross-lingual question answering. Consequently, for models to be successful on the XTREME benchmarks, they must learn representations that generalize to many standard cross-lingual transfer settings.</p>
+<p>One example sentence text classification task is the Cross-lingual Natural Language Inference, where crowd-sourced English data is translated to ten other languages by professional translators and used for evaluation. The cross-lingual model needs to determine  whether a premise sentence entails, contradicts, or is neutral toward a hypothesis sentence.</p>
+<p>In the structured prediction task, the model is evaluated on POS tagging task. The model is trained on the English data and then is evaluated on the test sets of the target languages.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs/chapter_foundation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="transformers.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Transformers</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="t5.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Seq2Seq, T5, And BART</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-architecture">BERT Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-architecture-componenents">BERT Architecture Componenents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-embeddings">Input Embeddings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-encoder-anatomy">The Encoder Anatomy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compared-with-elmo">Compared With ELMO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-training-tasks">Pre-training Tasks</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#masked-language-modeling-masked-lm">Masked Language Modeling (Masked LM)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#next-sentence-prediction-nsp">Next Sentence Prediction (NSP)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#put-it-together">Put It Together</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fine-tuning-and-evaluation">Fine-tuning And Evaluation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-bert-models">Efficient BERT Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#albert">ALBERT</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-distillation">Model Distillation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distillbert">DistillBERT</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tinybert">TinyBERT</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mobilebert">MobileBERT</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minilm">MiniLM</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-efficient-electra">Sample Efficient: ELECTRA</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multilingual-models">Multilingual Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multilingual-bert-mbert">Multilingual-BERT (mBERT)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xlm-xlm-r-and-xlm-e">XLM, XLM-R, And XLM-E</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-extreme-benchmark">The EXTREME Benchmark</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuguang Yang
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

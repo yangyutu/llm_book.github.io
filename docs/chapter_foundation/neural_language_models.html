@@ -179,8 +179,10 @@
 <li class="toctree-l1"><a class="reference internal" href="language_models.html">Language Models</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Early Neural Language Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="word_embeddings.html">Word Embeddings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="transformers_and_bert.html">Transformers and BERT</a></li>
-<li class="toctree-l1"><a class="reference internal" href="t5.html">T5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformers.html">Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bert.html">BERT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="t5.html">Seq2Seq, T5, And BART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GPT_series.html">GPT Series</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
@@ -201,7 +203,8 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">LLM Inference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration: Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration: Overview</a></li>
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
@@ -371,10 +374,10 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feed-forward-neural-language-model">Feed-forward neural language model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feed-forward-neural-language-model">Feed-forward Neural Language Model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-language-model">Recurrent neural language model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-language-model">Recurrent Neural Language Model</a></li>
 </ul>
             </nav>
         </div>
@@ -399,7 +402,7 @@ document.write(`
 <li><p>poor genearlization to unseen word combination</p></li>
 </ul>
 <p>The recent neural language models are good at capturing the semantics of words, and they give good prediction for low frequency sequences.</p>
-<p>These limitations of <span class="math notranslate nohighlight">\(n\)</span>-gram models motivated researchers to explore neural network approaches [<span id="id1">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1171" title="Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. Journal of machine learning research, 3(Feb):1137–1155, 2003.">BDVJ03</a>, <a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1172" title="Tomas Mikolov, Martin Karafiát, Lukás Burget, Jan Cernocký, and Sanjeev Khudanpur. Recurrent neural network based language model. In Takao Kobayashi, Keikichi Hirose, and Satoshi Nakamura, editors, INTERSPEECH, 1045–1048. ISCA, 2010. URL: http://dblp.uni-trier.de/db/conf/interspeech/interspeech2010.html#MikolovKBCK10.">MKB+10</a>]</span>] that could capture deeper semantic relationships and longer-range dependencies in language. The resulting neural language models are proved to have the following advantages</p>
+<p>These limitations of <span class="math notranslate nohighlight">\(n\)</span>-gram models motivated researchers to explore neural network approaches [<span id="id1">[<a class="reference internal" href="language_models.html#id1174" title="Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. Journal of machine learning research, 3(Feb):1137–1155, 2003.">BDVJ03</a>, <a class="reference internal" href="language_models.html#id1175" title="Tomas Mikolov, Martin Karafiát, Lukás Burget, Jan Cernocký, and Sanjeev Khudanpur. Recurrent neural network based language model. In Takao Kobayashi, Keikichi Hirose, and Satoshi Nakamura, editors, INTERSPEECH, 1045–1048. ISCA, 2010. URL: http://dblp.uni-trier.de/db/conf/interspeech/interspeech2010.html#MikolovKBCK10.">MKB+10</a>]</span>] that could capture deeper semantic relationships and longer-range dependencies in language. The resulting neural language models are proved to have the following advantages</p>
 <ul class="simple">
 <li><p>Improved representation: Neural networks can learn distributed representations of words (word embeddings), capturing semantic similarities.</p></li>
 <li><p>Better generalization with efficient model parameters: Neural models can generalize to unseen word combinations more effectively.</p></li>
@@ -407,11 +410,11 @@ document.write(`
 </ul>
 <p><span class="math notranslate nohighlight">\(n\)</span>-gram models also fails to capture the semantic meaning of words.</p>
 <section id="feed-forward-neural-language-model">
-<h3>Feed-forward neural language model<a class="headerlink" href="#feed-forward-neural-language-model" title="Link to this heading">#</a></h3>
+<h3>Feed-forward Neural Language Model<a class="headerlink" href="#feed-forward-neural-language-model" title="Link to this heading">#</a></h3>
 <p>The core idea of <span class="math notranslate nohighlight">\(n\)</span>-gram model is nothing but a mechanical counter of co-occurrence of words. In natural language, there are many words that are similar in their meaning as wells as their grammar rules.
 For example, \textit{A cat is walking in the living room} vs. \textit{a dog is running in the bedroom} have similar word pairs (cat, dog), (walking, running), (living room, bedroom) and use similar patterns.
 These similarities or word semantic meaning (i.e., the latent representation of words) can be exploited to construct model with much smaller model parameters.</p>
-<p><span id="id2">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1171" title="Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. Journal of machine learning research, 3(Feb):1137–1155, 2003.">BDVJ03</a>]</span> proposed neural language models, which predict and generate next word based on its context and operating at a low dimensional dense vector space (i.e., word embedding).</p>
+<p><span id="id2">[<a class="reference internal" href="language_models.html#id1174" title="Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. Journal of machine learning research, 3(Feb):1137–1155, 2003.">BDVJ03</a>]</span> proposed neural language models, which predict and generate next word based on its context and operating at a low dimensional dense vector space (i.e., word embedding).</p>
 <p>The core idea is that by projecting words into low dimensional space (via learning and gradient descent), words with similar semantics are automatically clustered together, thus providing opportunities for effecient parameterization and mitigating the the curse of dimensionality in <span class="math notranslate nohighlight">\(n\)</span>-gram language models.</p>
 <p>In the feed-forward network model, each word, together with its preceding <span class="math notranslate nohighlight">\(n - 1\)</span> words as context are projected into low-dimensional space and further predict the next word probability. Note that the context has a fixed length of <span class="math notranslate nohighlight">\(n\)</span>, which it is limited in the same way as in <span class="math notranslate nohighlight">\(n\)</span>-gram models [<span class="xref std std-ref">chapter_foundation_fig_language_model_feedforward_model</span>].</p>
 <p>Formally, the model is optimized to maximize</p>
@@ -433,7 +436,7 @@ y=b+We+U \tanh(d+He)
 </section>
 </section>
 <section id="recurrent-neural-language-model">
-<h2>Recurrent neural language model<a class="headerlink" href="#recurrent-neural-language-model" title="Link to this heading">#</a></h2>
+<h2>Recurrent Neural Language Model<a class="headerlink" href="#recurrent-neural-language-model" title="Link to this heading">#</a></h2>
 <p>In recurrent network model [<a class="reference internal" href="#chapter-foundation-fig-language-model-recurrent-model"><span class="std std-ref">Recurrent neural network based language model.</span></a>], context is extended via recurrent connections and context length is theoretically unlimited.
 Specially, let the recurrent network input be <span class="math notranslate nohighlight">\(x\)</span>, hidden layer output be <span class="math notranslate nohighlight">\(h\)</span>  and output probabilities be <span class="math notranslate nohighlight">\(y\)</span>. Input vector <span class="math notranslate nohighlight">\(x_t\)</span> is a concatenation of a word vector <span class="math notranslate nohighlight">\(w_t\)</span> and the previous hidden layer output <span class="math notranslate nohighlight">\(s_{t-1}\)</span>, which represents the context. To summarize, we have recurrent computation given by</p>
 <div class="math notranslate nohighlight">
@@ -523,10 +526,10 @@ Specially, let the recurrent network input be <span class="math notranslate nohi
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feed-forward-neural-language-model">Feed-forward neural language model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feed-forward-neural-language-model">Feed-forward Neural Language Model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-language-model">Recurrent neural language model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-language-model">Recurrent Neural Language Model</a></li>
 </ul>
   </nav></div>
 

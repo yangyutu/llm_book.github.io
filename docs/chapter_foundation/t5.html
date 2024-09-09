@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>T5 &#8212; LLM Foundations</title>
+    <title>Seq2Seq, T5, And BART &#8212; LLM Foundations</title>
   
   
   
@@ -58,11 +58,13 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_foundation/t5';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="LLM Dense Architectures Fundamentals" href="../chapter_LLM_arch/LLM_dense_architectures.html" />
-    <link rel="prev" title="Word Embeddings" href="word_embeddings.html" />
+    <link rel="next" title="GPT Series" href="GPT_series.html" />
+    <link rel="prev" title="BERT" href="bert.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -176,9 +178,11 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="language_models.html">Language Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="neural_language_models.html">Early Neural Language Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="transformers_and_bert.html">Transformers and BERT</a></li>
 <li class="toctree-l1"><a class="reference internal" href="word_embeddings.html">Word Embeddings</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">T5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformers.html">Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bert.html">BERT</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Seq2Seq, T5, And BART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GPT_series.html">GPT Series</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
@@ -199,7 +203,8 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">LLM Inference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration: Overview</a></li>
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
@@ -345,7 +350,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -356,11 +363,28 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>T5</h1>
+    <h1>Seq2Seq, T5, And BART</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t5">T5</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">Pretraining</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bart">BART</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-training">Pre-training</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-fine-tuning">Model Fine Tuning</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -370,8 +394,112 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="t5">
-<h1>T5<a class="headerlink" href="#t5" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="seq2seq-t5-and-bart">
+<h1>Seq2Seq, T5, And BART<a class="headerlink" href="#seq2seq-t5-and-bart" title="Link to this heading">#</a></h1>
+<section id="t5">
+<h2>T5<a class="headerlink" href="#t5" title="Link to this heading">#</a></h2>
+<section id="overview">
+<h3>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
+<p>Pretrained language models and transfer learning enable a diverse range of NLP tasks to be solved by a generic and unified architecture paradigm consisting of an representation encoder from the pretrained language model plus a task-dependent prediction head. T5 (Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer) <span id="id1">[<a class="reference internal" href="language_models.html#id386" title="Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter J Liu. Exploring the limits of transfer learning with a unified text-to-text transformer. Journal of Machine Learning Research, 21(140):1–67, 2020.">RSR+20</a>]</span> push this limits further. Based on encoder-decoder Transformer model, T5 proposed a unifying framework to solve many tasks by casting them to a text-to-text problem, where  input and output, as well as the task description, are a list of text tokens.</p>
+<p>The following diagram <a class="reference internal" href="#chapter-foundation-fig-seq2seq-t5arch"><span class="std std-numref">Fig. 24</span></a> illustrates how T5 solves four different NLP problems within a unified framework, including machine learning, linguistic acceptability, semantic similarity, and text summarization.</p>
+<figure class="align-default" id="chapter-foundation-fig-seq2seq-t5arch">
+<a class="reference internal image-reference" href="../../_images/T5_arch.png"><img alt="../../_images/T5_arch.png" src="../../_images/T5_arch.png" style="width: 246.6px; height: 106.5px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 24 </span><span class="caption-text">Illustration of the text-to-text universal transfer learning framework for a diverse range of tasks.</span><a class="headerlink" href="#chapter-foundation-fig-seq2seq-t5arch" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Particularly, the model is fed with text that is made up of a task prefix and the input attached to it. We convert a labeled textual dataset to a format like {Task: ‘….’, ‘targets’ : … ‘ } format, where we insert the purpose in the input as a prefix.</p>
+<p>\begin{example}
+In order to train a single model on the diverse set of tasks described above, we need a consistent input and output format across all tasks. As recently noted by \cite{mccann2018natural,radford2019language}, it is possible to formulate most NLP tasks in a text-to-text format - that is, a task where the model is fed some text for context or conditioning and is then asked to produce some output text.</p>
+<p>To specify which task the model should perform, we add a task-specific (text) prefix to the original input sequence before feeding it to the model. As an example,</p>
+<ul class="simple">
+<li><p>to ask the model to translate the sentence “That is good.” from English to German, the model would be fed the sequence “translate English to German: That is good.” and would be trained to output “Das ist gut.”</p></li>
+<li><p>For text classification tasks, the model simply predicts a single word corresponding to the target label. For example, on the MNLI benchmark [Williams et al., 2017] the goal is to predict whether a premise implies (“entailment”), contradicts (“contradiction”), or neither (“neutral”) a hypothesis. With our preprocessing, the input sequence becomes “mnli premise: I hate pigeons. hypothesis: My feelings towards pigeons are filled with animosity.” with the corresponding target word “entailment”. Note that an issue arises if our model outputs text on a text classification task that does not correspond to any of the possible labels (for example if the model outputs “hamburger” when the only possible labels for a task were “entailment”, “neutral”, or “contradiction”). In this case, we always count the model’s output as wrong, though we never observed this behavior in any of our trained models.
+\end{example}</p></li>
+</ul>
+<p>For the English-German translation task, the “translate English to German: That is good.” input is going to produce “das is gut.”.</p>
+<p>Based on the task-agnostic architecture proposed by T5, solving different NLP tasks becomes how to convert the task into suitable text input output. T5 apply the same model, objective, training procedure, and decoding process for every NLP task.</p>
+</section>
+<section id="pretraining">
+<h3>Pretraining<a class="headerlink" href="#pretraining" title="Link to this heading">#</a></h3>
+<p>T5 has explored a variant of  masking strategies for masked language modeling based pretraining. These masking strategies shares some span of texts with different mask tokens and train the model to only predict masked texts and use mask tokens to indicate the position of recovered texts.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Original Text</p></th>
+<th class="head text-left"><p>Thank you for inviting me to your party last week.</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Input masked text ( <span class="math notranslate nohighlight">\(15 \%\)</span> random masking)</p></td>
+<td class="text-left"><p>Thank you <span class="math notranslate nohighlight">\(&lt;\mathrm{X}&gt;\)</span> me to your party <span class="math notranslate nohighlight">\(&lt;\mathrm{Y}&gt;\)</span> week.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Target text</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(&lt;\mathrm{X}&gt;\)</span> for inviting <span class="math notranslate nohighlight">\(&lt;\mathrm{Y}&gt;\)</span> last <span class="math notranslate nohighlight">\(&lt;\mathrm{Z}&gt;\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Besides using large-scale corpus of masked language pretraining, T5 model also utilizes labeled data from different downstream tasks for \textbf{multi-task pretraining}. The purpose is to obtain an improved task-agnostic representations via multi-task learning, since learning from multiple related tasks can improve the robustness.</p>
+</section>
+</section>
+<section id="bart">
+<h2>BART<a class="headerlink" href="#bart" title="Link to this heading">#</a></h2>
+<section id="pre-training">
+<h3>Pre-training<a class="headerlink" href="#pre-training" title="Link to this heading">#</a></h3>
+<p>BART (Bidirectional and Auto-Regressive Transformers)\cite{lewis2019bart} adopts a slightly Seq2Seq transformer architecturecombines the advantage of Auto-encoder scheme (like BERT) and Auto-regressive scheme (like GPT). BART adopts a slightly modified Transformer architecture with a bidirectional encoder over corrupted text and a uni-directional autoregressive decoder to recover the original text. BART has achieved state-of-the-art performance in generative tasks, such extractive summarization, dialogue, and abstractive QA.</p>
+<p>The most important pre-training task for BERT is to predict a masked token and use the entire input to get more complete information to make more accurate predictions, with two steps:</p>
+<ul class="simple">
+<li><p>First, add noise and mask to the input and then use the encoder part to encode noisy input text.</p></li>
+<li><p>Second, use an uni-directional decoder to reconstruct the original text, including recover the order and masked words.</p></li>
+</ul>
+<p>In the masked language model pretraining task in BERT, the prediction of masked words are independent and does not condition on the prediction of other masked words. In BART, masked words are predicted  through auto-regression, allowing the prediction of one masked work to condition other preceding masked words. The BART style pretraining therefore tend to produce representations that are amenable to text generation downstream tasks, in which each word depends on the previously generated words.</p>
+<figure class="align-default" id="chapter-foundation-fig-seq2seq-bart-arch">
+<a class="reference internal image-reference" href="../../_images/BART_arch.png"><img alt="../../_images/BART_arch.png" src="../../_images/BART_arch.png" style="width: 641.6999999999999px; height: 189.9px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 25 </span><span class="caption-text">Illustration of BART architecture, which consists of a bidirectional encoder (like BERT) and an auto-regressive decoder (like GPT). The original input is \textit{ABCDE}, while the masked input has text \textit{CD} masked out and an additional mask inserted before \textit{B}. The decoder needs to predict the original input offset by one step using the encoder’s output and the original input.</span><a class="headerlink" href="#chapter-foundation-fig-seq2seq-bart-arch" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>BART is pretrained by optimizing a reconstruction loss, which is the cross-entropy between the decoder’s output and the original document. Because of the adoption of the Seq2Seq architecture, BART allows the application of any type of input corruption. When all the information to the encoder is lost, the BART’s decoder part is equivalent to a language model.</p>
+<p>We will look at each input corruption scheme and its underlying motivation in detail [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:bartcorruption}]:</p>
+<ul class="simple">
+<li><p>Token Masking: Tokens are randomly masked with a [MASK] symbol, same as with the BERT model. The model is pre-trained to predict a token based on its context.</p></li>
+<li><p>Token Deletion: Tokens are randomly removed from the documents. The model is pre-trained to determine tokens at which positions are removed.</p></li>
+<li><p>Text Infilling: A number of text spans with different lengths (including zero length) are sampled, and then they are replaced by a single [MASK] token. The model is pre-trained to decide how many tokens a span corresponds to.</p></li>
+<li><p>Sentence Permutation: The sentences in the input are segmented based on full stops and shuffled in random order. The model is pre-trained to understand the relationship between sentences.</p></li>
+<li><p>Document Rotation: The input is rotated (i.e., is right shifted) so that it begins with a randomly selected token.  The model is pre-trained to find the start position of a document.</p></li>
+</ul>
+<figure class="align-default" id="chapter-foundation-fig-seq2seq-bart-corruption">
+<a class="reference internal image-reference" href="../../_images/BART_corruption.png"><img alt="../../_images/BART_corruption.png" src="../../_images/BART_corruption.png" style="width: 470.7px; height: 309.59999999999997px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 26 </span><span class="caption-text">Different input text corruption schemes in BART.</span><a class="headerlink" href="#chapter-foundation-fig-seq2seq-bart-corruption" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="model-fine-tuning">
+<h3>Model Fine Tuning<a class="headerlink" href="#model-fine-tuning" title="Link to this heading">#</a></h3>
+<p>The pre-trained BART model has both text representation and generation capabilities, so it is applicable for both language understanding and text generation downstream tasks.</p>
+<p>\textbf{Sequence classification and sequence labeling.} For sequence or token classification tasks, the encoder and decoder of BART use the same input, and the state of the hidden layer at the final moment of the decoder is used as the vector representation of the input text. The vector representation is fed into the multi-class linear classifier. Similar to the [CLS] token of the BERT model, the BART model adds an additional special token at the last position of the decoder input, and uses the hidden layer state of this token as the representation of the text.</p>
+<p>\textbf{Text generation.} BART models can be used directly for conditional text generation tasks such as text summarization. Take text summarization as an example, the input of the encoder is the text to be summarized, and the decoder generates the corresponding target text in an auto-regressive manner.</p>
+<p>\textbf{Machine translation.} When used for machine translation tasks, the BART model cannot be directly fine-tuned because the source and target languages use different vocabulary sets. Therefore, the researchers propose to replace the input embedding layer of the BART model encoder with a small Transformer encoder, which is used to map the vocabulary in the source language to the input representation space of the target language. During the fine-tuning phase, the parameters of this newly introduced source language encoder are randomly initialized, and most of the other parameters of the BART model are pre-trained. There are two stages in the fine-tuning phase.</p>
+<ul class="simple">
+<li><p>First, only the source language encoder, the BART model position vector, and the self-attention input projection matrix of the first layer of the BART pretrained encoder are trained; The rest of model parameters are fixed.</p></li>
+<li><p>Second, a small number of iterations are performed on all model parameters.</p></li>
+</ul>
+<figure class="align-default" id="chapter-foundation-fig-seq2seq-bart-finetuning">
+<a class="reference internal image-reference" href="../../_images/BART_fine_tuning.png"><img alt="../../_images/BART_fine_tuning.png" src="../../_images/BART_fine_tuning.png" style="width: 594.0px; height: 134.1px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 27 </span><span class="caption-text">(Left) To use BART for classification problems, the same
+input is fed into the encoder and decoder, and the representation from the final output is used. (Right) For machine translation, we learn a small additional
+encoder that replaces the word embeddings in BART. The
+new encoder can use a disjoint vocabulary. Image from <span id="id2">[<a class="reference internal" href="language_models.html#id391" title="Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed, Omer Levy, Ves Stoyanov, and Luke Zettlemoyer. BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. ArXiv:1910.13461, 2019.">LLG+19</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-seq2seq-bart-finetuning" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -405,20 +533,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="word_embeddings.html"
+       href="bert.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Word Embeddings</p>
+        <p class="prev-next-title">BERT</p>
       </div>
     </a>
     <a class="right-next"
-       href="../chapter_LLM_arch/LLM_dense_architectures.html"
+       href="GPT_series.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">LLM Dense Architectures Fundamentals</p>
+        <p class="prev-next-title">GPT Series</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -428,6 +556,30 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t5">T5</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">Pretraining</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bart">BART</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-training">Pre-training</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-fine-tuning">Model Fine Tuning</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

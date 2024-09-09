@@ -58,6 +58,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_foundation/transformers_and_bert';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -372,8 +374,22 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretrained-language-models">Pretrained Language Models</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformers">Transformers</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-architecture">Overall architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-output-conventions">Input output conventions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#position-encodings">Position encodings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multihead-attention-with-masks">Multihead attention with masks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-with-recurrent-layer-in-sequence-modeling">Comparison with recurrent layer in sequence modeling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pointwise-feedforward-layer">Pointwise FeedForward Layer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decoder-anatomy">Decoder anatomy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-breakdown-analysis">Computational breakdown analysis</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#different-branches-of-developments">Different branches of developments</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-encoder-branch">The encoder branch</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-decoder-branch">The decoder branch</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-encoder-decoder-branch">The encoder-decoder branch</a></li>
 </ul>
             </nav>
         </div>
@@ -411,17 +427,341 @@ Before Transformers, ELMo used bidirectional LSTMs (Long Short-Term Memory netwo
 <p>Traditionally, seq2seq tasks heavily use RNN-based encoder-decoder architectures, plus attention mechanisms, to transform one sequence into another sequence. Transformer, on the other hand, does not rely on any recurrent structure and is able to process all tokens in a sequence at the same time. This enables computation efficiency optimization via parallel optimization and address long-range dependency, both of which mitigate the shortages of RNN-based encoder-decoder architectures.</p>
 <p>On a high level, Transformer falls into the category of encoder-decoder architecture [\autoref{ch:neural-network-and-deep-learning:Advanced:NLP:fig:transformer}], where the encoder encodes an input token sequence into low-dimensional embeddings, and the decoder takes the embeddings as input, plus some additional prompts, outputs an output sequence probabilities. The position information among tokens, originally stored in recurrent network structure, is now provided through position encoding added at the entry point of the encoder and decoder modules.</p>
 <p>Attention mechanisms are the most crucial components in the Transformer architecture to learn contextualized embeddings and overcome the limitation of recurrent neural network in learning long-term dependencies (e.g., seq2seq model with attention).</p>
-<p>The encoder module on the left [<a class="reference internal" href="#chapter-foundation-fig-pretrained-lm-transformer-arch"><span class="std std-ref">The transformer architecture, which consists of an Encoder (left) and a Decoder (right).</span></a>] consists of blocks that are stacked on top of each other to obtain the embeddings that retain rich information in the input. Multi-head self-attentions are used in each block to enable the extraction of contextual information into the final embedding.
+<p>The encoder module on the left [<a class="reference internal" href="#chapter-foundation-fig-pretrained-lm-transformer-arch"><span class="std std-numref">Fig. 4</span></a>] consists of blocks that are stacked on top of each other to obtain the embeddings that retain rich information in the input. Multi-head self-attentions are used in each block to enable the extraction of contextual information into the final embedding.
 Similarly, the decoder module on the right also consists of blocks that are stacked on top of each other to obtain the embeddings. Two different types of multi-head attentions are used in each docder block, one is self-attention to capture contextual information among output sequence and one is to encoder-decoder attention to capture the dynamic information between input and output sequence.</p>
 <p>In the following, we will discuss each component of transformer architecture in detail.</p>
 <figure class="align-default" id="chapter-foundation-fig-pretrained-lm-transformer-arch">
-<a class="reference internal image-reference" href="../../_images/transformer_arch.png"><img alt="../../_images/transformer_arch.png" src="../../_images/transformer_arch.png" style="width: 805.2px; height: 948.0px;" />
+<a class="reference internal image-reference" href="../../_images/transformer_arch.png"><img alt="../../_images/transformer_arch.png" src="../../_images/transformer_arch.png" style="width: 603.9px; height: 711.0px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 4 </span><span class="caption-text">The transformer architecture, which consists of an Encoder (left) and a Decoder (right).</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-lm-transformer-arch" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
+<section id="input-output-conventions">
+<h3>Input output conventions<a class="headerlink" href="#input-output-conventions" title="Link to this heading">#</a></h3>
+<p>To understand the training and inference of transformer architecture, we need to distinguish different types of sequences:</p>
+<ul class="simple">
+<li><p>Input sequence <span class="math notranslate nohighlight">\(x = (x_1,x_2,...,x_p,..., x_n), x_i\in \mathbb{N}\)</span> and input position sequence <span class="math notranslate nohighlight">\(x^p = (1, 2, ..., n)\)</span></p></li>
+<li><p>Output sequence <span class="math notranslate nohighlight">\(y = (y_1,y_2,...,y_p,...,y_m), y_i \in \mathbb{N}\)</span> and output position sequence <span class="math notranslate nohighlight">\(y^p = (1, 2, ..., m)\)</span>. Output sequence is the input to the decoder.</p></li>
+<li><p>Target sequence <span class="math notranslate nohighlight">\(t = (t_1,t_2,...,t_p,...,t_m), t_i \in \mathbb{N}\)</span>. Input sequence and target sequence form a pair in the training examples.</p></li>
+</ul>
+<p>For example, consider a translational task with input and target sequence given by
+<span style="color:red"><strong>Ich möchte eine Flasche Wasser</strong></span> and <span style="color:red"><strong>I want a bottle of water</strong></span>. In the typical supervised learning training, the input sequence, target sequence, and output sequence are in the following form</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x = (Ich, möchte, eine, Flasche, Wasser, PAD, PAD)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(t = (I, want, a, bottle, of, water, EOS, PAD)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(y = (SOS, I, want, a, bottle, of, water, EOS)\)</span></p></li>
+</ul>
+<p>The output sequence is the right-shifted target sequence with a starting token \code{SOS}. The output sequence will be fed into the decoder to predict the next token.</p>
+</section>
+<section id="position-encodings">
+<h3>Position encodings<a class="headerlink" href="#position-encodings" title="Link to this heading">#</a></h3>
+<p>Consider an input sequence represented by an integer sequence <span class="math notranslate nohighlight">\(x = (x_1,...,x_i,...,x_n), x_i\in \mathbb{N}\)</span>, <span class="math notranslate nohighlight">\(e.g., x = (3, 5, 30, 2, ..., 21)\)</span> that is fed into the Transformer architecture.  For the input sequence <span class="math notranslate nohighlight">\(s\)</span>, the word embedding vectors of dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span> alone do not encode positional information in the sequence. This can be fixed by utilizing a position encoding <span class="math notranslate nohighlight">\(PE\)</span> maps an integer index representing the position of the token in the sequence, <span class="math notranslate nohighlight">\(x^p = (1, 2, ..., n)\)</span> to <span class="math notranslate nohighlight">\(n\)</span> dense vectors with same dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span>, i.e., <span class="math notranslate nohighlight">\(\operatorname{PE}(s^p)\in \mathbb{R}^{n\times d_{model}}\)</span>.</p>
+<p>The position encoding vectors can be specified in analytical forms and then be fixed during training.  The position encoding mapping can also be learned from data. In theory, the specification of position encoding should preserve position information by mapping nearby positions to nearby high-dimensional vectors.</p>
+<p>Notably, given the token position <span class="math notranslate nohighlight">\(i \in \{1, ..., n\}\)</span> <span class="math notranslate nohighlight">\(\operatorname{PE}(i) \in \mathbb{R}^{d_{model}}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+[\operatorname{PE}(i)]_j =\left\{\begin{array}{ll}
+	\sin \left(\frac{i}{10000^{j/ d_{model}}}\right) &amp; \text { if } j \text{ is even} \\
+	\cos \left(\frac{i}{10000^{(j-1)/ d_{model}}}\right) &amp; \text { if } j \text{ is odd}
+\end{array}\right.
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(j = \{1,...,d_{model}\}\)</span>. Note that the position encodings have the same dimension <span class="math notranslate nohighlight">\(d_{model}\)</span> as the word embeddings such that they can be summed.
+Intuitively, each dimension of the positional encoding corresponds to a sine/cosine wave of different wavelengths ranging from <span class="math notranslate nohighlight">\(2 \pi\)</span> (when <span class="math notranslate nohighlight">\(j=1\)</span>) to approx <span class="math notranslate nohighlight">\(10000 \cdot 2 \pi\)</span>(when <span class="math notranslate nohighlight">\(j=d_{model}\)</span>). An example position encodings of dimensionality 256 for position index from 1 to 256 is shown in <a class="reference internal" href="#chapter-foundation-fig-pretrained-lm-transformer-positionencoding"><span class="std std-numref">Fig. 5</span></a>.</p>
+<figure class="align-default" id="chapter-foundation-fig-pretrained-lm-transformer-positionencoding">
+<a class="reference internal image-reference" href="../../_images/positionEncoding.png"><img alt="../../_images/positionEncoding.png" src="../../_images/positionEncoding.png" style="width: 630.0px; height: 540.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Example position encodings of dimensionality 256 for position index from 1 to 256.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-lm-transformer-positionencoding" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="multihead-attention-with-masks">
+<h3>Multihead attention with masks<a class="headerlink" href="#multihead-attention-with-masks" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="chapter-foundation-fig-pretrained-lm-transformer-multiheadattention">
+<a class="reference internal image-reference" href="../../_images/Multi-head_attention.png"><img alt="../../_images/Multi-head_attention.png" src="../../_images/Multi-head_attention.png" style="width: 644.4px; height: 366.3px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">The multi-head attention architecture.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-lm-transformer-multiheadattention" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Multi-head attention mechanism with masks plays a central role in both encoder and decoder side. Attention mechanism enables contexualization and masks control the context each token can get access to. Attention of multiple heads, rather than a single head, allows the model to jointly attend to information from different representation subspaces at different positions <span id="id2">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1309" title="Jian Li, Zhaopeng Tu, Baosong Yang, Michael R Lyu, and Tong Zhang. Multi-head attention with disagreement regularization. arXiv preprint arXiv:1810.10183, 2018.">LTY+18</a>]</span>.</p>
+<p>Multi-head attentions are used in three places:</p>
+<ul class="simple">
+<li><p>In the encoder module, multi-head attention without using masks are used to construct intermediate contextualized embedding for each token that depends of its context. The query, key, and values are all the same input sequence.</p></li>
+<li><p>In the decoder module, multi-head attention with masks are used to construct contextualized embedding for each token by attending to only its \textit{preceding} or \textit{seen} tokens. The query, key, and values are all the same input sequence.</p></li>
+<li><p>From the encoder module to the decoder module, multi-head attention without using masks is used to construct embedding for each output token that depends of its \textit{input} context (i.e., attention between input and output sequences).</p></li>
+</ul>
+<p>Given a query matrix <span class="math notranslate nohighlight">\(Q\in \mathbb{R}^{n\times d_{model}}\)</span> representing <span class="math notranslate nohighlight">\(n\)</span> queries, a key matrix <span class="math notranslate nohighlight">\(K\in \mathbb{R}^{m\times d_{model}}\)</span> representing <span class="math notranslate nohighlight">\(m\)</span> keys, and a value matrix <span class="math notranslate nohighlight">\(V\in \mathbb{R}^{m\times d_{model}}\)</span> representing <span class="math notranslate nohighlight">\(m\)</span> values, the multi-head (<span class="math notranslate nohighlight">\(h\)</span> heads) attention associated with <span class="math notranslate nohighlight">\((Q, K, V)\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{MultiHeadAttention}\left(Q,K,V\right)=Concat\left(head_1,\cdots,head_h\right)W^O\]</div>
+<p>where <span class="math notranslate nohighlight">\(head_i \in \mathbb{R}^{n\times d_v}\)</span> and is given by</p>
+<div class="math notranslate nohighlight">
+\[head_i=\operatorname{Attention}\left(QW_i^Q,KW_i^K,VW_i^V\right).\]</div>
+<p>Here
+<span class="math notranslate nohighlight">\(W^Q, W^K, W^V\in\mathbb{R}^{d_{model}\times d_k}, W^O\in\mathbb{R}^{h\times d_v\times d_{model}}\)</span> are additional linear transformations applied to query, key, and value matrices, respectively. Note that each head has its own corresponding <span class="math notranslate nohighlight">\(W^Q, W^K, W^V\)</span>, and we omit the subscript <span class="math notranslate nohighlight">\(i\)</span> for simplicity. In general, we require <span class="math notranslate nohighlight">\(d_k = d_v = d_{model}/h\)</span> such that the output of <span class="math notranslate nohighlight">\(\operatorname{MultiHeadAttention}\left(Q,K,V\right)\)</span> has the dimensionality of <span class="math notranslate nohighlight">\(n\times d_{model}\)</span>.</p>
+<p>The attention output of a single head among <span class="math notranslate nohighlight">\((Q, K, V)\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{Attention}\left(Q W^{Q}, K W^{K}, V W^{V}\right)=\operatorname{Softmax}\left(\frac{Q W^{Q}\left(K W^{K}\right)^{T}}{\sqrt{d_{k}}}\right) V W^{V},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sqrt{d_k}\)</span> is the scaling factor preventing the doc product value from saturating the Softmax. This type of attention is also known as <em><strong>scaled dot product</strong></em> attention.</p>
+<p>Note that the Softmax normalize each row such that the <span class="math notranslate nohighlight">\(\operatorname{Softmax}(\cdot)\)</span> produces a weight matrix <span class="math notranslate nohighlight">\(w^{att}\in \mathbb{R}^{n\times m}\)</span>, with each row summing up to unit 1.</p>
+<p>The un-normalized weight matrix is given by</p>
+<div class="math notranslate nohighlight">
+\[\tilde{w}_{ij}^{att} = [QW^Q]_i[KW^K]^T_j,\]</div>
+<p>where  <span class="math notranslate nohighlight">\([QW^Q]_i\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>th row vector of query matrix <span class="math notranslate nohighlight">\(QW^Q\)</span>, and <span class="math notranslate nohighlight">\([KW^K]_j\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>th row vector of key matrix <span class="math notranslate nohighlight">\(KW^K\)</span>.</p>
+<p>Explicitly, we have the attention output as the weighted sum of transformed value vectors:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{bmatrix}
+	w^{att}_{11} &amp; w^{att}_{12} &amp; \cdots &amp; w^{att}_{1m}\\ 
+	w^{att}_{21} &amp; w^{att}_{22} &amp; \cdots &amp; w^{att}_{2m} \\ 
+	\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\ 
+	w^{att}_{n1} &amp; w^{att}_{n2} &amp; \cdots &amp; w^{att}_{nm}
+\end{bmatrix}\begin{bmatrix}
+	[VW^V]_1\\ 
+	[VW^V]_2\\ 
+	\vdots\\ 
+	[VW^V]_m
+\end{bmatrix} = \begin{bmatrix}
+	\sum_{j=1}^m w^{att}_{1j}[VW^V]_j\\ 
+	\sum_{j=1}^m w^{att}_{2j}[VW^V]_j\\
+	\vdots\\ 
+	\sum_{j=1}^m w^{att}_{nj}[VW^V]_j\\
+\end{bmatrix}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\([VW^V]_i\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>th row vector of value matrix <span class="math notranslate nohighlight">\(VW^V\)</span>.</p>
+<p>We can apply mask to tokens when we want to only allow a subset of keys and values to be queried. Normally, we associate each token with a binary <em><strong>mask</strong></em> <span class="math notranslate nohighlight">\(mask \in \{0, 1\}^{m}\)</span>, where <span class="math notranslate nohighlight">\(0\)</span> indicates exclusion of its key. With masks applied, we can compute un-normalized attention weights via</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\tilde{w}_{ij}^{att} =\left\{\begin{array}{ll}
+	[QW^Q]_i[KW^K]^T_j &amp; \text { if token } j \text{ is not masked} \\
+	-\infty &amp; \text { if token } j \text{ is masked}
+\end{array}\right.
+\end{split}\]</div>
+<p>Here by setting un-normalized attention weight to <span class="math notranslate nohighlight">\(-\inf\)</span>, we are effectively setting the normalized attention weight to zero.</p>
+<p>At this point, it is clear that the memory and computational complexity required to compute the attention matrix is quadratic in the input sequence length <span class="math notranslate nohighlight">\(n\)</span>. This could be a bottleneck the overall utility of attention-based models in applications involving the processing of long sequences.</p>
+</section>
+<section id="comparison-with-recurrent-layer-in-sequence-modeling">
+<h3>Comparison with recurrent layer in sequence modeling<a class="headerlink" href="#comparison-with-recurrent-layer-in-sequence-modeling" title="Link to this heading">#</a></h3>
+<p>This section compares self-attention layers with recurrent layers, which are commonly used in sequence modeling.</p>
+<p>The following table summarize the comparison of these layer types based on the following aspects:</p>
+<ul class="simple">
+<li><p>Total computational complexity per layer</p></li>
+<li><p>Potential for parallelization, measured by the minimum number of required sequential operations</p></li>
+</ul>
+<p>First, regarding the computational complexity for processing a sequence with length <span class="math notranslate nohighlight">\(n\)</span>,</p>
+<ul class="simple">
+<li><p>As self-attention layers connect all positions with a constant number of operations, so it has <span class="math notranslate nohighlight">\(O(1)\)</span> complexity for the number of sequential operations. As each token in the sequence needs to attend to all other tokens, and the attention between two tokens are dot product with complexity <span class="math notranslate nohighlight">\(O(d)\)</span>, the total computational complexity for self-attention is <span class="math notranslate nohighlight">\(O(n^2d_{model})\)</span></p></li>
+<li><p>Recurrent layers require <span class="math notranslate nohighlight">\(O(n)\)</span> sequential operations. Within each sequential operation, the state vector of dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span> will be updated by multiplying matrices of <span class="math notranslate nohighlight">\(d_{model}\times d_{model}\)</span>, and input vecotr of dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span>. In total, each sequential operation will have <span class="math notranslate nohighlight">\(O(d_{model}^2\)</span> computational complexity, and the complexity of sequence of length <span class="math notranslate nohighlight">\(n\)</span> becomes <span class="math notranslate nohighlight">\(O(n\cdot d^2_{model})\)</span>.</p></li>
+</ul>
+<p>The</p>
+<p>To reduce computational complexity for self-attention when it comes to very long sequences, we can restrict the attention window size to be a neighborhood of size r, which will reduce the complexity to <span class="math notranslate nohighlight">\(O(r \cdot n \cdot d)\)</span> .</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Layer Type</p></th>
+<th class="head text-center"><p>Complexity per Layer</p></th>
+<th class="head text-center"><p>Sequential <br> Operations</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Self-Attention</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(O\left(n^2 \cdot d_{model}\right)\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(O(1)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Recurrent</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(O\left(n \cdot d^2_{model}\right)\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(O(n)\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Self-Attention (restricted)</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(O(r \cdot n \cdot d)\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(O(1)\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="pointwise-feedforward-layer">
+<h3>Pointwise FeedForward Layer<a class="headerlink" href="#pointwise-feedforward-layer" title="Link to this heading">#</a></h3>
+<p>After all input embedding vectors go through multi-head self-attention layer, each of the output contextualized embedding vectors is still a linear weighted sum of input vectors, with the weight given by the attention matrix values.
+The motivation of a point-wise two-layer feed-forward network is to enhance the modeling capacity with non-linearity transformations (e.g., with ReLU activations) and interactions between different feature spaces. The pointwise feed-forward layer applies to input <span class="math notranslate nohighlight">\(x\in \mathbb{R}^{d_{model}}\)</span> at each position separately and identically (i.e., sharing parameters across positions) [<a class="reference internal" href="#chapter-foundation-fig-pretrained-lm-transformer-pointwiseffn"><span class="std std-numref">Fig. 7</span></a>]:</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{FFN}(x)=\max \left(0, x W_{1}+b_{1}\right) W_{2}+b_{2}.
+\]</div>
+<p>Typically, the first layer first maps the embedding vector  of dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span> to a larger dimensionality <span class="math notranslate nohighlight">\(d_{ff}\)</span> (e.g., <span class="math notranslate nohighlight">\(d_{model} = 512, d_{ff}=2048\)</span>) and then the second layer map the intermediate vector to a vector with same input vector size</p>
+<figure class="align-default" id="chapter-foundation-fig-pretrained-lm-transformer-pointwiseffn">
+<a class="reference internal image-reference" href="../../_images/pointwise_FFN.png"><img alt="../../_images/pointwise_FFN.png" src="../../_images/pointwise_FFN.png" style="width: 483.29999999999995px; height: 217.79999999999998px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Point-wise feed-forward network to perform nonlinear transformation on the contextualized embedding at each position.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-lm-transformer-pointwiseffn" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>There are additional dropouts, residual connections, and layer-wise normalization after the point-wise feed-forward layer. Taken all together, now we can define the following encoder layer.</p>
+<div class="proof definition admonition" id="chapter_foundation_def_pretrained_LM_transformer_encoder_layer">
+<p class="admonition-title"><span class="caption-number">Definition 2 </span> (Encoder layer)</p>
+<section class="definition-content" id="proof-content">
+<p>Given <span class="math notranslate nohighlight">\(n\)</span> sequential input embeddings represented as <span class="math notranslate nohighlight">\(e_{in} = (e_{in,1},...,e_{in,n})\)</span>. The Transformer encoder layer performs the following calculation procedures</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+    e_{mid} &amp;= \operatorname{LayerNorm} (e_{in} + \operatorname{MultiHeadAttention}(e_{in}, e_{in}, e_{in}, padMask)) \\
+    e_{out} &amp;= \operatorname{LayerNorm} (e_{mid} + \operatorname{FFN}(e_{mid}))
+\end{align}  
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(e_{mid}, e_{out} \in \mathbb{R}^{n\times d_{model}}, \)</span></p>
+<div class="math notranslate nohighlight">
+\[\operatorname{FFN}(e_{mid}) = \max(0, e_{mid} W_1 + b_1)W_2 + b_2,\]</div>
+<p>with <span class="math notranslate nohighlight">\(W_1\in \mathbb{R}^{d_{model}\times d_{ff}}\)</span>, <span class="math notranslate nohighlight">\(W_2\in \mathbb{R}^{d_{ff}\times d_{model}}\)</span>, <span class="math notranslate nohighlight">\(b_1,b_2 \in \mathbb{R}^{d_{ff}}\)</span>, and the <span class="math notranslate nohighlight">\(padMask\)</span> excludes padding symbols in the sequence.</p>
+</section>
+</div><p>In a typical setting, we have <span class="math notranslate nohighlight">\(d_{\text {model }}=512\)</span>, and the inner-layer has dimensionality <span class="math notranslate nohighlight">\(d_{ff}=2048\)</span>.</p>
+<p>The whole computation in the encoder module can be summarized in the following.</p>
+<div class="proof definition admonition" id="chapter_foundation_def_pretrained_LM_transformer_encoder_computation">
+<p class="admonition-title"><span class="caption-number">Definition 3 </span> (computation in encoder module)</p>
+<section class="definition-content" id="proof-content">
+<p>Given an input sequence represented by integer sequence <span class="math notranslate nohighlight">\(s = (i_1,...,i_p,...,i_n)\)</span> and its position <span class="math notranslate nohighlight">\(s^p = (1,..., p, ..., n)\)</span>. The encoder module takes <span class="math notranslate nohighlight">\(s, s^p\)</span> as inputs and produce <span class="math notranslate nohighlight">\(e_N \in \mathbb{R}^{n\times d_{model}}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    e_{0}&amp;=\operatorname{WE}(s)+ \operatorname{PE}(s^p) \\
+    e_1 &amp; = \operatorname{EncoderLayer}(e_0) \\
+    e_2 &amp; = \operatorname{EncoderLayer}(e_1) \\
+    &amp;\cdots \\
+    e_L &amp; = \operatorname{EncoderLayer}(e_{L - 1})
+\end{align}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(e_i \in \mathbb{R}^{n\times d_{model}}\)</span>, <span class="math notranslate nohighlight">\(\operatorname{EncoderLalyer}: \mathbb{R}^{n\times d_{model}}\to \mathbb{R}^{n\times d_{model}}\)</span> is an encoder sub-unit, <span class="math notranslate nohighlight">\(N\)</span> is the number of encoder layers. Specifically, this encoder layer is given by \autoref{ch:neural-network-and-deep-learning:Advanced:NLP:def:BERTencoderLayer}.
+Note that Dropout operations are not shown above. Dropouts are applied after initial embeddings <span class="math notranslate nohighlight">\(e_0\)</span>, every self-attention output, and every point-wise feed-forward network output.</p>
+</section>
+</div><p>Also note that there is active research on where to optimally add the layer normalization in the encoder <span id="id3">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id384" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span>. As shown in <a class="reference internal" href="#chapter-foundation-fig-pretrained-lm-transformer-layernormalizationposition"><span class="std std-numref">Fig. 8</span></a>, post-layer normalization (the one in the original paper <span id="id4">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1125" title="Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Advances in neural information processing systems, 5998–6008. 2017.">VSP+17</a>]</span>) adds normalization layer after multi-head attention output and feed-forward layer output. Pre-layer normalization, on the other hand, adds normalization layer before the inputs entering into the multi-head attention and feed-forward layers.</p>
+<figure class="align-default" id="chapter-foundation-fig-pretrained-lm-transformer-layernormalizationposition">
+<a class="reference internal image-reference" href="../../_images/layer_normalization_position.png"><img alt="../../_images/layer_normalization_position.png" src="../../_images/layer_normalization_position.png" style="width: 471.59999999999997px; height: 351.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Post-layer normalization and pre-layer normalization in an encoder layer.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-lm-transformer-layernormalizationposition" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="decoder-anatomy">
+<h3>Decoder anatomy<a class="headerlink" href="#decoder-anatomy" title="Link to this heading">#</a></h3>
+<p>In the decoder side, we are similarly given an output sequence represented by integer sequence <span class="math notranslate nohighlight">\(o = (o_1,...,o_p,...,o_m), o_p\in \mathbb{N}\)</span>, <span class="math notranslate nohighlight">\(e.g., o = (5, 10, 30, 2, ..., 21)\)</span>. The decoder module  aims to converts an output sequence <span class="math notranslate nohighlight">\(o\)</span>, combining with resulting embedding <span class="math notranslate nohighlight">\(e_N\)</span> in the encoder module to its corresponding probabilities over the vocabulary. The output probability can be used to compute categorical loss that drives the learning process of the encoder and the decoder.</p>
+<p>Note that there are two type of attention in the decoder module, one is self-attention among the output sequence itself and one is attention between encoder output and decoder output, i.e., <em><strong>encoder-decoder attention</strong></em>.
+The encoder-decoder attention uses a mask that excludes padding symbol in the input sequence. The queries come from the output of previous sub-unit and keys and values come from the final output of the encoder module. This allows decoder sub-units to attend to all positions in the input sequence.</p>
+<p>In each decoder layer, inputs are first contextualized via multi-head self-attention. Because we restrict each input token to only attend to its preceding input tokens, we apply a mask</p>
+<p>The decoder self-attention uses a mask that excludes padding symbol and future symbol, which can be computed via logical <span class="math notranslate nohighlight">\(\operatorname{OR}\)</span> between <span class="math notranslate nohighlight">\(padMask\)</span> and <span class="math notranslate nohighlight">\(seqMask\)</span>. <span class="math notranslate nohighlight">\(seqMask\)</span> for a symbol at position <span class="math notranslate nohighlight">\(i\)</span> is a binary vector <span class="math notranslate nohighlight">\(seqMask_i \in \mathbb{R}^m\)</span> whose value is 1 at position equal or greater than <span class="math notranslate nohighlight">\(i\)</span>. Therefore, for a sequence of length <span class="math notranslate nohighlight">\(m\)</span>, the complete <span class="math notranslate nohighlight">\(seqMask\)</span> would be a upper triangle matrix value 1.</p>
+<p><a class="reference internal" href="#chapter-foundation-fig-pretrained-lm-transformer-transformer-arch-module"><span class="std std-numref">Fig. 9</span></a> illustrates the connection between the Encoder component and Decoder component.</p>
+<figure class="align-default" id="chapter-foundation-fig-pretrained-lm-transformer-transformer-arch-module">
+<a class="reference internal image-reference" href="../../_images/transformer_arch_module.png"><img alt="../../_images/transformer_arch_module.png" src="../../_images/transformer_arch_module.png" style="width: 586.8px; height: 415.8px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Illustration of the interaction between encoder module output and deconder in Transformer.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-lm-transformer-transformer-arch-module" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The whole computation in the decoder module can be summarized in the following.</p>
+<div class="proof definition admonition" id="definition-2">
+<p class="admonition-title"><span class="caption-number">Definition 4 </span> (computation in decoder module)</p>
+<section class="definition-content" id="proof-content">
+<p>Given an input sequence represented by integer sequence <span class="math notranslate nohighlight">\(o = (o_1,...,o_p,...,o_n)\)</span> and its position <span class="math notranslate nohighlight">\(o^p = (1,..., p, ..., m)\)</span>. The encoder module takes <span class="math notranslate nohighlight">\(o, o^p\)</span> as inputs, combines final contextualized embedding <span class="math notranslate nohighlight">\(e_N\)</span> from the encoder, and produce <span class="math notranslate nohighlight">\(d_N \in \mathbb{R}^{n\times d_{model}}\)</span> and probabilities over the vocabulary.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    d_{0}&amp;=\operatorname{WE}(o)+ \operatorname{PE}(o^p) \\
+    d_1 &amp; = \operatorname{DecoderLayer}(d_0, e_N) \\
+    d_2 &amp; = \operatorname{DecoderLayer}(d_1, e_N) \\
+    &amp;\cdots \\
+    d_N &amp; = \operatorname{DecoderLayer}(d_{N - 1}, e_N) \\
+    output~prob &amp;= \operatorname{Softmax}(d_N W)
+\end{align}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(d_0 \in \mathbb{R}^{m\times d_{model}}\)</span>, <span class="math notranslate nohighlight">\(\operatorname{DecoderLayer}: R^{m\times d_{model}}\to R^{m\times d_{model}}\)</span> is a decoder sub-unit, <span class="math notranslate nohighlight">\(N\)</span> is the number of decoder sub-units, <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{ d_{model} \times |V|^O}\)</span>. Specifically, each decoder layer can be decomposed into following calculation procedures</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    d_{mid1} &amp;= \operatorname{LayerNorm} (d_{in} + \operatorname{MultiHeadAttention}(d_{in}, d_{in}, d_{in})) \\
+    d_{mid2} &amp;= \operatorname{LayerNorm} (d_{mid1} + \operatorname{MaskedMultiHeadAttention}(d_{mid1}, e_{N}, e_{N})) \\
+    d_{out} &amp;= \operatorname{LayerNorm} (d_{mid2} + \operatorname{FFN}(d_{mid2}))
+\end{align}  
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(d_{mid1}, d_{mid2}, d_{out} \in \mathbb{R}^{m\times d_{model}}, \)</span></p>
+<div class="math notranslate nohighlight">
+\[FFN(d_{out}) = \max(0, d_{mid} W_1 + b_1)W_2 + b_2,\]</div>
+<p>with <span class="math notranslate nohighlight">\(W_1\in \mathbb{R}^{d_{model}\times d_{ff}}, W_2\in \mathbb{R}^{d_{ff}\times d_{model}}, b_1 \in \mathbb{R}^{d_{ff}}, b_2\in \mathbb{R}^{d_{model}}\)</span>.</p>
+</section>
+</div></section>
+<section id="computational-breakdown-analysis">
+<h3>Computational breakdown analysis<a class="headerlink" href="#computational-breakdown-analysis" title="Link to this heading">#</a></h3>
+<p>In the following, we analyze the two core components of the Transformer (i.e., the self-attention module and the position-wise FFN). Let the model dimension be <span class="math notranslate nohighlight">\(D\)</span>, and the input sequence length be <span class="math notranslate nohighlight">\(T\)</span>. We also assume that the intermediate dimension of FFN is set to <span class="math notranslate nohighlight">\(4D\)</span> and the dimension of keys and values are set to <span class="math notranslate nohighlight">\(D/H\)</span> in the self-attention module.</p>
+<p>The following data summarize the complexity and number of parameters for these two modules.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Module</p></th>
+<th class="head text-center"><p>Complexity</p></th>
+<th class="head text-center"><p>#Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>self-attention</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(O\left(T^2 \cdot D\right)\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(4 D^2\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>position-wise FFN</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(O\left(T \cdot D^2\right)\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(8 D^2\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Here are the key observations:</p>
+<ul class="simple">
+<li><p>When the input sequences are short, the hidden dimension <span class="math notranslate nohighlight">\(D\)</span> dominates the complexity of self-attention and position-wise FFN. The bottleneck of Transformer thus lies in FFN.</p></li>
+<li><p>When the input sequences grow longer, the sequence length <span class="math notranslate nohighlight">\(T\)</span> gradually dominates the complexity of these modules, in which case self-attention becomes the bottleneck of Transformer.</p></li>
+<li><p>Furthermore, the computation of self-attention requires that a <span class="math notranslate nohighlight">\(T \times T\)</span> attention distribution matrix is stored, which makes the computation of Transformer to be memory bounded.</p></li>
+</ul>
+</section>
+</section>
+<section id="different-branches-of-developments">
+<h2>Different branches of developments<a class="headerlink" href="#different-branches-of-developments" title="Link to this heading">#</a></h2>
+<section id="overview">
+<h3>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="chapter-foundation-fig-pretrained-lm-transformer-transformer-families">
+<a class="reference internal image-reference" href="../../_images/transformer_families.png"><img alt="../../_images/transformer_families.png" src="../../_images/transformer_families.png" style="width: 432.9px; height: 315.9px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Different branches of developments derived from the Transformer architecture: (left) Encoder branch, (middle) Encoder-Decoder branch, and (right) Decoder branch.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-lm-transformer-transformer-families" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The Transformer architecture was originally intended to tackle challenges in Seq2Seq tasks such as machine translation or summarization. The simplicity in architecture and effectiveness of attention mechanism draw much interest since its invention. Transformer type of architectures have become the dominant model architecture for most of NLP tasks. Moreover, Transformer architecture has also been widely adopted in computer vision <span id="id5">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1450" title="Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, and others. An image is worth 16x16 words: transformers for image recognition at scale. arXiv preprint arXiv:2010.11929, 2020.">DBK+20</a>]</span> and recommender systems <span id="id6">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1451" title="Fei Sun, Jun Liu, Jian Wu, Changhua Pei, Xiao Lin, Wenwu Ou, and Peng Jiang. Bert4rec: sequential recommendation with bidirectional encoder representations from transformer. In Proceedings of the 28th ACM international conference on information and knowledge management, 1441–1450. 2019.">SLW+19</a>]</span>, which were previously by other CNN and DNN architectures.</p>
+<p>In the process of adapting Transformer for different applications, there have been efforts that continue the improvement on the original encoder-decoder architecture as well as efforts that use only the encoder part or the decoder part separately.</p>
+<p>The objective, also known as <em><strong>denoising objective</strong></em>, is to fully recover the original input from the corrupted one in a bidirectional fashion, as shown on the left side of Figure 4.1, which you will see shortly. As seen in the <em><strong>Bidirectional Encoder Representations from Transformers (BERT)</strong></em> architecture, which is a notable example of AE models, they can incorporate the context of both sides of a word. However, the first issue is that the corrupting [MASK] symbols that are used during the pre-training phase are absent from the data during the fine-tuning phase, leading to a pre-training-fine-tuning discrepancy. Secondly, the BERT model arguably assumes that the masked tokens are independent of each other.</p>
+<p>On the other hand, AR models keep away from such assumptions regarding independence and do not naturally suffer from the pre-train-fine-tuning discrepancy because they rely on the objective predicting the next token conditioned on the previous tokens without masking them. They merely utilize the decoder part of the transformer with masked selfattention. They prevent the model from accessing words to the right of the current word in a forward direction (or to the left of the current word in a backward direction), which is called <em><strong>unidirectionality</strong></em>. They are also called Causal Language Models (CLMs) due to their unidirectionality.</p>
+<p>For different branches of models, we employ different training strategies:
+\begin{itemize}
+\item Generative pretrained models like the GPT family are trained using a Causal Language Modeling objective.
+\item Denoising models like the BERT family are trained using a Masked Language Modeling objective.
+\item Encoder-decoder models like the T5, BART or PEGASUS models are trained using heuristics to create pairs of (inputs, labels). These heuristics can be for instance a corpus of pairs of sentences in two languages for a machine translation model, a heuristic way to identify summaries in a large corpus for a summarization model or various ways to corrupt inputs with associated uncorrupted inputs as labels which is a more flexible way to perform denoising than the previous masked language modeling.
+\end{itemize}</p>
+</section>
+<section id="the-encoder-branch">
+<h3>The encoder branch<a class="headerlink" href="#the-encoder-branch" title="Link to this heading">#</a></h3>
+<p>The most influential encoder-based model is <em><strong>BERT</strong></em> <span id="id7">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1126" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.">DCLT18</a>]</span>, which stands for Bidirectional Encoder Representations from Transformers.  BERT is pretrained with the two objectives:</p>
+<ul class="simple">
+<li><p>Predicting masked tokens in texts, known as masked language modeling (MLM)</p></li>
+<li><p>Determining if two text passages follow each other, which is known as next-sentence-prediction (NSP).
+The MLM helps learning of contextualized word-level representation, and the NSP objective aims to improve the tasks like question answering and natural language inference, which require reasoning over sentence pairs. BERT used the BookCorpus and English Wikipedia for pretraining and the model can then be fine-tuned with supervised data on downstream natural language understanding (NLU) tasks such as text classification, named entity recognition, and question-answering. At the time it was published, it achieved all state-of-the-art results on the popular GLUE benchmark. The success of BERT drew significant attention and up to date BERT like Encoder-only models dominate research and industry on natural language understanding (NLU) tasks <span id="id8">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1455" title="Patrick Xia, Shijie Wu, and Benjamin Van Durme. Which* bert? a survey organizing contextualized encoders. arXiv preprint arXiv:2010.00854, 2020.">XWVD20</a>]</span>. We will discuss BERT in the following chapter.</p></li>
+</ul>
+<p><em><strong>RoBERTa</strong></em> (Robustly Optimized BERT) is a follow-up study of BERT, which reveals that the performance of BERT can be further improved by modifying the pretraining scheme. RoBERTa uses larger batches with more training data and dropped the NSP task to significantly improve the performance over the original BERT model.</p>
+<p>Although BERT model delivers great results, it can be expensive and difficult to deploy in production due to its model size and memory footprint. The <em><strong>ALBERT</strong></em> model [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:sec:BERT_ALBERT}] introduced three changes to make the encoder architecture more efficient. First, it reduces embedding dimensionality via matrix factorization, which saves parameters especially when the vocabulary gets large. Second, all layers share the parameters which decreases the number of effective parameters even further. Finally, ALBERT enhance the NSP objective with a more challenging sentence-ordering prediction (SOP), which primary focuses on inter-sentence coherence for sentence pairs in the same text segment.</p>
+<p>By using model compression techniques like knowledge distillation, we can preserve most of the BERT performance with much smaller model size and memory footprint. Representative models include <em><strong>DistilBERT</strong></em> and <em><strong>TinyBERT</strong></em>.</p>
+</section>
+</section>
+<section id="the-decoder-branch">
+<h2>The decoder branch<a class="headerlink" href="#the-decoder-branch" title="Link to this heading">#</a></h2>
+<p>The decoder component in the Transformer model can be used for auto-regressive language modeling. GPT series are among the most successful auto-regressive pretrained language models, and they form the foundation of LLM.</p>
+<p><em><strong>GPT-1</strong></em> <span id="id9">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1127" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf, 2018.">RNSS18</a>]</span>: One of the major contributions of the GPT-1 study is the introduction of a two-stage unsupervised pretraining and supervised fine-tuning scheme. They demonstrates that a pre-trained model with fine-tuning can achieve satisfactory results over a range of diverse tasks, not just for a single task.</p>
+<p><em><strong>GPT-2</strong></em> <span id="id10">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1128" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>]</span>:  is a larger model trained on much more training data, called WebText, than the original one. It achieved state-of-the-art results on seven out of the eight tasks in a zero-shot setting in which there is no fine-tuning applied. The key contribution of GPT-2 is demonstrating the capability of zero-shot learning with extensively pretrained language model alone (i.e., no finetuning).</p>
+<p><em><strong>GPT-3</strong></em> <span id="id11">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id382" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>]</span>: GPT-3 is up-scaled from GPT-2 by a factor of 100. It demonstrated that lead to significant improvements in performance and capabilities, which also marked the beginning of LLM era. Besides being able to generate impressively realistic text passages, the model also exhibits few-shot learning capabilities: with a few examples of a novel task such as text-to-code examples the model is able to accomplish the task on new examples.</p>
+</section>
+<section id="the-encoder-decoder-branch">
+<h2>The encoder-decoder branch<a class="headerlink" href="#the-encoder-decoder-branch" title="Link to this heading">#</a></h2>
+<p>Although it has become common to build models using a single encoder or decoder stack, there are several encoder-decoder variants of the Transformer that have novel applications across both NLU and NLG domains:</p>
+<p><em><strong>T5</strong></em> The T5 model unifies all NLU and NLG tasks by converting all tasks into a text-to-text paradigm. As such all tasks are framed as sequence-to-sequence tasks where adopting an encoder-decoder architecture is natural. The T5 architecture uses the original Transformer architecture. Using the large crawled C4 dataset, the model is pre-trained with masked language modeling as well as the SuperGLUE tasks by translating all of them to text-to-text tasks. The largest model with 11 billion parameters yielded state-of-the-art results on several benchmarks although being comparably large.</p>
+<p><em><strong>BART</strong></em> BART combines the pretraining procedures of BERT and GPT within the encoder-decoder architecture. The input sequences undergoes one of
+several possible transformation from simple masking, sentence permutation, token deletion to document rotation. These inputs are passed through the encoder and the decoder has to reconstruct the original texts. This makes the model more flexible as it is possible to use it for NLU as well as NLG tasks and it achieves state-of-the-artperformance on both.</p>
 </section>
 </section>
 
@@ -492,8 +832,22 @@ Similarly, the decoder module on the right also consists of blocks that are stac
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretrained-language-models">Pretrained Language Models</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformers">Transformers</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-architecture">Overall architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-output-conventions">Input output conventions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#position-encodings">Position encodings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multihead-attention-with-masks">Multihead attention with masks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-with-recurrent-layer-in-sequence-modeling">Comparison with recurrent layer in sequence modeling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pointwise-feedforward-layer">Pointwise FeedForward Layer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decoder-anatomy">Decoder anatomy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-breakdown-analysis">Computational breakdown analysis</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#different-branches-of-developments">Different branches of developments</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-encoder-branch">The encoder branch</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-decoder-branch">The decoder branch</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-encoder-decoder-branch">The encoder-decoder branch</a></li>
 </ul>
   </nav></div>
 

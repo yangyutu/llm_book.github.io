@@ -31,9 +31,9 @@ Predicting the next word in a language system can be much more challenging than 
 
 In this section, we first consider a classical $n$-gram statistical language approach {cite:p}`manning1999foundations`, where we count the co-occurrence of words and model the language generation using probabilistic models (e.g., Markov chains). $n$-gram models focus on predicting next word based on the superficial co-occurrence counts instead of high-level semantic links between the context and the unknown next word,  It further suffers from the curse of dimensionality since sentences are normally long and language vocabulary size is huge (e.g., $10^6$). Over the past two decades, the neural network based language models have attracted considerable attention because these models are able to reveal deep connections between words as well as to alleviate the dimensionality challenge. Our focus in this section is on early development of neural language models; recent developments of pre-trained language models (e.g., GPT 1-3 {cite:p}`radford2018improving, radford2019language, brown2020language`) will be covered in next section.
 
-## Statistical language models
+## Statistical Language Models
 
-### $n$-gram language model
+### $n$-gram Language Model
 
 The essential goal of language model is to estimate the joint probability of word sequence $w_{1:N} = w_1,...,w_{N}$. By definition, the unbiased probability estimation is given by
 
@@ -76,7 +76,7 @@ $$
 P\left(w_{1}^{N}\right) \approx \prod_{k=1}^{N} P\left(w_{k} | w_{k-1}\right).
 $$
 
-### Model parameter estimation
+### Model Parameter Estimation
 
 For a $n$-gram language model, there are $|V|^n$ the model parameters to be estimated: 
 
@@ -101,7 +101,7 @@ For example,
 $$p(\text { is| artificial intelligence })=\frac{\operatorname{count}(\text { artificial intelligence is})}{\operatorname{count}(\text { artificial intelligence })}.$$
 
 
-#### $\star$ Deriving the MLE
+#### $\star$ Deriving The MLE
 
 Consider a sequence of random variables $w_0, w_1, ...,w_N$ representing a sentence composed of a sequence of tokens taken from the vocabulary $|V|$. Let $w_0$ be deterministic and take the value of starting token <SOS>. For a bigram language model, the model is completely defined by the conditional probability matrix $\theta \in \mathcal{R}^{|V|\times |V|}$, with $P(w_n = j|w_{n-1} = i) = \theta_{ij}$. Here $i$ is shorthand for the $i$ token in the vocabulary.
  
@@ -142,7 +142,7 @@ where $\operatorname{count}(w_i)$ is the number of $w_i$ in the corpus, $|V|$ is
 
 A unigram language model does not capture any transitional relationship between words. When we use a unigram language model to generate sentences, the resulted sentences would mostly consist of high-frequent words and thus hardly make sense. 
 
-### Choices of $n$ and bias-variance trade-off
+### Choices Of $n$ And Bias-variance Trade-off
 
 
 
@@ -156,7 +156,7 @@ Typically, the longer the context we condition on in predicting the next word, t
 
 The choice of appropriate $n$ is related to bias-variance trade-off. A small $n$-gram size introduces high bias, and a large $n$-gram size introduces high variance. Since human language is full of long-range dependencies, in practice, we tend to keep $n$ large and at the same time use smoothing tricks, as some sort of bias, to achieve low-variance estimates of the model parameters. 
 
-### Out of vocabulary (OOV) words and rare words
+### Out Of Vocabulary (OOV) Words And Rare Words
 
 Some early speech and language applications might just involve a closed vocabulary, in which the vocabulary is known in advance and the runtime test set will contain words from the vocabulary. Modern natural language application typically involves an open vocabulary in which out of vocabulary words can occur. For those cases, which can simply add a pseudo-word <UNK>, and treat all the OOV words as the <UNK>. 
 
@@ -164,8 +164,8 @@ In applications where we don't have a prior vocabulary in advance and need to cr
 
 Note that how the vocabulary is constructed and how we map rare words to <UNK> affects how we evaluate the quality of language model using likelihood based metrics (e.g., perplexity). For example, a language model can achieve artificially low perplexity by choosing a small vocabulary and assigning many words to the unknown word.
 
-## Smoothing and discounting techniques
-### Add $\alpha$ smoothing and discounting
+## Smoothing And Discounting Techniques
+### Add $\alpha$ Smoothing And Discounting
 One fundamental limit of the baseline counting method is the zero probability assigned to $n$-grams that do not appear in the training corpus. This has a significant impact when we use the model to score a sentence. For example,  one zero probability of any unseen bigram $w_{i-1},w_i$ will cause the probability of the sequence $w_1,...,w_i,...,w_n$ to be zero. 
 
 ````{prf:example}
@@ -231,7 +231,7 @@ Consider following 7 events with a total count of 20. The following table demons
 ````
 
 
-### Katz's back-off
+### Katz's Back-off
 
 
 The smoothing method discussed above borrows probability mass from observed $n$-grams and redistributes it to all $n-$grams, including both observed ones and unobserved ones. The borrowed amount is controlled by the parameter $\alpha$. A variation of such re-distribution is to just redistribute the borrowed probablity mass to those unobserved one. A key characteristic of these redistribution methods is that redistribution is carried out **equally**. 
@@ -274,10 +274,10 @@ So far we have discussed the back-off idea of redistributing probability mass to
 * if we don’t even have bigram probabilities, then use unigram probabilities.
 ````
 
-## Model evaluation
+## Model Evaluation
 
 
-### Evaluation metrics
+### Evaluation Metrics
 
 Given a training corpus, we can build different language models with different $n$-gram settings as well as other model smoothing hyperparameter. There model training hyperparameters give different bias and variance trade-off and we need an evaluation method to gauge which hyperparameter is better for intended applications.
 
@@ -302,7 +302,7 @@ Suppose we construct the vocabulary by mapping words whose frequencies are below
 In the inference stage, rare words in the test corpus will be mapped to the <UNK> token and we tend to overestimate their transition probabilities, thus causing the final perplexity to be lower.  
 ````
 
-### More on perplexity
+### More On Perplexity
 
 A state-of-the-art language model typically can achieve perplexity value ranging from 20 to 200 on a general test set. How do we interpret the perplexity value? Perplexity can be thought of as the effective vocabulary size under the model, that is, given the context, the number of possible options for the next word.
 
@@ -391,10 +391,9 @@ In comparison to the Mikolov processed version of the Penn Treebank (PTB), the W
 | OOV ratio | 0.4% | | |
 ```
 ````
-## Neural language models
+## Neural Language Models
 
 
 ## Bibliography
 
 ```{bibliography} ../../_bibliography/references.bib
-```

@@ -19,7 +19,7 @@ These limitations of $n$-gram models motivated researchers to explore neural net
 
 $n$-gram models also fails to capture the semantic meaning of words.  
 
-### Feed-forward neural language model
+### Feed-forward Neural Language Model
 
 The core idea of $n$-gram model is nothing but a mechanical counter of co-occurrence of words. In natural language, there are many words that are similar in their meaning as wells as their grammar rules. 
 For example, \textit{A cat is walking in the living room} vs. \textit{a dog is running in the bedroom} have similar word pairs (cat, dog), (walking, running), (living room, bedroom) and use similar patterns. 
@@ -52,7 +52,7 @@ name: chapter_foundation_fig_language_model_feedforward_model
 ---
 Feedforward neural netowk based language model.
 ```
-## Recurrent neural language model
+## Recurrent Neural Language Model
 
 In recurrent network model [{ref}`chapter_foundation_fig_language_model_recurrent_model`], context is extended via recurrent connections and context length is theoretically unlimited.
 Specially, let the recurrent network input be $x$, hidden layer output be $h$  and output probabilities be $y$. Input vector $x_t$ is a concatenation of a word vector $w_t$ and the previous hidden layer output $s_{t-1}$, which represents the context. To summarize, we have recurrent computation given by

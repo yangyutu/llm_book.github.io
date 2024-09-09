@@ -1,0 +1,784 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>GPT Series &#8212; LLM Foundations</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_foundation/GPT_series';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="LLM Dense Architectures Fundamentals" href="../chapter_LLM_arch/LLM_dense_architectures.html" />
+    <link rel="prev" title="Seq2Seq, T5, And BART" href="t5.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/qe-logo-large.png" class="logo__image only-light" alt="LLM Foundations - Home"/>
+    <script>document.write(`<img src="../../_static/qe-logo-large.png" class="logo__image only-dark" alt="LLM Foundations - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="language_models.html">Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neural_language_models.html">Early Neural Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="word_embeddings.html">Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformers.html">Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bert.html">BERT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="t5.html">Seq2Seq, T5, And BART</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">GPT Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">LLM Dense Architectures Fundamentals</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">MOE sparse models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">LLM training fundamentals</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">LLM finetuning</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">LLM alignement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">LLM Training Acceleration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">LLM Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration: Overview</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">Basic prompt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">Advanced prompt techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">Basic RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">Advanced rag techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">Multimodality fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">Vision transformers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">Application of LLM in IR</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/docs/chapter_foundation/GPT_series.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>GPT Series</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-1">GPT-1</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">Pretraining</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-1-fine-tuning">GPT-1 Fine Tuning</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-2">GPT-2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-3">GPT-3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-overview">Performance Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applications">Applications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#machine-translation">Machine Translation</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="gpt-series">
+<h1>GPT Series<a class="headerlink" href="#gpt-series" title="Link to this heading">#</a></h1>
+<section id="gpt-1">
+<h2>GPT-1<a class="headerlink" href="#gpt-1" title="Link to this heading">#</a></h2>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h3>
+<p>GPT-1\cite{radford2018improving} and its successors (GPT-2 and GPT-3) are a series Transformer-based model architectures aim to offer generic task-agnostic model architecture and learning schemes to diverse natural language processing (NLP) tasks, such as textual entailment, question answering, semantic similarity assessment.</p>
+<p>At that time, specific NLP tasks requires the collection of a massive amount of task-specific labeled data as well as the design of task-specific architectures that learns best from it. Given the broad range of NLP tasks, this paradigm does not scale well and model learning cannot be shared across different tasks.</p>
+<p>One of the major contributions of the GPT-1 study is the introduction of a two-stage unsupervised pretraining and supervised fine-tuning scheme. They demonstrates that a pre-trained model with fine-tuning can achieve satisfactory results over a range of diverse tasks, not just for a single task.</p>
+<p>GPT-1 model consists of multiple transformer decoder layers [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gptdecoderarch}]. Since there is no encoder, each decoder layer contains a masked multi-head self-attention layer along with a pointwise feed-forward layer. The pretraining task is generative language modeling, that it, predicting the next word given the preceding word sequence. In the Transformer architecture, the activation in the final transformer block is fed into a Softmax function that produces the word probability distributions over an entire vocabulary of words to predict the next word.</p>
+<p>In the stage unsupervised pretraining from unlabeled data, the goal is to learn a universal representation that can be easily adapted to a wide range of tasks. Following the pretraining, the model can be easily fine-tuned to a downstream task by a relatively small amount of task-specific data to achieve effective transfer. This two-stage scheme had a profound impact on the subsequent deep model learning and drew significant interest to pretrained large language models.</p>
+<p>\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{../figures/deepLearning/ApplicationsNLP/pretrainedLM/GPT/GPT_decoder_arch}
+\caption{GPT uses the decoder component in the Transformer for language modeling.}
+\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gptdecoderarch}
+\end{figure}</p>
+</section>
+<section id="pretraining">
+<h3>Pretraining<a class="headerlink" href="#pretraining" title="Link to this heading">#</a></h3>
+<p>The pretraining task of GPT-1 is generative language modeling, which predict the next words given preceding word sequence. Given an input sequence <span class="math notranslate nohighlight">\(\bm{x} = (x_1,...,x_T)\)</span>, generative language model maximize the log likelihood given by</p>
+<div class="math notranslate nohighlight">
+\[\sum_{t=1}^{T} \log p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1},\theta\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1}\right)\)</span> is the predicted probability distribution for token <span class="math notranslate nohighlight">\(x_t\)</span> contextualized over preceding token sequence <span class="math notranslate nohighlight">\(\bm{x}_{t-k-1:t-1}\)</span> with a context window size <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>The input tokens are first converted to input embeddings by summing up token embedding and position embedding. The input embedding <span class="math notranslate nohighlight">\(h_0\)</span> is fed into multiple Transformer layers to obtain contextualized hidden state <span class="math notranslate nohighlight">\(h\)</span>s a multi-headed self-attention operation over the input context tokens followed by position-wise feedforward layers to produce an output distribution over target tokens:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+	h_{0} &amp;=U W_{e}+W_{p} \\
+	h_{l} &amp;=\operatorname{TransformerLayer}\left(h_{l-1}\right) \forall \ell \in[1, L] \\
+	P(u) &amp;=\operatorname{Softmax}\left(h_{n} W_{e}^{T}\right)
+\end{align}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(U=\left(u_{-k}, \ldots, u_{-1}\right)\)</span> is the context vector of tokens, <span class="math notranslate nohighlight">\(n\)</span> is the number of layers, <span class="math notranslate nohighlight">\(W_{e}\)</span> is the token embedding matrix, and <span class="math notranslate nohighlight">\(W_{p}\)</span> is the position embedding matrix.</p>
+<p>GPT-1 uses the BooksCorpus dataset for pretraining. BooksCorpus is a large collection of free novel books (11,038 books), containing around 74M sentences and 1G words in 16 different sub-genres (e.g., Romance, Historical, Adventure, etc.). Pretrained GPT-1 can achieve a very low token level perplexity of 18.4 on this corpus.</p>
+</section>
+<section id="gpt-1-fine-tuning">
+<h3>GPT-1 Fine Tuning<a class="headerlink" href="#gpt-1-fine-tuning" title="Link to this heading">#</a></h3>
+<p>To pretrained GPT model can be adopted for different downstream tasks by modifying the inputs format or adding minimal component accordingly.  a task-specific format and then adding minimal component to process the output to get task-specific predictions. As summarized in \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gptarch},
+\begin{itemize}
+\item For a single-sequence task such as text classification, the input is passed through the network as-is, and the output linear layer takes the last activation to make a classification decision.
+\item For sentence-pair tasks such as textual entailment, the input that is made up of two sequences is marked with a delimiter, which helps the pre-trained model to know which part is premise or hypothesis in the case of textual entailment. Finally, the output linear layer takes the last activation to make a classification decision.
+\item For sentence similarity tasks, we use the model to encode the two differently-ordered sentence pairs separately into two sequence representations, which are added element-wise before being fed into the linear output layer.
+\item For tasks like Question Answering and Commonsense Reasoning, we are given a context document <span class="math notranslate nohighlight">\(z\)</span>, a question <span class="math notranslate nohighlight">\(q\)</span>, and a set of possible answers <span class="math notranslate nohighlight">\(\left\{a_{k}\right\}\)</span>. We concatenate the document context and question with each possible answer. Each of these sequences are processed independently with our model and then normalized via a Softmax layer to produce an output distribution over possible answers.
+\end{itemize}</p>
+<p>\begin{figure}[H]
+\centering
+\includegraphics[width=1.0\linewidth]{../figures/deepLearning/ApplicationsNLP/pretrainedLM/GPT/GPT_arch}
+\caption{Figure 1: (left) Transformer architecture and training objectives used in this work. (right) Input transformations for fine-tuning on different tasks. We convert all structured inputs into token sequences to be processed by our pre-trained model, followed by a linear+softmax layer. Image from \cite{radford2018improving}.}
+\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gptarch}
+\end{figure}</p>
+<p>The fine-tuning process involves continuing the model training over a labeled dataset <span class="math notranslate nohighlight">\(\mathcal{C}\)</span>. Take text classification task as an example. Suppose that each labeled example consists of a sequence of input tokens, <span class="math notranslate nohighlight">\(x^{1}, \ldots, x^{m}\)</span> along with a label <span class="math notranslate nohighlight">\(y\)</span>. The input sequence is first encoded by the pre-trained model to an embedding vector <span class="math notranslate nohighlight">\(h_{l}^{m}\)</span> at the position of the last input token. <span class="math notranslate nohighlight">\(h_{l}^{m}\)</span> is then fed into an linear layer with Softmax to obtain distribution over class labels. The training loss can simply be the binary cross entropy (BCE) loss. It is also found that including language modeling as an auxiliary task during fine-tuning can improve generalization of the fine-tuned model and speed up convergence.</p>
+</section>
+</section>
+<section id="gpt-2">
+<h2>GPT-2<a class="headerlink" href="#gpt-2" title="Link to this heading">#</a></h2>
+<p>GPT-2 \cite{radford2019language}, a successor to the original GPT-1, is a larger model trained on much more training data, called WebText, than the original one. It achieved state-of-the-art results on seven out of the eight tasks in a zero-shot setting in which there is no fine-tuning applied but had limited success in some tasks.
+The key contribution of GPT-2 is not about further refining the two-stage pretraining-fine-tuning paradigm in GPT-1, but about investigating the capability of zero-shot learning with extensively pretrained language model alone. In other words, it aims to answer whether language modeling is a universal task that can help the model to gain universal knowledge that can accomplish other language tasks without subsequent supervised learning.</p>
+<p>The intuition is that a model can be very skilled in the sense that it can learn much of the information about a language during the pre-training phase, there will be no need to learn extra information through fine-tuning phase. Take machine translation in the following box as an example, which contains examples of naturally occurring demonstrations of English to French and French to English translation found throughout the WebText training set. By learning to predict future words in the language modeling task, we expect the model to automatically acquire the ability to translate when we can provide the right prompt (e.g., \textit{translate from English to French}) to the model.</p>
+<p>\begin{mdframed}{}</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>\textit{I&#39;m not the cleverest man in the world}, but like they say in French: \textit{Je ne suis pas un imbecile} [I&#39;m not a fool].
+
+In a now-deleted post from Aug. 16, Soheil Eid, Tory candidate in the riding of Joliette, wrote in French: \textit{Mentez mentez, il en restera toujours quelque chose}, which translates as, \textit{Lie lie and something will always remain}.
+
+I hate the word \textit{perfume}, Burr says. It&#39;s somewhat better in French: \textit{parfum.}
+
+If listened carefully at 29:55, a conversation can be heard between two guys in French: \textit{Comment on fait pour aller de l&#39;autre coté? -Quel autre coté?}, which means \textit{How do you get to the other side? - What side?}.
+
+If this sounds like a bit of a stretch, consider this question in French: \textit{As-tu aller au cinéma?}, or \textit{Did you go to the movies?}, which literally translates as Have-you to go to movies/theater?
+
+\textit{Brevet Sans Garantie Du Gouvernement}, translated to English: \textit{Patented without government warranty}.
+</pre></div>
+</div>
+<p>\end{mdframed}</p>
+<p>To probe the learned knowledge in the pretraining stage, we specify the task itself through language. That is, a translation task can be specified via \textit{translate to french: English text}. If corresponding translated French text is produced, it suggests that the pretrained model has acquired the machine translation ability. Likewise, a reading comprehension task can be specified as \textit{answer the question: document}.</p>
+<p>One critical difference between GPT-2 and traditional NLP models that is the task in GPT-2 is formulated within the input, and the model is expected to understand the nature of downstream tasks and provide answers accordingly, while in traditional NLP models we engineer task-specific special symbols and components such that we convert the model’s output to what we need (e.g., a probability). In GPT-2, learning to perform a single task can be expressed in a probabilistic framework as estimating a conditional distribution <span class="math notranslate nohighlight">\(p\)</span> (output|input). Since a general system should be able to perform many different tasks, even for the same input, it should condition not only on the input but also on the task to be performed. That is, it should model <span class="math notranslate nohighlight">\(p\)</span> (output|input, task). Here we can view that input and task specification are provided via language itself rather than by changing part of the model parameters or architectures. This is the key to unlock the task-agnostic language understanding ability for large-scaled pretrained language models.</p>
+<p>GPT-2 uses the same Transformer decoder architecture like GPT-1, except that the model size is  has been expanded by more than 10 times from GPT-1. The training corpus used by GPT-1is the BookCorpus dataset, while the training corpus used by GPT-2 is crawled from more than 8 million web pages monolingual data, the amount of data is more than 10 times that of the GPT-1.</p>
+</section>
+<section id="gpt-3">
+<h2>GPT-3<a class="headerlink" href="#gpt-3" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h3>Introduction<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>GPT-3 model \cite{brown2020language} has 175 billion parameters, which is 100 times bigger than GPT-2. The architecture of GPT-2 and GPT-3 is similar, with the main differences usually being in the model size and the dataset quantity/quality. As a comparison, GPT-3 has 96 decoder layers with 96 multi-heads attentions and <span class="math notranslate nohighlight">\(d_model\)</span> of 12,288. In comparison, GPT-1 only has 12 layers, 12 heads, and <span class="math notranslate nohighlight">\(d_model\)</span> given by 768. The training data is further expanded from what is used in GPT-2.</p>
+<p>{\centering
+\begin{tabular}{lc}
+Dataset &amp; Quantity (tokens) \
+\hline Common Crawl (filtered) &amp; 410 billion \
+WebText2 &amp; 19 billion \
+Books1 &amp; 12 billion \
+Books2 &amp; 55 billion \
+Wikipedia &amp; 3 billion
+\end{tabular}
+}</p>
+<p>The major motivation of GPT-3 is to examine the few-shot learning ability for pretrained language model. This is inspired by the fact that humans can generally perform a new language task from only a few examples or from simple instructions - something which current NLP systems still largely struggle to do.
+By training on the massive amount of data using a model with large number of parameters, GPT-3 achieved better results on many downstream tasks in zero-shot, one-shot, and few-shot <span class="math notranslate nohighlight">\((K=32)\)</span> settings without any gradient-based fine-tuning.</p>
+<p>What is most special about GPT-3 is the ability to perform in-context \textbf{few-shot learning} without any model parameter updates via gradient descent [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gpt3fewshotlearningdemo}]. In a typical few-shot learning setting, the model is given a natura language description of the task plus a few demonstration examples (e.g., input and output pairs) of the task at inference time and the model is asked to generate an output given a new input. Here the input is called \textbf{context} and the output is called a \textbf{completion}. Take English sentence to French translation as an example, <span class="math notranslate nohighlight">\(K\)</span> examples of context and completion are presented with one final example of context, and the model is expected to provide the completion. Typically, <span class="math notranslate nohighlight">\(K\)</span> is in the range of 10 and 100. Clearly, few-shot learning is close to how human intelligence works and bring great metrics in reducing task-specific data.</p>
+<p>In the extreme end of few shot learning, one-shot learning is the case in which only one demonstration is presented. Further, zero-shot is the case where no demonstrations are given except for a natural language instruction describing the task. Zero-shot setting offers the ultimate test of the model’s learning capacity, but it can also be unfairly hard due to ambiguity.</p>
+<p>\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{../figures/deepLearning/ApplicationsNLP/pretrainedLM/GPT/GPT3_few_shot_learning_demo}
+\caption{Zero-shot, one-shot and few-shot, contrasted with traditional fine-tuning. The panels above show
+four methods for performing a task with a language model – fine-tuning is the traditional method, whereas zero-, one-,
+and few-shot, which we study in this work, require the model to perform the task with only forward passes at test
+time. We typically present the model with a few dozen examples in the few shot setting}
+\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gpt3fewshotlearningdemo}
+\end{figure}</p>
+</section>
+<section id="performance-overview">
+<h3>Performance Overview<a class="headerlink" href="#performance-overview" title="Link to this heading">#</a></h3>
+<p>In the following, we summarize the probing results of GPT-3 in a broad range of domains.</p>
+<p>We first look at the  language modeling benchmark on Penn Tree Bank, which is a fundamental measure on the model’s capability on understanding and using natural language. GPT-3 is a clear leader in Language Modelling on  with a perplexity of 20.5.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{../figures/deepLearning/ApplicationsNLP/pretrainedLM/GPT/language_modeling_benchmark}
+\caption{Language modeling benchmark task on Penn Tree Bank. Image from \url{<a class="reference external" href="https://paperswithcode.com/sota/language-modelling-on-penn-treebank-word">https://paperswithcode.com/sota/language-modelling-on-penn-treebank-word</a>}.}
+\label{fig:languagemodelingbenchmark}
+\end{figure}</p>
+<p>Translation
+GPT-3’s training data consists of primarily English (93% by word count), with an additional 7% of text in other languages. We expect GPT-3 can learns from a blend of training data that mixes many languages together in a natural way, therefor enabling GPT-3 to perform machine translation in zero-shot and few-shot settings.</p>
+<p>\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:table:GPT-3-machineTranslation} shows the performance comparison among  supervised SOTA neural machine translation models, unsupervised multi-lingual pretrained language models, and GPT-3. Supervised models are the clear winners in this domain. However, GPT-3 demonstrates its decent performance when performing translation back to English, probably because GPT-3 is a strong English language model.</p>
+<p>The performance GPT-3 also has a noticeable skew depending on language direction. Specifically, GPT-3 significantly outperforms prior unsupervised models when translating into English but under-performs when translating in the other direction.</p>
+<p>In general, across all three language models tested, there is a smooth upward trend with model capacity. While in the zero-shot setting, GPT-3 underperforms recent unsupervised model, offering a few demonstrations to GPT-3 can quickly boost the BLEU scores.</p>
+<p>\begin{table}[H]
+\small
+\centering
+\begin{tabular}{lcccccc}
+Setting &amp; <span class="math notranslate nohighlight">\(\mathrm{En} \rightarrow \mathrm{Fr}\)</span> &amp; <span class="math notranslate nohighlight">\(\mathrm{Fr} \rightarrow \mathrm{En}\)</span> &amp; <span class="math notranslate nohighlight">\(\mathrm{En} \rightarrow \mathrm{De}\)</span> &amp; <span class="math notranslate nohighlight">\(\mathrm{De} \rightarrow \mathrm{En}\)</span> &amp; <span class="math notranslate nohighlight">\(\mathrm{En} \rightarrow \mathrm{Ro}\)</span> &amp; <span class="math notranslate nohighlight">\(\mathrm{Ro} \rightarrow \mathrm{En}\)</span> \
+\hline SOTA (Supervised) &amp; <span class="math notranslate nohighlight">\(\mathbf{4 5 . 6}^{a}\)</span> &amp; <span class="math notranslate nohighlight">\(35.0^{b}\)</span> &amp; <span class="math notranslate nohighlight">\(\mathbf{4 1 . 2}^{\boldsymbol{c}}\)</span> &amp; <span class="math notranslate nohighlight">\(40.2^{d}\)</span> &amp; <span class="math notranslate nohighlight">\(\mathbf{3 8 . 5}^{e}\)</span> &amp; <span class="math notranslate nohighlight">\(\mathbf{3 9 . 9}^{\boldsymbol{e}}\)</span> \
+\hline XLM &amp; <span class="math notranslate nohighlight">\(33.4\)</span> &amp; <span class="math notranslate nohighlight">\(33.3\)</span> &amp; <span class="math notranslate nohighlight">\(26.4\)</span> &amp; <span class="math notranslate nohighlight">\(34.3\)</span> &amp; <span class="math notranslate nohighlight">\(33.3\)</span> &amp; <span class="math notranslate nohighlight">\(31.8\)</span> \
+MASS  &amp; <span class="math notranslate nohighlight">\(\underline{37.5}\)</span> &amp; <span class="math notranslate nohighlight">\(34.9\)</span> &amp; <span class="math notranslate nohighlight">\(28.3\)</span> &amp; <span class="math notranslate nohighlight">\(35.2\)</span> &amp; <span class="math notranslate nohighlight">\(\underline{35.2}\)</span> &amp; <span class="math notranslate nohighlight">\(33.1\)</span> \
+mBART  &amp; <span class="math notranslate nohighlight">\(-\)</span> &amp; <span class="math notranslate nohighlight">\(-\)</span> &amp; <span class="math notranslate nohighlight">\(\underline{29.8}\)</span> &amp; <span class="math notranslate nohighlight">\(34.0\)</span> &amp; <span class="math notranslate nohighlight">\(35.0\)</span> &amp; <span class="math notranslate nohighlight">\(30.5\)</span> \
+\hline GPT-3 Zero-Shot &amp; <span class="math notranslate nohighlight">\(25.2\)</span> &amp; <span class="math notranslate nohighlight">\(21.2\)</span> &amp; <span class="math notranslate nohighlight">\(24.6\)</span> &amp; <span class="math notranslate nohighlight">\(27.2\)</span> &amp; <span class="math notranslate nohighlight">\(14.1\)</span> &amp; <span class="math notranslate nohighlight">\(19.9\)</span> \
+GPT-3 One-Shot &amp; <span class="math notranslate nohighlight">\(28.3\)</span> &amp; <span class="math notranslate nohighlight">\(33.7\)</span> &amp; <span class="math notranslate nohighlight">\(26.2\)</span> &amp; <span class="math notranslate nohighlight">\(30.4\)</span> &amp; <span class="math notranslate nohighlight">\(20.6\)</span> &amp; <span class="math notranslate nohighlight">\(38.6\)</span> \
+GPT-3 Few-Shot &amp; <span class="math notranslate nohighlight">\(32.6\)</span> &amp; <span class="math notranslate nohighlight">\(39.2\)</span> &amp; <span class="math notranslate nohighlight">\(29.7\)</span> &amp; <span class="math notranslate nohighlight">\(40.6\)</span> &amp; <span class="math notranslate nohighlight">\(21.0\)</span> &amp; <span class="math notranslate nohighlight">\(39.5\)</span>
+\end{tabular}
+\caption{Performance comparison among  supervised SOTA neural machine translation models, unsupervised multi-lingual pretrained language models, and GPT-3.}
+\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:table:GPT-3-machineTranslation}
+\end{table}</p>
+<p>SuperGLUE</p>
+<p>SuperGLUE is a collection of benchmark tests to probe the natural language understanding capacity of a model. \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:supergluebenchmarkgpt3}</p>
+<p>\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{../figures/deepLearning/ApplicationsNLP/pretrainedLM/GPT/SuperGLUE_benchmark_GPT3}
+\caption{Performance on SuperGLUE increases with model size and number of examples in context.}
+\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:supergluebenchmarkgpt3}
+\end{figure}</p>
+<p>Closed book question answering</p>
+<p>In this section we measure GPT-3’s ability to answer questions about broad factual knowledge. Due to the immense
+amount of possible queries, this task has normally been approached by using an information retrieval system to find
+relevant text in combination with a model which learns to generate an answer given the question and the retrieved
+text. Since this setting allows a system to search for and condition on text which potentially contains the answer it
+is denoted “open-book”. [RRS20] recently demonstrated that a large language model can perform surprisingly well
+directly answering the questions without conditioning on auxilliary information.</p>
+<p>… or testing broad factual knowledge with GPT-3. As per the GPT-3 research paper, it was tested on Natural Questions, WebQuestions, and TriviaQA datasets, and the results are the following</p>
+<p>\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{../figures/deepLearning/ApplicationsNLP/pretrainedLM/GPT/TrivialQA_benchmark_GPT3}
+\caption{On TriviaQA GPT3’s performance grows smoothly with model size, suggesting that language models
+continue to absorb knowledge as their capacity increases. One-shot and few-shot performance make significant gains
+over zero-shot behavior, matching and exceeding the performance of the SOTA fine-tuned open-domain model}
+\label{fig:trivialqabenchmarkgpt3}
+\end{figure}</p>
+<p>Common sense reasoning</p>
+<p>Next we consider three datasets which attempt to capture physical or scientific reasoning, as distinct from sentence
+completion, reading comprehension, or broad knowledge question answering.</p>
+<p>As for physical or scientific reasoning, GPT-3 is not outperforming fine-tuned SOTA methods:
+\begin{table}
+\small
+\centering
+\begin{tabular}{lllll}
+\hline Setting &amp; PIQA &amp; ARC (Easy) &amp; ARC (Challenge) &amp; OpenBookQA \
+\hline Fine-tuned SOTA &amp; <span class="math notranslate nohighlight">\(79.4\)</span> &amp; <span class="math notranslate nohighlight">\(\mathbf{9 2 . 0}\left[\mathrm{KKS}^{+} 20\right]\)</span> &amp; <span class="math notranslate nohighlight">\(\mathbf{7 8 . 5}\left[\mathrm{KKS}^{+} 20\right]\)</span> &amp; <span class="math notranslate nohighlight">\(\mathbf{8 7 . 2}\left[\mathrm{KKS}^{+} 20\right]\)</span> \
+GPT-3 Zero-Shot &amp; <span class="math notranslate nohighlight">\(\mathbf{8 0 . 5}\)</span> &amp; <span class="math notranslate nohighlight">\(68.8\)</span> &amp; <span class="math notranslate nohighlight">\(51.4\)</span> &amp; <span class="math notranslate nohighlight">\(57.6\)</span> \
+GPT-3 One-Shot &amp; <span class="math notranslate nohighlight">\(\mathbf{8 0 . 5}^{*}\)</span> &amp; <span class="math notranslate nohighlight">\(71.2\)</span> &amp; <span class="math notranslate nohighlight">\(53.2\)</span> &amp; <span class="math notranslate nohighlight">\(58.8\)</span> \
+GPT-3 Few-Shot &amp; <span class="math notranslate nohighlight">\(\mathbf{8 2 . 8}^{*}\)</span> &amp; <span class="math notranslate nohighlight">\(70.1\)</span> &amp; <span class="math notranslate nohighlight">\(51.5\)</span> &amp; <span class="math notranslate nohighlight">\(65.4\)</span> \
+\hline
+\end{tabular}</p>
+<p>\end{table}</p>
+<p>\textbf{Arithmetic tasks}
+GPT-3 is not that good at arithmetic still, since the results are the following</p>
+<p>\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{../figures/deepLearning/ApplicationsNLP/pretrainedLM/GPT/arithemetic_task_GPT3}
+\caption{Results on all 10 arithmetic tasks in the few-shot settings for models of different sizes. There is a
+significant jump from the second largest model (GPT-3 13B) to the largest model (GPT-3 175)}
+\label{fig:arithemetictaskgpt3}
+\end{figure}</p>
+<p>\textbf{News article generation}
+The most natural ability for GPT-3 type of generative language model is to generate smooth and nature texts.</p>
+<p>Performance is evaluated by how well humans can detect whether generated text is from a model model generated text. Regarding the test,  25 article titles and subtitles
+from the website <a class="reference external" href="http://newser.com">newser.com</a> are arbitrarily selected, with a mean length of 215 words. We then generated completions of these titles and subtitles
+from four language models ranging in size from 125M to 175B (GPT-3)</p>
+<p>\begin{table}[H]
+\small
+\centering
+\begin{tabular}{lcc}
+\hline &amp; &amp; <span class="math notranslate nohighlight">\(95 \%\)</span> Confidence \
+&amp; Mean accuracy &amp; Interval (low, hi) \
+\hline Control (deliberately bad model) &amp; <span class="math notranslate nohighlight">\(86 \%\)</span> &amp; <span class="math notranslate nohighlight">\(83 \%-90 \%\)</span> \
+GPT-3 Small &amp; <span class="math notranslate nohighlight">\(76 \%\)</span> &amp; <span class="math notranslate nohighlight">\(72 \%-80 \%\)</span> \
+GPT-3 Medium &amp; <span class="math notranslate nohighlight">\(61 \%\)</span> &amp; <span class="math notranslate nohighlight">\(58 \%-65 \%\)</span> \
+GPT-3 Large &amp; <span class="math notranslate nohighlight">\(68 \%\)</span> &amp; <span class="math notranslate nohighlight">\(64 \%-72 \%\)</span> \
+GPT-3 XL &amp; <span class="math notranslate nohighlight">\(62 \%\)</span> &amp; <span class="math notranslate nohighlight">\(59 \%-65 \%\)</span> \
+GPT-3 2.7B &amp; <span class="math notranslate nohighlight">\(62 \%\)</span> &amp; <span class="math notranslate nohighlight">\(58 \%-65 \%\)</span> \
+GPT-3 6.7B &amp; <span class="math notranslate nohighlight">\(60 \%\)</span> &amp; <span class="math notranslate nohighlight">\(56 \%-63 \%\)</span> \
+GPT-3 13B &amp; <span class="math notranslate nohighlight">\(55 \%\)</span> &amp; <span class="math notranslate nohighlight">\(52 \%-58 \%\)</span> \
+GPT-3 175B &amp; <span class="math notranslate nohighlight">\(52 \%\)</span> &amp; <span class="math notranslate nohighlight">\(49 \%-54 \%\)</span> \
+\hline
+\end{tabular}
+\caption{Human accuracy in identifying whether short (around 200 word) news articles are model generated.}
+\end{table}</p>
+</section>
+<section id="limitations">
+<h3>Limitations<a class="headerlink" href="#limitations" title="Link to this heading">#</a></h3>
+<p>First, despite the strong quantitative and qualitative improvements of GPT-3, particularly compared to its direct
+predecessor GPT-2, it still has notable weaknesses in text synthesis and several NLP tasks. On text synthesis, although
+the overall quality is high, GPT-3 samples still sometimes repeat themselves semantically at the document level, start to
+lose coherence over sufficiently long passages, contradict themselves, and occasionally contain non-sequitur sentences
+or paragraphs.</p>
+<p>GPT-3 has several structural and algorithmic limitations, which could account for some of the issues above. We focused
+on exploring in-context learning behavior in autoregressive language models because it is straightforward to both
+sample and compute likelihoods with this model class. As a result our experiments do not include any bidirectional
+architectures or other training objectives such as denoising.</p>
+<p>Thus our design decision comes at the cost of potentially worse performance on tasks
+which empirically benefit from bidirectionality</p>
+<p>This could be a possible explanation for GPT-3’s lagging few-shot performance on a
+few of the tasks, such as WIC (which involves comparing the use of a word in two sentences), ANLI (which involves
+comparing two sentences to see if one implies the other), and several reading comprehension tasks (e.g. QuAC and
+RACE). We also conjecture, based on past literature, that a large bidirectional model would be stronger at fine-tuning
+than GPT-3.</p>
+<p>Another limitation broadly shared by language models is poor sample efficiency during pre-training. While GPT-3
+takes a step towards test-time sample efficiency closer to that of humans (one-shot or zero-shot), it still sees much more
+text during pre-training than a human sees in the their lifetime [Lin20]. Improving pre-training sample efficiency is
+an important direction for future work, and might come from grounding in the physical world to provide additional
+information, or from algorithmic improvements.</p>
+</section>
+</section>
+<section id="applications">
+<h2>Applications<a class="headerlink" href="#applications" title="Link to this heading">#</a></h2>
+<section id="machine-translation">
+<h3>Machine Translation<a class="headerlink" href="#machine-translation" title="Link to this heading">#</a></h3>
+<p>Machine translation is typically implemented via encoder-decoder paradigm, in which encoder takes input in the original language and the decoder outputs words in the target language.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs/chapter_foundation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="t5.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Seq2Seq, T5, And BART</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter_LLM_arch/LLM_dense_architectures.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">LLM Dense Architectures Fundamentals</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-1">GPT-1</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">Pretraining</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-1-fine-tuning">GPT-1 Fine Tuning</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-2">GPT-2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-3">GPT-3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-overview">Performance Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applications">Applications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#machine-translation">Machine Translation</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuguang Yang
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
