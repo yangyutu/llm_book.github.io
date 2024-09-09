@@ -179,8 +179,10 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Language Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="neural_language_models.html">Early Neural Language Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="word_embeddings.html">Word Embeddings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="transformers_and_bert.html">Transformers and BERT</a></li>
-<li class="toctree-l1"><a class="reference internal" href="t5.html">T5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformers.html">Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bert.html">BERT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="t5.html">Seq2Seq, T5, And BART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GPT_series.html">GPT Series</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
@@ -201,7 +203,8 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">LLM Inference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration: Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration: Overview</a></li>
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
@@ -371,31 +374,31 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-language-models">Statistical language models</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-language-model"><span class="math notranslate nohighlight">\(n\)</span>-gram language model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parameter-estimation">Model parameter estimation</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#star-deriving-the-mle"><span class="math notranslate nohighlight">\(\star\)</span> Deriving the MLE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-language-models">Statistical Language Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-language-model"><span class="math notranslate nohighlight">\(n\)</span>-gram Language Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parameter-estimation">Model Parameter Estimation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#star-deriving-the-mle"><span class="math notranslate nohighlight">\(\star\)</span> Deriving The MLE</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choices-of-n-and-bias-variance-trade-off">Choices of <span class="math notranslate nohighlight">\(n\)</span> and bias-variance trade-off</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#out-of-vocabulary-oov-words-and-rare-words">Out of vocabulary (OOV) words and rare words</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choices-of-n-and-bias-variance-trade-off">Choices Of <span class="math notranslate nohighlight">\(n\)</span> And Bias-variance Trade-off</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#out-of-vocabulary-oov-words-and-rare-words">Out Of Vocabulary (OOV) Words And Rare Words</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing-and-discounting-techniques">Smoothing and discounting techniques</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-alpha-smoothing-and-discounting">Add <span class="math notranslate nohighlight">\(\alpha\)</span> smoothing and discounting</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#katz-s-back-off">Katz’s back-off</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing-and-discounting-techniques">Smoothing And Discounting Techniques</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-alpha-smoothing-and-discounting">Add <span class="math notranslate nohighlight">\(\alpha\)</span> Smoothing And Discounting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#katz-s-back-off">Katz’s Back-off</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-evaluation">Model evaluation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-metrics">Evaluation metrics</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#more-on-perplexity">More on perplexity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-evaluation">Model Evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-metrics">Evaluation Metrics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#more-on-perplexity">More On Perplexity</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking">Benchmarking</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#datasets">Datasets</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-language-models">Neural language models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-language-models">Neural Language Models</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">Bibliography</a></li>
 </ul>
             </nav>
@@ -429,13 +432,13 @@ document.write(`
 <li><p>Speech recognition, where audio signal is converted to meaningful words, phases, and sentences.</p></li>
 </ul>
 <p>A closed related language modeling task is predict the next word following a sequence of words.</p>
-<p>Predicting the next word in a language system can be much more challenging than predicting the next observation in the many physical system. One perspective is that the evolution of many physical systems can governed by physical laws that are well established; on the other hand, the generation of next word, sentence, and even logically coherent paragraph is closely related to human reasoning and intelligence, which remain poorly understood. In fact, it is widely believed that being able to write up logical and coherent paragraphs is an indication of human-level intelligence <span id="id1">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1128" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>]</span>.</p>
-<p>In this section, we first consider a classical <span class="math notranslate nohighlight">\(n\)</span>-gram statistical language approach <span id="id2">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id890" title="Christopher D Manning and Hinrich Schütze. Foundations of statistical natural language processing. MIT press, 1999.">MSchutze99</a>]</span>, where we count the co-occurrence of words and model the language generation using probabilistic models (e.g., Markov chains). <span class="math notranslate nohighlight">\(n\)</span>-gram models focus on predicting next word based on the superficial co-occurrence counts instead of high-level semantic links between the context and the unknown next word,  It further suffers from the curse of dimensionality since sentences are normally long and language vocabulary size is huge (e.g., <span class="math notranslate nohighlight">\(10^6\)</span>). Over the past two decades, the neural network based language models have attracted considerable attention because these models are able to reveal deep connections between words as well as to alleviate the dimensionality challenge. Our focus in this section is on early development of neural language models; recent developments of pre-trained language models (e.g., GPT 1-3 <span id="id3">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id382" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>, <a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1127" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf, 2018.">RNSS18</a>, <a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1128" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>]</span>) will be covered in next section.</p>
+<p>Predicting the next word in a language system can be much more challenging than predicting the next observation in the many physical system. One perspective is that the evolution of many physical systems can governed by physical laws that are well established; on the other hand, the generation of next word, sentence, and even logically coherent paragraph is closely related to human reasoning and intelligence, which remain poorly understood. In fact, it is widely believed that being able to write up logical and coherent paragraphs is an indication of human-level intelligence <span id="id1">[<a class="reference internal" href="#id1131" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>]</span>.</p>
+<p>In this section, we first consider a classical <span class="math notranslate nohighlight">\(n\)</span>-gram statistical language approach <span id="id2">[<a class="reference internal" href="#id893" title="Christopher D Manning and Hinrich Schütze. Foundations of statistical natural language processing. MIT press, 1999.">MSchutze99</a>]</span>, where we count the co-occurrence of words and model the language generation using probabilistic models (e.g., Markov chains). <span class="math notranslate nohighlight">\(n\)</span>-gram models focus on predicting next word based on the superficial co-occurrence counts instead of high-level semantic links between the context and the unknown next word,  It further suffers from the curse of dimensionality since sentences are normally long and language vocabulary size is huge (e.g., <span class="math notranslate nohighlight">\(10^6\)</span>). Over the past two decades, the neural network based language models have attracted considerable attention because these models are able to reveal deep connections between words as well as to alleviate the dimensionality challenge. Our focus in this section is on early development of neural language models; recent developments of pre-trained language models (e.g., GPT 1-3 <span id="id3">[<a class="reference internal" href="#id385" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>, <a class="reference internal" href="#id1130" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf, 2018.">RNSS18</a>, <a class="reference internal" href="#id1131" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>]</span>) will be covered in next section.</p>
 </section>
 <section id="statistical-language-models">
-<h2>Statistical language models<a class="headerlink" href="#statistical-language-models" title="Link to this heading">#</a></h2>
+<h2>Statistical Language Models<a class="headerlink" href="#statistical-language-models" title="Link to this heading">#</a></h2>
 <section id="n-gram-language-model">
-<h3><span class="math notranslate nohighlight">\(n\)</span>-gram language model<a class="headerlink" href="#n-gram-language-model" title="Link to this heading">#</a></h3>
+<h3><span class="math notranslate nohighlight">\(n\)</span>-gram Language Model<a class="headerlink" href="#n-gram-language-model" title="Link to this heading">#</a></h3>
 <p>The essential goal of language model is to estimate the joint probability of word sequence <span class="math notranslate nohighlight">\(w_{1:N} = w_1,...,w_{N}\)</span>. By definition, the unbiased probability estimation is given by</p>
 <div class="math notranslate nohighlight">
 \[P\left(w_{1:N}\right) = \frac{\operatorname{count}(w_{1:N})}{\operatorname{count}(\text{all word sequence ever exists in the universe})}.\]</div>
@@ -474,7 +477,7 @@ P\left(w_{1}^{N}\right) \approx \prod_{k=1}^{N} P\left(w_{k} | w_{k-1}\right).
 \]</div>
 </section>
 <section id="model-parameter-estimation">
-<h3>Model parameter estimation<a class="headerlink" href="#model-parameter-estimation" title="Link to this heading">#</a></h3>
+<h3>Model Parameter Estimation<a class="headerlink" href="#model-parameter-estimation" title="Link to this heading">#</a></h3>
 <p>For a <span class="math notranslate nohighlight">\(n\)</span>-gram language model, there are <span class="math notranslate nohighlight">\(|V|^n\)</span> the model parameters to be estimated:</p>
 <div class="math notranslate nohighlight">
 \[P(w_n|w_1,...,w_{n-1}),\]</div>
@@ -492,7 +495,7 @@ P\left(w_{n} | w_{n-1}\right)=\frac{\operatorname{count}\left(w_{n-1}, w_{n}\rig
 <div class="math notranslate nohighlight">
 \[p(\text { is| artificial intelligence })=\frac{\operatorname{count}(\text { artificial intelligence is})}{\operatorname{count}(\text { artificial intelligence })}.\]</div>
 <section id="star-deriving-the-mle">
-<h4><span class="math notranslate nohighlight">\(\star\)</span> Deriving the MLE<a class="headerlink" href="#star-deriving-the-mle" title="Link to this heading">#</a></h4>
+<h4><span class="math notranslate nohighlight">\(\star\)</span> Deriving The MLE<a class="headerlink" href="#star-deriving-the-mle" title="Link to this heading">#</a></h4>
 <p>Consider a sequence of random variables <span class="math notranslate nohighlight">\(w_0, w_1, ...,w_N\)</span> representing a sentence composed of a sequence of tokens taken from the vocabulary <span class="math notranslate nohighlight">\(|V|\)</span>. Let <span class="math notranslate nohighlight">\(w_0\)</span> be deterministic and take the value of starting token <SOS>. For a bigram language model, the model is completely defined by the conditional probability matrix <span class="math notranslate nohighlight">\(\theta \in \mathcal{R}^{|V|\times |V|}\)</span>, with <span class="math notranslate nohighlight">\(P(w_n = j|w_{n-1} = i) = \theta_{ij}\)</span>. Here <span class="math notranslate nohighlight">\(i\)</span> is shorthand for the <span class="math notranslate nohighlight">\(i\)</span> token in the vocabulary.</p>
 <p>To estimate the model parameter, we look at the log likelihood of a sample sequence <span class="math notranslate nohighlight">\(w_0, w_1,...,w_N\)</span>, which is is given by</p>
 <div class="math notranslate nohighlight">
@@ -521,7 +524,7 @@ $<span class="math notranslate nohighlight">\(P(w_i) = \frac{\operatorname{count
 </section>
 </section>
 <section id="choices-of-n-and-bias-variance-trade-off">
-<h3>Choices of <span class="math notranslate nohighlight">\(n\)</span> and bias-variance trade-off<a class="headerlink" href="#choices-of-n-and-bias-variance-trade-off" title="Link to this heading">#</a></h3>
+<h3>Choices Of <span class="math notranslate nohighlight">\(n\)</span> And Bias-variance Trade-off<a class="headerlink" href="#choices-of-n-and-bias-variance-trade-off" title="Link to this heading">#</a></h3>
 <p>For a <span class="math notranslate nohighlight">\(n\)</span>-gram model, when <span class="math notranslate nohighlight">\(n\)</span> is too small, say a bigram model, the model can capture synactic structure in the language but can hardly capture the sequential, long distance relationship among words. For example, the syntatic structure like the fact that a noun or an adjective comes after \textit{enjoy} and the fact that a verb in its original form typically comes after \textit{to}. For long-range dependency, consider the following sentences:</p>
 <ul class="simple">
 <li><p>Gorillas always like to groom their friends.</p></li>
@@ -532,16 +535,16 @@ $<span class="math notranslate nohighlight">\(P(w_i) = \frac{\operatorname{count
 <p>The choice of appropriate <span class="math notranslate nohighlight">\(n\)</span> is related to bias-variance trade-off. A small <span class="math notranslate nohighlight">\(n\)</span>-gram size introduces high bias, and a large <span class="math notranslate nohighlight">\(n\)</span>-gram size introduces high variance. Since human language is full of long-range dependencies, in practice, we tend to keep <span class="math notranslate nohighlight">\(n\)</span> large and at the same time use smoothing tricks, as some sort of bias, to achieve low-variance estimates of the model parameters.</p>
 </section>
 <section id="out-of-vocabulary-oov-words-and-rare-words">
-<h3>Out of vocabulary (OOV) words and rare words<a class="headerlink" href="#out-of-vocabulary-oov-words-and-rare-words" title="Link to this heading">#</a></h3>
+<h3>Out Of Vocabulary (OOV) Words And Rare Words<a class="headerlink" href="#out-of-vocabulary-oov-words-and-rare-words" title="Link to this heading">#</a></h3>
 <p>Some early speech and language applications might just involve a closed vocabulary, in which the vocabulary is known in advance and the runtime test set will contain words from the vocabulary. Modern natural language application typically involves an open vocabulary in which out of vocabulary words can occur. For those cases, which can simply add a pseudo-word <UNK>, and treat all the OOV words as the <UNK>.</p>
 <p>In applications where we don’t have a prior vocabulary in advance and need to create one from corpus, we can limit the size of vocabulary by replacing low-frequency rare words by <UNK> or some other more fine-grained special symbols (i.e., replacing rare organization names by <ORG> and replacing rare people names by <PEOPLE>).</p>
 <p>Note that how the vocabulary is constructed and how we map rare words to <UNK> affects how we evaluate the quality of language model using likelihood based metrics (e.g., perplexity). For example, a language model can achieve artificially low perplexity by choosing a small vocabulary and assigning many words to the unknown word.</p>
 </section>
 </section>
 <section id="smoothing-and-discounting-techniques">
-<h2>Smoothing and discounting techniques<a class="headerlink" href="#smoothing-and-discounting-techniques" title="Link to this heading">#</a></h2>
+<h2>Smoothing And Discounting Techniques<a class="headerlink" href="#smoothing-and-discounting-techniques" title="Link to this heading">#</a></h2>
 <section id="add-alpha-smoothing-and-discounting">
-<h3>Add <span class="math notranslate nohighlight">\(\alpha\)</span> smoothing and discounting<a class="headerlink" href="#add-alpha-smoothing-and-discounting" title="Link to this heading">#</a></h3>
+<h3>Add <span class="math notranslate nohighlight">\(\alpha\)</span> Smoothing And Discounting<a class="headerlink" href="#add-alpha-smoothing-and-discounting" title="Link to this heading">#</a></h3>
 <p>One fundamental limit of the baseline counting method is the zero probability assigned to <span class="math notranslate nohighlight">\(n\)</span>-grams that do not appear in the training corpus. This has a significant impact when we use the model to score a sentence. For example,  one zero probability of any unseen bigram <span class="math notranslate nohighlight">\(w_{i-1},w_i\)</span> will cause the probability of the sequence <span class="math notranslate nohighlight">\(w_1,...,w_i,...,w_n\)</span> to be zero.</p>
 <div class="proof example admonition" id="example-0">
 <p class="admonition-title"><span class="caption-number">Example 1 </span></p>
@@ -643,7 +646,7 @@ d_i=\frac{c_i^*}{c_i}=\frac{\left(c_i+\alpha\right)}{c_i} \frac{M}{(M+E \alpha)}
 </section>
 </div></section>
 <section id="katz-s-back-off">
-<h3>Katz’s back-off<a class="headerlink" href="#katz-s-back-off" title="Link to this heading">#</a></h3>
+<h3>Katz’s Back-off<a class="headerlink" href="#katz-s-back-off" title="Link to this heading">#</a></h3>
 <p>The smoothing method discussed above borrows probability mass from observed <span class="math notranslate nohighlight">\(n\)</span>-grams and redistributes it to all <span class="math notranslate nohighlight">\(n-\)</span>grams, including both observed ones and unobserved ones. The borrowed amount is controlled by the parameter <span class="math notranslate nohighlight">\(\alpha\)</span>. A variation of such re-distribution is to just redistribute the borrowed probablity mass to those unobserved one. A key characteristic of these redistribution methods is that redistribution is carried out <strong>equally</strong>.</p>
 <p>Another popular smoothing approach is \textbf{back-off}. The key idea is that the redistribution of the probability mass to an unobserved <span class="math notranslate nohighlight">\(n\)</span>-gram is dependent on the statistics of its constituent <span class="math notranslate nohighlight">\(n-1\)</span> gram. The latest development of <span class="math notranslate nohighlight">\(n\)</span>-gram language modeling is to use modified Kneser Ney smoothing\cite{chen1999empirical}.</p>
 <p>In the <span class="math notranslate nohighlight">\(n\)</span>-gram Katz’s backoff model,</p>
@@ -683,9 +686,9 @@ d_i=\frac{c_i^*}{c_i}=\frac{\left(c_i+\alpha\right)}{c_i} \frac{M}{(M+E \alpha)}
 </div></section>
 </section>
 <section id="model-evaluation">
-<h2>Model evaluation<a class="headerlink" href="#model-evaluation" title="Link to this heading">#</a></h2>
+<h2>Model Evaluation<a class="headerlink" href="#model-evaluation" title="Link to this heading">#</a></h2>
 <section id="evaluation-metrics">
-<h3>Evaluation metrics<a class="headerlink" href="#evaluation-metrics" title="Link to this heading">#</a></h3>
+<h3>Evaluation Metrics<a class="headerlink" href="#evaluation-metrics" title="Link to this heading">#</a></h3>
 <p>Given a training corpus, we can build different language models with different <span class="math notranslate nohighlight">\(n\)</span>-gram settings as well as other model smoothing hyperparameter. There model training hyperparameters give different bias and variance trade-off and we need an evaluation method to gauge which hyperparameter is better for intended applications.</p>
 <p>One principled way is to evaluate the model predicted likelihood on an unseen test set, which consist of natural language sentences, from the intended applications. with unseen sentences and then compare the probability or its variant computed from different candidate models on the test set. A language model that assigns a higher probability to the test set is considered a better one.
 We define \textbf{perplexity} of a language model on a test set as the inverse probability of the test set, normalized by the number of words. For a test set <span class="math notranslate nohighlight">\(W = (w_{1} w_{2} \ldots w_{N})\)</span> (<span class="math notranslate nohighlight">\(N\)</span> can be millions),</p>
@@ -706,7 +709,7 @@ P\left(w_{1:n}\right) \approx \prod_{i=1}^{N} P\left(w_{i} | w_{i-n+1:n-1}\right
 </section>
 </div></section>
 <section id="more-on-perplexity">
-<h3>More on perplexity<a class="headerlink" href="#more-on-perplexity" title="Link to this heading">#</a></h3>
+<h3>More On Perplexity<a class="headerlink" href="#more-on-perplexity" title="Link to this heading">#</a></h3>
 <p>A state-of-the-art language model typically can achieve perplexity value ranging from 20 to 200 on a general test set. How do we interpret the perplexity value? Perplexity can be thought of as the effective vocabulary size under the model, that is, given the context, the number of possible options for the next word.</p>
 <p>Some intuition behind such interpretation of perplexity is as follows. Say we have a vocabulary <span class="math notranslate nohighlight">\(\mathcal{V}\)</span> whose size is <span class="math notranslate nohighlight">\(V\)</span>, and a trigram model simply predicts a uniform distribution given by</p>
 <div class="math notranslate nohighlight">
@@ -734,7 +737,7 @@ p(w \mid u, v)=\frac{1}{V}
 <h3>Benchmarking<a class="headerlink" href="#benchmarking" title="Link to this heading">#</a></h3>
 <section id="datasets">
 <h4>Datasets<a class="headerlink" href="#datasets" title="Link to this heading">#</a></h4>
-<p>The Penn Tree Bank (PTB) <span id="id5">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1460" title="Mary Ann Marcinkiewicz. Building a large annotated corpus of english: the penn treebank. Using Large Corpora, 1994.">Mar94</a>]</span> dataset is an early dataset for training and evaluating language model. The Penn Tree Bank dataset is made of articles from the Wall Street Journal, contains around <span class="math notranslate nohighlight">\(929 \mathrm{k}\)</span> training tokens, and has a vocabulary size of <span class="math notranslate nohighlight">\(10 \mathrm{k}\)</span>.</p>
+<p>The Penn Tree Bank (PTB) <span id="id5">[<a class="reference internal" href="#id1463" title="Mary Ann Marcinkiewicz. Building a large annotated corpus of english: the penn treebank. Using Large Corpora, 1994.">Mar94</a>]</span> dataset is an early dataset for training and evaluating language model. The Penn Tree Bank dataset is made of articles from the Wall Street Journal, contains around <span class="math notranslate nohighlight">\(929 \mathrm{k}\)</span> training tokens, and has a vocabulary size of <span class="math notranslate nohighlight">\(10 \mathrm{k}\)</span>.</p>
 <p>In the Penn Tree Bank dataset, words were lower-cased, numbers were replaced with N, newlines were replaced with <eos>, and all other punctuation was removed. The vocabulary is the most frequent 10k words with the rest of the tokens being replaced by an unk token</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -883,12 +886,20 @@ WikiText-103</label><div class="sd-tab-content docutils">
 </section>
 </section>
 <section id="neural-language-models">
-<h2>Neural language models<a class="headerlink" href="#neural-language-models" title="Link to this heading">#</a></h2>
+<h2>Neural Language Models<a class="headerlink" href="#neural-language-models" title="Link to this heading">#</a></h2>
 </section>
 <section id="bibliography">
 <h2>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id6">
 <div role="list" class="citation-list">
+<div class="citation" id="id1442" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>AST18<span class="fn-bracket">]</span></span>
+<p>Armen Aghajanyan, Xia Song, and Saurabh Tiwary. Towards language agnostic universal representations. <em>arXiv preprint arXiv:1809.08510</em>, 2018.</p>
+</div>
+<div class="citation" id="id1174" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BDVJ03<span class="fn-bracket">]</span></span>
+<p>Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. <em>Journal of machine learning research</em>, 3(Feb):1137–1155, 2003.</p>
+</div>
 <div class="citation" id="id859" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>BGJM17<span class="fn-bracket">]</span></span>
 <p>Piotr Bojanowski, Edouard Grave, Armand Joulin, and Tomas Mikolov. Enriching word vectors with subword information. <em>Transactions of the Association for Computational Linguistics</em>, 5:135–146, 2017.</p>
@@ -901,13 +912,49 @@ WikiText-103</label><div class="sd-tab-content docutils">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">BMR+20</a><span class="fn-bracket">]</span></span>
 <p>Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. <em>Advances in Neural Information Processing Systems</em>, 33:1877–1901, 2020.</p>
 </div>
+<div class="citation" id="id1447" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CHD+21<span class="fn-bracket">]</span></span>
+<p>Zewen Chi, Shaohan Huang, Li Dong, Shuming Ma, Saksham Singhal, Payal Bajaj, Xia Song, and Furu Wei. Xlm-e: cross-lingual language model pre-training via electra. <em>arXiv preprint arXiv:2106.16138</em>, 2021.</p>
+</div>
 <div class="citation" id="id1497" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>DLBZ22<span class="fn-bracket">]</span></span>
 <p>Tim Dettmers, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. Llm.int8(): 8-bit matrix multiplication for transformers at scale. 2022. URL: <a class="reference external" href="https://arxiv.org/abs/2208.07339">https://arxiv.org/abs/2208.07339</a>, <a class="reference external" href="https://arxiv.org/abs/2208.07339">arXiv:2208.07339</a>.</p>
 </div>
+<div class="citation" id="id1129" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DCLT18<span class="fn-bracket">]</span></span>
+<p>Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. <em>arXiv preprint arXiv:1810.04805</em>, 2018.</p>
+</div>
+<div class="citation" id="id1453" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DBK+20<span class="fn-bracket">]</span></span>
+<p>Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, and others. An image is worth 16x16 words: transformers for image recognition at scale. <em>arXiv preprint arXiv:2010.11929</em>, 2020.</p>
+</div>
+<div class="citation" id="id1440" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HRS+20<span class="fn-bracket">]</span></span>
+<p>Junjie Hu, Sebastian Ruder, Aditya Siddhant, Graham Neubig, Orhan Firat, and Melvin Johnson. Xtreme: a massively multilingual multi-task benchmark for evaluating cross-lingual generalisation. In <em>International Conference on Machine Learning</em>, 4411–4421. PMLR, 2020.</p>
+</div>
+<div class="citation" id="id1450" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>JYS+19<span class="fn-bracket">]</span></span>
+<p>Xiaoqi Jiao, Yichun Yin, Lifeng Shang, Xin Jiang, Xiao Chen, Linlin Li, Fang Wang, and Qun Liu. Tinybert: distilling bert for natural language understanding. <em>arXiv preprint arXiv:1909.10351</em>, 2019.</p>
+</div>
 <div class="citation" id="id1255" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>JGBM16<span class="fn-bracket">]</span></span>
 <p>Armand Joulin, Edouard Grave, Piotr Bojanowski, and Tomas Mikolov. Bag of tricks for efficient text classification. <em>arXiv preprint arXiv:1607.01759</em>, 2016.</p>
+</div>
+<div class="citation" id="id1133" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LC19<span class="fn-bracket">]</span></span>
+<p>Guillaume Lample and Alexis Conneau. Cross-lingual language model pretraining. <em>arXiv preprint arXiv:1901.07291</em>, 2019.</p>
+</div>
+<div class="citation" id="id1498" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LCG+20<span class="fn-bracket">]</span></span>
+<p>Zhenzhong Lan, Mingda Chen, Sebastian Goodman, Kevin Gimpel, Piyush Sharma, and Radu Soricut. Albert: a lite bert for self-supervised learning of language representations. 2020. URL: <a class="reference external" href="https://arxiv.org/abs/1909.11942">https://arxiv.org/abs/1909.11942</a>, <a class="reference external" href="https://arxiv.org/abs/1909.11942">arXiv:1909.11942</a>.</p>
+</div>
+<div class="citation" id="id391" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LLG+19<span class="fn-bracket">]</span></span>
+<p>Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed, Omer Levy, Ves Stoyanov, and Luke Zettlemoyer. BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. <em>ArXiv:1910.13461</em>, 2019.</p>
+</div>
+<div class="citation" id="id1312" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LTY+18<span class="fn-bracket">]</span></span>
+<p>Jian Li, Zhaopeng Tu, Baosong Yang, Michael R Lyu, and Tong Zhang. Multi-head attention with disagreement regularization. <em>arXiv preprint arXiv:1810.10183</em>, 2018.</p>
 </div>
 <div class="citation" id="id893" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">MSchutze99</a><span class="fn-bracket">]</span></span>
@@ -933,6 +980,10 @@ WikiText-103</label><div class="sd-tab-content docutils">
 <span class="label"><span class="fn-bracket">[</span>NLZ+23<span class="fn-bracket">]</span></span>
 <p>Harsha Nori, Yin Tat Lee, Sheng Zhang, Dean Carignan, Richard Edgar, Nicolo Fusi, Nicholas King, Jonathan Larson, Yuanzhi Li, Weishung Liu, and others. Can generalist foundation models outcompete special-purpose tuning? case study in medicine. <em>arXiv preprint arXiv:2311.16452</em>, 2023.</p>
 </div>
+<div class="citation" id="id1195" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>PNI+18<span class="fn-bracket">]</span></span>
+<p>Matthew E Peters, Mark Neumann, Mohit Iyyer, Matt Gardner, Christopher Clark, Kenton Lee, and Luke Zettlemoyer. Deep contextualized word representations. <em>arXiv preprint arXiv:1802.05365</em>, 2018.</p>
+</div>
 <div class="citation" id="id1130" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">RNSS18</a><span class="fn-bracket">]</span></span>
 <p>Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. <em>URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf</em>, 2018.</p>
@@ -942,9 +993,41 @@ WikiText-103</label><div class="sd-tab-content docutils">
 <span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id3">2</a>)</span>
 <p>Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. <em>OpenAI Blog</em>, 1(8):9, 2019.</p>
 </div>
+<div class="citation" id="id386" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>RSR+20<span class="fn-bracket">]</span></span>
+<p>Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter J Liu. Exploring the limits of transfer learning with a unified text-to-text transformer. <em>Journal of Machine Learning Research</em>, 21(140):1–67, 2020.</p>
+</div>
+<div class="citation" id="id395" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SDCW19<span class="fn-bracket">]</span></span>
+<p>Victor Sanh, Lysandre Debut, Julien Chaumond, and Thomas Wolf. DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter. <em>ArXiv:1910.01108</em>, 2019.</p>
+</div>
+<div class="citation" id="id1454" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SLW+19<span class="fn-bracket">]</span></span>
+<p>Fei Sun, Jun Liu, Jian Wu, Changhua Pei, Xiao Lin, Wenwu Ou, and Peng Jiang. Bert4rec: sequential recommendation with bidirectional encoder representations from transformer. In <em>Proceedings of the 28th ACM international conference on information and knowledge management</em>, 1441–1450. 2019.</p>
+</div>
+<div class="citation" id="id1451" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SYS+20<span class="fn-bracket">]</span></span>
+<p>Zhiqing Sun, Hongkun Yu, Xiaodan Song, Renjie Liu, Yiming Yang, and Denny Zhou. Mobilebert: a compact task-agnostic bert for resource-limited devices. <em>arXiv preprint arXiv:2004.02984</em>, 2020.</p>
+</div>
+<div class="citation" id="id1128" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>VSP+17<span class="fn-bracket">]</span></span>
+<p>Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In <em>Advances in neural information processing systems</em>, 5998–6008. 2017.</p>
+</div>
+<div class="citation" id="id1449" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WWD+20<span class="fn-bracket">]</span></span>
+<p>Wenhui Wang, Furu Wei, Li Dong, Hangbo Bao, Nan Yang, and Ming Zhou. Minilm: deep self-attention distillation for task-agnostic compression of pre-trained transformers. <em>Advances in Neural Information Processing Systems</em>, 33:5776–5788, 2020.</p>
+</div>
 <div class="citation" id="id496" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>WWS+22<span class="fn-bracket">]</span></span>
 <p>Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language models. <em>arXiv preprint arXiv:2203.11171</em>, 2022.</p>
+</div>
+<div class="citation" id="id1458" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>XWVD20<span class="fn-bracket">]</span></span>
+<p>Patrick Xia, Shijie Wu, and Benjamin Van Durme. Which* bert? a survey organizing contextualized encoders. <em>arXiv preprint arXiv:2010.00854</em>, 2020.</p>
+</div>
+<div class="citation" id="id387" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>XYH+20<span class="fn-bracket">]</span></span>
+<p>Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In <em>International Conference on Machine Learning</em>, 10524–10533. PMLR, 2020.</p>
 </div>
 </div>
 </div>
@@ -1023,31 +1106,31 @@ WikiText-103</label><div class="sd-tab-content docutils">
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-language-models">Statistical language models</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-language-model"><span class="math notranslate nohighlight">\(n\)</span>-gram language model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parameter-estimation">Model parameter estimation</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#star-deriving-the-mle"><span class="math notranslate nohighlight">\(\star\)</span> Deriving the MLE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-language-models">Statistical Language Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-language-model"><span class="math notranslate nohighlight">\(n\)</span>-gram Language Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parameter-estimation">Model Parameter Estimation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#star-deriving-the-mle"><span class="math notranslate nohighlight">\(\star\)</span> Deriving The MLE</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choices-of-n-and-bias-variance-trade-off">Choices of <span class="math notranslate nohighlight">\(n\)</span> and bias-variance trade-off</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#out-of-vocabulary-oov-words-and-rare-words">Out of vocabulary (OOV) words and rare words</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choices-of-n-and-bias-variance-trade-off">Choices Of <span class="math notranslate nohighlight">\(n\)</span> And Bias-variance Trade-off</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#out-of-vocabulary-oov-words-and-rare-words">Out Of Vocabulary (OOV) Words And Rare Words</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing-and-discounting-techniques">Smoothing and discounting techniques</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-alpha-smoothing-and-discounting">Add <span class="math notranslate nohighlight">\(\alpha\)</span> smoothing and discounting</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#katz-s-back-off">Katz’s back-off</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing-and-discounting-techniques">Smoothing And Discounting Techniques</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-alpha-smoothing-and-discounting">Add <span class="math notranslate nohighlight">\(\alpha\)</span> Smoothing And Discounting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#katz-s-back-off">Katz’s Back-off</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-evaluation">Model evaluation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-metrics">Evaluation metrics</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#more-on-perplexity">More on perplexity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-evaluation">Model Evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-metrics">Evaluation Metrics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#more-on-perplexity">More On Perplexity</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking">Benchmarking</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#datasets">Datasets</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-language-models">Neural language models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-language-models">Neural Language Models</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">Bibliography</a></li>
 </ul>
   </nav></div>

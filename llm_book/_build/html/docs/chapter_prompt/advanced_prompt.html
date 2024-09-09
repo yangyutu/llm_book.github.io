@@ -177,8 +177,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">Language Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/neural_language_models.html">Early Neural Language Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/word_embeddings.html">Word Embeddings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers_and_bert.html">Transformers and BERT</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/t5.html">T5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers.html">Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/bert.html">BERT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/t5.html">Seq2Seq, T5, and BART</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
@@ -418,7 +419,7 @@ document.write(`
 <a class="reference internal image-reference" href="../../_images/cot_self_consistency.png"><img alt="../../_images/cot_self_consistency.png" src="../../_images/cot_self_consistency.png" style="width: 853.6px; height: 397.6px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 7 </span><span class="caption-text">CoT with self-consistency.</span><a class="headerlink" href="#hapter-prompt-fig-advanced-prompt-cot-self-consistency-num-paths" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 30 </span><span class="caption-text">CoT with self-consistency.</span><a class="headerlink" href="#hapter-prompt-fig-advanced-prompt-cot-self-consistency-num-paths" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Sampling scheme:
@@ -429,7 +430,7 @@ document.write(`
 <a class="reference internal image-reference" href="../../_images/cot_self_consistency_example.png"><img alt="../../_images/cot_self_consistency_example.png" src="../../_images/cot_self_consistency_example.png" style="width: 876.8000000000001px; height: 284.8px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 8 </span><span class="caption-text">CoT with self-consistency examples.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-cot-self-consistency-example" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 31 </span><span class="caption-text">CoT with self-consistency examples.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-cot-self-consistency-example" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Self-consistency (blue) significantly improves accuracy over CoT-prompting with greedy
@@ -439,13 +440,13 @@ a higher number of diverse reasoning paths consistently improves reasoning accur
 <a class="reference internal image-reference" href="../../_images/cot_self_consistency_num_paths.png"><img alt="../../_images/cot_self_consistency_num_paths.png" src="../../_images/cot_self_consistency_num_paths.png" style="width: 855.2px; height: 146.4px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 9 </span><span class="caption-text">The effect of the number of sampled reasoning paths.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-cot-self-consistency-num-paths" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 32 </span><span class="caption-text">The effect of the number of sampled reasoning paths.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-cot-self-consistency-num-paths" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="self-generated-chain-of-thought">
 <h3>Self-generated chain of thought<a class="headerlink" href="#self-generated-chain-of-thought" title="Link to this heading">#</a></h3>
-<p><a class="reference internal" href="#chapter-prompt-fig-advanced-prompt-self-cot"><span class="std std-numref">Fig. 10</span></a></p>
+<p><a class="reference internal" href="#chapter-prompt-fig-advanced-prompt-self-cot"><span class="std std-numref">Fig. 33</span></a></p>
 <p>During preprocessing, each question in the training dataset is passed through a lightweight embedding model to generate an embedding vector (Line 4 in Algorithm 1). We employed OpenAI’s text-embedding-ada-002 to create an embedding. For each question, GPT-4 is harnessed to create a chain of thought and a prediction of the final answer (Line 5). If the generated answer is correct and matches the ground truth label, we store the associated question, its embedding vector, the chain of thought, and the answer. Otherwise, we discard the question entirely from our retrieval pool, with the assumption that we cannot trust the reasoning if the model ultimately arrives at the wrong final answer.</p>
 <p>At inference time, given a test question, we re-embed the test sample with the same embedding model used during pre-processing, and utilize kNN to retrieve similar examples from the preprocessed pool. These examples, and their corresponding GPT-4 generated reasoning chains, are structured as context for GPT-4. The test question and corresponding answer choices are then appended at the end, which serves as the final prompt (Line 17). The model, following the few shot exemplars, then outputs a chain of thought and a candidate answer.</p>
 <!-- ![Self-generated CoT demonstration. Comparison of expert-crafted and GPT-4-generated chain-of-thought (CoT) prompts.](../img/chapter_prompt/advanced_prompt/medprompt_cot_example.png)
@@ -454,7 +455,7 @@ a higher number of diverse reasoning paths consistently improves reasoning accur
 <a class="reference internal image-reference" href="../../_images/medprompt_cot_example.png"><img alt="../../_images/medprompt_cot_example.png" src="../../_images/medprompt_cot_example.png" style="width: 599.4px; height: 453.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Self-generated CoT demonstration. Comparison of expert-crafted and GPT-4-generated chain-of-thought (CoT) prompts.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-self-cot" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 33 </span><span class="caption-text">Self-generated CoT demonstration. Comparison of expert-crafted and GPT-4-generated chain-of-thought (CoT) prompts.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-self-cot" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -473,6 +474,10 @@ Results: While ensembling enhances performance, it was used with consideration f
 <h2>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id3">
 <div role="list" class="citation-list">
+<div class="citation" id="id1439" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>AST18<span class="fn-bracket">]</span></span>
+<p>Armen Aghajanyan, Xia Song, and Saurabh Tiwary. Towards language agnostic universal representations. <em>arXiv preprint arXiv:1809.08510</em>, 2018.</p>
+</div>
 <div class="citation" id="id1171" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>BDVJ03<span class="fn-bracket">]</span></span>
 <p>Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. <em>Journal of machine learning research</em>, 3(Feb):1137–1155, 2003.</p>
@@ -489,13 +494,49 @@ Results: While ensembling enhances performance, it was used with consideration f
 <span class="label"><span class="fn-bracket">[</span>BMR+20<span class="fn-bracket">]</span></span>
 <p>Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. <em>Advances in Neural Information Processing Systems</em>, 33:1877–1901, 2020.</p>
 </div>
+<div class="citation" id="id1444" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CHD+21<span class="fn-bracket">]</span></span>
+<p>Zewen Chi, Shaohan Huang, Li Dong, Shuming Ma, Saksham Singhal, Payal Bajaj, Xia Song, and Furu Wei. Xlm-e: cross-lingual language model pre-training via electra. <em>arXiv preprint arXiv:2106.16138</em>, 2021.</p>
+</div>
 <div class="citation" id="id1494" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>DLBZ22<span class="fn-bracket">]</span></span>
 <p>Tim Dettmers, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. Llm.int8(): 8-bit matrix multiplication for transformers at scale. 2022. URL: <a class="reference external" href="https://arxiv.org/abs/2208.07339">https://arxiv.org/abs/2208.07339</a>, <a class="reference external" href="https://arxiv.org/abs/2208.07339">arXiv:2208.07339</a>.</p>
 </div>
+<div class="citation" id="id1126" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DCLT18<span class="fn-bracket">]</span></span>
+<p>Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. <em>arXiv preprint arXiv:1810.04805</em>, 2018.</p>
+</div>
+<div class="citation" id="id1450" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DBK+20<span class="fn-bracket">]</span></span>
+<p>Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, and others. An image is worth 16x16 words: transformers for image recognition at scale. <em>arXiv preprint arXiv:2010.11929</em>, 2020.</p>
+</div>
+<div class="citation" id="id1437" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HRS+20<span class="fn-bracket">]</span></span>
+<p>Junjie Hu, Sebastian Ruder, Aditya Siddhant, Graham Neubig, Orhan Firat, and Melvin Johnson. Xtreme: a massively multilingual multi-task benchmark for evaluating cross-lingual generalisation. In <em>International Conference on Machine Learning</em>, 4411–4421. PMLR, 2020.</p>
+</div>
+<div class="citation" id="id1447" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>JYS+19<span class="fn-bracket">]</span></span>
+<p>Xiaoqi Jiao, Yichun Yin, Lifeng Shang, Xin Jiang, Xiao Chen, Linlin Li, Fang Wang, and Qun Liu. Tinybert: distilling bert for natural language understanding. <em>arXiv preprint arXiv:1909.10351</em>, 2019.</p>
+</div>
 <div class="citation" id="id1252" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>JGBM16<span class="fn-bracket">]</span></span>
 <p>Armand Joulin, Edouard Grave, Piotr Bojanowski, and Tomas Mikolov. Bag of tricks for efficient text classification. <em>arXiv preprint arXiv:1607.01759</em>, 2016.</p>
+</div>
+<div class="citation" id="id1130" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LC19<span class="fn-bracket">]</span></span>
+<p>Guillaume Lample and Alexis Conneau. Cross-lingual language model pretraining. <em>arXiv preprint arXiv:1901.07291</em>, 2019.</p>
+</div>
+<div class="citation" id="id1495" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LCG+20<span class="fn-bracket">]</span></span>
+<p>Zhenzhong Lan, Mingda Chen, Sebastian Goodman, Kevin Gimpel, Piyush Sharma, and Radu Soricut. Albert: a lite bert for self-supervised learning of language representations. 2020. URL: <a class="reference external" href="https://arxiv.org/abs/1909.11942">https://arxiv.org/abs/1909.11942</a>, <a class="reference external" href="https://arxiv.org/abs/1909.11942">arXiv:1909.11942</a>.</p>
+</div>
+<div class="citation" id="id388" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LLG+19<span class="fn-bracket">]</span></span>
+<p>Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed, Omer Levy, Ves Stoyanov, and Luke Zettlemoyer. BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. <em>ArXiv:1910.13461</em>, 2019.</p>
+</div>
+<div class="citation" id="id1309" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LTY+18<span class="fn-bracket">]</span></span>
+<p>Jian Li, Zhaopeng Tu, Baosong Yang, Michael R Lyu, and Tong Zhang. Multi-head attention with disagreement regularization. <em>arXiv preprint arXiv:1810.10183</em>, 2018.</p>
 </div>
 <div class="citation" id="id890" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>MSchutze99<span class="fn-bracket">]</span></span>
@@ -521,6 +562,10 @@ Results: While ensembling enhances performance, it was used with consideration f
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">NLZ+23</a><span class="fn-bracket">]</span></span>
 <p>Harsha Nori, Yin Tat Lee, Sheng Zhang, Dean Carignan, Richard Edgar, Nicolo Fusi, Nicholas King, Jonathan Larson, Yuanzhi Li, Weishung Liu, and others. Can generalist foundation models outcompete special-purpose tuning? case study in medicine. <em>arXiv preprint arXiv:2311.16452</em>, 2023.</p>
 </div>
+<div class="citation" id="id1192" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>PNI+18<span class="fn-bracket">]</span></span>
+<p>Matthew E Peters, Mark Neumann, Mohit Iyyer, Matt Gardner, Christopher Clark, Kenton Lee, and Luke Zettlemoyer. Deep contextualized word representations. <em>arXiv preprint arXiv:1802.05365</em>, 2018.</p>
+</div>
 <div class="citation" id="id1127" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>RNSS18<span class="fn-bracket">]</span></span>
 <p>Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. <em>URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf</em>, 2018.</p>
@@ -529,13 +574,41 @@ Results: While ensembling enhances performance, it was used with consideration f
 <span class="label"><span class="fn-bracket">[</span>RWC+19<span class="fn-bracket">]</span></span>
 <p>Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. <em>OpenAI Blog</em>, 1(8):9, 2019.</p>
 </div>
+<div class="citation" id="id383" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>RSR+20<span class="fn-bracket">]</span></span>
+<p>Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter J Liu. Exploring the limits of transfer learning with a unified text-to-text transformer. <em>Journal of Machine Learning Research</em>, 21(140):1–67, 2020.</p>
+</div>
+<div class="citation" id="id392" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SDCW19<span class="fn-bracket">]</span></span>
+<p>Victor Sanh, Lysandre Debut, Julien Chaumond, and Thomas Wolf. DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter. <em>ArXiv:1910.01108</em>, 2019.</p>
+</div>
+<div class="citation" id="id1451" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SLW+19<span class="fn-bracket">]</span></span>
+<p>Fei Sun, Jun Liu, Jian Wu, Changhua Pei, Xiao Lin, Wenwu Ou, and Peng Jiang. Bert4rec: sequential recommendation with bidirectional encoder representations from transformer. In <em>Proceedings of the 28th ACM international conference on information and knowledge management</em>, 1441–1450. 2019.</p>
+</div>
+<div class="citation" id="id1448" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SYS+20<span class="fn-bracket">]</span></span>
+<p>Zhiqing Sun, Hongkun Yu, Xiaodan Song, Renjie Liu, Yiming Yang, and Denny Zhou. Mobilebert: a compact task-agnostic bert for resource-limited devices. <em>arXiv preprint arXiv:2004.02984</em>, 2020.</p>
+</div>
 <div class="citation" id="id1125" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>VSP+17<span class="fn-bracket">]</span></span>
 <p>Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In <em>Advances in neural information processing systems</em>, 5998–6008. 2017.</p>
 </div>
+<div class="citation" id="id1446" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WWD+20<span class="fn-bracket">]</span></span>
+<p>Wenhui Wang, Furu Wei, Li Dong, Hangbo Bao, Nan Yang, and Ming Zhou. Minilm: deep self-attention distillation for task-agnostic compression of pre-trained transformers. <em>Advances in Neural Information Processing Systems</em>, 33:5776–5788, 2020.</p>
+</div>
 <div class="citation" id="id493" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">WWS+22</a><span class="fn-bracket">]</span></span>
 <p>Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language models. <em>arXiv preprint arXiv:2203.11171</em>, 2022.</p>
+</div>
+<div class="citation" id="id1455" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>XWVD20<span class="fn-bracket">]</span></span>
+<p>Patrick Xia, Shijie Wu, and Benjamin Van Durme. Which* bert? a survey organizing contextualized encoders. <em>arXiv preprint arXiv:2010.00854</em>, 2020.</p>
+</div>
+<div class="citation" id="id384" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>XYH+20<span class="fn-bracket">]</span></span>
+<p>Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In <em>International Conference on Machine Learning</em>, 10524–10533. PMLR, 2020.</p>
 </div>
 </div>
 </div>
