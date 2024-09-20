@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>LLM alignement &#8212; LLM Foundations</title>
+    <title>LLM alignement and preference learning &#8212; LLM Foundations</title>
   
   
   
@@ -58,6 +58,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_training/alignment';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -176,9 +178,11 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">Language Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/neural_language_models.html">Early Neural Language Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers_and_bert.html">Transformers and BERT</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/word_embeddings.html">Word Embeddings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/t5.html">T5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers.html">Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/bert.html">BERT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/t5.html">Seq2Seq, T5, And BART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/GPT_series.html">GPT Series</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
@@ -193,13 +197,14 @@
 <li class="toctree-l1"><a class="reference internal" href="finetuning.html">LLM finetuning</a></li>
 
 
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">LLM alignement</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">LLM alignement and preference learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accelerated_training.html">LLM Training Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">LLM Inference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration: Overview</a></li>
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
@@ -345,7 +350,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -356,11 +363,38 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>LLM alignement</h1>
+    <h1>LLM alignement and preference learning</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rlhf-via-ppo">RLHF via PPO</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-methodology">Overall methodology</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sft">SFT</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-data-collection">Preference data collection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reward-modeling">Reward modeling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reinforcement-learning">Reinforcement learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-ppo-algorithm">The PPO algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminary-mdp">Preliminary: MDP</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dpo">DPO</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminary-preference-modeling">Preliminary: Preference modeling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#driving-the-dpo">Driving the DPO</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dpo-variants">DPO variants</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smooth-label">Smooth label</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -370,9 +404,230 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="llm-alignement">
-<h1>LLM alignement<a class="headerlink" href="#llm-alignement" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="llm-alignement-and-preference-learning">
+<h1>LLM alignement and preference learning<a class="headerlink" href="#llm-alignement-and-preference-learning" title="Link to this heading">#</a></h1>
+<section id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
+<p>The objective function in LLM pretraining is predicting the next token on a webpage from the internet. When the trained model is properly and carefully prompted as demonstration (i.e., in-context learning as in GPT-3), the model can largely accomplish useful tasks by following these demonstrations. However, these model can often generate un-desired outputs, including un-factual content, biased and harmful text, or simply do not follow the instructions in the prompt.</p>
+<p>This is because the pretraining task of <em>predicting the next token</em> is inherently different from the objective training an LLM to be an instruction-following assistant that avoids generating unintended text. While continuing SFT instruction tuning data, which are (prompt, completion) pairs, can expose the LLM to what humans like to see for given prompts, it is often not enough to prevent model from producing unintended texts. Instead, we need a training methodology to explictly reward the model when it is well-behaved and penalize the model when it is mis-behaved. Training the model to learn the human preference using rewards and penalities are the core of LLM alignment and preference learning. The pioneering approach is using reinforcement learning via the PPO algorithm <span id="id1">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1497" title="Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. 2022. URL: https://arxiv.org/abs/2203.02155, arXiv:2203.02155.">OWJ+22</a>]</span>.</p>
+<p>As shown in the <a class="reference internal" href="#chapter-training-fig-alignment-model-alignment-motivation"><span class="std std-numref">Fig. 28</span></a>, SFT on instruction tuning dataset and reinforcement learning via PPO can improve model helpfulness and instruction following abilities.</p>
+<figure class="align-default" id="chapter-training-fig-alignment-model-alignment-motivation">
+<a class="reference internal image-reference" href="../../_images/model_alignment_motivation.png"><img alt="../../_images/model_alignment_motivation.png" src="../../_images/model_alignment_motivation.png" style="width: 556.8000000000001px; height: 324.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 28 </span><span class="caption-text">Human evaluations of various models outputs show that how often outputs from each model were preferred to those from the 175B GPT-3 SFT model. The aligned models InstructGPT models (PPO-ptx) as well as variant (PPO) significantly outperform the GPT-3 baselines. Image from <span id="id2">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1497" title="Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. 2022. URL: https://arxiv.org/abs/2203.02155, arXiv:2203.02155.">OWJ+22</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignment-model-alignment-motivation" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="rlhf-via-ppo">
+<h2>RLHF via PPO<a class="headerlink" href="#rlhf-via-ppo" title="Link to this heading">#</a></h2>
+<section id="overall-methodology">
+<h3>Overall methodology<a class="headerlink" href="#overall-methodology" title="Link to this heading">#</a></h3>
+<p>Our methodology follows that of Ziegler et al. (2019) and Stiennon et al. (2020), who applied it in the stylistic continuation and summarization domains. We start with a pretrained language model (Radford et al., 2019; Brown et al., 2020; Fedus et al., 2021; Rae et al., 2021; Thoppilan et al., 2022), a distribution of prompts on which we want our model to produce aligned outputs, and a team of trained human labelers (see Sections 3.4 for details). We then apply the following three steps (Figure 2).</p>
+<p><strong>Step 1: SFT on demeonstration data</strong>: Collect demonstration data, and train a supervised policy. Our labelers provide demonstrations of the desired behavior on the input prompt distribution (see Section 3.2 for details on this distribution). We then fine-tune a pretrained GPT-3 model on this data using supervised learning.</p>
+<p><strong>Step 2: Preference labeling and reward modeling</strong>: Collect comparison data, and train a reward model. We collect a dataset of comparisons between model outputs, where labelers indicate which output they prefer for a given input. We then train a reward model to predict the human-preferred output.</p>
+<p><strong>Step 3 Optimize policy with reward model</strong>: Optimize a policy against the reward model using PPO. We use the output of the RM as a scalar reward. We fine-tune the supervised policy to optimize this reward using the PPO algorithm (Schulman et al., 2017).</p>
+<p>Steps 2 and 3 can be iterated continuously; more comparison data is collected on the current best policy, which is used to train a new RM and then a new policy. In practice, most of our comparison data comes from our supervised policies, with some coming from our PPO policies.</p>
+<p><span id="id3">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1497" title="Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. 2022. URL: https://arxiv.org/abs/2203.02155, arXiv:2203.02155.">OWJ+22</a>]</span></p>
+<figure class="align-default" id="chapter-training-fig-alignment-rlhf-demo">
+<a class="reference internal image-reference" href="../../_images/RLHF_demo.png"><img alt="../../_images/RLHF_demo.png" src="../../_images/RLHF_demo.png" style="width: 699.5px; height: 413.5px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 29 </span><span class="caption-text">A diagram illustrating the three steps of our method: (1) supervised fine-tuning (SFT), (2)
+reward model (RM) training, and (3) reinforcement learning via proximal policy optimization (PPO)
+on this reward model. Image from <span id="id4">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1497" title="Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. 2022. URL: https://arxiv.org/abs/2203.02155, arXiv:2203.02155.">OWJ+22</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignment-rlhf-demo" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="sft">
+<h3>SFT<a class="headerlink" href="#sft" title="Link to this heading">#</a></h3>
+</section>
+<section id="preference-data-collection">
+<h3>Preference data collection<a class="headerlink" href="#preference-data-collection" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id10">
+<caption><span class="caption-number">Table 5 </span><span class="caption-text">How labeler evaluates the response quality</span><a class="headerlink" href="#id10" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Metadata</p></th>
+<th class="head text-right"><p>Scale</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Overall quality</p></td>
+<td class="text-right"><p>Likert scale; 1-7</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Fails to follow the correct instruction / task</p></td>
+<td class="text-right"><p>Binary</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Inappropriate for customer assistant</p></td>
+<td class="text-right"><p>Binary</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Hallucination</p></td>
+<td class="text-right"><p>Binary</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Satisifies constraint provided in the instruction</p></td>
+<td class="text-right"><p>Binary</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Contains sexual content</p></td>
+<td class="text-right"><p>Binary</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>…</p></td>
+<td class="text-right"><p>…</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="reward-modeling">
+<h3>Reward modeling<a class="headerlink" href="#reward-modeling" title="Link to this heading">#</a></h3>
+<p>The objective of reward modeling is to train a model that take prompt <span class="math notranslate nohighlight">\(x\)</span> and one completion <span class="math notranslate nohighlight">\(y\)</span> as input and output a scalar score that align with human preference.
+More specificlly, let <span class="math notranslate nohighlight">\(r(x, y)\)</span> be the model’s scalar output, we have</p>
+<div class="math notranslate nohighlight">
+\[r(x, y_w) &gt; r(x, y_l) ~\text{if} ~ y_w \succ w_l\]</div>
+<p>where <span class="math notranslate nohighlight">\(y_w\)</span> and <span class="math notranslate nohighlight">\(y_l\)</span> are two completions of prompt <span class="math notranslate nohighlight">\(x\)</span>, and <span class="math notranslate nohighlight">\(y_w\)</span> is the preferred completion compared to <span class="math notranslate nohighlight">\(y_l\)</span>.</p>
+<p>Specifically, the loss function for the reward model (parameterized by <span class="math notranslate nohighlight">\(\theta\)</span>) is given by:</p>
+<div class="math notranslate nohighlight">
+\[
+L_\theta=-\frac{1}{\binom{K}{2}} E_{\left(x, y_w, y_l\right) \sim D}\left[\log \left(\sigma\left(r_\theta\left(x, y_w\right)-r_\theta\left(x, y_l\right)\right)\right)\right]
+\]</div>
+<p>Starting from the SFT model with the final unembedding layer removed,
+we trained a model to take in a prompt and response, and output a scalar reward. In this paper we
+only use 6B RMs</p>
+<p>Tends to overfitting to highly scored completions.</p>
+<p>Instead, we train on all <span class="math notranslate nohighlight">\(\binom{K}{2}\)</span> comparisons from each prompt as a single batch element. This is much more computationally efficient because it only requires a single forward pass of the RM for each completion (rather than <span class="math notranslate nohighlight">\(\binom{K}{2}\)</span> forward passes for <span class="math notranslate nohighlight">\(K\)</span> completions) and, because it no longer overfits, it achieves much improved validation accuracy and log loss.</p>
+<p>每一个输入token最终都能够生成一个标量值。对于LLM来说，最后一个输入token的处理结果会采样变成next_token，现在变成了score，作为所有输入token的打分结果（其实也可以取所有token生成的score进行平均，通常是直接取最后一个score，训练的效果更好一些）。
+预训练好的Reward模型可以参考：<a class="reference external" href="https://huggingface.co/IDEA-CCNL/Ziya-LLaMA-7B-Reward">https://huggingface.co/IDEA-CCNL/Ziya-LLaMA-7B-Reward</a></p>
+</section>
+<section id="reinforcement-learning">
+<h3>Reinforcement learning<a class="headerlink" href="#reinforcement-learning" title="Link to this heading">#</a></h3>
+<p>Given the prompt and response, it produces a reward determined by the reward model and ends the episode.
+In addition, we add a per-token KL penalty from the SFT model at each token to mitigate over-optimization of the reward model.</p>
+<p>We <strong>maximize</strong> the following objective function in the PPO RL training:</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{Objective}_{\text{PPO}}(\phi)=  E_{(x, y) \sim D_{\pi_\phi^{\mathrm{RL}}}}\left[r_\theta(x, y)-\beta \log \left(\pi_\phi^{\mathrm{RL}}(y \mid x) / \pi^{\mathrm{SFT}}(y \mid x)\right)\right]
+\]</div>
+<p>Here</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\pi_\phi^{\mathrm{RL}}\)</span> is the learned RL policy, <span class="math notranslate nohighlight">\(\pi^{\mathrm{SFT}}\)</span> is the supervised trained model</p></li>
+<li><p><span class="math notranslate nohighlight">\(D_{\text {pretrain }}\)</span> is the pretraining distribution. The KL reward coefficient, <span class="math notranslate nohighlight">\(\beta\)</span>, and the pretraining loss coefficient, <span class="math notranslate nohighlight">\(\gamma\)</span>, control the strength of the KL penalty and pretraining gradients respectively.</p></li>
+</ul>
+<p>如果仅仅使用reward loss，容易导致模型在偏好数据上过拟合，损失原本的能力。因此增加了和原始模型输出的KL损失（KL越小越好）</p>
+<p>To prevent language modeling performance regression, we can add an auxillary objective to maximize the likelihood on texts sampled from pretraining datasets. The final objective, named <strong>PPO-ptx</strong>, is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{Objective}_{\text{PPO-ptx}}(\phi)= \operatorname{Objective}_{\text{PPO}}(\phi) + \gamma E_{x \sim D_{\text {pretrain }}}\left[\log \left(\pi_\phi^{\mathrm{RL}}(x)\right)\right]
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(D_{\text {pretrain }}\)</span> is the pretraining distribution.</p>
+<figure class="align-default" id="id5">
+<a class="reference internal image-reference" href="../../_images/RLHF_PPO_training_demo.png"><img alt="../../_images/RLHF_PPO_training_demo.png" src="../../_images/RLHF_PPO_training_demo.png" style="width: 464.5px; height: 234.5px;" />
+</a>
+</figure>
+</section>
+<section id="the-ppo-algorithm">
+<h3>The PPO algorithm<a class="headerlink" href="#the-ppo-algorithm" title="Link to this heading">#</a></h3>
+<p>There are four models needed in the PPO algorithm:</p>
+<ul class="simple">
+<li><p>Actor LLM</p></li>
+<li><p>Frozen Actor LLM</p></li>
+<li><p>Value function model</p></li>
+<li><p>Frozen Reward model</p></li>
+</ul>
+</section>
+<section id="preliminary-mdp">
+<h3>Preliminary: MDP<a class="headerlink" href="#preliminary-mdp" title="Link to this heading">#</a></h3>
+<p>Each environment is an NLP task: we are given a supervised dataset <span class="math notranslate nohighlight">\(\mathcal{D}=\left\{\left(\boldsymbol{x}^i, \boldsymbol{y}^i\right)\right\}_{i=1}^N\)</span> of <span class="math notranslate nohighlight">\(N\)</span> examples, where <span class="math notranslate nohighlight">\(\boldsymbol{x} \in \mathcal{X}\)</span> is an language input and <span class="math notranslate nohighlight">\(\boldsymbol{y} \in \mathcal{Y}\)</span> is the target string.</p>
+<p>Generation can be viewed as a Markov Decision Process (MDP) <span class="math notranslate nohighlight">\(\langle\mathcal{S}, \mathcal{A}, \mathcal{R}, P, \gamma, T\rangle\)</span> using a finite vocabulary <span class="math notranslate nohighlight">\(\mathcal{V}\)</span>.</p>
+<p>Each episode in the MDP begins by sampling a datapoint <span class="math notranslate nohighlight">\((\boldsymbol{x}, \boldsymbol{y})\)</span> from our dataset and ends when the current time step <span class="math notranslate nohighlight">\(t\)</span> exceeds the horizon <span class="math notranslate nohighlight">\(T\)</span> or an end of sentence (EOS) token is generated.</p>
+<ul class="simple">
+<li><p>The initial state <span class="math notranslate nohighlight">\(\boldsymbol{s}_0 \in \mathcal{S}\)</span> is a task-specific prompt represented by <span class="math notranslate nohighlight">\(\boldsymbol{x}=\left(x_0, \cdots, x_m\right)\)</span>. That is, <span class="math notranslate nohighlight">\(\boldsymbol{s}_0 = \boldsymbol{x}\)</span>.</p></li>
+<li><p>An action in the environment <span class="math notranslate nohighlight">\(a_t \in \mathcal{A}\)</span> consists of a token from our vocabulary <span class="math notranslate nohighlight">\(\mathcal{V}\)</span>.</p></li>
+<li><p>The transition function <span class="math notranslate nohighlight">\(P: \mathcal{S} \times \mathcal{A} \rightarrow \Delta(\mathcal{S})\)</span> deterministically appends an action <span class="math notranslate nohighlight">\(a_t\)</span> to the end of the state <span class="math notranslate nohighlight">\(s_{t-1}=\left(x_0, \cdots, x_m, a_0, \cdots, a_{t-1}\right)\)</span>.</p></li>
+<li><p>At the end of an episode a reward <span class="math notranslate nohighlight">\(\mathcal{R}: \mathcal{S} \rightarrow \mathbb{R}^1\)</span> is provided by the reward model.</p></li>
+</ul>
+<p>The input <span class="math notranslate nohighlight">\(\boldsymbol{x}=\left(x_0, \cdots, x_m\right)\)</span> is a task-specific prompt that is used as our initial state <span class="math notranslate nohighlight">\(\boldsymbol{s}_0=\left(x_0, \cdots, x_m\right)\)</span>, where <span class="math notranslate nohighlight">\(s_0 \in \mathcal{S}\)</span> and <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> is the state space with <span class="math notranslate nohighlight">\(x_m \in \mathcal{V}\)</span>.  The transition function <span class="math notranslate nohighlight">\(P: \mathcal{S} \times \mathcal{A} \rightarrow \Delta(\mathcal{S})\)</span> deterministically appends an action <span class="math notranslate nohighlight">\(a_t\)</span> to the end of the state <span class="math notranslate nohighlight">\(s_{t-1}=\left(x_0, \cdots, x_m, a_0, \cdots, a_{t-1}\right)\)</span>. This continues until the end of the horizon <span class="math notranslate nohighlight">\(t \leq T\)</span> and we obtain a state <span class="math notranslate nohighlight">\(s_T=\left(x_0, \cdots, x_m, a_0, \cdots, a_T\right)\)</span>. At the end of an episode a reward <span class="math notranslate nohighlight">\(\mathcal{R}: \mathcal{S} \times \mathcal{A} \times \mathcal{Y} \rightarrow \mathbb{R}^1\)</span> that depends on the <span class="math notranslate nohighlight">\(\left(s_T, \boldsymbol{y}\right)\)</span> (e.g., an automated metric like PARENT Dhingra et al. (2019)) is emitted. RL4LMs provides an OpenAI gym (Brockman et al., 2016) style</p>
+</section>
+</section>
+<section id="dpo">
+<h2>DPO<a class="headerlink" href="#dpo" title="Link to this heading">#</a></h2>
+<p>DPO (Direct Preference Optimization) <span id="id6">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1496" title="Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning, and Chelsea Finn. Direct preference optimization: your language model is secretly a reward model. 2024. URL: https://arxiv.org/abs/2305.18290, arXiv:2305.18290.">RSM+24</a>]</span> improves the classical RLHF-PPO algorithm from the following two aspects:</p>
+<ul class="simple">
+<li><p>Reward model is no longer need; Instead, preference data is directly used to train an aligned model in one step.</p></li>
+<li><p>Reinforcement learning is simplified .
+It no longer uses reinforcement learning methods. Through mathematical reasoning, it simplifies the original preference alignment objective step by step, and finally trains an aligned model using simpler steps similar to SFT (Supervised Fine-Tuning).</p></li>
+</ul>
+<p>The following illustrates from the DPO paper to visually compare the differences between RLHF-PPO and DPO</p>
+<figure class="align-default" id="chapter-foundation-fig-bert-bert-elmo">
+<a class="reference internal image-reference" href="../../_images/DPO_PPO_comparison.png"><img alt="../../_images/DPO_PPO_comparison.png" src="../../_images/DPO_PPO_comparison.png" style="width: 814.95px; height: 167.85px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 30 </span><span class="caption-text">DPO optimizes for human preferences while avoiding reinforcement learning. Existing methods for fine-tuning language models with human feedback first fit a reward model to a dataset of prompts and
+human preferences over pairs of responses, and then use RL to find a policy that maximizes the learned reward.
+In contrast, DPO directly optimizes for the policy best satisfying the preferences with a simple classification
+objective. Image from <span id="id7">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1496" title="Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning, and Chelsea Finn. Direct preference optimization: your language model is secretly a reward model. 2024. URL: https://arxiv.org/abs/2305.18290, arXiv:2305.18290.">RSM+24</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-bert-bert-elmo" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>DPO pipelines</p>
+<ul class="simple">
+<li><p>Sample completions <span class="math notranslate nohighlight">\(y_1, y_2 \sim \pi_{\text {ref }}(\cdot \mid x)\)</span> for every prompt <span class="math notranslate nohighlight">\(x\)</span>, label with human preferences to construct the offline dataset of preferences <span class="math notranslate nohighlight">\(\left.\mathcal{D}=\left\{x^{(i)}, y_w^{(i)}, y_l\right)^{(i)}\right\}_{i=1}^N\)</span></p></li>
+<li><p>optimize the language model <span class="math notranslate nohighlight">\(\pi_\theta\)</span> to minimize <span class="math notranslate nohighlight">\(\mathcal{L}_{\mathrm{DPO}}\)</span> for the given <span class="math notranslate nohighlight">\(\pi_{\text {ref }}\)</span> and <span class="math notranslate nohighlight">\(\mathcal{D}\)</span> and desired <span class="math notranslate nohighlight">\(\beta\)</span>.</p></li>
+</ul>
+<p>Note: Since the preference datasets are sampled using <span class="math notranslate nohighlight">\(\pi^{\mathrm{SFT}}\)</span>, we initialize <span class="math notranslate nohighlight">\(\pi_{\text {ref }}=\pi^{\mathrm{SFT}}\)</span> whenever available.</p>
+<section id="preliminary-preference-modeling">
+<h3>Preliminary: Preference modeling<a class="headerlink" href="#preliminary-preference-modeling" title="Link to this heading">#</a></h3>
+<p>The Bradley-Terry model <span id="id8">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1499" title="Ralph Allan Bradley and Milton E. Terry. Rank analysis of incomplete block designs: i. the method of paired comparisons. Biometrika, 39(3/4):324–345, 1952. URL: http://www.jstor.org/stable/2334029 (visited on 2024-09-20).">BT52</a>]</span> is a probability model for the outcome of pairwise comparisons between items, teams, or objects. Given a pair of items <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> drawn from some population, it estimates the probability that the pairwise comparison <span class="math notranslate nohighlight">\(i&gt;j\)</span> turns out true, as</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{Pr}(i\succ j)=\frac{s_i}{s_i+s_j}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(s_i\)</span> is a positive real-valued score assigned to individual <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}{\exp \left[r\left(x, y_1\right)\right]+\exp \left[r\left(x, y_2\right)\right]}\]</div>
+<div class="proof remark admonition" id="remark-0">
+<p class="admonition-title"><span class="caption-number">Remark 5 </span> (Relationship to logistic regression)</p>
+<section class="remark-content" id="proof-content">
+<div class="math notranslate nohighlight">
+\[\operatorname{logit} \operatorname{Pr}(i&gt;j)=\log \frac{\operatorname{Pr}(i&gt;j)}{1-\operatorname{Pr}(i&gt;j)}=\log \frac{\operatorname{Pr}(i&gt;j)}{\operatorname{Pr}(j&gt;i)}=\beta_i-\beta_j
+\]</div>
+</section>
+</div></section>
+<section id="driving-the-dpo">
+<h3>Driving the DPO<a class="headerlink" href="#driving-the-dpo" title="Link to this heading">#</a></h3>
+<p>Here we outline the key steps to derive the DPO objective function.</p>
+<p>First we start with the objective of LLM alignment with a given <strong>fixed reward function</strong> <span class="math notranslate nohighlight">\(r\)</span> with a KL constraint,</p>
+<div class="math notranslate nohighlight">
+\[
+\max _\pi \mathbb{E}_{x \sim \mathcal{D}, y \sim \pi}[r(x, y)]-\beta \mathbb{D}_{\mathrm{KL}}\left[\pi(y \mid x) \| \pi_{\text {ref }}(y \mid x)\right].
+\]</div>
+<p>It turns out that we can obtain the theoretical solution of <span class="math notranslate nohighlight">\(\pi_r(y|x)\)</span> given by</p>
+<div class="math notranslate nohighlight">
+\[\pi_r(y|x) = \frac{1}{Z(x)}_{\text{ref}}(y|x) \exp(\frac{1}{\beta}r(x, y)),\]</div>
+<p>where <span class="math notranslate nohighlight">\(Z(x)\)</span> is partition funciton dependent only on <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(\pi_{\text{ref}}\)</span>.</p>
+<p>With some algebra, we can also represent the reward funciton with <span class="math notranslate nohighlight">\(\pi_r(y|x)\)</span>, given by</p>
+<div class="math notranslate nohighlight">
+\[r(x, y) = \beta \log \frac{\pi_r (y|x)}{\pi_{\text{ref}}(y|x)} + \beta \log Z.\]</div>
+<p>Note that we have just shown that that reward function <span class="math notranslate nohighlight">\(r(x, y)\)</span> and its corresponding optimal policy <span class="math notranslate nohighlight">\(\pi_{\text{ref}}(y|x)\)</span> are inter-convertable, with a funciton <span class="math notranslate nohighlight">\(Z(x)\)</span> independent of <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>If we can optimize
+This means that instead of numerically optimizing <span class="math notranslate nohighlight">\(\pi_r\)</span>, we can</p>
+<p>If we look at the preference modeling where we use to derive optiomal</p>
+<p>The gradient of DPO loss function is given by:</p>
+<div class="math notranslate nohighlight">
+\[\nabla_\theta \mathcal{L}_{\mathrm{DPO}}\left(\theta, y_w, y_l\right)=-\left(\left(1-\hat{p}_\theta\right) \hat{p}_\theta\right)[\underbrace{\nabla_\theta \log \pi_\theta\left(y_w\right)}_{\text {upweight } y_w}-\underbrace{\nabla_\theta \log \pi_\theta\left(y_l\right)}_{\text {downweight } y_l}]
+\]</div>
+</section>
+</section>
+<section id="dpo-variants">
+<h2>DPO variants<a class="headerlink" href="#dpo-variants" title="Link to this heading">#</a></h2>
+<section id="smooth-label">
+<h3>Smooth label<a class="headerlink" href="#smooth-label" title="Link to this heading">#</a></h3>
+<p>The gradient of <span class="math notranslate nohighlight">\(\epsilon\)</span>-DPO loss function is given by:</p>
+<div class="math notranslate nohighlight">
+\[\nabla_\theta \mathcal{L}_{\mathrm{DPO}}^\epsilon\left(\theta, y_w, y_l\right)=-\left((1-\epsilon)\left(1-\hat{p}_\theta\right)-\epsilon \hat{p}_\theta\right)[\underbrace{\nabla_\theta \log \pi_\theta\left(y_w\right)}_{\text {upweight } y_w}-\underbrace{\nabla_\theta \log \pi_\theta\left(y_l\right)}_{\text {downweight } y_l}]
+\]</div>
+<p><span id="id9">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1498" title="Eric Mitchell. A note on dpo with noisy preferences &amp; relationship to ipo. 2023. URL: https://ericmitchell.ai/cdpo.pdf.">Mit23</a>]</span></p>
 <p>:bibliography:<code class="docutils literal notranslate"><span class="pre">../llm_book.bib</span></code></p>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -429,6 +684,40 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rlhf-via-ppo">RLHF via PPO</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-methodology">Overall methodology</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sft">SFT</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-data-collection">Preference data collection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reward-modeling">Reward modeling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reinforcement-learning">Reinforcement learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-ppo-algorithm">The PPO algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminary-mdp">Preliminary: MDP</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dpo">DPO</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminary-preference-modeling">Preliminary: Preference modeling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#driving-the-dpo">Driving the DPO</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dpo-variants">DPO variants</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smooth-label">Smooth label</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
