@@ -381,7 +381,7 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-2">GPT-2</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-3">GPT-3</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Introduction</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-overview">Performance Overview</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
 </ul>
@@ -407,7 +407,7 @@ document.write(`
 <h2>GPT-1<a class="headerlink" href="#gpt-1" title="Link to this heading">#</a></h2>
 <section id="introduction">
 <h3>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h3>
-<p>GPT-1\cite{radford2018improving} and its successors (GPT-2 and GPT-3) are a series Transformer-based model architectures aim to offer generic task-agnostic model architecture and learning schemes to diverse natural language processing (NLP) tasks, such as textual entailment, question answering, semantic similarity assessment.</p>
+<p>GPT-1 <span id="id1">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1127" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf, 2018.">RNSS18</a>]</span> and its successors (GPT-2 and GPT-3) are a series Transformer-based model architectures aim to offer generic task-agnostic model architecture and learning schemes to diverse natural language processing (NLP) tasks, such as textual entailment, question answering, semantic similarity assessment.</p>
 <p>At that time, specific NLP tasks requires the collection of a massive amount of task-specific labeled data as well as the design of task-specific architectures that learns best from it. Given the broad range of NLP tasks, this paradigm does not scale well and model learning cannot be shared across different tasks.</p>
 <p>One of the major contributions of the GPT-1 study is the introduction of a two-stage unsupervised pretraining and supervised fine-tuning scheme. They demonstrates that a pre-trained model with fine-tuning can achieve satisfactory results over a range of diverse tasks, not just for a single task.</p>
 <p>GPT-1 model consists of multiple transformer decoder layers [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gptdecoderarch}]. Since there is no encoder, each decoder layer contains a masked multi-head self-attention layer along with a pointwise feed-forward layer. The pretraining task is generative language modeling, that it, predicting the next word given the preceding word sequence. In the Transformer architecture, the activation in the final transformer block is fed into a Softmax function that produces the word probability distributions over an entire vocabulary of words to predict the next word.</p>
@@ -421,10 +421,10 @@ document.write(`
 </section>
 <section id="pretraining">
 <h3>Pretraining<a class="headerlink" href="#pretraining" title="Link to this heading">#</a></h3>
-<p>The pretraining task of GPT-1 is generative language modeling, which predict the next words given preceding word sequence. Given an input sequence <span class="math notranslate nohighlight">\(\bm{x} = (x_1,...,x_T)\)</span>, generative language model maximize the log likelihood given by</p>
+<p>The pretraining task of GPT-1 is generative language modeling, which predict the next words given preceding word sequence. Given an input sequence <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1,...,x_T)\)</span>, generative language model maximize the log likelihood given by</p>
 <div class="math notranslate nohighlight">
 \[\sum_{t=1}^{T} \log p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1},\theta\right)\]</div>
-<p>where <span class="math notranslate nohighlight">\(p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1}\right)\)</span> is the predicted probability distribution for token <span class="math notranslate nohighlight">\(x_t\)</span> contextualized over preceding token sequence <span class="math notranslate nohighlight">\(\bm{x}_{t-k-1:t-1}\)</span> with a context window size <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\(p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1}\right)\)</span> is the predicted probability distribution for token <span class="math notranslate nohighlight">\(x_t\)</span> contextualized over preceding token sequence <span class="math notranslate nohighlight">\(\mathbf{x}_{t-k-1:t-1}\)</span> with a context window size <span class="math notranslate nohighlight">\(k\)</span>.</p>
 <p>The input tokens are first converted to input embeddings by summing up token embedding and position embedding. The input embedding <span class="math notranslate nohighlight">\(h_0\)</span> is fed into multiple Transformer layers to obtain contextualized hidden state <span class="math notranslate nohighlight">\(h\)</span>s a multi-headed self-attention operation over the input context tokens followed by position-wise feedforward layers to produce an output distribution over target tokens:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -448,7 +448,7 @@ document.write(`
 <p>\begin{figure}[H]
 \centering
 \includegraphics[width=1.0\linewidth]{../figures/deepLearning/ApplicationsNLP/pretrainedLM/GPT/GPT_arch}
-\caption{Figure 1: (left) Transformer architecture and training objectives used in this work. (right) Input transformations for fine-tuning on different tasks. We convert all structured inputs into token sequences to be processed by our pre-trained model, followed by a linear+softmax layer. Image from \cite{radford2018improving}.}
+\caption{Figure 1: (left) Transformer architecture and training objectives used in this work. (right) Input transformations for fine-tuning on different tasks. We convert all structured inputs into token sequences to be processed by our pre-trained model, followed by a linear+softmax layer. Image from <span id="id2">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1127" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf, 2018.">RNSS18</a>]</span>.}
 \label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gptarch}
 \end{figure}</p>
 <p>The fine-tuning process involves continuing the model training over a labeled dataset <span class="math notranslate nohighlight">\(\mathcal{C}\)</span>. Take text classification task as an example. Suppose that each labeled example consists of a sequence of input tokens, <span class="math notranslate nohighlight">\(x^{1}, \ldots, x^{m}\)</span> along with a label <span class="math notranslate nohighlight">\(y\)</span>. The input sequence is first encoded by the pre-trained model to an embedding vector <span class="math notranslate nohighlight">\(h_{l}^{m}\)</span> at the position of the last input token. <span class="math notranslate nohighlight">\(h_{l}^{m}\)</span> is then fed into an linear layer with Softmax to obtain distribution over class labels. The training loss can simply be the binary cross entropy (BCE) loss. It is also found that including language modeling as an auxiliary task during fine-tuning can improve generalization of the fine-tuned model and speed up convergence.</p>
@@ -456,7 +456,7 @@ document.write(`
 </section>
 <section id="gpt-2">
 <h2>GPT-2<a class="headerlink" href="#gpt-2" title="Link to this heading">#</a></h2>
-<p>GPT-2 \cite{radford2019language}, a successor to the original GPT-1, is a larger model trained on much more training data, called WebText, than the original one. It achieved state-of-the-art results on seven out of the eight tasks in a zero-shot setting in which there is no fine-tuning applied but had limited success in some tasks.
+<p>GPT-2 <span id="id3">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1128" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>]</span>, a successor to the original GPT-1, is a larger model trained on much more training data, called WebText, than the original one. It achieved state-of-the-art results on seven out of the eight tasks in a zero-shot setting in which there is no fine-tuning applied but had limited success in some tasks.
 The key contribution of GPT-2 is not about further refining the two-stage pretraining-fine-tuning paradigm in GPT-1, but about investigating the capability of zero-shot learning with extensively pretrained language model alone. In other words, it aims to answer whether language modeling is a universal task that can help the model to gain universal knowledge that can accomplish other language tasks without subsequent supervised learning.</p>
 <p>The intuition is that a model can be very skilled in the sense that it can learn much of the information about a language during the pre-training phase, there will be no need to learn extra information through fine-tuning phase. Take machine translation in the following box as an example, which contains examples of naturally occurring demonstrations of English to French and French to English translation found throughout the WebText training set. By learning to predict future words in the language modeling task, we expect the model to automatically acquire the ability to translate when we can provide the right prompt (e.g., \textit{translate from English to French}) to the model.</p>
 <p>\begin{mdframed}{}</p>
@@ -480,9 +480,9 @@ If this sounds like a bit of a stretch, consider this question in French: \texti
 </section>
 <section id="gpt-3">
 <h2>GPT-3<a class="headerlink" href="#gpt-3" title="Link to this heading">#</a></h2>
-<section id="id1">
-<h3>Introduction<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<p>GPT-3 model \cite{brown2020language} has 175 billion parameters, which is 100 times bigger than GPT-2. The architecture of GPT-2 and GPT-3 is similar, with the main differences usually being in the model size and the dataset quantity/quality. As a comparison, GPT-3 has 96 decoder layers with 96 multi-heads attentions and <span class="math notranslate nohighlight">\(d_model\)</span> of 12,288. In comparison, GPT-1 only has 12 layers, 12 heads, and <span class="math notranslate nohighlight">\(d_model\)</span> given by 768. The training data is further expanded from what is used in GPT-2.</p>
+<section id="id4">
+<h3>Introduction<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>GPT-3 model <span id="id5">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id382" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>]</span> has 175 billion parameters, which is 100 times bigger than GPT-2. The architecture of GPT-2 and GPT-3 is similar, with the main differences usually being in the model size and the dataset quantity/quality. As a comparison, GPT-3 has 96 decoder layers with 96 multi-heads attentions and <span class="math notranslate nohighlight">\(d_model\)</span> of 12,288. In comparison, GPT-1 only has 12 layers, 12 heads, and <span class="math notranslate nohighlight">\(d_model\)</span> given by 768. The training data is further expanded from what is used in GPT-2.</p>
 <p>{\centering
 \begin{tabular}{lc}
 Dataset &amp; Quantity (tokens) \
@@ -718,7 +718,7 @@ information, or from algorithmic improvements.</p>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-2">GPT-2</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-3">GPT-3</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Introduction</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-overview">Performance Overview</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
 </ul>

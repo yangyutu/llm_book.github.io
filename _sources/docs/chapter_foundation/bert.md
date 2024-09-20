@@ -176,12 +176,6 @@ $$	\sum_{k=1}^{N}\left(\log p\left(t_{k} \mid t_{1}, \ldots, t_{k-1} ;\Theta\rig
 
 After pretraining, the top layer LSTM hidden states are used as contextualized embeddings.  
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\linewidth]{../figures/deepLearning/ApplicationsNLP/contextualizedEmbedding/ELMO/ELMO}
-	\caption{In ELMO, static word embeddings $(e_1,...,e_N)$ are contextualized by stacked bidirectional LSTM as $(h_1,...,h_N)$.}
-	\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:elmo}
-\end{figure}
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/BERT_contextualizedEmbedding/ELMO/ELMO.png
 ---

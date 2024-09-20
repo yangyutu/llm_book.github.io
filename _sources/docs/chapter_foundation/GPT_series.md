@@ -5,7 +5,7 @@
 
 ### Introduction
 
-GPT-1\cite{radford2018improving} and its successors (GPT-2 and GPT-3) are a series Transformer-based model architectures aim to offer generic task-agnostic model architecture and learning schemes to diverse natural language processing (NLP) tasks, such as textual entailment, question answering, semantic similarity assessment. 
+GPT-1 {cite:p}`radford2018improving` and its successors (GPT-2 and GPT-3) are a series Transformer-based model architectures aim to offer generic task-agnostic model architecture and learning schemes to diverse natural language processing (NLP) tasks, such as textual entailment, question answering, semantic similarity assessment. 
 
 At that time, specific NLP tasks requires the collection of a massive amount of task-specific labeled data as well as the design of task-specific architectures that learns best from it. Given the broad range of NLP tasks, this paradigm does not scale well and model learning cannot be shared across different tasks. 
 
@@ -25,11 +25,11 @@ In the stage unsupervised pretraining from unlabeled data, the goal is to learn 
 
 ### Pretraining
 
-The pretraining task of GPT-1 is generative language modeling, which predict the next words given preceding word sequence. Given an input sequence $\bm{x} = (x_1,...,x_T)$, generative language model maximize the log likelihood given by
+The pretraining task of GPT-1 is generative language modeling, which predict the next words given preceding word sequence. Given an input sequence $\mathbf{x} = (x_1,...,x_T)$, generative language model maximize the log likelihood given by
 
 $$\sum_{t=1}^{T} \log p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1},\theta\right)$$
 
-where $p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1}\right)$ is the predicted probability distribution for token $x_t$ contextualized over preceding token sequence $\bm{x}_{t-k-1:t-1}$ with a context window size $k$.
+where $p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1}\right)$ is the predicted probability distribution for token $x_t$ contextualized over preceding token sequence $\mathbf{x}_{t-k-1:t-1}$ with a context window size $k$.
 
 The input tokens are first converted to input embeddings by summing up token embedding and position embedding. The input embedding $h_0$ is fed into multiple Transformer layers to obtain contextualized hidden state $h$s a multi-headed self-attention operation over the input context tokens followed by position-wise feedforward layers to produce an output distribution over target tokens:
 
@@ -58,7 +58,7 @@ To pretrained GPT model can be adopted for different downstream tasks by modifyi
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1.0\linewidth]{../figures/deepLearning/ApplicationsNLP/pretrainedLM/GPT/GPT_arch}
-	\caption{Figure 1: (left) Transformer architecture and training objectives used in this work. (right) Input transformations for fine-tuning on different tasks. We convert all structured inputs into token sequences to be processed by our pre-trained model, followed by a linear+softmax layer. Image from \cite{radford2018improving}.}
+	\caption{Figure 1: (left) Transformer architecture and training objectives used in this work. (right) Input transformations for fine-tuning on different tasks. We convert all structured inputs into token sequences to be processed by our pre-trained model, followed by a linear+softmax layer. Image from {cite:p}`radford2018improving`.}
 	\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gptarch}
 \end{figure}
 
@@ -66,7 +66,7 @@ The fine-tuning process involves continuing the model training over a labeled da
 
 ## GPT-2
 
-GPT-2 \cite{radford2019language}, a successor to the original GPT-1, is a larger model trained on much more training data, called WebText, than the original one. It achieved state-of-the-art results on seven out of the eight tasks in a zero-shot setting in which there is no fine-tuning applied but had limited success in some tasks. 
+GPT-2 {cite:p}`radford2019language`, a successor to the original GPT-1, is a larger model trained on much more training data, called WebText, than the original one. It achieved state-of-the-art results on seven out of the eight tasks in a zero-shot setting in which there is no fine-tuning applied but had limited success in some tasks. 
 The key contribution of GPT-2 is not about further refining the two-stage pretraining-fine-tuning paradigm in GPT-1, but about investigating the capability of zero-shot learning with extensively pretrained language model alone. In other words, it aims to answer whether language modeling is a universal task that can help the model to gain universal knowledge that can accomplish other language tasks without subsequent supervised learning.
 
 The intuition is that a model can be very skilled in the sense that it can learn much of the information about a language during the pre-training phase, there will be no need to learn extra information through fine-tuning phase. Take machine translation in the following box as an example, which contains examples of naturally occurring demonstrations of English to French and French to English translation found throughout the WebText training set. By learning to predict future words in the language modeling task, we expect the model to automatically acquire the ability to translate when we can provide the right prompt (e.g., \textit{translate from English to French}) to the model.
@@ -96,7 +96,7 @@ GPT-2 uses the same Transformer decoder architecture like GPT-1, except that the
 ## GPT-3
 
 ### Introduction
-GPT-3 model \cite{brown2020language} has 175 billion parameters, which is 100 times bigger than GPT-2. The architecture of GPT-2 and GPT-3 is similar, with the main differences usually being in the model size and the dataset quantity/quality. As a comparison, GPT-3 has 96 decoder layers with 96 multi-heads attentions and $d_model$ of 12,288. In comparison, GPT-1 only has 12 layers, 12 heads, and $d_model$ given by 768. The training data is further expanded from what is used in GPT-2.
+GPT-3 model {cite:p}`brown2020language` has 175 billion parameters, which is 100 times bigger than GPT-2. The architecture of GPT-2 and GPT-3 is similar, with the main differences usually being in the model size and the dataset quantity/quality. As a comparison, GPT-3 has 96 decoder layers with 96 multi-heads attentions and $d_model$ of 12,288. In comparison, GPT-1 only has 12 layers, 12 heads, and $d_model$ given by 768. The training data is further expanded from what is used in GPT-2.
 
 {\centering
 \begin{tabular}{lc} 

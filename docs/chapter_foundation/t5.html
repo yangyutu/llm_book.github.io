@@ -379,8 +379,12 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bart">BART</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Overview</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-training">Pre-training</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-fine-tuning">Model Fine Tuning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining-performance-analysis">Pretraining performance analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#text-generation-tasks">Text Generation Tasks</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -400,25 +404,27 @@ document.write(`
 <h2>T5<a class="headerlink" href="#t5" title="Link to this heading">#</a></h2>
 <section id="overview">
 <h3>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
-<p>Pretrained language models and transfer learning enable a diverse range of NLP tasks to be solved by a generic and unified architecture paradigm consisting of an representation encoder from the pretrained language model plus a task-dependent prediction head. T5 (Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer) <span id="id1">[<a class="reference internal" href="language_models.html#id386" title="Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter J Liu. Exploring the limits of transfer learning with a unified text-to-text transformer. Journal of Machine Learning Research, 21(140):1–67, 2020.">RSR+20</a>]</span> push this limits further. Based on encoder-decoder Transformer model, T5 proposed a unifying framework to solve many tasks by casting them to a text-to-text problem, where  input and output, as well as the task description, are a list of text tokens.</p>
+<p>Pretrained language models and transfer learning enable a diverse range of NLP tasks to be solved by a generic and unified architecture paradigm consisting of an representation encoder from the pretrained language model plus a task-dependent prediction head. T5 (Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer) <span id="id1">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id383" title="Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter J Liu. Exploring the limits of transfer learning with a unified text-to-text transformer. Journal of Machine Learning Research, 21(140):1–67, 2020.">RSR+20</a>]</span> push this limits further. Based on encoder-decoder Transformer model, T5 proposed a unifying framework to solve many tasks by casting them to a text-to-text problem, where  input and output, as well as the task description, are a list of text tokens.</p>
 <p>The following diagram <a class="reference internal" href="#chapter-foundation-fig-seq2seq-t5arch"><span class="std std-numref">Fig. 24</span></a> illustrates how T5 solves four different NLP problems within a unified framework, including machine learning, linguistic acceptability, semantic similarity, and text summarization.</p>
 <figure class="align-default" id="chapter-foundation-fig-seq2seq-t5arch">
-<a class="reference internal image-reference" href="../../_images/T5_arch.png"><img alt="../../_images/T5_arch.png" src="../../_images/T5_arch.png" style="width: 246.6px; height: 106.5px;" />
+<a class="reference internal image-reference" href="../../_images/T5_arch.png"><img alt="../../_images/T5_arch.png" src="../../_images/T5_arch.png" style="width: 657.6px; height: 284.0px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 24 </span><span class="caption-text">Illustration of the text-to-text universal transfer learning framework for a diverse range of tasks.</span><a class="headerlink" href="#chapter-foundation-fig-seq2seq-t5arch" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Particularly, the model is fed with text that is made up of a task prefix and the input attached to it. We convert a labeled textual dataset to a format like {Task: ‘….’, ‘targets’ : … ‘ } format, where we insert the purpose in the input as a prefix.</p>
-<p>\begin{example}
-In order to train a single model on the diverse set of tasks described above, we need a consistent input and output format across all tasks. As recently noted by \cite{mccann2018natural,radford2019language}, it is possible to formulate most NLP tasks in a text-to-text format - that is, a task where the model is fed some text for context or conditioning and is then asked to produce some output text.</p>
+<div class="proof example admonition" id="example-0">
+<p class="admonition-title"><span class="caption-number">Example 4 </span></p>
+<section class="example-content" id="proof-content">
+<p>In order to train a single model on the diverse set of tasks described above, we need a consistent input and output format across all tasks. As recently noted by <span id="id2">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1432" title="Bryan McCann, Nitish Shirish Keskar, Caiming Xiong, and Richard Socher. The natural language decathlon: multitask learning as question answering. arXiv preprint arXiv:1806.08730, 2018.">MKXS18</a>, <a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1128" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>]</span>, it is possible to formulate most NLP tasks in a text-to-text format - that is, a task where the model is fed some text for context or conditioning and is then asked to produce some output text.</p>
 <p>To specify which task the model should perform, we add a task-specific (text) prefix to the original input sequence before feeding it to the model. As an example,</p>
 <ul class="simple">
 <li><p>to ask the model to translate the sentence “That is good.” from English to German, the model would be fed the sequence “translate English to German: That is good.” and would be trained to output “Das ist gut.”</p></li>
-<li><p>For text classification tasks, the model simply predicts a single word corresponding to the target label. For example, on the MNLI benchmark [Williams et al., 2017] the goal is to predict whether a premise implies (“entailment”), contradicts (“contradiction”), or neither (“neutral”) a hypothesis. With our preprocessing, the input sequence becomes “mnli premise: I hate pigeons. hypothesis: My feelings towards pigeons are filled with animosity.” with the corresponding target word “entailment”. Note that an issue arises if our model outputs text on a text classification task that does not correspond to any of the possible labels (for example if the model outputs “hamburger” when the only possible labels for a task were “entailment”, “neutral”, or “contradiction”). In this case, we always count the model’s output as wrong, though we never observed this behavior in any of our trained models.
-\end{example}</p></li>
+<li><p>For text classification tasks, the model simply predicts a single word corresponding to the target label. For example, on the MNLI benchmark [Williams et al., 2017] the goal is to predict whether a premise implies (“entailment”), contradicts (“contradiction”), or neither (“neutral”) a hypothesis. With our preprocessing, the input sequence becomes “mnli premise: I hate pigeons. hypothesis: My feelings towards pigeons are filled with animosity.” with the corresponding target word “entailment”. Note that an issue arises if our model outputs text on a text classification task that does not correspond to any of the possible labels (for example if the model outputs “hamburger” when the only possible labels for a task were “entailment”, “neutral”, or “contradiction”). In this case, we always count the model’s output as wrong, though we never observed this behavior in any of our trained models.</p></li>
 </ul>
-<p>For the English-German translation task, the “translate English to German: That is good.” input is going to produce “das is gut.”.</p>
+</section>
+</div><p>For the English-German translation task, the “translate English to German: That is good.” input is going to produce “das is gut.”.</p>
 <p>Based on the task-agnostic architecture proposed by T5, solving different NLP tasks becomes how to convert the task into suitable text input output. T5 apply the same model, objective, training procedure, and decoding process for every NLP task.</p>
 </section>
 <section id="pretraining">
@@ -440,15 +446,20 @@ In order to train a single model on the diverse set of tasks described above, we
 </tbody>
 </table>
 </div>
-<p>Besides using large-scale corpus of masked language pretraining, T5 model also utilizes labeled data from different downstream tasks for \textbf{multi-task pretraining}. The purpose is to obtain an improved task-agnostic representations via multi-task learning, since learning from multiple related tasks can improve the robustness.</p>
+<p>Besides using large-scale corpus of masked language pretraining, T5 model also utilizes labeled data from different downstream tasks for <em><strong>multi-task pretraining</strong></em>. The purpose is to obtain an improved task-agnostic representations via multi-task learning, since learning from multiple related tasks can improve the robustness.</p>
 </section>
 </section>
 <section id="bart">
 <h2>BART<a class="headerlink" href="#bart" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h3>Overview<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>The key contribution of BART (Bidirectional and Auto-Regressive Transformers) <span id="id4">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id388" title="Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed, Omer Levy, Ves Stoyanov, and Luke Zettlemoyer. BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. ArXiv:1910.13461, 2019.">LLG+19</a>]</span> is using Seq2Seq Transformer architecture to combine the advantage of bidirectional auto-encoder scheme (like BERT) and Auto-regressive scheme (like GPT).</p>
+<p>With well-design pretraining tasks, BART, when fine tuned, is particularly effective for both text generation and for language comprehension tasks. BART has achieved state-of-the-art performance in generative tasks, such extractive summarization, dialogue, and abstractive QA.</p>
+</section>
 <section id="pre-training">
 <h3>Pre-training<a class="headerlink" href="#pre-training" title="Link to this heading">#</a></h3>
-<p>BART (Bidirectional and Auto-Regressive Transformers)\cite{lewis2019bart} adopts a slightly Seq2Seq transformer architecturecombines the advantage of Auto-encoder scheme (like BERT) and Auto-regressive scheme (like GPT). BART adopts a slightly modified Transformer architecture with a bidirectional encoder over corrupted text and a uni-directional autoregressive decoder to recover the original text. BART has achieved state-of-the-art performance in generative tasks, such extractive summarization, dialogue, and abstractive QA.</p>
-<p>The most important pre-training task for BERT is to predict a masked token and use the entire input to get more complete information to make more accurate predictions, with two steps:</p>
+<p>BART adopts a slightly modified Transformer architecture with a bidirectional encoder over corrupted text and a uni-directional autoregressive decoder to recover the original text.</p>
+<p>The most important pre-training task for BART is to predict a masked token and use the entire input to get more complete information to make more accurate predictions, with two steps:</p>
 <ul class="simple">
 <li><p>First, add noise and mask to the input and then use the encoder part to encode noisy input text.</p></li>
 <li><p>Second, use an uni-directional decoder to reconstruct the original text, including recover the order and masked words.</p></li>
@@ -458,18 +469,36 @@ In order to train a single model on the diverse set of tasks described above, we
 <a class="reference internal image-reference" href="../../_images/BART_arch.png"><img alt="../../_images/BART_arch.png" src="../../_images/BART_arch.png" style="width: 641.6999999999999px; height: 189.9px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 25 </span><span class="caption-text">Illustration of BART architecture, which consists of a bidirectional encoder (like BERT) and an auto-regressive decoder (like GPT). The original input is \textit{ABCDE}, while the masked input has text \textit{CD} masked out and an additional mask inserted before \textit{B}. The decoder needs to predict the original input offset by one step using the encoder’s output and the original input.</span><a class="headerlink" href="#chapter-foundation-fig-seq2seq-bart-arch" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 25 </span><span class="caption-text">Illustration of BART architecture, which consists of a bidirectional encoder (like BERT) and an auto-regressive decoder (like GPT). The original input is <em>ABCDE</em>, while the masked input has text <em>CD</em> masked out and an additional mask inserted before <em>B</em>. The decoder needs to predict the original input offset by one step using the encoder’s output and the original input.</span><a class="headerlink" href="#chapter-foundation-fig-seq2seq-bart-arch" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>BART is pretrained by optimizing a reconstruction loss, which is the cross-entropy between the decoder’s output and the original document. Because of the adoption of the Seq2Seq architecture, BART allows the application of any type of input corruption. When all the information to the encoder is lost, the BART’s decoder part is equivalent to a language model.</p>
-<p>We will look at each input corruption scheme and its underlying motivation in detail [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:bartcorruption}]:</p>
-<ul class="simple">
-<li><p>Token Masking: Tokens are randomly masked with a [MASK] symbol, same as with the BERT model. The model is pre-trained to predict a token based on its context.</p></li>
-<li><p>Token Deletion: Tokens are randomly removed from the documents. The model is pre-trained to determine tokens at which positions are removed.</p></li>
-<li><p>Text Infilling: A number of text spans with different lengths (including zero length) are sampled, and then they are replaced by a single [MASK] token. The model is pre-trained to decide how many tokens a span corresponds to.</p></li>
-<li><p>Sentence Permutation: The sentences in the input are segmented based on full stops and shuffled in random order. The model is pre-trained to understand the relationship between sentences.</p></li>
-<li><p>Document Rotation: The input is rotated (i.e., is right shifted) so that it begins with a randomly selected token.  The model is pre-trained to find the start position of a document.</p></li>
-</ul>
+<p>We will look at each input corruption scheme and its underlying motivation in detail [<a class="reference internal" href="#chapter-foundation-fig-seq2seq-bart-corruption"><span class="std std-numref">Fig. 26</span></a>]:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Technique</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Token Masking</p></td>
+<td><p>Tokens are randomly masked with a [MASK] symbol, same as with the BERT model. The model is pre-trained to predict a token based on its context.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Token Deletion</p></td>
+<td><p>Tokens are randomly removed from the documents. The model is pre-trained to determine tokens at which positions are removed.</p></td>
+</tr>
+<tr class="row-even"><td><p>Text Infilling</p></td>
+<td><p>A number of text spans with different lengths (including zero length) are sampled, and then they are replaced by a single [MASK] token. The model is pre-trained to decide how many tokens a span corresponds to.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sentence Permutation</p></td>
+<td><p>The sentences in the input are segmented based on full stops and shuffled in random order. The model is pre-trained to understand the relationship between sentences.</p></td>
+</tr>
+<tr class="row-even"><td><p>Document Rotation</p></td>
+<td><p>The input is rotated (i.e., is right shifted) so that it begins with a randomly selected token. The model is pre-trained to find the start position of a document.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <figure class="align-default" id="chapter-foundation-fig-seq2seq-bart-corruption">
 <a class="reference internal image-reference" href="../../_images/BART_corruption.png"><img alt="../../_images/BART_corruption.png" src="../../_images/BART_corruption.png" style="width: 470.7px; height: 309.59999999999997px;" />
 </a>
@@ -478,26 +507,145 @@ In order to train a single model on the diverse set of tasks described above, we
 </figcaption>
 </figure>
 </section>
-<section id="model-fine-tuning">
-<h3>Model Fine Tuning<a class="headerlink" href="#model-fine-tuning" title="Link to this heading">#</a></h3>
-<p>The pre-trained BART model has both text representation and generation capabilities, so it is applicable for both language understanding and text generation downstream tasks.</p>
-<p>\textbf{Sequence classification and sequence labeling.} For sequence or token classification tasks, the encoder and decoder of BART use the same input, and the state of the hidden layer at the final moment of the decoder is used as the vector representation of the input text. The vector representation is fed into the multi-class linear classifier. Similar to the [CLS] token of the BERT model, the BART model adds an additional special token at the last position of the decoder input, and uses the hidden layer state of this token as the representation of the text.</p>
-<p>\textbf{Text generation.} BART models can be used directly for conditional text generation tasks such as text summarization. Take text summarization as an example, the input of the encoder is the text to be summarized, and the decoder generates the corresponding target text in an auto-regressive manner.</p>
-<p>\textbf{Machine translation.} When used for machine translation tasks, the BART model cannot be directly fine-tuned because the source and target languages use different vocabulary sets. Therefore, the researchers propose to replace the input embedding layer of the BART model encoder with a small Transformer encoder, which is used to map the vocabulary in the source language to the input representation space of the target language. During the fine-tuning phase, the parameters of this newly introduced source language encoder are randomly initialized, and most of the other parameters of the BART model are pre-trained. There are two stages in the fine-tuning phase.</p>
+<section id="pretraining-performance-analysis">
+<h3>Pretraining performance analysis<a class="headerlink" href="#pretraining-performance-analysis" title="Link to this heading">#</a></h3>
+<p>```{table} Comparison of pre-training objectives. Performance varies considerably across tasks, but the BART models with text infilling demonstrate the most consistently strong performance. Table from <span id="id5">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id388" title="Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed, Omer Levy, Ves Stoyanov, and Luke Zettlemoyer. BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. ArXiv:1910.13461, 2019.">LLG+19</a>]</span>.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Model</p></th>
+<th class="head text-center"><p>SQuAD 1.1</p></th>
+<th class="head text-center"><p>MNLI</p></th>
+<th class="head text-center"><p>ELI5</p></th>
+<th class="head text-center"><p>XSum</p></th>
+<th class="head text-center"><p>ConvAI2</p></th>
+<th class="head text-center"><p>CNN/DM</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p></p></td>
+<td class="text-center"><p>F1</p></td>
+<td class="text-center"><p>Acc</p></td>
+<td class="text-center"><p>PPL</p></td>
+<td class="text-center"><p>PPL</p></td>
+<td class="text-center"><p>PPL</p></td>
+<td class="text-center"><p>PPL</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>BERT Base (Devlin et al., 2019)</p></td>
+<td class="text-center"><p>88.5</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{8 4 . 3}\)</span></p></td>
+<td class="text-center"><p>-</p></td>
+<td class="text-center"><p>-</p></td>
+<td class="text-center"><p>-</p></td>
+<td class="text-center"><p>-</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Language Model</p></td>
+<td class="text-center"><p>76.7</p></td>
+<td class="text-center"><p>80.1</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{2 1 . 4 0}\)</span></p></td>
+<td class="text-center"><p>7.00</p></td>
+<td class="text-center"><p>11.51</p></td>
+<td class="text-center"><p>6.56</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>BART Base</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>w/ Token Masking</p></td>
+<td class="text-center"><p>90.4</p></td>
+<td class="text-center"><p>84.1</p></td>
+<td class="text-center"><p>25.05</p></td>
+<td class="text-center"><p>7.08</p></td>
+<td class="text-center"><p>11.73</p></td>
+<td class="text-center"><p>6.10</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>w/ Token Deletion</p></td>
+<td class="text-center"><p>90.4</p></td>
+<td class="text-center"><p>84.1</p></td>
+<td class="text-center"><p>24.61</p></td>
+<td class="text-center"><p>6.90</p></td>
+<td class="text-center"><p>11.46</p></td>
+<td class="text-center"><p>5.87</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>w/ Text Infilling</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{9 0 . 8}\)</span></p></td>
+<td class="text-center"><p>84.0</p></td>
+<td class="text-center"><p>24.26</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{6 . 6 1}\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{1 1 . 0 5}\)</span></p></td>
+<td class="text-center"><p>5.83</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>w/ Document Rotation</p></td>
+<td class="text-center"><p>77.2</p></td>
+<td class="text-center"><p>75.3</p></td>
+<td class="text-center"><p>53.69</p></td>
+<td class="text-center"><p>17.14</p></td>
+<td class="text-center"><p>19.87</p></td>
+<td class="text-center"><p>10.59</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>w/ Sentence Shuffling</p></td>
+<td class="text-center"><p>85.4</p></td>
+<td class="text-center"><p>81.5</p></td>
+<td class="text-center"><p>41.87</p></td>
+<td class="text-center"><p>10.93</p></td>
+<td class="text-center"><p>16.67</p></td>
+<td class="text-center"><p>7.89</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>w/ Text Infilling + Sentence Shuffling</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{9 0 . 8}\)</span></p></td>
+<td class="text-center"><p>83.8</p></td>
+<td class="text-center"><p>24.17</p></td>
+<td class="text-center"><p>6.62</p></td>
+<td class="text-center"><p>11.12</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{5 . 4 1}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+
+### Model Fine Tuning
+
+The pre-trained BART model has both text representation and generation capabilities, so it is applicable for both language understanding and text generation downstream tasks.
+
+#### Language Understanding Tasks
+
+***Sequence classification*** For sequence or token classification tasks, the encoder and decoder of BART use the same input, and the state of the hidden layer at the final moment of the decoder is used as the vector representation of the input text. The vector representation is fed into the multi-class linear classifier. Similar to the [CLS] token of the BERT model, the BART model adds an additional special token at the last position of the decoder input, and uses the hidden layer state of this token as the representation of the text. 
+
+***Token classification.*** For sequence or token classification tasks, the encoder and decoder of BART use the same input, the top hidden state of the decoder as a representation for each
+word. The vector representation is fed into the multi-class linear classifier. 
+
+```{figure} ../img/chapter_foundation/pretrainedLM/seq2seq/BART/BART_fine_tuning_classification.png
+---
+scale: 40%
+name: chapter_foundation_fig_seq2seq_bart_finetuning_classification
+---
+To use BART for classification problems, the same
+		input is fed into the encoder and decoder, and the representation from the final output is used.  Image from {cite:p}`lewis2019bart`.
+</pre></div>
+</div>
+<section id="text-generation-tasks">
+<h4>Text Generation Tasks<a class="headerlink" href="#text-generation-tasks" title="Link to this heading">#</a></h4>
+<p><em><strong>Text generation.</strong></em> BART models can be used directly for conditional text generation tasks such as text summarization. Take text summarization as an example, the input of the encoder is the text to be summarized, and the decoder generates the corresponding target text in an auto-regressive manner.</p>
+<p><em><strong>Machine translation.</strong></em> When used for machine translation tasks, the BART model cannot be directly fine-tuned because the source and target languages use different vocabulary sets. Therefore, the researchers propose to replace the input embedding layer of the BART model encoder with a small Transformer encoder, <strong>which is used to align the vocabulary in the source language to the input representation space of the target language</strong>. During the fine-tuning phase, the parameters of this newly introduced source language encoder are randomly initialized, and most of the other parameters of the BART model are pre-trained.</p>
+<p>There are two stages in the fine-tuning phase.</p>
 <ul class="simple">
 <li><p>First, only the source language encoder, the BART model position vector, and the self-attention input projection matrix of the first layer of the BART pretrained encoder are trained; The rest of model parameters are fixed.</p></li>
 <li><p>Second, a small number of iterations are performed on all model parameters.</p></li>
 </ul>
-<figure class="align-default" id="chapter-foundation-fig-seq2seq-bart-finetuning">
-<a class="reference internal image-reference" href="../../_images/BART_fine_tuning.png"><img alt="../../_images/BART_fine_tuning.png" src="../../_images/BART_fine_tuning.png" style="width: 594.0px; height: 134.1px;" />
+<figure class="align-default" id="chapter-foundation-fig-seq2seq-bart-finetuning-translation">
+<a class="reference internal image-reference" href="../../_images/BART_fine_tuning_translation.png"><img alt="../../_images/BART_fine_tuning_translation.png" src="../../_images/BART_fine_tuning_translation.png" style="width: 380.40000000000003px; height: 236.4px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 27 </span><span class="caption-text">(Left) To use BART for classification problems, the same
-input is fed into the encoder and decoder, and the representation from the final output is used. (Right) For machine translation, we learn a small additional
+<p><span class="caption-number">Fig. 27 </span><span class="caption-text">For machine translation, we learn a small additional
 encoder that replaces the word embeddings in BART. The
-new encoder can use a disjoint vocabulary. Image from <span id="id2">[<a class="reference internal" href="language_models.html#id391" title="Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed, Omer Levy, Ves Stoyanov, and Luke Zettlemoyer. BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. ArXiv:1910.13461, 2019.">LLG+19</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-seq2seq-bart-finetuning" title="Link to this image">#</a></p>
+new encoder can use a disjoint vocabulary. Image from <span id="id6">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id388" title="Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed, Omer Levy, Ves Stoyanov, and Luke Zettlemoyer. BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. ArXiv:1910.13461, 2019.">LLG+19</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-seq2seq-bart-finetuning-translation" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
+</section>
 </section>
 </section>
 </section>
@@ -572,8 +720,12 @@ new encoder can use a disjoint vocabulary. Image from <span id="id2">[<a class="
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bart">BART</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Overview</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-training">Pre-training</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-fine-tuning">Model Fine Tuning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining-performance-analysis">Pretraining performance analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#text-generation-tasks">Text Generation Tasks</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
