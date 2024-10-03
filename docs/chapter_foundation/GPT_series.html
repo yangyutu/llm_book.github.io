@@ -197,7 +197,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">LLM finetuning</a></li>
 
 
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">LLM alignement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">LLM alignement and preference learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">LLM Training Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
@@ -409,48 +409,50 @@ document.write(`
 <h3>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h3>
 <p>GPT-1 <span id="id1">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1127" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf, 2018.">RNSS18</a>]</span> and its successors (GPT-2 and GPT-3) are a series Transformer-based model architectures aim to offer generic task-agnostic model architecture and learning schemes to diverse natural language processing (NLP) tasks, such as textual entailment, question answering, semantic similarity assessment.</p>
 <p>At that time, specific NLP tasks requires the collection of a massive amount of task-specific labeled data as well as the design of task-specific architectures that learns best from it. Given the broad range of NLP tasks, this paradigm does not scale well and model learning cannot be shared across different tasks.</p>
-<p>One of the major contributions of the GPT-1 study is the introduction of a two-stage unsupervised pretraining and supervised fine-tuning scheme. They demonstrates that a pre-trained model with fine-tuning can achieve satisfactory results over a range of diverse tasks, not just for a single task.</p>
-<p>GPT-1 model consists of multiple transformer decoder layers [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gptdecoderarch}]. Since there is no encoder, each decoder layer contains a masked multi-head self-attention layer along with a pointwise feed-forward layer. The pretraining task is generative language modeling, that it, predicting the next word given the preceding word sequence. In the Transformer architecture, the activation in the final transformer block is fed into a Softmax function that produces the word probability distributions over an entire vocabulary of words to predict the next word.</p>
-<p>In the stage unsupervised pretraining from unlabeled data, the goal is to learn a universal representation that can be easily adapted to a wide range of tasks. Following the pretraining, the model can be easily fine-tuned to a downstream task by a relatively small amount of task-specific data to achieve effective transfer. This two-stage scheme had a profound impact on the subsequent deep model learning and drew significant interest to pretrained large language models.</p>
-<p>\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\linewidth]{../figures/deepLearning/ApplicationsNLP/pretrainedLM/GPT/GPT_decoder_arch}
-\caption{GPT uses the decoder component in the Transformer for language modeling.}
-\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gptdecoderarch}
-\end{figure}</p>
+<p>One of the major contributions of the GPT-1 study is the introduction of a two-stage paradigm to NLP tasks, including an unsupervised pretraining stage and a supervised fine-tuning stage. They demonstrates that a pre-trained model with a small scale fine-tuning can achieve satisfactory results over a range of diverse tasks, not just for a single task.</p>
+<p>GPT-1 model consists of multiple transformer decoder layers [<a class="reference internal" href="transformers.html#content-chapter-foundation-transformers-transformers"><span class="std std-ref">Transformers</span></a>]. The pretraining task is auto-regression language modeling, that it, predicting the next word given the preceding word sequence. In the Transformer architecture, the activation in the final transformer block is fed into a Softmax function that produces the word probability distributions over an entire vocabulary of words to predict the next word.</p>
+<p>In the stage unsupervised pretraining from unlabeled data, the goal is to learn a universal language representation that can be easily adapted to a wide range of tasks. Following the pretraining, the model can be easily fine-tuned to a downstream task by a relatively small amount of task-specific data to achieve effective transfer. This two-stage scheme had a profound impact on the subsequent deep model learning and drew significant interest to pretrained large language models.</p>
+<figure class="align-default" id="chapter-foundation-fig-gpt-gpt-decoder-architecture">
+<a class="reference internal image-reference" href="../../_images/GPT_decoder_arch.png"><img alt="../../_images/GPT_decoder_arch.png" src="../../_images/GPT_decoder_arch.png" style="width: 252.8px; height: 509.6px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 28 </span><span class="caption-text">GPT uses the decoder component in the Transformer for language modeling.</span><a class="headerlink" href="#chapter-foundation-fig-gpt-gpt-decoder-architecture" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </section>
 <section id="pretraining">
 <h3>Pretraining<a class="headerlink" href="#pretraining" title="Link to this heading">#</a></h3>
-<p>The pretraining task of GPT-1 is generative language modeling, which predict the next words given preceding word sequence. Given an input sequence <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1,...,x_T)\)</span>, generative language model maximize the log likelihood given by</p>
+<p>The pretraining task of GPT-1 is auto-regressive language modeling, which predict the next words given preceding word sequence. Given an input sequence <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1,...,x_T)\)</span>, auto-regressive language modeling maximizes the log likelihood given by</p>
 <div class="math notranslate nohighlight">
 \[\sum_{t=1}^{T} \log p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1},\theta\right)\]</div>
-<p>where <span class="math notranslate nohighlight">\(p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1}\right)\)</span> is the predicted probability distribution for token <span class="math notranslate nohighlight">\(x_t\)</span> contextualized over preceding token sequence <span class="math notranslate nohighlight">\(\mathbf{x}_{t-k-1:t-1}\)</span> with a context window size <span class="math notranslate nohighlight">\(k\)</span>.</p>
-<p>The input tokens are first converted to input embeddings by summing up token embedding and position embedding. The input embedding <span class="math notranslate nohighlight">\(h_0\)</span> is fed into multiple Transformer layers to obtain contextualized hidden state <span class="math notranslate nohighlight">\(h\)</span>s a multi-headed self-attention operation over the input context tokens followed by position-wise feedforward layers to produce an output distribution over target tokens:</p>
+<p>where <span class="math notranslate nohighlight">\(p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1}\right)\)</span> is the predicted probability distribution for token <span class="math notranslate nohighlight">\(x_t\)</span> given preceding token sequence <span class="math notranslate nohighlight">\(\mathbf{x}_{t-k-1:t-1}\)</span> with a context window size <span class="math notranslate nohighlight">\(k\)</span> (<span class="math notranslate nohighlight">\(k\)</span> can range from hundreds to tens of thousands, depending on the model configuration).</p>
+<p>The input tokens are first converted to input embeddings by summing up token embedding and position embedding. The input embedding <span class="math notranslate nohighlight">\(H_0\in \mathbb{R}^{T\times d_{model}}\)</span> is then fed into <span class="math notranslate nohighlight">\(L\)</span> Transformer layers to obtain contextualized embedding representation <span class="math notranslate nohighlight">\(H_L\)</span>. The contextualized embedding is then passed through a linear layer and a Softmax layer to produce an output distribution over target tokens:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-	h_{0} &amp;=U W_{e}+W_{p} \\
-	h_{l} &amp;=\operatorname{TransformerLayer}\left(h_{l-1}\right) \forall \ell \in[1, L] \\
-	P(u) &amp;=\operatorname{Softmax}\left(h_{n} W_{e}^{T}\right)
+	H_{0} &amp;=W_{e}+W_{p} \\
+	H_{l} &amp;=\operatorname{TransformerLayer}\left(H_{l-1}\right) \forall \ell \in[1, L] \\
+	P(u) &amp;=\operatorname{Softmax}\left(H_{L} W_{e}^{T}\right).
 \end{align}
 \end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(U=\left(u_{-k}, \ldots, u_{-1}\right)\)</span> is the context vector of tokens, <span class="math notranslate nohighlight">\(n\)</span> is the number of layers, <span class="math notranslate nohighlight">\(W_{e}\)</span> is the token embedding matrix, and <span class="math notranslate nohighlight">\(W_{p}\)</span> is the position embedding matrix.</p>
+<p>where <span class="math notranslate nohighlight">\(W_{e}\)</span> is the token embedding matrix, and <span class="math notranslate nohighlight">\(W_{p}\)</span> is the position embedding matrix.</p>
 <p>GPT-1 uses the BooksCorpus dataset for pretraining. BooksCorpus is a large collection of free novel books (11,038 books), containing around 74M sentences and 1G words in 16 different sub-genres (e.g., Romance, Historical, Adventure, etc.). Pretrained GPT-1 can achieve a very low token level perplexity of 18.4 on this corpus.</p>
 </section>
 <section id="gpt-1-fine-tuning">
 <h3>GPT-1 Fine Tuning<a class="headerlink" href="#gpt-1-fine-tuning" title="Link to this heading">#</a></h3>
-<p>To pretrained GPT model can be adopted for different downstream tasks by modifying the inputs format or adding minimal component accordingly.  a task-specific format and then adding minimal component to process the output to get task-specific predictions. As summarized in \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gptarch},
-\begin{itemize}
-\item For a single-sequence task such as text classification, the input is passed through the network as-is, and the output linear layer takes the last activation to make a classification decision.
-\item For sentence-pair tasks such as textual entailment, the input that is made up of two sequences is marked with a delimiter, which helps the pre-trained model to know which part is premise or hypothesis in the case of textual entailment. Finally, the output linear layer takes the last activation to make a classification decision.
-\item For sentence similarity tasks, we use the model to encode the two differently-ordered sentence pairs separately into two sequence representations, which are added element-wise before being fed into the linear output layer.
-\item For tasks like Question Answering and Commonsense Reasoning, we are given a context document <span class="math notranslate nohighlight">\(z\)</span>, a question <span class="math notranslate nohighlight">\(q\)</span>, and a set of possible answers <span class="math notranslate nohighlight">\(\left\{a_{k}\right\}\)</span>. We concatenate the document context and question with each possible answer. Each of these sequences are processed independently with our model and then normalized via a Softmax layer to produce an output distribution over possible answers.
-\end{itemize}</p>
-<p>\begin{figure}[H]
-\centering
-\includegraphics[width=1.0\linewidth]{../figures/deepLearning/ApplicationsNLP/pretrainedLM/GPT/GPT_arch}
-\caption{Figure 1: (left) Transformer architecture and training objectives used in this work. (right) Input transformations for fine-tuning on different tasks. We convert all structured inputs into token sequences to be processed by our pre-trained model, followed by a linear+softmax layer. Image from <span id="id2">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1127" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf, 2018.">RNSS18</a>]</span>.}
-\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gptarch}
-\end{figure}</p>
+<p>To pretrained GPT model can be adopted for different downstream tasks by modifying the inputs format or adding minimal component accordingly.  a task-specific format and then adding minimal component to process the output to get task-specific predictions. As summarized in \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gptarch},</p>
+<ul class="simple">
+<li><p>For a single-sequence task such as text classification, the input is passed through the network as-is, and the output linear layer takes the last activation to make a classification decision.</p></li>
+<li><p>For sentence-pair tasks such as textual entailment, the input that is made up of two sequences is marked with a delimiter, which helps the pre-trained model to know which part is premise or hypothesis in the case of textual entailment. Finally, the output linear layer takes the last activation to make a classification decision.</p></li>
+<li><p>For sentence similarity tasks, we use the model to encode the two differently-ordered sentence pairs separately into two sequence representations, which are added element-wise before being fed into the linear output layer.</p></li>
+<li><p>For tasks like Question Answering and Commonsense Reasoning, we are given a context document <span class="math notranslate nohighlight">\(z\)</span>, a question <span class="math notranslate nohighlight">\(q\)</span>, and a set of possible answers <span class="math notranslate nohighlight">\(\left\{a_{k}\right\}\)</span>. We concatenate the document context and question with each possible answer. Each of these sequences are processed independently with our model and then normalized via a Softmax layer to produce an output distribution over possible answers.</p></li>
+</ul>
+<figure class="align-default" id="chapter-foundation-fig-gpt-gpt-architecture">
+<a class="reference internal image-reference" href="../../_images/GPT_arch.png"><img alt="../../_images/GPT_arch.png" src="../../_images/GPT_arch.png" style="width: 797.6px; height: 338.40000000000003px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 29 </span><span class="caption-text">(left) Transformer architecture and training objectives used in this work. (right) Input transformations for fine-tuning on different tasks. We convert all structured inputs into token sequences to be processed by our pre-trained model, followed by a linear+softmax layer. Image from <span id="id2">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1127" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf, 2018.">RNSS18</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-gpt-gpt-architecture" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 <p>The fine-tuning process involves continuing the model training over a labeled dataset <span class="math notranslate nohighlight">\(\mathcal{C}\)</span>. Take text classification task as an example. Suppose that each labeled example consists of a sequence of input tokens, <span class="math notranslate nohighlight">\(x^{1}, \ldots, x^{m}\)</span> along with a label <span class="math notranslate nohighlight">\(y\)</span>. The input sequence is first encoded by the pre-trained model to an embedding vector <span class="math notranslate nohighlight">\(h_{l}^{m}\)</span> at the position of the last input token. <span class="math notranslate nohighlight">\(h_{l}^{m}\)</span> is then fed into an linear layer with Softmax to obtain distribution over class labels. The training loss can simply be the binary cross entropy (BCE) loss. It is also found that including language modeling as an auxiliary task during fine-tuning can improve generalization of the fine-tuned model and speed up convergence.</p>
 </section>
 </section>
@@ -497,15 +499,14 @@ Wikipedia &amp; 3 billion
 By training on the massive amount of data using a model with large number of parameters, GPT-3 achieved better results on many downstream tasks in zero-shot, one-shot, and few-shot <span class="math notranslate nohighlight">\((K=32)\)</span> settings without any gradient-based fine-tuning.</p>
 <p>What is most special about GPT-3 is the ability to perform in-context \textbf{few-shot learning} without any model parameter updates via gradient descent [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gpt3fewshotlearningdemo}]. In a typical few-shot learning setting, the model is given a natura language description of the task plus a few demonstration examples (e.g., input and output pairs) of the task at inference time and the model is asked to generate an output given a new input. Here the input is called \textbf{context} and the output is called a \textbf{completion}. Take English sentence to French translation as an example, <span class="math notranslate nohighlight">\(K\)</span> examples of context and completion are presented with one final example of context, and the model is expected to provide the completion. Typically, <span class="math notranslate nohighlight">\(K\)</span> is in the range of 10 and 100. Clearly, few-shot learning is close to how human intelligence works and bring great metrics in reducing task-specific data.</p>
 <p>In the extreme end of few shot learning, one-shot learning is the case in which only one demonstration is presented. Further, zero-shot is the case where no demonstrations are given except for a natural language instruction describing the task. Zero-shot setting offers the ultimate test of the model’s learning capacity, but it can also be unfairly hard due to ambiguity.</p>
-<p>\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\linewidth]{../figures/deepLearning/ApplicationsNLP/pretrainedLM/GPT/GPT3_few_shot_learning_demo}
-\caption{Zero-shot, one-shot and few-shot, contrasted with traditional fine-tuning. The panels above show
-four methods for performing a task with a language model – fine-tuning is the traditional method, whereas zero-, one-,
-and few-shot, which we study in this work, require the model to perform the task with only forward passes at test
-time. We typically present the model with a few dozen examples in the few shot setting}
-\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gpt3fewshotlearningdemo}
-\end{figure}</p>
+<figure class="align-default" id="chapter-foundation-fig-gpt-gpt3-few-shot-learning-demo">
+<a class="reference internal image-reference" href="../../_images/GPT3_few_shot_learning_demo.png"><img alt="../../_images/GPT3_few_shot_learning_demo.png" src="../../_images/GPT3_few_shot_learning_demo.png" style="width: 694.4px; height: 591.5px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 30 </span><span class="caption-text">Zero-shot, one-shot and few-shot, contrasted with traditional fine-tuning. Traditional fine-tuning requires gradient computation via backpropgation and update the model weight, whereas zero-, one-,
+and few-shot, only require the model to perform forward passes at test time.</span><a class="headerlink" href="#chapter-foundation-fig-gpt-gpt3-few-shot-learning-demo" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </section>
 <section id="performance-overview">
 <h3>Performance Overview<a class="headerlink" href="#performance-overview" title="Link to this heading">#</a></h3>

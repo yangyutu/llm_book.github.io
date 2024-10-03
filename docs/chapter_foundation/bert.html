@@ -197,7 +197,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">LLM finetuning</a></li>
 
 
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">LLM alignement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">LLM alignement and preference learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">LLM Training Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
@@ -593,7 +593,7 @@ Note that Dropout operations are not shown above. Dropouts are applied after ini
 <section id="compared-with-elmo">
 <h3>Compared With ELMO<a class="headerlink" href="#compared-with-elmo" title="Link to this heading">#</a></h3>
 <p>An influential contextualized word embedding model via deep learning is ELMO (Embeddings from Language
-Models) <span id="id3">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1192" title="Matthew E Peters, Mark Neumann, Mohit Iyyer, Matt Gardner, Christopher Clark, Kenton Lee, and Luke Zettlemoyer. Deep contextualized word representations. arXiv preprint arXiv:1802.05365, 2018.">PNI+18</a>]</span>, in which word vectors are learned functions of the internal states of a deep bidirectional LSTM language model [<a class="reference internal" href="../chapter_training/alignment.html#chapter-foundation-fig-bert-bert-elmo"><span class="std std-numref">Fig. 28</span></a>].
+Models) <span id="id3">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1192" title="Matthew E Peters, Mark Neumann, Mohit Iyyer, Matt Gardner, Christopher Clark, Kenton Lee, and Luke Zettlemoyer. Deep contextualized word representations. arXiv preprint arXiv:1802.05365, 2018.">PNI+18</a>]</span>, in which word vectors are learned functions of the internal states of a deep bidirectional LSTM language model [<a class="reference internal" href="#chapter-foundation-fig-bert-bert-elmo"><span class="std std-numref">Fig. 16</span></a>].
 Given a sequence of <span class="math notranslate nohighlight">\(N\)</span> tokens (character-based), <span class="math notranslate nohighlight">\(\left(t_{1}, t_{2}, \ldots, t_{N}\right)\)</span>. Their static word embeddings <span class="math notranslate nohighlight">\((e_1,...,e_N)\)</span> are contextualized by stacked bidirectional LSTM as <span class="math notranslate nohighlight">\((h_1,...,h_N)\)</span>.</p>
 <p>The LSTMs are pre-trained to perform language modeling task, i.e., predicting the next token given preceding tokens in forward and backward directions, respectively. Specifically, an linear plus Softmax layer take LSTM hidden states (two directions) as the input and computes the distribution. The following  log-likelihood of the forward and backward directions is maximized:</p>
 <div class="math notranslate nohighlight">
@@ -757,8 +757,7 @@ The two-step projection only requires parameters <span class="math notranslate n
 </section>
 </section>
 <section id="model-distillation">
-<h2>Model Distillation<a class="headerlink" href="#model-distillation" title="Link to this heading">#</a></h2>
-<p>\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:sec:BERT_model_distillation}</p>
+<span id="content-chapter-foundation-bert-model-distillation"></span><h2>Model Distillation<a class="headerlink" href="#model-distillation" title="Link to this heading">#</a></h2>
 <section id="distillbert">
 <h3>DistillBERT<a class="headerlink" href="#distillbert" title="Link to this heading">#</a></h3>
 <p>Knowledge distillation is a knowledge transfer approach to transfer knowledge to a large BERT model (also called a teacher model), to a smaller, ready-to-deploy BERT model (also called a student model) such that the small model can have performance close to the teacher model.</p>

@@ -344,9 +344,8 @@ In ALBERT, a sentence-order prediction (SOP) loss replaces NSP loss. The SOP los
 
 
 
-
+(content:chapter_foundation:bert:model_distillation)=
 ## Model Distillation
-\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:sec:BERT_model_distillation}
 
 ### DistillBERT
 

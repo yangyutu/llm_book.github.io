@@ -390,7 +390,8 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dpo-variants">DPO variants</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smooth-label">Smooth label</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing-preference-label">Smoothing preference label</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-dpo">Simple DPO</a></li>
 </ul>
 </li>
 </ul>
@@ -410,12 +411,12 @@ document.write(`
 <h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
 <p>The objective function in LLM pretraining is predicting the next token on a webpage from the internet. When the trained model is properly and carefully prompted as demonstration (i.e., in-context learning as in GPT-3), the model can largely accomplish useful tasks by following these demonstrations. However, these model can often generate un-desired outputs, including un-factual content, biased and harmful text, or simply do not follow the instructions in the prompt.</p>
 <p>This is because the pretraining task of <em>predicting the next token</em> is inherently different from the objective training an LLM to be an instruction-following assistant that avoids generating unintended text. While continuing SFT instruction tuning data, which are (prompt, completion) pairs, can expose the LLM to what humans like to see for given prompts, it is often not enough to prevent model from producing unintended texts. Instead, we need a training methodology to explictly reward the model when it is well-behaved and penalize the model when it is mis-behaved. Training the model to learn the human preference using rewards and penalities are the core of LLM alignment and preference learning. The pioneering approach is using reinforcement learning via the PPO algorithm <span id="id1">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1497" title="Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. 2022. URL: https://arxiv.org/abs/2203.02155, arXiv:2203.02155.">OWJ+22</a>]</span>.</p>
-<p>As shown in the <a class="reference internal" href="#chapter-training-fig-alignment-model-alignment-motivation"><span class="std std-numref">Fig. 28</span></a>, SFT on instruction tuning dataset and reinforcement learning via PPO can improve model helpfulness and instruction following abilities.</p>
+<p>As shown in the <a class="reference internal" href="#chapter-training-fig-alignment-model-alignment-motivation"><span class="std std-numref">Fig. 31</span></a>, SFT on instruction tuning dataset and reinforcement learning via PPO can improve model helpfulness and instruction following abilities.</p>
 <figure class="align-default" id="chapter-training-fig-alignment-model-alignment-motivation">
 <a class="reference internal image-reference" href="../../_images/model_alignment_motivation.png"><img alt="../../_images/model_alignment_motivation.png" src="../../_images/model_alignment_motivation.png" style="width: 556.8000000000001px; height: 324.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 28 </span><span class="caption-text">Human evaluations of various models outputs show that how often outputs from each model were preferred to those from the 175B GPT-3 SFT model. The aligned models InstructGPT models (PPO-ptx) as well as variant (PPO) significantly outperform the GPT-3 baselines. Image from <span id="id2">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1497" title="Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. 2022. URL: https://arxiv.org/abs/2203.02155, arXiv:2203.02155.">OWJ+22</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignment-model-alignment-motivation" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 31 </span><span class="caption-text">Human evaluations of various models outputs show that how often outputs from each model were preferred to those from the 175B GPT-3 SFT model. The aligned models InstructGPT models (PPO-ptx) as well as variant (PPO) significantly outperform the GPT-3 baselines. Image from <span id="id2">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1497" title="Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. 2022. URL: https://arxiv.org/abs/2203.02155, arXiv:2203.02155.">OWJ+22</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignment-model-alignment-motivation" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -433,7 +434,7 @@ document.write(`
 <a class="reference internal image-reference" href="../../_images/RLHF_demo.png"><img alt="../../_images/RLHF_demo.png" src="../../_images/RLHF_demo.png" style="width: 699.5px; height: 413.5px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 29 </span><span class="caption-text">A diagram illustrating the three steps of our method: (1) supervised fine-tuning (SFT), (2)
+<p><span class="caption-number">Fig. 32 </span><span class="caption-text">A diagram illustrating the three steps of our method: (1) supervised fine-tuning (SFT), (2)
 reward model (RM) training, and (3) reinforcement learning via proximal policy optimization (PPO)
 on this reward model. Image from <span id="id4">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1497" title="Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. 2022. URL: https://arxiv.org/abs/2203.02155, arXiv:2203.02155.">OWJ+22</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignment-rlhf-demo" title="Link to this image">#</a></p>
 </figcaption>
@@ -444,8 +445,8 @@ on this reward model. Image from <span id="id4">[<a class="reference internal" h
 </section>
 <section id="preference-data-collection">
 <h3>Preference data collection<a class="headerlink" href="#preference-data-collection" title="Link to this heading">#</a></h3>
-<div class="pst-scrollable-table-container"><table class="table" id="id10">
-<caption><span class="caption-number">Table 5 </span><span class="caption-text">How labeler evaluates the response quality</span><a class="headerlink" href="#id10" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id11">
+<caption><span class="caption-number">Table 5 </span><span class="caption-text">How labeler evaluates the response quality</span><a class="headerlink" href="#id11" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Metadata</p></th>
 <th class="head text-right"><p>Scale</p></th>
@@ -560,7 +561,7 @@ It no longer uses reinforcement learning methods. Through mathematical reasoning
 <a class="reference internal image-reference" href="../../_images/DPO_PPO_comparison.png"><img alt="../../_images/DPO_PPO_comparison.png" src="../../_images/DPO_PPO_comparison.png" style="width: 814.95px; height: 167.85px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 30 </span><span class="caption-text">DPO optimizes for human preferences while avoiding reinforcement learning. Existing methods for fine-tuning language models with human feedback first fit a reward model to a dataset of prompts and
+<p><span class="caption-number">Fig. 33 </span><span class="caption-text">DPO optimizes for human preferences while avoiding reinforcement learning. Existing methods for fine-tuning language models with human feedback first fit a reward model to a dataset of prompts and
 human preferences over pairs of responses, and then use RL to find a policy that maximizes the learned reward.
 In contrast, DPO directly optimizes for the policy best satisfying the preferences with a simple classification
 objective. Image from <span id="id7">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1496" title="Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning, and Chelsea Finn. Direct preference optimization: your language model is secretly a reward model. 2024. URL: https://arxiv.org/abs/2305.18290, arXiv:2305.18290.">RSM+24</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-bert-bert-elmo" title="Link to this image">#</a></p>
@@ -607,24 +608,52 @@ P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}
 <div class="math notranslate nohighlight">
 \[r(x, y) = \beta \log \frac{\pi_r (y|x)}{\pi_{\text{ref}}(y|x)} + \beta \log Z.\]</div>
 <p>Note that we have just shown that that reward function <span class="math notranslate nohighlight">\(r(x, y)\)</span> and its corresponding optimal policy <span class="math notranslate nohighlight">\(\pi_{\text{ref}}(y|x)\)</span> are inter-convertable, with a funciton <span class="math notranslate nohighlight">\(Z(x)\)</span> independent of <span class="math notranslate nohighlight">\(y\)</span>.</p>
-<p>If we can optimize
-This means that instead of numerically optimizing <span class="math notranslate nohighlight">\(\pi_r\)</span>, we can</p>
-<p>If we look at the preference modeling where we use to derive optiomal</p>
+<p>This means that instead of numerically optimizing policy <span class="math notranslate nohighlight">\(\pi_r\)</span>, we can also choose optimize the reward function. Given the available preference data, one formulation to optimize the reward function is the Bradley-Terry (BT) objective, that is</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{L}_{BT} = - -\mathbb{E}_{\left(x, y_w, y_l\right) \sim \mathcal{D}}\left[\log \sigma (r(y_w, x) - r(r_l, x)) \right].\]</div>
+<p>By leveraging the relationship between reward <span class="math notranslate nohighlight">\(r\)</span> and policy <span class="math notranslate nohighlight">\(\pi\)</span>, we can arrive at the DPO loss function:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}_{\mathrm{DPO}}\left(\pi_\theta ; \pi_{\mathrm{ref}}\right)=-\mathbb{E}_{\left(x, y_w, y_l\right) \sim \mathcal{D}}\left[\log \sigma\left(\beta \log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}\left(y_w \mid x\right)}-\beta \log \frac{\pi_\theta\left(y_l \mid x\right)}{\pi_{\mathrm{ref}}\left(y_l \mid x\right)}\right)\right].
+\]</div>
+<p>where the terms <span class="math notranslate nohighlight">\(\beta \log Z\)</span> are canceled during subtraction.</p>
+<div class="proof remark admonition" id="remark-1">
+<p class="admonition-title"><span class="caption-number">Remark 6 </span> (How DPO loss work)</p>
+<section class="remark-content" id="proof-content">
 <p>The gradient of DPO loss function is given by:</p>
 <div class="math notranslate nohighlight">
-\[\nabla_\theta \mathcal{L}_{\mathrm{DPO}}\left(\theta, y_w, y_l\right)=-\left(\left(1-\hat{p}_\theta\right) \hat{p}_\theta\right)[\underbrace{\nabla_\theta \log \pi_\theta\left(y_w\right)}_{\text {upweight } y_w}-\underbrace{\nabla_\theta \log \pi_\theta\left(y_l\right)}_{\text {downweight } y_l}]
+\[\nabla_\theta \mathcal{L}_{\mathrm{DPO}}\left(\theta, y_w, y_l\right)=-\left(1-\hat{p}_\theta\right) [\underbrace{\nabla_\theta \log \pi_\theta\left(y_w\right)}_{\text {upweight } y_w}-\underbrace{\nabla_\theta \log \pi_\theta\left(y_l\right)}_{\text {downweight } y_l}]
 \]</div>
+<p>where for the preference completion pair <span class="math notranslate nohighlight">\(y_w \succ y_l\)</span>, as long as <span class="math notranslate nohighlight">\(\hat{p} &lt; 1\)</span>, there will gradients to upweight the probability of generating <span class="math notranslate nohighlight">\(y_w\)</span> and downweight the probability of generating <span class="math notranslate nohighlight">\(y_l\)</span>.</p>
 </section>
+</div></section>
 </section>
 <section id="dpo-variants">
 <h2>DPO variants<a class="headerlink" href="#dpo-variants" title="Link to this heading">#</a></h2>
-<section id="smooth-label">
-<h3>Smooth label<a class="headerlink" href="#smooth-label" title="Link to this heading">#</a></h3>
-<p>The gradient of <span class="math notranslate nohighlight">\(\epsilon\)</span>-DPO loss function is given by:</p>
+<section id="smoothing-preference-label">
+<h3>Smoothing preference label<a class="headerlink" href="#smoothing-preference-label" title="Link to this heading">#</a></h3>
+<p><span id="id9">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1498" title="Eric Mitchell. A note on dpo with noisy preferences &amp; relationship to ipo. 2023. URL: https://ericmitchell.ai/cdpo.pdf.">Mit23</a>]</span>
+What if preference labels are noisy? Say the labels have been flipped with some small probability <span class="math notranslate nohighlight">\(\epsilon \in(0,0.5)\)</span>. We can use a conservative target distribution instead, <span class="math notranslate nohighlight">\(p\left(y_w \succ y_l\right)=1-\epsilon\)</span>, giving BCE loss:</p>
 <div class="math notranslate nohighlight">
-\[\nabla_\theta \mathcal{L}_{\mathrm{DPO}}^\epsilon\left(\theta, y_w, y_l\right)=-\left((1-\epsilon)\left(1-\hat{p}_\theta\right)-\epsilon \hat{p}_\theta\right)[\underbrace{\nabla_\theta \log \pi_\theta\left(y_w\right)}_{\text {upweight } y_w}-\underbrace{\nabla_\theta \log \pi_\theta\left(y_l\right)}_{\text {downweight } y_l}]
-\]</div>
-<p><span id="id9">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1498" title="Eric Mitchell. A note on dpo with noisy preferences &amp; relationship to ipo. 2023. URL: https://ericmitchell.ai/cdpo.pdf.">Mit23</a>]</span></p>
+\[\begin{split}
+\begin{aligned}
+\mathcal{L}_{\mathrm{DPO}}^\epsilon\left(\theta, y_w, y_l\right) &amp; =-(1-\epsilon) \log \hat{p}_\theta\left(y_w \succ y_l\right)-\epsilon \log \left(1-\hat{p}_\theta\left(y_w \succ y_l\right)\right) \\
+&amp; =(1-\epsilon) \mathcal{L}_{\mathrm{DPO}}\left(\theta, y_w, y_l\right)+\epsilon \mathcal{L}_{\mathrm{DPO}}\left(\theta, y_l, y_w\right)
+\end{aligned}
+\end{split}\]</div>
+<p>The gradient of <span class="math notranslate nohighlight">\(\mathcal{L}_{\mathrm{DPO}}^\epsilon\left(\theta, y_w, y_l\right)\)</span> is simply the weighted sum of gradients <span class="math notranslate nohighlight">\((1-\epsilon) \nabla_\theta \mathcal{L}\left(\theta, y_w, y_l\right)+\epsilon \nabla_\theta \mathcal{L}\left(\theta, y_l, y_w\right)\)</span>, which reduces to the simplified form (ignoring constants; see [3] for the gradient of the original DPO loss):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\nabla_\theta \mathcal{L}_{\mathrm{DPO}}^\epsilon\left(\theta, y_w, y_l\right) &amp; =-\left((1-\epsilon)\left(1-\hat{p}_\theta\right)-\epsilon \hat{p}_\theta\right)[\underbrace{\nabla_\theta \log \pi_\theta\left(y_w\right)}_{\text {upweight } y_w}-\underbrace{\nabla_\theta \log \pi_\theta\left(y_l\right)}_{\text {downweight } y_l}] \\
+&amp; =\quad\left(\hat{p}_\theta-(1-\epsilon)\right)\left[\nabla_\theta \log \pi_\theta\left(y_w\right)-\nabla_\theta \log \pi_\theta\left(y_l\right)\right]
+\end{aligned}
+\end{split}\]</div>
+<p>The gradient is zero when <span class="math notranslate nohighlight">\(\hat{p}_\theta\left(y_w \succ y_l\right)=(1-\epsilon)\)</span>, i.e., our (implicit) reward assigns the desired confidence level in this training example under the Bradley-Terry model [2]. For normal DPO, the gradient is never zero! Using the shorthand <span class="math notranslate nohighlight">\(h_{\pi_\theta}^{y_w, y_l}=\log \frac{\pi_\theta\left(y_w\right)}{\pi_{\text {ref }}\left(y_w\right)}-\log \frac{\pi_\theta\left(y_l\right)}{\pi_{\text {ref }}\left(y_l\right)}\)</span>, let’s compare the conservative DPO (cDPO?)</p>
+</section>
+<section id="simple-dpo">
+<h3>Simple DPO<a class="headerlink" href="#simple-dpo" title="Link to this heading">#</a></h3>
+<p><span id="id10">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1500" title="Yu Meng, Mengzhou Xia, and Danqi Chen. Simpo: simple preference optimization with a reference-free reward. 2024. URL: https://arxiv.org/abs/2405.14734, arXiv:2405.14734.">MXC24</a>]</span></p>
 <p>:bibliography:<code class="docutils literal notranslate"><span class="pre">../llm_book.bib</span></code></p>
 </section>
 </section>
@@ -711,7 +740,8 @@ This means that instead of numerically optimizing <span class="math notranslate 
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dpo-variants">DPO variants</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smooth-label">Smooth label</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing-preference-label">Smoothing preference label</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-dpo">Simple DPO</a></li>
 </ul>
 </li>
 </ul>

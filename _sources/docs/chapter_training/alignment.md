@@ -234,26 +234,62 @@ $$r(x, y) = \beta \log \frac{\pi_r (y|x)}{\pi_{\text{ref}}(y|x)} + \beta \log Z.
 
 Note that we have just shown that that reward function $r(x, y)$ and its corresponding optimal policy $\pi_{\text{ref}}(y|x)$ are inter-convertable, with a funciton $Z(x)$ independent of $y$. 
 
-If we can optimize 
-This means that instead of numerically optimizing $\pi_r$, we can 
 
-If we look at the preference modeling where we use to derive optiomal 
+This means that instead of numerically optimizing policy $\pi_r$, we can also choose optimize the reward function. Given the available preference data, one formulation to optimize the reward function is the Bradley-Terry (BT) objective, that is
+
+$$\mathcal{L}_{BT} = - -\mathbb{E}_{\left(x, y_w, y_l\right) \sim \mathcal{D}}\left[\log \sigma (r(y_w, x) - r(r_l, x)) \right].$$
+
+By leveraging the relationship between reward $r$ and policy $\pi$, we can arrive at the DPO loss function:
+
+$$
+\mathcal{L}_{\mathrm{DPO}}\left(\pi_\theta ; \pi_{\mathrm{ref}}\right)=-\mathbb{E}_{\left(x, y_w, y_l\right) \sim \mathcal{D}}\left[\log \sigma\left(\beta \log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}\left(y_w \mid x\right)}-\beta \log \frac{\pi_\theta\left(y_l \mid x\right)}{\pi_{\mathrm{ref}}\left(y_l \mid x\right)}\right)\right].
+$$
+
+where the terms $\beta \log Z$ are canceled during subtraction.
 
 
+````{prf:remark} How DPO loss work
 
 The gradient of DPO loss function is given by:
 
-$$\nabla_\theta \mathcal{L}_{\mathrm{DPO}}\left(\theta, y_w, y_l\right)=-\left(\left(1-\hat{p}_\theta\right) \hat{p}_\theta\right)[\underbrace{\nabla_\theta \log \pi_\theta\left(y_w\right)}_{\text {upweight } y_w}-\underbrace{\nabla_\theta \log \pi_\theta\left(y_l\right)}_{\text {downweight } y_l}]
+$$\nabla_\theta \mathcal{L}_{\mathrm{DPO}}\left(\theta, y_w, y_l\right)=-\left(1-\hat{p}_\theta\right) [\underbrace{\nabla_\theta \log \pi_\theta\left(y_w\right)}_{\text {upweight } y_w}-\underbrace{\nabla_\theta \log \pi_\theta\left(y_l\right)}_{\text {downweight } y_l}]
 $$
+
+where for the preference completion pair $y_w \succ y_l$, as long as $\hat{p} < 1$, there will gradients to upweight the probability of generating $y_w$ and downweight the probability of generating $y_l$.
+````
+
 ## DPO variants
 
-### Smooth label
-
-The gradient of $\epsilon$-DPO loss function is given by:
-
-$$\nabla_\theta \mathcal{L}_{\mathrm{DPO}}^\epsilon\left(\theta, y_w, y_l\right)=-\left((1-\epsilon)\left(1-\hat{p}_\theta\right)-\epsilon \hat{p}_\theta\right)[\underbrace{\nabla_\theta \log \pi_\theta\left(y_w\right)}_{\text {upweight } y_w}-\underbrace{\nabla_\theta \log \pi_\theta\left(y_l\right)}_{\text {downweight } y_l}]
-$$
+### Smoothing preference label
 
 {cite:p}`Mitchell2023noteondpo`
+What if preference labels are noisy? Say the labels have been flipped with some small probability $\epsilon \in(0,0.5)$. We can use a conservative target distribution instead, $p\left(y_w \succ y_l\right)=1-\epsilon$, giving BCE loss:
+
+$$
+\begin{aligned}
+\mathcal{L}_{\mathrm{DPO}}^\epsilon\left(\theta, y_w, y_l\right) & =-(1-\epsilon) \log \hat{p}_\theta\left(y_w \succ y_l\right)-\epsilon \log \left(1-\hat{p}_\theta\left(y_w \succ y_l\right)\right) \\
+& =(1-\epsilon) \mathcal{L}_{\mathrm{DPO}}\left(\theta, y_w, y_l\right)+\epsilon \mathcal{L}_{\mathrm{DPO}}\left(\theta, y_l, y_w\right)
+\end{aligned}
+$$
+
+
+The gradient of $\mathcal{L}_{\mathrm{DPO}}^\epsilon\left(\theta, y_w, y_l\right)$ is simply the weighted sum of gradients $(1-\epsilon) \nabla_\theta \mathcal{L}\left(\theta, y_w, y_l\right)+\epsilon \nabla_\theta \mathcal{L}\left(\theta, y_l, y_w\right)$, which reduces to the simplified form (ignoring constants; see [3] for the gradient of the original DPO loss):
+
+$$
+\begin{aligned}
+\nabla_\theta \mathcal{L}_{\mathrm{DPO}}^\epsilon\left(\theta, y_w, y_l\right) & =-\left((1-\epsilon)\left(1-\hat{p}_\theta\right)-\epsilon \hat{p}_\theta\right)[\underbrace{\nabla_\theta \log \pi_\theta\left(y_w\right)}_{\text {upweight } y_w}-\underbrace{\nabla_\theta \log \pi_\theta\left(y_l\right)}_{\text {downweight } y_l}] \\
+& =\quad\left(\hat{p}_\theta-(1-\epsilon)\right)\left[\nabla_\theta \log \pi_\theta\left(y_w\right)-\nabla_\theta \log \pi_\theta\left(y_l\right)\right]
+\end{aligned}
+$$
+
+
+The gradient is zero when $\hat{p}_\theta\left(y_w \succ y_l\right)=(1-\epsilon)$, i.e., our (implicit) reward assigns the desired confidence level in this training example under the Bradley-Terry model [2]. For normal DPO, the gradient is never zero! Using the shorthand $h_{\pi_\theta}^{y_w, y_l}=\log \frac{\pi_\theta\left(y_w\right)}{\pi_{\text {ref }}\left(y_w\right)}-\log \frac{\pi_\theta\left(y_l\right)}{\pi_{\text {ref }}\left(y_l\right)}$, let's compare the conservative DPO (cDPO?)
+
+
+### Simple DPO
+
+{cite:p}`meng2024simposimplepreferenceoptimization`
+
+
 
 :bibliography:`../llm_book.bib`
