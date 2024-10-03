@@ -23,6 +23,7 @@ Other architectures:
 ELMo (Embeddings from Language Models):
 Before Transformers, ELMo used bidirectional LSTMs (Long Short-Term Memory networks) to create contextual word embeddings. While less common now, it was an important step in the evolution of language models.
 
+(content:chapter_foundation:transformers:transformers)=
 ## Transformers
 
 (chapter_foundation_sec_pretrained_LM_transformer_arch)=

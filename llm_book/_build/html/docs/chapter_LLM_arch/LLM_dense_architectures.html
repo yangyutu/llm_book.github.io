@@ -197,7 +197,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">LLM finetuning</a></li>
 
 
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">LLM alignement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">LLM alignement and preference learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">LLM Training Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
@@ -474,20 +474,25 @@ R(\theta)=\left[\begin{array}{cc}
 <h2>Layer normalization<a class="headerlink" href="#layer-normalization" title="Link to this heading">#</a></h2>
 <section id="layer-normalization-basics">
 <h3>Layer normalization basics<a class="headerlink" href="#layer-normalization-basics" title="Link to this heading">#</a></h3>
-<p>The calculation formula for Layer Norm is given by</p>
-<div class="math notranslate nohighlight" id="equation-chapter-llm-arch-layer-nomalization-formula">
-<span class="eqno">(1)<a class="headerlink" href="#equation-chapter-llm-arch-layer-nomalization-formula" title="Link to this equation">#</a></span>\[\begin{split}
+<p>The LayerNorm was proposed to overcome the  in combating the internal covariate shift issue <span id="id1">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1502" title="Sergey Ioffe and Christian Szegedy. Batch normalization: accelerating deep network training by reducing internal covariate shift. 2015. URL: https://arxiv.org/abs/1502.03167, arXiv:1502.03167.">IS15</a>]</span>, where a layer’s input distribution changes as previous layers are updated, causing the difficulty of traning deep models.</p>
+<p>The key idea in LayerNorm is</p>
+<ul class="simple">
+<li><p>re-centering by subtracting the mean</p></li>
+<li><p>re-scaling by dividing the standard deviation.</p></li>
+</ul>
+<p>The calculation formula is given by
+$<span class="math notranslate nohighlight">\(
 \begin{aligned}
 \mu &amp;= \frac{1}{H} \sum_{i=1}^H x_i \\
 \sigma &amp;=\sqrt{\frac{1}{H} \sum_{i=1}^H\left(x_i-\mu\right)^2+\epsilon} \\
 LayerNorm(x) &amp;=\frac{x-\mu}{\sqrt{\sigma+\epsilon}} \cdot \gamma+\beta
 \end{aligned}
-\end{split}\]</div>
+\)</span>$ (chapter_LLM_arch_layer_nomalization_formula)</p>
 <p>where <span class="math notranslate nohighlight">\(\gamma\)</span> is a trainable rescaling parameter and <span class="math notranslate nohighlight">\(\beta\)</span> is a trainable re-shifting parameter.</p>
 </section>
 <section id="rms-norm-root-mean-square-norm">
 <h3>RMS Norm (Root Mean Square Norm)<a class="headerlink" href="#rms-norm-root-mean-square-norm" title="Link to this heading">#</a></h3>
-<p>The calculation formula for RMS Norm:</p>
+<p>A common hypothesis on why layer normalization can help stalize training and boost model convergence is the capability in  handling re-centering and re-scaling of both inputs and weight matrix. RMSNorm <span id="id2">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1501" title="Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: https://arxiv.org/abs/1910.07467, arXiv:1910.07467.">ZS19</a>]</span> is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. RMSNorm hypothesizes that only the re-scaling component is needed and proposes the following normalization formula</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}

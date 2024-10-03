@@ -52,8 +52,13 @@ $$
 
 ### Layer normalization basics
 
-The calculation formula for Layer Norm is given by
+The LayerNorm was proposed to overcome the  in combating the internal covariate shift issue {cite:p}`ioffe2015batchnormalizationacceleratingdeep`, where a layer’s input distribution changes as previous layers are updated, causing the difficulty of traning deep models.
 
+The key idea in LayerNorm is 
+* re-centering by subtracting the mean
+* re-scaling by dividing the standard deviation.
+  
+The calculation formula is given by
 $$
 \begin{aligned}
 \mu &= \frac{1}{H} \sum_{i=1}^H x_i \\
@@ -64,8 +69,12 @@ $$ (chapter_LLM_arch_layer_nomalization_formula)
 
 where $\gamma$ is a trainable rescaling parameter and $\beta$ is a trainable re-shifting parameter.
 
+
+
+
 ### RMS Norm (Root Mean Square Norm)
-The calculation formula for RMS Norm:
+
+A common hypothesis on why layer normalization can help stalize training and boost model convergence is the capability in  handling re-centering and re-scaling of both inputs and weight matrix. RMSNorm {cite:p}`zhang2019rootmeansquarelayer` is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. RMSNorm hypothesizes that only the re-scaling component is needed and proposes the following normalization formula
 
 $$
 \begin{aligned}

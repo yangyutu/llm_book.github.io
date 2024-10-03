@@ -197,7 +197,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">LLM finetuning</a></li>
 
 
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">LLM alignement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">LLM alignement and preference learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">LLM Training Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
@@ -374,7 +374,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretrained-language-models">Pretrained Language Models</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Transformers</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-chapter-foundation-transformers-transformers">Transformers</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-architecture">Overall Architecture</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-output-conventions">Input Output Conventions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#position-encodings">Position Encodings</a></li>
@@ -421,8 +421,8 @@ GPT models use the decoder portion of the Transformer. They process text from le
 <p>ELMo (Embeddings from Language Models):
 Before Transformers, ELMo used bidirectional LSTMs (Long Short-Term Memory networks) to create contextual word embeddings. While less common now, it was an important step in the evolution of language models.</p>
 </section>
-<section id="id1">
-<h2>Transformers<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<section id="content-chapter-foundation-transformers-transformers">
+<span id="id1"></span><h2>Transformers<a class="headerlink" href="#content-chapter-foundation-transformers-transformers" title="Link to this heading">#</a></h2>
 <section id="overall-architecture">
 <span id="chapter-foundation-sec-pretrained-lm-transformer-arch"></span><h3>Overall Architecture<a class="headerlink" href="#overall-architecture" title="Link to this heading">#</a></h3>
 <p>Since 2007, Transformer <span id="id2">[<a class="reference internal" href="../chapter_prompt/advanced_prompt.html#id1125" title="Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Advances in neural information processing systems, 5998–6008. 2017.">VSP+17</a>]</span> has emerged as one of most successful architectures in tackling challenging seq2seq NLP tasks like machine translation, text summarization, etc.</p>
@@ -836,7 +836,7 @@ several possible transformation from simple masking, sentence permutation, token
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretrained-language-models">Pretrained Language Models</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Transformers</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-chapter-foundation-transformers-transformers">Transformers</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-architecture">Overall Architecture</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-output-conventions">Input Output Conventions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#position-encodings">Position Encodings</a></li>
