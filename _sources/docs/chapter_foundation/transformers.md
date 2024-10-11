@@ -244,7 +244,15 @@ with $W_1\in \mathbb{R}^{d_{model}\times d_{ff}}$, $W_2\in \mathbb{R}^{d_{ff}\ti
 ````
 In a typical setting, we have $d_{\text {model }}=512$, and the inner-layer has dimensionality $d_{ff}=2048$.
 
+````{prf:remark} Is feedforward layer necessary for Transformer?
+Feedforward layer plays a critical role in introduce non-linearity and improving model capacity for Transformers.
 
+While self-attention is powerful for capturing contextual relationships, it's fundamentally a weighted linear sum operation. 
+
+If we stack multiple self-attention layers, the output vectors are still fundamentally a weighted linear sum of input vectors. With feedforward layer added after self-attention layer acting as non-linear transformation, the model capacity of transformer will increase as we stack more layers.  
+````
+
+### Encoder Layer Computation Summary
 
 The whole computation in the encoder module can be summarized in the following.
 ````{prf:definition} computation in encoder module
@@ -374,10 +382,9 @@ The objective, also known as ***denoising objective***, is to fully recover the 
 On the other hand, AR models keep away from such assumptions regarding independence and do not naturally suffer from the pre-train-fine-tuning discrepancy because they rely on the objective predicting the next token conditioned on the previous tokens without masking them. They merely utilize the decoder part of the transformer with masked selfattention. They prevent the model from accessing words to the right of the current word in a forward direction (or to the left of the current word in a backward direction), which is called ***unidirectionality***. They are also called Causal Language Models (CLMs) due to their unidirectionality.
 
 For different branches of models, we employ different training strategies:
-\begin{itemize}
-	\item Generative pretrained models like the GPT family are trained using a Causal Language Modeling objective.
-	\item Denoising models like the BERT family are trained using a Masked Language Modeling objective.
-	\item Encoder-decoder models like the T5, BART or PEGASUS models are trained using heuristics to create pairs of (inputs, labels). These heuristics can be for instance a corpus of pairs of sentences in two languages for a machine translation model, a heuristic way to identify summaries in a large corpus for a summarization model or various ways to corrupt inputs with associated uncorrupted inputs as labels which is a more flexible way to perform denoising than the previous masked language modeling.
+* Generative pretrained models like the GPT family are trained using a Causal Language Modeling objective.
+* Denoising models like the BERT family are trained using a Masked Language Modeling objective.
+* Encoder-decoder models like the T5, BART or PEGASUS models are trained using heuristics to create pairs of (inputs, labels). These heuristics can be for instance a corpus of pairs of sentences in two languages for a machine translation model, a heuristic way to identify summaries in a large corpus for a summarization model or various ways to corrupt inputs with associated uncorrupted inputs as labels which is a more flexible way to perform denoising than the previous masked language modeling.
 \end{itemize}
 
 ### The Encoder Branch
@@ -414,3 +421,9 @@ Although it has become common to build models using a single encoder or decoder 
 ***BART*** BART combines the pretraining procedures of BERT and GPT within the encoder-decoder architecture. The input sequences undergoes one of
 several possible transformation from simple masking, sentence permutation, token deletion to document rotation. These inputs are passed through the encoder and the decoder has to reconstruct the original texts. This makes the model more flexible as it is possible to use it for NLU as well as NLG tasks and it achieves state-of-the-artperformance on both.
 
+
+## Bibliography
+
+```{bibliography} ../../_bibliography/references.bib
+:filter: docname in docnames
+```

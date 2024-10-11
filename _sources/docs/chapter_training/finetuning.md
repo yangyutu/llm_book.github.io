@@ -1,21 +1,39 @@
 # LLM finetuning
 
 
-# Parameter efficient large language model finetuning
+% https://stanford-cs324.github.io/winter2022/lectures/adaptation/
 
-https://stanford-cs324.github.io/winter2022/lectures/adaptation/
+## Instruction finetuning
 
-## Motivation
+Instruction tuning fine-tuning language models
+on a collection of datasets described via instructions—substantially improves zero shot performance on unseen tasks
+\cite{wei2021finetuned}
 
-https://sebastianraschka.com/blog/2023/llm-finetuning-llama-adapter.html
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../figures/deepLearning/ApplicationsNLP_LLM/instruction_finetuning/instruction_finetuning_demo}
+	\caption{Overview of instruction tuning and FLAN. Instruction tuning finetunes a pretrained language model on a mixture of tasks phrased as instructions. At inference time, we evaluate on
+	an unseen task type; for instance, we could evaluate the model on natural language inference (NLI) when no NLI tasks were seen during instruction tuning.}
+	\label{fig:instructionfinetuningdemo}
+\end{figure}
 
-In the rapidly evolving field of artificial intelligence, utilizing large language models in an efficient and effective manner has become increasingly important.
+\cite{chung2022scaling}
 
-Certainly! I'll help populate the contents for the sections you've outlined on parameter-efficient large language model finetuning. Here's an expanded version:
+\begin{remark}[Pros and cons for instruction fine-tuning]
+\begin{itemize}
+	\item Simple and straightforward, generalize to unseen tasks
+	\item Cons: Collecting demonstrations for so many tasks is expensive
+	\item Cons: Mismatch between LM objective and human preferences
+\end{itemize}
+	
 
-# Parameter Efficient Large Language Model Finetuning
+\end{remark}
 
-## Motivation
+
+
+## Parameter-Efficient FineTuning
+
+### Motivation
 
 The motivation for parameter-efficient finetuning of large language models (LLMs) stems from several factors:
 
@@ -25,7 +43,39 @@ The motivation for parameter-efficient finetuning of large language models (LLMs
 4. Adaptability: The need to quickly adapt models to new tasks or domains without extensive retraining.
 5. Environmental considerations: Reducing the carbon footprint associated with training large AI models.
 
-## Prompt Tuning
+To adapt a LLM to a specific downstream task, Full-size fine-tunning the whole LLM is usually not cost effective. For models whose model parameters are at the 1B or above, it is difficult to fine-tune the model using a single consumer grade GPU. 
+
+Fine-tuning large pre-trained models is an effective transfer mechanism in NLP. However, in the
+presence of many downstream tasks, fine-tuning
+is parameter inefficient: an entire new model is
+required for every task. 
+
+It also runs the risk of Catastrophic Forgetting {cite:p}`luo2024empiricalstudycatastrophicforgetting` which means
+LLMs forget prior knowledge when learning new data. 
+
+
+### Adapter Tuning
+
+The key idea of Adapter Tuning {cite:p}`houlsby2019parameterefficienttransferlearningnlp` is to add several additional trainable modules (i.e., layers) to the Transformer that acting as adapting module and at the same time freeze the remaining model weights the original LLM. The intuition is that by these adapter modules can be trained to assist the original LLM to better adapt to downstream tasks. 
+
+```{figure} ../img/chapter_training/finetuning/adapter/adapter_arch.png
+---
+scale: 30%
+name: chapter_training_fig_finetuning_adapter_arch
+---
+Architecture of the adapter module and its integration with the Transformer. (Left) Adapter module are added twice
+to each Transformer layer: after the projection following multihead attention and after the position-wise feedforward layers. (Right) The
+adapter consists of a bottleneck first mapping the input to lower dimensions and then mappign the output to higher dimensions. The adapter also contains a skip-connection. During adapter tuning, the green layers are trained on the downstream data, this includes the adapter, the layer normalization parameters, and the
+final classification layer. Image from {cite:p}`houlsby2019parameterefficienttransferlearningnlp`.
+```
+
+**CHANGE**
+
+Figure 2 shows our adapter architecture, and its application it to the Transformer. Each layer of the Transformer contains two primary sub-layers: an attention layer and a feedforward layer. Both layers are followed immediately by a projection that maps the features size back to the size of layer's input. A skip-connection is applied across each of the sub-layers. The output of each sub-layer is fed into layer normalization. We insert two serial adapters after each of these sub-layers. The adapter is always applied directly to the output of the sub-layer, after the projection back to the input size, but before adding the skip connection back. The output of the adapter is then passed directly into the following layer normalization.
+
+To limit the number of parameters, we propose a bottleneck architecture. The adapters first project the original $d$-dimensional features into a smaller dimension, $m$, apply a nonlinearity, then project back to $d$ dimensions. The total number of parameters added per layer, including biases, is $2 m d+d+m$. By setting $m \ll d$, we limit the number of parameters added per task; in practice, we use around $0.5-8 \%$ of the parameters of the original model. The bottleneck dimension, $m$, provides a simple means to tradeoff performance with parameter efficiency. The adapter
+
+### Prompt Tuning
 
 Prompt tuning is a technique that involves learning a small set of continuous task-specific vectors (soft prompts) while keeping the pretrained model parameters frozen.
 
@@ -37,7 +87,7 @@ Key points:
 
 Example: P-Tuning v2 (Liu et al., 2021) showed that prompt tuning can match or outperform full finetuning across various NLP tasks.
 
-## Model Adaptation
+### Model Adaptation
 
 Model adaptation techniques focus on modifying specific parts of the model architecture to achieve efficient finetuning.
 
@@ -55,7 +105,7 @@ Key advantages:
 - Allows for efficient multi-task learning
 - Significantly reduces the number of trainable parameters compared to full finetuning
 
-## LoRA (Low-Rank Adaptation)
+### LoRA (Low-Rank Adaptation)
 
 LoRA is a parameter-efficient finetuning technique that approximates weight updates using low-rank decomposition:
 
@@ -74,4 +124,10 @@ Example: LoRA has been successfully applied to various models, including GPT-3, 
 These parameter-efficient finetuning techniques represent significant advancements in making large language models more accessible and adaptable. They allow for efficient use of computational resources, enable quick adaptation to new tasks, and contribute to more sustainable AI development practices.
 
 
-:bibliography:`../llm_book.bib`
+{cite:p}`hu2021loralowrankadaptationlarge`
+
+## Bibliography
+
+```{bibliography} ../../_bibliography/references.bib
+:filter: docname in docnames
+```

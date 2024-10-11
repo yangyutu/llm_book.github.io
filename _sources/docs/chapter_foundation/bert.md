@@ -637,3 +637,8 @@ One example sentence text classification task is the Cross-lingual Natural Langu
 
 In the structured prediction task, the model is evaluated on POS tagging task. The model is trained on the English data and then is evaluated on the test sets of the target languages.
 
+## Bibliography
+
+```{bibliography} ../../_bibliography/references.bib
+:filter: docname in docnames
+```

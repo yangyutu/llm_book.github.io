@@ -80,3 +80,10 @@ Recurrent neural network based language model.
 Compared with $n$-gram language model and feed-forward neural language model, RNN language model can in principle process input of any length without increasing the model size. 
 
 RNN language model also has several drawbacks: Computing a conditional probability $p(w_t|w_{1:t-1})$ is expensive. One mitigating strategy is to cache and re-use previous computed results or to pre-compute conditional probabilities for frequent $n$-grams.  some In practical applications, RNN language models from different domains are not easy to merge. 
+
+
+## Bibliography
+
+```{bibliography} ../../_bibliography/references.bib
+:filter: docname in docnames
+```

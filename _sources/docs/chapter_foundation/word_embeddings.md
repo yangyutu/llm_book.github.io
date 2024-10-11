@@ -13,6 +13,7 @@ NLP tasks are faced with text data consisting of tokens from a large vocabulary 
 
 ````{prf:example}
 Consider a vocabulary of size $V$, the one hot encodings for selected of words are represented as follows.
+
 $$
 \begin{align*}
 	\text { Rome } &= \underbrace{[1,0,0,0,0, 0, \ldots, 0]}_{length ~V}\\
@@ -21,26 +22,32 @@ $$
 	\text { Canada } & =[0,0,0,1,0,0, \ldots, 0]
 \end{align*}
 $$
+
 ````
 One-hot sparse representation treats each word as an independent atomic unit that has equal distance to all other words. Such encoding does not capture the relations among words (i.e., meanings, lexical semantic) and lose its meaning inside a sentence. For example, consider three words *run, horse, and cloth*. Although *run* and *horse* tend to be more relevant to each other than *horse* and *ship*, they have same Euclidean distance. Additional disadvantage include its poor scalability, that is, its representation size grows with the size of vocabulary. As such one hot encodings are thus not considered as good features for advanced natural language processing tasks that draw on interactions and semantics among words, such as language modeling, machine learning. But there are exceptions when the vocabulary associated with a task is indeed quite small and words in the vocabulary are largely irrelevant to each other. 
 
 A much better alternative is to represent each word vector by a dense vector, whose dimensionality $D$ typically ranges from 25 to 1,000. 
-\begin{example}
-Dense vector representation for some words could be
-	\begin{align*}
-		\text { Rome } &= \underbrace{[0.1,0.3,-0.2,\ldots, 0]}_{length ~D}\\
-		\text { Paris } & =[-0.6,0.5,0.2, \ldots, 0.3] \\
-		\text { America } & =[0.3,0.2,-0.3, \ldots, 0.2] \\
-		\text { Canada } & =[0.15,0.2,0.4, \ldots, 0.1].
-	\end{align*}
-\end{example}
+````{prf:example}
+**Dense vector **representation for some words could be
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.85\linewidth]{../figures/deepLearning/ApplicationsNLP/wordEmbedding/word_embedding_demo}
-	\caption{(a) Embedding layer maps large, sparse one-hot vectors to short, dense vectors. (b) Example of low dimensional embeddings that capture semantic meanings.} 
-	\label{ch:neural-network-and-deep-learning:fig:onehot2densevec}
-\end{figure}
+$$
+\begin{align}
+  \text { Rome } &= \underbrace{[0.1,0.3,-0.2,\ldots, 0]}_{length ~D}\\
+  \text { Paris } & =[-0.6,0.5,0.2, \ldots, 0.3] \\
+  \text { America } & =[0.3,0.2,-0.3, \ldots, 0.2] \\
+  \text { Canada } & =[0.15,0.2,0.4, \ldots, 0.1].
+\end{align}
+$$
+
+````
+
+```{figure} ../img/chapter_foundation/wordEmbedding/word_embedding_demo.png
+---
+scale: 30%
+name: chapter_foundation_fig_word_embedding_word_embedding_demo
+---
+(a) Embedding layer maps large, sparse one-hot vectors to short, dense vectors. (b) Example of low dimensional embeddings that capture semantic meanings.
+```
 
 In a dense vector representation, every component in the vector can contribute to enrich the concept and semantic meaning associated with the word. A linguistic phenomenon is that words that occur in similar contexts have similar meanings. Now the similarity or dissimilarity among words can be captured via distance in the vector space. A basic test on the ability to capture semantic and syntactic information is to be able to answer questions like
 * Semantic questions like "Being is to China as Berlin is to [$\cdot$]". 
@@ -152,13 +159,14 @@ $$M_{ij} = \frac{\#(w_i, w_j)/n_{pair}}{\#(w_i)/n_{words}\cdot \#(w_j)/n_{words}
 
 where $\#(w_i, w_j)$ is the number of co-occurrence of words $w_i$ and $w_j$ within a context window, $n_{pair}$ is the total number pairs, $n_{words}$ is the total number of words. 
 
-\begin{figure}
-	\centering
-	\includegraphics[width=1.0\linewidth]{../figures/statisticalLearning/unsupervisedLearning/SVDCooccurenceMatrix/SVDCooccurenceMatrix}
-	\caption{(left) Example of co-occurrence matrix constructed from corpus "I love math" and "I like NLP". The context window size of 2. (right) We can obtain lower-dimensional word embeddings from  SVD truncated factorization of the co-occurrence matrix. Such low-dimensional embeddings captures important semantic and syntactic information in the co-occurrence matrix.}
-	\label{ch:statistical-learning:unsuperivsedLearning:fig:svdcooccurencematrix}
-\end{figure}
 
+```{figure} ../img/chapter_foundation/wordEmbedding/skip_gram_CBOW.png
+---
+scale: 30%
+name: chapter_foundation_fig_word_embedding_svdcooccurencematrix
+---
+(left) Example of co-occurrence matrix constructed from corpus "I love math" and "I like NLP". The context window size of 2. (right) We can obtain lower-dimensional word embeddings from  SVD truncated factorization of the co-occurrence matrix. Such low-dimensional embeddings captures important semantic and syntactic information in the co-occurrence matrix.
+```
 
 Another popular matrix to capture the co-occurrence information is the the **pointwise mutual information (PMI)** \cite{arora2016latent}. PMI entry for a word pair is defined as the probability of their co-occurrence divided by the probabilities of them appearing individually,
 
@@ -172,7 +180,7 @@ More formally, via truncated SVD, we have factorization
 
 $$M \approx UV^T$$
 
-where $M\in R^{N\times N}$, $N$ is the size of the one-hot vector, $U, V \in \R^{N\times k}, k << N$. Columns of $U$ are the basis vector in latent word space. Each row in $V$ is the low dimensional representation of a word in the latent word space.
+where $M\in R^{N\times N}$, $N$ is the size of the one-hot vector, $U, V \in \mathbb{R}^{N\times k}, k << N$. Columns of $U$ are the basis vector in latent word space. Each row in $V$ is the low dimensional representation of a word in the latent word space.
 
 The word embeddings derived from the co-occurrence matrix preserves semantic information within a relative local context window. For words that do not appear frequently within a context window but actually share semantic links, the word embeddings might miss the link.
 This shortcoming can be overcome by performing a SVD on a document-term matrix. The document-term matrix is a sparse matrix whose rows correspond to terms and whose columns correspond to documents. The typical entry is the tf-idf (term frequency–inverse document frequency), whose value is proportional to frequency of the terms appear in each document, where common terms are downweighted to de-emphasize their relative importance.
@@ -191,20 +199,20 @@ $$\frac{1}{T} \sum_{t=1}^{T} \sum_{-c \leq j \leq c, j \neq 0} \log p\left(w_{t+
 
 where we have assumed conditional independence given word $w_t$.
 
-In the neural networks of Skip-gram and CBOW, we use Softmax function after the output layer to produce classification probability for $V$ classes, where $V$ is the size of the vocabulary. Note that the input layer has a weight matrix $W\in \R^{V\times D}$ that performs look-up and converts a word integer to a dense vector of $D$ dimension; the output layer has a weight matrix $W'\in \R^{D\times V}$. The classification probability is given by
+In the neural networks of Skip-gram and CBOW, we use Softmax function after the output layer to produce classification probability for $V$ classes, where $V$ is the size of the vocabulary. Note that the input layer has a weight matrix $W\in \mathbb{R}^{V\times D}$ that performs look-up and converts a word integer to a dense vector of $D$ dimension; the output layer has a weight matrix $W'\in \mathbb{R}^{D\times V}$. The classification probability is given by
 
 $$p(w_k|w_j) = \frac{\exp(v'_k\cdot v_j)}{\sum_{i=1}^V \exp(v'_i\cdot v_j)},$$
 
 where $v_i$ is the column $i$ of the input matrix $W$, and $v'_i$ is the row $i$ in the output matrix $W'$.
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=1\linewidth]{../figures/deepLearning/ApplicationsNLP/wordEmbedding/skip_gram_CBOW}
-	\caption{(a) The CBOW architecture that predicts the central word given its surrounding context words. (b) The Skip-gram architecture that predicts surrounding words given the central word.  The embedding layer is represented by a $V\times D$ weight matrix that performs look-up for each word token integer index, where $V$ is the vocabulary size and $D$ is the dimensionality of the dense vector. The linear output layer is also represented by a $V\times D$ weight matrix that is used to compute the logit for each token label as sort of classification over the vocabulary. }
-	\label{ch:neural-network-and-deep-learning:fig:skipgramcbow}
-\end{figure}
 
-
+```{figure} ../img/chapter_foundation/wordEmbedding/skip_gram_CBOW.png
+---
+scale: 80%
+name: chapter_foundation_fig_word_embedding_skipgramcbow
+---
+(a) The CBOW architecture that predicts the central word given its surrounding context words. (b) The Skip-gram architecture that predicts surrounding words given the central word.  The embedding layer is represented by a $V\times D$ weight matrix that performs look-up for each word token integer index, where $V$ is the vocabulary size and $D$ is the dimensionality of the dense vector. The linear output layer is also represented by a $V\times D$ weight matrix that is used to compute the logit for each token label as sort of classification over the vocabulary.
+```
 
 ````{prf:definition} Skip-gram and CBOW optimization problem
 :label: chapter_foundation_word_embedding_def_skipGramOptimization
@@ -250,7 +258,7 @@ where $f(w)$ is the frequency of word $w$ in the training corpus.  This distribu
 
 Finally, we have the modified optimization for Skip-gram model given by
 
-$$\argmax_{v,v'} \sum_{t=1}^{T} \sum_{-c \leq j \leq c, j \neq 0}\left[v^{\prime}_{t+j} \cdot v_{t}-\log \sum_{m=1}^k \exp \left(v_{w_m}^{\prime} \cdot v_{t}\right)\right] $$
+$$\operatorname{argmax}_{v,v'} \sum_{t=1}^{T} \sum_{-c \leq j \leq c, j \neq 0}\left[v^{\prime}_{t+j} \cdot v_{t}-\log \sum_{m=1}^k \exp \left(v_{w_m}^{\prime} \cdot v_{t}\right)\right] $$
 
 where $w_m \sim P_n(w), m=1,...,k$ are negative samples.
 
@@ -273,10 +281,11 @@ where $f(w_i)$ is the frequency of word $w_i$ and $t$ is a chosen threshold, typ
 An alternative approach to the above sampled Softmax loss formulation is using Noise Contrastive Estimation (NCE). NCE can be viewed as an optimization based on binary classification using logistic regression \cite{goldberg2014word2vec} that **ranks observed data above noise**. The class labels are positive pairs, which are formed by each word and the word in its context windows, and negative pairs, which are formed by each word and negatively sampled words. NCE can be shown to approximately maximize the log probability of the Softmax \cite{collobert2008unified}.
 
 Denote $D$ as the set of positive pairs with label $y=1$ and $D'$ the set of negative pairs with label $y=0$. The NCE formulation minimize the following binary cross-entropy given by
+
 $$
 \begin{align}
-&	\argmin_{\theta}  -\sum_{(w, c) \in D\cup D'} y\log \sigma\left(v_{c} \cdot v_{w}\right)+ (1 - y) \log \sigma\left(-v_{c} \cdot v_{w}\right) \\
-&	\argmin_{\theta} -\sum_{(w, c) \in D} \log \sigma\left(v_{c} \cdot v_{w}\right)+\sum_{(w, c) \in D^{\prime}} \log \sigma\left(-v_{c} \cdot v_{w}\right)
+&	\operatorname{argmin}_{\theta}  -\sum_{(w, c) \in D\cup D'} y\log \sigma\left(v_{c} \cdot v_{w}\right)+ (1 - y) \log \sigma\left(-v_{c} \cdot v_{w}\right) \\
+&	\operatorname{argmin}_{\theta} -\sum_{(w, c) \in D} \log \sigma\left(v_{c} \cdot v_{w}\right)+\sum_{(w, c) \in D^{\prime}} \log \sigma\left(-v_{c} \cdot v_{w}\right)
 \end{align}
 $$
 
@@ -291,16 +300,19 @@ Another example is the word *bank*, which has two contrasting meanings in the fo
   
 The nearest words of *bank* in the Word2Vec model are *banks, monetary, banking, imf, fund, currency,* etc. , which does not capture the second meaning. More formally, we say static word embeddings from Word2Vec model cannot address polysemy.\footnote{the coexistence of many possible meanings for a word or phrase.} On the other hand, the mean of a word can usually be inferred from its left and right context. Therefore it is also essential to develop context-dependent embeddings, which will be discussed in \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:sec:BERT_pretrainedLanguageModels}.
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.9\linewidth]{../figures/deepLearning/ApplicationsNLP/wordEmbedding/word2Vec_visualization}
-	\caption{Visualization of neighboring words of *apple* in a 2D low-dimensional space (first two components via PCA). Image from \href{https://projector.tensorflow.org/}{Tensorflow projector}.}
-	\label{ch:neural-network-and-deep-learning:ApplicationNLP:fig:word2vecvisualization}
-\end{figure}
+
+```{figure} ../img/chapter_foundation/wordEmbedding/word2Vec_visualization.png
+---
+scale: 80%
+name: chapter_foundation_fig_word_embedding_word2Vec_visualization
+---
+Visualization of neighboring words of *apple* in a 2D low-dimensional space (first two components via PCA). Image from  Tensorflow projector (https://projector.tensorflow.org/).
+```
+
 
 ## GloVe
 
-So far we have largely seen two major approaches to obtaining word embeddings. One is the LSA algorithm based on SVD on the document-term matrix. Since entries in document-term reflects global statistical feature of term, LSA algorithm obtains word embeddings that preserves global information. Another approach is the word2vec algorithm (skip-gram and CBOW), which obtain word embeddings that facilitates prediction of local context words. Word embedding from word2vec algorithm therefore tend to preserve local information. 
+<!-- So far we have largely seen two major approaches to obtaining word embeddings. One is the LSA algorithm based on SVD on the document-term matrix. Since entries in document-term reflects global statistical feature of term, LSA algorithm obtains word embeddings that preserves global information. Another approach is the word2vec algorithm (skip-gram and CBOW), which obtain word embeddings that facilitates prediction of local context words. Word embedding from word2vec algorithm therefore tend to preserve local information. 
 
 GloVe, which stands fro Global Vectors for Word Representation, is proposed in \cite{pennington2014glove} to combines ideas from two approaches together. GloVe uses both overall statistics feature of the corpus as well as the local context statistics. 
 
@@ -332,9 +344,9 @@ f(x)=\left\{\begin{array}{cc}
 $$
 
 Intuitively, the optimization problem aims to optimize weights $w$ and bias $b$ to approximate $\log X_{ij}$. Bias serves a global offset that encodes global information and product of weights capture the co-occurrence in the local context window. 
-Finally, the model generates two sets of word vectors, ${W}$ and ${W'},$ either of which can be used as word embeddings. 
+Finally, the model generates two sets of word vectors, ${W}$ and ${W'},$ either of which can be used as word embeddings.  -->
 
-(chapter_foundation_word_embedding_subwordWordEmbeddingModel)
+(chapter_foundation_word_embedding_subwordWordEmbeddingModel)=
 ## Subword model
 
 The word embedding models we discussed so far are typically trained on a large corpus. On the runtime inference stage, there is no guarantee that the words we see during the runtime are in the vocabulary of the training corpus. Those words are known of out-of-vocabulary words, OOV words. Another issue with previous word embedding models is that some text normalization techniques \footnote{Some typical text normalization include contraction expansion, stemming, lemmatization, etc. For example, in contraction expansion, we have *ain't* $\to$ *are not*. Lemmatization is to reduce words to their base forms.} are performed to standardize texts.  While text normalization allows statistics and parameter sharing across words of the same root (e.g., *bag* and *bags*) and save computational memory and cost, it also ignores meanings that could be encoded in these morphological variations.
@@ -395,3 +407,9 @@ Note that the vocabulary size of $G$ can be huge for large $n$. Below is the max
 In order to bound the model memory requirements, we can use a hashing function that maps $n$ -grams to $K$ (e.g., $K \approx 10^6$) buckets. Note that when collison occurs, two $n$-grams will share the same embedding. 
 
 One direct application of subword representation is the Fasttext text classifier {cite:p}`joulin2016bag`, which use subword embedding as the feature in the logistic regression model.
+
+## Bibliography
+
+```{bibliography} ../../_bibliography/references.bib
+:filter: docname in docnames
+```

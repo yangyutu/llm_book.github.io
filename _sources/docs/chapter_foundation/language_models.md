@@ -397,3 +397,5 @@ In comparison to the Mikolov processed version of the Penn Treebank (PTB), the W
 ## Bibliography
 
 ```{bibliography} ../../_bibliography/references.bib
+:filter: docname in docnames
+```
