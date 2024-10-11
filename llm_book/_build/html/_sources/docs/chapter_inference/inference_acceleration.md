@@ -1,4 +1,4 @@
-# Inference acceleration: Overview
+# Inference acceleration
 
 ## The fundamental challenge of LLM inference
 
@@ -47,6 +47,78 @@ with different levels of **quantization granularities**, including:
 * per-tensor
 * per-token/per-channel
 * group-wise
+
+## Where quantization and dequant happen? What is the trade off
+
+
+
+
+First a quantized model (together with quantization hypermeters) are loaded into GPU devices (without quantization, the model cannot even be loaded). 
+
+During inference calculation, de-quantization is performed when high precision float number calcuation is needed (like Softmax). 
+Note that the majority of inference computation cost is matrix computation, which can usually be conducted via integer level, and half-precision level.
+
+
+
+on matrices involved in current step of calculation. After finishing current steps of calcuation, matrices are quantized again to save memory. Since the parameters of the model are not used simultaneously, only part of model parameters are dequantized. Therefore the GPU memory footprint is contained.
+
+
+Quantization benefits:
+* saves the GPU memory footprint, 
+* calculation speed up with integer level or low precision level matrix computation.
+Cost:
+* with the cost of numerical inaccurcy 
+* quantization overhead (i.e., convert model weights between)
+  
+What Are the Advantages and Disadvantages of Quantized LLMs?
+Let us look at the pros and cons of quantization.
+
+Pros 
+Smaller Models: by reducing the size of their weights, quantization results in smaller models. This allows them to be deployed in a wider variety of circumstances such as with less powerful hardware; and reduces storage costs.   
+Increased Scalability: the lower memory footprint produced by quantized models also makes them more scalable. As quantized models have fewer hardware constraints, organizations can feasibly add to their IT infrastructure to accommodate their use. 
+Faster Inference:  the lower bit widths used for weights and the resulting lower memory bandwidth requirements allow for more efficient computations. 
+Cons 
+Loss of Accuracy: undoubtedly, the most significant drawback of quantization is a potential loss of accuracy in output. Converting the model’s weights to a lower precision is likely to degrade its performance – and the more “aggressive” the quantization technique, i.e., the lower the bit widths of the converted data type, e.g., 4-bit, 3-bit, etc., the greater the risk of loss of accuracy. 
+
+
+% from Claude (I think it is incorrrect for matrix multiplication)
+
+When using a quantized language model (LLM) for inference, there are specific steps where we typically need to de-quantize (or dequantize) the model parameters. Let's break this down:
+
+1. Storage and Loading: The model parameters remain in their quantized form when stored on disk and when initially loaded into memory.
+
+2. During Forward Pass:
+   a) Weight Matrices: Before matrix multiplications, we usually need to de-quantize the weights. This is because most hardware is optimized for floating-point operations rather than integer operations used in quantized formats.
+
+   b) Attention Mechanisms: For self-attention and cross-attention layers, the key, query, and value matrices typically need to be de-quantized before performing the attention computations.
+
+   c) Layer Normalization: If layer normalization parameters (scale and bias) are quantized, they need to be de-quantized before applying the normalization.
+
+   d) Feed-Forward Networks: The weights of feed-forward layers need to be de-quantized before matrix multiplications.
+
+3. Activation Functions: Generally, activation functions operate on floating-point values, so inputs to these functions (which are outputs from previous layers) need to be in a de-quantized form.
+
+4. Output Layer: The final output layer (e.g., for token prediction) typically works with full-precision values, so any quantized weights here need to be de-quantized.
+
+5. Intermediate Representations: Depending on the specific quantization scheme, some intermediate tensor representations might remain quantized between layers to save memory and computation. These would be de-quantized only when necessary for computations that require higher precision.
+
+It's important to note that the exact steps where de-quantization occurs can vary depending on:
+
+- The specific quantization scheme used (e.g., INT8, INT4, mixed-precision)
+- The hardware being used for inference (some specialized hardware can perform operations directly on quantized values)
+- The inference optimization techniques employed (e.g., some frameworks might fuse operations to minimize de-quantization steps)
+
+In practice, many inference engines and frameworks handle these de-quantization steps automatically, optimizing when and where to perform them based on the model architecture and hardware capabilities.
+
+% from Nividia website https://developer.nvidia.com/blog/achieving-fp32-accuracy-for-int8-inference-using-quantization-aware-training-with-tensorrt/#:~:text=When%20processing%208-bit%20integer%20data%2C%20NVIDIA%20GPUs%20employ,throughput%2C%20which%20is%20particularly%20effective%20on%20compute-limited%20layers.
+Model quantization is a popular deep learning optimization method in which model data—both network parameters and activations—are converted from a floating-point representation to a lower-precision representation, typically using 8-bit integers. This has several benefits:
+
+When processing 8-bit integer data, NVIDIA GPUs employ the faster and cheaper 8-bit Tensor Cores to compute convolution and matrix-multiplication operations. This yields more compute throughput, which is particularly effective on compute-limited layers.
+Moving data from memory to computing elements (streaming multiprocessors in NVIDIA GPUs) takes time and energy, and also produces heat. Reducing the precision of activation and parameter data from 32-bit floats to 8-bit integers results in 4x data reduction, which saves power and reduces the produced heat.
+Some layers are bandwidth-bound (memory-limited). That means that their implementation spends most of its time reading and writing data, and therefore reducing their computation time does not reduce their overall runtime. Bandwidth-bound layers benefit most from reduced bandwidth requirements.
+A reduced memory footprint means that the model requires less storage space, parameter updates are smaller, cache utilization is higher, and so on.
+
+
 
 ## Standard quantization techniques
 
@@ -240,9 +312,9 @@ The problem intensifies with model size; larger models exhibit more layers with 
 
 This disparity poses a significant challenge for quantization, as traditional methods struggle to accurately represent both the outliers and the more typical values within the same low-bit format. Consequently, addressing these outliers has become a critical focus in the development of quantization techniques for large language models.
 
-## Advanced quantization techniques
+# Advanced quantization techniques
 
-### LLM.int8()
+## LLM.int8()
 
 {cite:p}`dettmers2022llmint88bitmatrixmultiplication`
 
@@ -299,16 +371,158 @@ emerge at a scale of 6.7B parameters, causing regular quantatization methods to 
 ```
 
 
-### Smooth Quant
+## Smooth Quant
 
 
-### AWQ
+## AWQ
 
 
-### GPTQ
+## GPTQ
+
+### Preliminary
+
+#### The Error Minimization Framework
+
+{cite:p}`lecun1989optimal`
+
+If we want to remove some parameters from a model (i.e., pruning), intuitively, we want to remove parameters that have little impact on the objective function $E$. So we can perform a Taylor expansion on the objective function $E$:
+
+$$
+\Delta E=\sum_i g_i \Delta w_i+\frac{1}{2} \sum_i h_{ii} \Delta w_i^2+\frac{1}{2} \sum_{i \neq j} h_{ij} \Delta w_i \Delta w_j+O\left(\Delta w^3\right)
+$$ (chapter_inference_eq_inference_acceleration_GPTQ_error_minimization_objective_raw)
+
+where $g_i=\frac{\partial E}{\partial w_i}$ is the first-order partial derivative of the parameter, and $h_{ij}=\frac{\partial^2 E}{\partial w_i \partial w_j}$ is an element of the Hessian matrix.
+
+We can make the following some assumptions to simplify the above equation and facilate our subsequent analysis
+- The contribution from higher-order terms $O\left(\Delta w^3\right)$ can be ignored
+- The model training has converged sufficiently, so all first-order partial derivatives of parameters are 0: $g_i=0, \forall i$
+
+This reduces the original $\Delta E$ expression to 
+
+$$
+\Delta E=\frac{1}{2} \sum_i h_{ii} \Delta w_i^2+\frac{1}{2} \sum_{i \neq j} h_{ij} \Delta w_i \Delta w_j
+$$ (chapter_inference_eq_inference_acceleration_GPTQ_error_minimization_objective)
+
+#### Speical Case: Diagonal Hessian Assumption
+
+One special case is when the Hessian matrix is a diagnoal, that is, the impact of each parameter on the objective function is independent. As a result $h_{ij}\Delta w_i \Delta w_j = 0$, the Eq. {eq}`chapter_inference_eq_inference_acceleration_GPTQ_error_minimization_objective` can be simplified to:
+
+$$
+\Delta E=\frac{1}{2} \sum_i h_{ii} \Delta w_i^2.
+$$
+
+From this equation, the impact of deleting a parameter $w_i$ on the objective function is $\frac{1}{2} h_{ii} w_i^2$. So we only need to calculate the Hessian matrix $h_{ii}$ to know the impact of each parameter on the objective. Then we can rank the parameters according to their impact from small to large, which determines the order of parameter pruning.
+
+#### General Case
+
+OBS {cite:p}`hassibi1993optimal` 
+
+To analyze the general case of Eq. {eq}`chapter_inference_eq_inference_acceleration_GPTQ_error_minimization_objective`, we first write it in vector/matrix form:
+$$
+\Delta E=\frac{1}{2} \Delta \mathbf{w}^{\mathbf{T}} \mathbf{H} \Delta \mathbf{w}
+$$ (chapter_inference_eq_inference_acceleration_GPTQ_error_minimization_objective_matrix_form)
+
+When deleting a weight $w_q$, the $q$-th dimension of $\Delta \mathbf{w}$ is fixed at $-w_q$, but the values in other dimensions can vary and can be used to reduce the deviation from the objective caused by deleting this weight.
+
+The $q$-th dimension of $\boldsymbol{\Delta} \mathbf{w}$ being fixed at $-w_q$ is a constraint condition, which we can express as an equation:
+
+$$
+\mathbf{e}_{\mathbf{q}}^{\mathbf{T}} \cdot \boldsymbol{\Delta} \mathbf{w}+w_q=0
+$$
+
+where $\mathbf{e}_{\mathbf{q}}$ is a one-hot vector with 1 at the $q$-th position and 0 elsewhere.
+
+We want to find the most suitable weight $w_q$ to delete, which minimizes the impact on the objective. This can be expressed as an optimization problem:
+
+$$
+\min_{\Delta \mathbf{w}, q} \frac{1}{2} \boldsymbol{\Delta}_{\mathbf{w}}^{\mathbf{T}} \mathbf{H} \boldsymbol{\Delta} \mathbf{w} \quad \text{s.t.} \quad \mathbf{e}_{\mathbf{q}}^{\mathbf{T}} \cdot \boldsymbol{\Delta} \mathbf{w}+w_q=0
+$$
+
+Solving this using the Lagrange multiplier method:
 
 
-### FP8
+$$
+\Delta \mathbf{w}=-\frac{w_q}{[\mathbf{H}^{-1}]_{qq}} \mathbf{H}^{-1} \cdot \mathbf{e}_{\mathbf{q}} 
+$$
+
+And the error function with optimal $\Delta \mathbf{w}$ is given by
+
+$$\Delta E =\frac{1}{2} \frac{w_q^2}{[\mathbf{H}^{-1}]_{qq}}$$
+
+```{dropdown} Detailed Derivation
+Step 1: Form the Lagrangian
+Let's introduce a Lagrange multiplier $\lambda$ and form the Lagrangian function:
+
+$$
+L(\boldsymbol{\Delta}\mathbf{w}, \lambda) = \frac{1}{2} \boldsymbol{\Delta}\mathbf{w}^{T} \mathbf{H} \boldsymbol{\Delta}\mathbf{w} + \lambda(\mathbf{e}_{q}^{T} \cdot \boldsymbol{\Delta}\mathbf{w}+w_q)
+$$
+
+Step 2: Find the partial derivatives and set them to zero
+
+With respect to $\boldsymbol{\Delta}\mathbf{w}$ and $\lambda$:
+
+$$
+\begin{align}
+\frac{\partial L}{\partial \boldsymbol{\Delta}\mathbf{w}} &= \mathbf{H}\boldsymbol{\Delta}\mathbf{w} + \lambda\mathbf{e}_{\mathbf{q}} = 0 \\
+\frac{\partial L}{\partial \lambda} &= \mathbf{e}_{\mathbf{q}}^{\mathbf{T}} \cdot \boldsymbol{\Delta}\mathbf{w}+w_q = 0
+\end{align}
+$$
+
+
+Step 3: From the first equation we get
+$$
+\boldsymbol{\Delta}\mathbf{w} = -\lambda \mathbf{H}^{-1}\mathbf{e}_q
+$$
+
+Plus into the second
+
+$$
+-\lambda \mathbf{e}_q^T\mathbf{H}^{-1}\mathbf{e}_q + w_q = 0 \implies \lambda = \frac{w_q}{[\mathbf{H}]^{-1}_{qq}}
+$$
+
+where $[\mathbf{H}]^{-1}_{qq}$ is the $q$-th diagonal element of $\mathbf{H}^{-1}$
+
+Now the first equation becomes
+
+$$ 
+\mathbf{H}\boldsymbol{\Delta}\mathbf{w} + \frac{w_q}{[\mathbf{H}^{-1}]{qq}}\mathbf{e}_q = 0
+$$
+
+from which we can solve $\boldsymbol{\Delta}\mathbf{w}$ to get
+
+$$
+\boldsymbol{\Delta}\mathbf{w} = -\frac{w_q}{[\mathbf{H}^{-1}]{qq}}\mathbf{H}^{-1}\mathbf{e}_q
+$$
+
+
+```
+
+The implication is that the impact of pruning parameter $w_q$ is $\frac{1}{2} \frac{w_q^2}{[\mathbf{H}^{-1}]_{qq}}$. So our pruning algorithm can be conducted by iteratively pruning parameters that has minimal impact and adjusting remaining parameters to offset the impact, as we summarize below.
+
+
+```{prf:algorithm} OBS Neural Network Pruning Algorithm
+:label: OBS_network_pruning_algorithm
+
+**Inputs** A trained neural network; Stop Criterion 
+
+**Output** A pruned neural network
+
+1. Compute $\mathbf{H}^{-1}$.
+2. Find the $q$ that gives the smallest saliency $L_q=u_q^2 /\left(2\left[\mathbf{H}^{-1}\right] q q\right)$. If this candidate error increase is much smaller than $E$, then the $q$ th weiglit should be deleted, and we proceed to step 4: otherwise go to step 5. (Other stopping criteria can be used too.)
+3. Use the $q$ from step 3 to update all weights (Eq. 5). Go to step 2.
+4. No more weights can be deleted without large increase in E. (At this point it may be desirable to retrain the network.)
+```
+
+% GPTQ 模型量化 - 冥王星的文章 - 知乎
+% https://zhuanlan.zhihu.com/p/629517722
+% QLoRA、GPTQ：模型量化概述 - 杨远航的文章 - 知乎
+% https://zhuanlan.zhihu.com/p/646210009
+
+
+
+#### Speed-Up Hessian Computation
+
+## FP8
 
 
 
@@ -319,4 +533,9 @@ https://lilianweng.github.io/posts/2023-01-10-inference-optimization/
 Quantization: 
 https://leimao.github.io/article/Neural-Networks-Quantization/
 
-:bibliography:`../llm_book.bib`
+
+## Bibliography
+
+```{bibliography} ../../_bibliography/references.bib
+:filter: docname in docnames
+```

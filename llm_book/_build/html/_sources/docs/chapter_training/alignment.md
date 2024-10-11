@@ -292,4 +292,14 @@ The gradient is zero when $\hat{p}_\theta\left(y_w \succ y_l\right)=(1-\epsilon)
 
 
 
-:bibliography:`../llm_book.bib`
+
+
+### Additional remark RL vs SFT vs DPO
+
+% https://mp.weixin.qq.com/s/WKuEcsyMFkaKf19o20Ci3g
+
+## Bibliography
+
+```{bibliography} ../../_bibliography/references.bib
+:filter: docname in docnames
+```

@@ -107,4 +107,5 @@ Choice shuffling has an additional benefit of increasing the diversity of each r
 ## Bibliography
 
 ```{bibliography} ../../_bibliography/references.bib
+:filter: docname in docnames
 ```

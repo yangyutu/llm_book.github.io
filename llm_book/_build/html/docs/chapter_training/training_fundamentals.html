@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>LLM training fundamentals &#8212; LLM Foundations</title>
+    <title>11. LLM Training Fundamentals &#8212; LLM Foundations</title>
   
   
   
@@ -58,11 +58,13 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_training/training_fundamentals';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="LLM finetuning" href="finetuning.html" />
-    <link rel="prev" title="MOE sparse models" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html" />
+    <link rel="next" title="12. LLM finetuning" href="finetuning.html" />
+    <link rel="prev" title="10. MOE sparse models" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -172,57 +174,62 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    Table of Contents
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">Language Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/neural_language_models.html">Early Neural Language Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/word_embeddings.html">Word Embeddings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers.html">Transformers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/bert.html">BERT</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/t5.html">Seq2Seq, T5, And BART</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/GPT_series.html">GPT Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: Unveiling the Power of Language Models in the Age of Artificial Intelligence</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">2. Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/neural_language_models.html">3. Early Neural Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/word_embeddings.html">4. Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers.html">5. Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/bert.html">6. BERT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/t5.html">7. Seq2Seq: T5 and BART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/GPT_series.html">8. GPT Series</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">LLM Dense Architectures Fundamentals</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">MOE sparse models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MOE sparse models</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">LLM training fundamentals</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">11. LLM Training Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="finetuning.html">12. LLM finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alignment.html">13. LLM alignement and preference learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accelerated_training.html">14. LLM Training Acceleration</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="finetuning.html">LLM finetuning</a></li>
-
-
-<li class="toctree-l1"><a class="reference internal" href="alignment.html">LLM alignement</a></li>
-<li class="toctree-l1"><a class="reference internal" href="accelerated_training.html">LLM Training Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">LLM Inference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration: Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">16. LLM Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">17. Inference acceleration</a></li>
+
 
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">Basic prompt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">Advanced prompt techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">20. Basic prompt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">21. Advanced prompt techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG)</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">Basic RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">Advanced rag techniques</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">Multimodality fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">Vision transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">22. Basic RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">23. Advanced rag techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">Information Retrieval Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">24. Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR</a></li>
 </ul>
 
     </div>
@@ -361,7 +368,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>LLM training fundamentals</h1>
+    <h1>LLM Training Fundamentals</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -371,13 +378,27 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">LLM training fundamentals</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-overview">Training overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-overview">11.1. Training Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-algorithms">11.2. Optimization Algorithms</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minibatch-stochastic-gradient-descent">11.2.1. Minibatch Stochastic Gradient Descent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-gradient-method">11.2.2. Adaptive Gradient Method</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-gradient-adagrad">11.2.2.1. Adaptive Gradient (AdaGrad)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rmsprop">11.2.2.2. RMSProp</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">Pretraining</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#momentum-method">11.2.3. Momentum Method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-together-adam-and-adamw">11.2.4. Combined Together: Adam and AdamW</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adam">11.2.4.1. Adam</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#l-2-weight-decay-and-adamw">11.2.4.2. <span class="math notranslate nohighlight">\(L_2\)</span> Weight Decay and AdamW</a></li>
 </ul>
-
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">11.3. Pretraining</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#post-training">11.4. Post-training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sft-vs-rlhf">11.5. SFT Vs RLHF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">11.6. Bibliography</a></li>
+</ul>
             </nav>
         </div>
     </div>
@@ -389,14 +410,273 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="llm-training-fundamentals">
-<h1>LLM training fundamentals<a class="headerlink" href="#llm-training-fundamentals" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">11. </span>LLM Training Fundamentals<a class="headerlink" href="#llm-training-fundamentals" title="Link to this heading">#</a></h1>
 <section id="training-overview">
-<h2>Training overview<a class="headerlink" href="#training-overview" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">11.1. </span>Training Overview<a class="headerlink" href="#training-overview" title="Link to this heading">#</a></h2>
+</section>
+<section id="optimization-algorithms">
+<h2><span class="section-number">11.2. </span>Optimization Algorithms<a class="headerlink" href="#optimization-algorithms" title="Link to this heading">#</a></h2>
+<section id="minibatch-stochastic-gradient-descent">
+<h3><span class="section-number">11.2.1. </span>Minibatch Stochastic Gradient Descent<a class="headerlink" href="#minibatch-stochastic-gradient-descent" title="Link to this heading">#</a></h3>
+<p>Batch gradient descent is usually not ideal for neural network application that involves large-size training data, such as image recognization and natural language processing. Evaluating the gradient over the whole set of training data is computational prohibitive; moreover, many samples are similar, making the gradient of the whole data sample is simply the multiplier of the gradient of a much smaller, representative sample data set.</p>
+<p>Minibatch stochastic gradient descent uses a random sample of the training data set to estimate the gradient on each step. A typical algorithm is showed as follows.</p>
+<div class="proof algorithm admonition" id="Minibatch_stochastic_gradient_descent_algorithm">
+<p class="admonition-title"><span class="caption-number">Algorithm 11.1 </span> (Minibatch stochastic gradient descent algorithm)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Inputs</strong> Learning rate <span class="math notranslate nohighlight">\(\alpha_k\)</span>, iniital model parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p><strong>Output</strong> <span class="math notranslate nohighlight">\(\theta_k\)</span></p>
+<ol class="arabic">
+<li><p>Set <span class="math notranslate nohighlight">\(k=1\)</span></p></li>
+<li><p>Repeat until stopping criteria is met:</p>
+<ol class="arabic simple">
+<li><p>Sample a minibatch of training samples of size <span class="math notranslate nohighlight">\(m\)</span>: <span class="math notranslate nohighlight">\((x^{(i)},y^{(i)}),i=1,2,...,m\)</span>.</p></li>
+<li><p>Compute a gradient estimate over this minibatch samples via</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\hat{g}_k = \frac{1}{m}\nabla_{\theta} \sum_{i=1}^{m} L(f(x^{(i)};\theta),y^{(i)}).\]</div>
+<ol class="arabic simple" start="3">
+<li><p>Apply update <span class="math notranslate nohighlight">\(\theta_k = \theta_k - \alpha_k \hat{g}_k\)</span>.</p></li>
+<li><p>Set <span class="math notranslate nohighlight">\(k=k+1\)</span>.</p></li>
+</ol>
+</li>
+</ol>
+</section>
+</div><div class="proof remark admonition" id="remark-1">
+<p class="admonition-title"><span class="caption-number">Remark 11.1 </span> (choice of minibatch size)</p>
+<section class="remark-content" id="proof-content">
+<ul class="simple">
+<li><p>The estimation quality of gradient via minibatch gradient descent is strongly affected by the minibatch size. In general, the gradient estimate is unbiased, irrespective of the choice of minibatch size, but its variance will decrease as the minibatch increases.</p></li>
+<li><p>For larger minibatch size, we can increase learning rate since the estimated gradient is more certain. There is an empirical <em><strong>Linear Scaling Rule</strong></em>: When the minibatch size is multiplied by <span class="math notranslate nohighlight">\(k\)</span>, multiply the learning rate by <span class="math notranslate nohighlight">\(k\)</span> <span id="id1">[<a class="reference internal" href="#id1088" title="Priya Goyal, Piotr Dollár, Ross Girshick, Pieter Noordhuis, Lukasz Wesolowski, Aapo Kyrola, Andrew Tulloch, Yangqing Jia, and Kaiming He. Accurate, large minibatch sgd: training imagenet in 1 hour. arXiv preprint arXiv:1706.02677, 2017.">GDollarG+17</a>]</span>.</p></li>
+</ul>
+</section>
+</div></section>
+<section id="adaptive-gradient-method">
+<h3><span class="section-number">11.2.2. </span>Adaptive Gradient Method<a class="headerlink" href="#adaptive-gradient-method" title="Link to this heading">#</a></h3>
+<section id="adaptive-gradient-adagrad">
+<h4><span class="section-number">11.2.2.1. </span>Adaptive Gradient (AdaGrad)<a class="headerlink" href="#adaptive-gradient-adagrad" title="Link to this heading">#</a></h4>
+<p>For simple stochastic gradient methods, we need to set the learning rate hyperparameter or even dynamically schedule learning rate, which is usually a difficult task or problem specific. Further, a uniform learning rate is usually not an effective way for high-dimensional gradient descent methods, since one learning rate could be too large for one-dimension but, on the contrary, too small for another dimension.</p>
+<p>The AdaGrad algorithm<span id="id2">[<a class="reference internal" href="#id1087" title="John Duchi, Elad Hazan, and Yoram Singer. Adaptive subgradient methods for online learning and stochastic optimization. Journal of Machine Learning Research, 12(Jul):2121–2159, 2011.">DHS11</a>]</span> addresses the issue by choosing different learning rates for each dimension. The algorithm adaptively scales the learning rate for each dimension based on the <strong>accumulated gradient magnitude</strong> on that dimension so far.</p>
+<p>Let <span class="math notranslate nohighlight">\(G_k\)</span> be the <strong>accumulated gradient</strong> up to iteration <span class="math notranslate nohighlight">\(k\)</span>, given by</p>
+<div class="math notranslate nohighlight">
+\[G_k = G_{k-1} + \hat{g}_k\odot \hat{g}_k, G_0 = 0.\]</div>
+<p>The parameter update is given by</p>
+<div class="math notranslate nohighlight">
+\[\theta_k = \theta_{k-1} - \frac{\alpha_0}{\delta + \sqrt{G_k}} \hat{g}_k\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha_0\)</span> is the initial learning speed, usually set at a small number (say, 1e-9 to 1e-7) and <span class="math notranslate nohighlight">\(\delta\)</span> is a small positive constant to avoid division by zero.</p>
+<p>As we can see, the learning rate in AdaGrad is monotonically decreasing, which may dramatically slow down the convergence as the learning rate becomes too small. In general, AdaGrad algorithm performs best for <strong>convex optimization</strong> (however, neural network optimization is usually non-convex).</p>
+</section>
+<section id="rmsprop">
+<h4><span class="section-number">11.2.2.2. </span>RMSProp<a class="headerlink" href="#rmsprop" title="Link to this heading">#</a></h4>
+<p>As we mentioned before, AdaGrad tend to shrink learning rate too aggressively. This is an advantage when applying AdaGrad to convex function optimization as it enables the algorithm to converge fast and stably. However, non-convex function optimization usually require large, adaptive learning rate to escape bad local minimum and converge stably to better local minimums.</p>
+<p>The first remedy is to prevent the learning rate from shrinking too fast. Let <span class="math notranslate nohighlight">\(G_k\)</span> be the accumulated gradient up to iteration <span class="math notranslate nohighlight">\(k\)</span>, given by</p>
+<div class="math notranslate nohighlight">
+\[G_k = \rho G_{k-1} + (1- \rho) g_k\odot g_k, G_0 = 0.\]</div>
+<p>Then we compute update</p>
+<div class="math notranslate nohighlight">
+\[\theta_k= \theta_{k-1} - \frac{\alpha_0}{\delta + \sqrt{G_k}} \hat{g}_k.\]</div>
+<p>which is the core part of the RMSProp algorithm <span id="id3">[<a class="reference internal" href="#id1086" title="Geoffrey Hinton. Neural Networks for Machine Learning. University of Toronto, 2012.">Hin12</a>]</span>.</p>
+<p>How this modification can make the <span class="math notranslate nohighlight">\(G_k\)</span> smaller than that in the AdaGrad, as can be seen from following expansion.</p>
+<div class="proof remark admonition" id="remark-2">
+<p class="admonition-title"><span class="caption-number">Remark 11.2 </span> (Expansion of <span class="math notranslate nohighlight">\(G_k\)</span>)</p>
+<section class="remark-content" id="proof-content">
+<p>In RMSProp, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+G_k &amp;= \rho G_{k-1} + (1- \rho) g_k\odot g_k \\
+	&amp;= \rho G_{k-2} + \rho(1- \rho) g_k\odot g_k + \rho(1 - \rho)g_{k-1}\odot g_{k-1} \\
+	&amp;\approx g\cdot g (1 - \rho) (1 + \rho + \cdot + \rho^{k-1})\\
+	&amp;= (1 - \rho^k) g\cdot g
+\end{align}
+\end{split}\]</div>
+<p>where we assume <span class="math notranslate nohighlight">\(g_k\cdot g_k \approx g\cdot g, \forall k\)</span>. Clearly, we have
+roughly,</p>
+<div class="math notranslate nohighlight">
+\[G_k^{RMSProp} \approx  \frac{(1 - \rho^k)}{k} G_k^{AdaGrad}, G_k^{AdaGrad}\approx k g\odot g.\]</div>
+</section>
+</div></section>
+</section>
+<section id="momentum-method">
+<h3><span class="section-number">11.2.3. </span>Momentum Method<a class="headerlink" href="#momentum-method" title="Link to this heading">#</a></h3>
+<p>Simple SGD with small learning rate can lead to extremely slow learning for functional surfaces with long, narrow valleys <span id="id4">[<a class="reference internal" href="#id1084" title="Ilya Sutskever, James Martens, George Dahl, and Geoffrey Hinton. On the importance of initialization and momentum in deep learning. In International conference on machine learning, 1139–1147. 2013.">SMDH13</a>]</span>. One intuition inspired by the physics of a heavy ball falling down is to add momentum to the gradient descent steps. Mathematically, adding momentum is equivalent to adding historical weighted averaged gradient to the current gradient. The total gradient will then be hopefully large enough to enable fast movement on relatively flat regions.</p>
+<figure class="align-default" id="chapter-training-fig-optimizer-sgd-momentum">
+<a class="reference internal image-reference" href="../../_images/SGDMomentum.jpg"><img alt="../../_images/SGDMomentum.jpg" src="../../_images/SGDMomentum.jpg" style="width: 927.5999999999999px; height: 210.29999999999998px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 11.1 </span><span class="caption-text">SGD without momentum and with momentum. SGD with momentum can accumulate gradient/velocity in horizontal direction and move faster towards the minimum located at the center.</span><a class="headerlink" href="#chapter-training-fig-optimizer-sgd-momentum" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Consider the gradient</p>
+<div class="math notranslate nohighlight">
+\[\hat{g}_k = \frac{1}{m}\nabla_{\theta} \sum_{i=1}^{m} L(f(x^{(i);\theta}),y^{(i)}),\]</div>
+<p>we can compute a <strong>speed</strong> (an intermedidate parameter) via</p>
+<div class="math notranslate nohighlight">
+\[v_k = \mu v_{k-1} - \alpha_k \hat{g}_k,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu \in [0, 1]\)</span> is the momentum coefficiency, and <span class="math notranslate nohighlight">\(\alpha_k\)</span> is the learning rate.</p>
+<p>The speed (with momentum considered) is then used to update parameter <span class="math notranslate nohighlight">\(\theta\)</span> via</p>
+<div class="math notranslate nohighlight">
+\[\theta_k = \theta_k + v_k.\]</div>
+<p>To see that the update velocity is the weighted average gradient, we now show that the velocity is an exponentially decaying moving average (similar to AR(1) process) of the negative gradients, given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+v_k &amp;= \alpha v_{k-1} - \hat{g}_k\\
+&amp;= \alpha (\alpha v_{k-2} - \hat{g}_{k-1}) - \hat{g}_k \\
+&amp;= \alpha^2 v_{k-2} - \alpha \hat{g}_{k-1} - \hat{g}_k \\
+&amp;= \cdots \\
+&amp;= \sum_{i=0}^\infty  \alpha^{i} \hat{g}_{k-i}.
+\end{align}	
+\end{split}\]</div>
+</section>
+<section id="combined-together-adam-and-adamw">
+<h3><span class="section-number">11.2.4. </span>Combined Together: Adam and AdamW<a class="headerlink" href="#combined-together-adam-and-adamw" title="Link to this heading">#</a></h3>
+<section id="adam">
+<h4><span class="section-number">11.2.4.1. </span>Adam<a class="headerlink" href="#adam" title="Link to this heading">#</a></h4>
+<p>By combining the ideas of momentum and adaptive learning rate, we yield Adam, one of most popular gradient descent algorithm in deep learning community<span id="id5">[<a class="reference internal" href="#id1083" title="Diederik P Kingma and Jimmy Ba. Adam: a method for stochastic optimization. arXiv preprint arXiv:1412.6980, 2014.">KB14</a>]</span>. The name Adam is derived from adaptive moment estimation. As its name suggests, Adam will compute velocity via momentum type of averaging and adjust the learning rate using inverse of accumulated gradients.</p>
+<p>Specifically, the velocity is computed via</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+M_k &amp;= \rho_1 M_{k-1} + (1-\rho_1)\hat{g}_k \\
+\tilde{M}_k &amp;= \frac{M_k}{1-\rho_1^k}
+\end{align}
+\end{split}\]</div>
+<p>and the accumulated gradient magnitude is compute via</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+G_k &amp;= \rho_2 G_{k-1} + (1-\rho_2)\hat{g}_k \odot \hat{g}_k \\
+\tilde{G}_k &amp;= \frac{G_k}{1-\rho_2^k}
+\end{align}
+\end{split}\]</div>
+<p>Note that we correct the <span class="math notranslate nohighlight">\(M_k\)</span> and <span class="math notranslate nohighlight">\(G_k\)</span> be dividing the factor <span class="math notranslate nohighlight">\(1 - \rho_i^k, i= 1, 2\)</span> to get the average estimation.</p>
+<p>The final algorithm is given by the following.</p>
+<div class="proof algorithm admonition" id="Adam_stochastic_gradient_descent_algorithm">
+<p class="admonition-title"><span class="caption-number">Algorithm 11.2 </span> (Adam stochastic gradient descent algorithm)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Inputs</strong> Learning rate <span class="math notranslate nohighlight">\(\alpha\)</span>(set to 0.001), iniital model parameter <span class="math notranslate nohighlight">\(\theta\)</span>, decay parameters <span class="math notranslate nohighlight">\(\rho_1\)</span>(set to 0.9), <span class="math notranslate nohighlight">\(\rho_2\)</span>(set to 0.999). <span class="math notranslate nohighlight">\(\delta = 1e-8\)</span></p>
+<p><strong>Output</strong> <span class="math notranslate nohighlight">\(\theta_k\)</span></p>
+<ol class="arabic">
+<li><p>Set <span class="math notranslate nohighlight">\(k=1\)</span>.</p></li>
+<li><p>Set <span class="math notranslate nohighlight">\(M_k = 0, G_k = 0\)</span>.</p></li>
+<li><p>Repeat until stopping criteria is met：</p>
+<ol class="arabic">
+<li><p>Sample a minibatch of training samples of size <span class="math notranslate nohighlight">\(m\)</span> <span class="math notranslate nohighlight">\((x^{(i)},y^{(i)}),i=1,2,...,m\)</span>.\</p></li>
+<li><p>compute gradient estimate over minibatch <span class="math notranslate nohighlight">\(N\)</span> samples via</p>
+<div class="math notranslate nohighlight">
+\[\hat{g}_k = \frac{1}{m}\nabla_{\theta} \sum_{i=1}^{m} L(f(x^{(i);\theta}),y^{(i)}).\]</div>
+</li>
+<li><p>Accumulate <span class="math notranslate nohighlight">\(M_k = \rho_1 M_{k-1} + (1-\rho_1)\hat{g}_k\)</span>. Accumulate <span class="math notranslate nohighlight">\(G_k = \rho_2 G_{k-1} + (1-\rho_2)\hat{g}_k \odot \hat{g}_k\)</span>.</p></li>
+<li><p>Correct biases</p>
+<div class="math notranslate nohighlight">
+\[\tilde{M}_k = \frac{M_k}{1-\rho_1^k}, \tilde{G}_k = \frac{G_k}{1-\rho_2^k}.\]</div>
+</li>
+<li><p>Apply update $<span class="math notranslate nohighlight">\(\theta_k = \theta_{k-1} -\frac{\alpha \cdot \tilde{M}_k}{\delta + \sqrt{\tilde{G}_k }}.\)</span>$</p></li>
+<li><p>Set <span class="math notranslate nohighlight">\(k=k+1\)</span>.</p></li>
+</ol>
+</li>
+</ol>
+</section>
+</div></section>
+<section id="l-2-weight-decay-and-adamw">
+<h4><span class="section-number">11.2.4.2. </span><span class="math notranslate nohighlight">\(L_2\)</span> Weight Decay and AdamW<a class="headerlink" href="#l-2-weight-decay-and-adamw" title="Link to this heading">#</a></h4>
+<p><span class="math notranslate nohighlight">\(L_2\)</span> regularization on model parameters often reduce model overfitting and improves the generalization ability of the model. In the SGD optimization framework, the implementation of <span class="math notranslate nohighlight">\(L_2\)</span> regularization term is often realized via <strong>weight decay</strong>, resulting in an additional term in the gradient that penalize large weights. That is,</p>
+<div class="math notranslate nohighlight">
+\[{g}_{k} \leftarrow \nabla f_{k}\left({\theta}_{k-1}\right)+\lambda {\theta}_{k-1},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda\)</span> is the decay parameter, corresponding the strength of the regularization.</p>
+<p>AdamW <span id="id6">[<a class="reference internal" href="#id1330" title="Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. arXiv preprint arXiv:1711.05101, 2017.">LH17</a>]</span> is the algorithm that correctly implements Adam with <span class="math notranslate nohighlight">\(L_2\)</span> regularization, which is also called Adam with decoupled weight decay.</p>
+<p>The algorithm is given by the following.</p>
+<div class="proof algorithm admonition" id="Adam_stochastic_gradient_descent_algorithm_with_weight_decay">
+<p class="admonition-title"><span class="caption-number">Algorithm 11.3 </span> (Adam stochastic gradient descent algorithm with weight decay)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Inputs</strong> Learning rate <span class="math notranslate nohighlight">\(\alpha\)</span>(set to 0.001), iniital model parameter <span class="math notranslate nohighlight">\(\theta\)</span>, decay parameters <span class="math notranslate nohighlight">\(\rho_1\)</span>(set to 0.9), <span class="math notranslate nohighlight">\(\rho_2\)</span>(set to 0.999). <span class="math notranslate nohighlight">\(\delta = 1e-8\)</span>.  <span style="background-color: #e4ac94">Weight decay parameter <span class="math notranslate nohighlight">\(\lambda \in \mathbb{R}\)</span></span>.</p>
+<p><strong>Output</strong> <span class="math notranslate nohighlight">\(\theta_k\)</span></p>
+<ol class="arabic">
+<li><p>Set <span class="math notranslate nohighlight">\(k=1\)</span>.</p></li>
+<li><p>Set <span class="math notranslate nohighlight">\(M_k = 0, G_k = 0\)</span>.</p></li>
+<li><p>Repeat until stopping criteria is met：</p>
+<ol class="arabic">
+<li><p>Sample a minibatch of training samples of size <span class="math notranslate nohighlight">\(m\)</span> <span class="math notranslate nohighlight">\((x^{(i)},y^{(i)}),i=1,2,...,m\)</span>.\</p></li>
+<li><p>compute gradient estimate over minibatch <span class="math notranslate nohighlight">\(N\)</span> samples via</p>
+<div class="math notranslate nohighlight">
+\[\hat{g}_k = \frac{1}{m}\nabla_{\theta} \sum_{i=1}^{m} L(f(x^{(i);\theta}),y^{(i)}).\]</div>
+</li>
+<li><p>Accumulate <span class="math notranslate nohighlight">\(M_k = \rho_1 M_{k-1} + (1-\rho_1)\hat{g}_k\)</span>. Accumulate <span class="math notranslate nohighlight">\(G_k = \rho_2 G_{k-1} + (1-\rho_2)\hat{g}_k \odot \hat{g}_k\)</span>.</p></li>
+<li><p>Correct biases</p>
+<div class="math notranslate nohighlight">
+\[\tilde{M}_k = \frac{M_k}{1-\rho_1^k}, \tilde{G}_k = \frac{G_k}{1-\rho_2^k}.\]</div>
+</li>
+<li><p><span style="background-color: #e4ac94"> Apply update</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\theta_k = \theta_{k-1} -\frac{\alpha \cdot \tilde{M}_k}{\delta + \sqrt{\tilde{G}_k }} - \lambda \theta_{k}.\]</div>
+ </span>
+ 6. Set $k=k+1$.
+</li>
+</ol>
+</section>
+</div></section>
 </section>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="pretraining">
-<h1>Pretraining<a class="headerlink" href="#pretraining" title="Link to this heading">#</a></h1>
-<p>:bibliography:<code class="docutils literal notranslate"><span class="pre">../llm_book.bib</span></code></p>
+<section id="pretraining">
+<h2><span class="section-number">11.3. </span>Pretraining<a class="headerlink" href="#pretraining" title="Link to this heading">#</a></h2>
+<p>\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{../figures/deepLearning/ApplicationsNLP_LLM/efficient_training/training_data/training_data_distribution_summary}
+\caption{Ratios of various data sources in the pre-training data for existing LLMs. Image from \cite{zhao2023survey}.}
+\label{fig:trainingdatadistributionsummary}
+\end{figure}</p>
+</section>
+<section id="post-training">
+<h2><span class="section-number">11.4. </span>Post-training<a class="headerlink" href="#post-training" title="Link to this heading">#</a></h2>
+</section>
+<section id="sft-vs-rlhf">
+<h2><span class="section-number">11.5. </span>SFT Vs RLHF<a class="headerlink" href="#sft-vs-rlhf" title="Link to this heading">#</a></h2>
+<p>SFT adopts a teacher-forcing approach, which directly optimizes the likelihood of a demonstration output. Such a token-level training way essentially does behavior cloning as the supervision label and directly learns to imitate the demonstrations from experts without specifying a reward model as in typical RL algorithms.</p>
+<p>RLHF firstly learns the reward model, and then employs it to improve the LLM with RL training (e.g., PPO).</p>
+<p>preference annotation is much easier than writing the demonstration data, and annotators can even judge the quality of
+more superior generations than those they create, making it
+possible to explore a broader state space beyond what can
+be demonstrated by human annotators</p>
+<p>Another key point is that RLHF essentially encourages LLMs to learn correct policies by contrasting the self-generated responses (discriminating between good and bad responses). It no longer forces the model to imitate external demonstration data, and thus can mitigate the hallucination issues with SFT as discussed above</p>
+<p>RLHF inherits the drawbacks of classic RL algorithms, e.g., sample inefficiency and
+training instability. When adapted to LLMs, RLHF further
+relies on a strong SFT model as initial model checkpoint for
+efficiently achieving good performance</p>
+<p>Overall, SFT is particularly useful to increase the model capacity of pre-trained model checkpoints right after pretraining, while RLHF is promising to further improve the
+model capacity of SFT models.</p>
+</section>
+<section id="bibliography">
+<h2><span class="section-number">11.6. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id7">
+<div role="list" class="citation-list">
+<div class="citation" id="id1087" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">DHS11</a><span class="fn-bracket">]</span></span>
+<p>John Duchi, Elad Hazan, and Yoram Singer. Adaptive subgradient methods for online learning and stochastic optimization. <em>Journal of Machine Learning Research</em>, 12(Jul):2121–2159, 2011.</p>
+</div>
+<div class="citation" id="id1088" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">GDollarG+17</a><span class="fn-bracket">]</span></span>
+<p>Priya Goyal, Piotr Dollár, Ross Girshick, Pieter Noordhuis, Lukasz Wesolowski, Aapo Kyrola, Andrew Tulloch, Yangqing Jia, and Kaiming He. Accurate, large minibatch sgd: training imagenet in 1 hour. <em>arXiv preprint arXiv:1706.02677</em>, 2017.</p>
+</div>
+<div class="citation" id="id1086" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">Hin12</a><span class="fn-bracket">]</span></span>
+<p>Geoffrey Hinton. <em>Neural Networks for Machine Learning</em>. University of Toronto, 2012.</p>
+</div>
+<div class="citation" id="id1083" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">KB14</a><span class="fn-bracket">]</span></span>
+<p>Diederik P Kingma and Jimmy Ba. Adam: a method for stochastic optimization. <em>arXiv preprint arXiv:1412.6980</em>, 2014.</p>
+</div>
+<div class="citation" id="id1330" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">LH17</a><span class="fn-bracket">]</span></span>
+<p>Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. <em>arXiv preprint arXiv:1711.05101</em>, 2017.</p>
+</div>
+<div class="citation" id="id1084" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">SMDH13</a><span class="fn-bracket">]</span></span>
+<p>Ilya Sutskever, James Martens, George Dahl, and Geoffrey Hinton. On the importance of initialization and momentum in deep learning. In <em>International conference on machine learning</em>, 1139–1147. 2013.</p>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -435,7 +715,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">MOE sparse models</p>
+        <p class="prev-next-title"><span class="section-number">10. </span>MOE sparse models</p>
       </div>
     </a>
     <a class="right-next"
@@ -443,7 +723,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">LLM finetuning</p>
+        <p class="prev-next-title"><span class="section-number">12. </span>LLM finetuning</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -463,13 +743,27 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">LLM training fundamentals</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-overview">Training overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-overview">11.1. Training Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-algorithms">11.2. Optimization Algorithms</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minibatch-stochastic-gradient-descent">11.2.1. Minibatch Stochastic Gradient Descent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-gradient-method">11.2.2. Adaptive Gradient Method</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-gradient-adagrad">11.2.2.1. Adaptive Gradient (AdaGrad)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rmsprop">11.2.2.2. RMSProp</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">Pretraining</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#momentum-method">11.2.3. Momentum Method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-together-adam-and-adamw">11.2.4. Combined Together: Adam and AdamW</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adam">11.2.4.1. Adam</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#l-2-weight-decay-and-adamw">11.2.4.2. <span class="math notranslate nohighlight">\(L_2\)</span> Weight Decay and AdamW</a></li>
 </ul>
-
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">11.3. Pretraining</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#post-training">11.4. Post-training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sft-vs-rlhf">11.5. SFT Vs RLHF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">11.6. Bibliography</a></li>
+</ul>
   </nav></div>
 
 </div></div>

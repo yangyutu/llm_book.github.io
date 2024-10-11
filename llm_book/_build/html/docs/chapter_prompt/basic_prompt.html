@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Basic prompt &#8212; LLM Foundations</title>
+    <title>20. Basic prompt &#8212; LLM Foundations</title>
   
   
   
@@ -58,11 +58,13 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_prompt/basic_prompt';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Advanced prompt techniques" href="advanced_prompt.html" />
-    <link rel="prev" title="Inference acceleration: Overview" href="../chapter_inference/inference_acceleration.html" />
+    <link rel="next" title="21. Advanced prompt techniques" href="advanced_prompt.html" />
+    <link rel="prev" title="17. Inference acceleration" href="../chapter_inference/inference_acceleration.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -172,57 +174,62 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    Table of Contents
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">Language Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/neural_language_models.html">Early Neural Language Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/word_embeddings.html">Word Embeddings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers.html">Transformers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/bert.html">BERT</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/t5.html">Seq2Seq, T5, And BART</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/GPT_series.html">GPT Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: Unveiling the Power of Language Models in the Age of Artificial Intelligence</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">2. Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/neural_language_models.html">3. Early Neural Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/word_embeddings.html">4. Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers.html">5. Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/bert.html">6. BERT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/t5.html">7. Seq2Seq: T5 and BART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/GPT_series.html">8. GPT Series</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">LLM Dense Architectures Fundamentals</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">MOE sparse models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MOE sparse models</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">LLM training fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">11. LLM Training Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM alignement and preference learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">14. LLM Training Acceleration</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">LLM finetuning</a></li>
-
-
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">LLM alignement</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">LLM Training Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">LLM Inference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">Inference acceleration: Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">16. LLM Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">17. Inference acceleration</a></li>
+
 
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Basic prompt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advanced_prompt.html">Advanced prompt techniques</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">20. Basic prompt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_prompt.html">21. Advanced prompt techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG)</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">Basic RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">Advanced rag techniques</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">Multimodality fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">Vision transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">22. Basic RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">23. Advanced rag techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">Information Retrieval Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">24. Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR</a></li>
 </ul>
 
     </div>
@@ -371,14 +378,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#un-instructed-llm-vs-instructed-llm">un-instructed LLM vs instructed LLM</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompt">Zero-shot prompt</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-and-in-context-learning">Few-shot and in-context learning</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-examples-for-uninstruted-llm">Few-shot examples for uninstruted LLM</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-examples-for-instructed-llm">Few-shot examples for instructed LLM</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cot">CoT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-llm-vs-instructed-llm">20.1. Base LLM vs instructed LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompt">20.2. Zero-shot prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-and-in-context-learning">20.3. Few-shot and in-context learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cot">20.4. CoT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">20.5. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -391,74 +395,153 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="basic-prompt">
-<h1>Basic prompt<a class="headerlink" href="#basic-prompt" title="Link to this heading">#</a></h1>
-<section id="un-instructed-llm-vs-instructed-llm">
-<h2>un-instructed LLM vs instructed LLM<a class="headerlink" href="#un-instructed-llm-vs-instructed-llm" title="Link to this heading">#</a></h2>
+<h1><span class="section-number">20. </span>Basic prompt<a class="headerlink" href="#basic-prompt" title="Link to this heading">#</a></h1>
+<section id="base-llm-vs-instructed-llm">
+<h2><span class="section-number">20.1. </span>Base LLM vs instructed LLM<a class="headerlink" href="#base-llm-vs-instructed-llm" title="Link to this heading">#</a></h2>
 <p>The purpose of presenting few-shot examples in the prompt is to explain our intent to the model; in other words, describe the task instruction to the model in the form of demonstrations. However, few-shot can be expensive in terms of token usage and restricts the input length due to limited context length. So, why not just give the instruction directly?</p>
 <p>Instructed LM (e.g. InstructGPT, natural instruction) finetunes a pretrained model with high-quality tuples of (task instruction, input, ground truth output) to make LM better understand user intention and follow instruction. RLHF (Reinforcement Learning from Human Feedback) is a common method to do so. The benefit of instruction following style fine-tuning improves the model to be more aligned with human intention and greatly reduces the cost of communication.</p>
 <p>When interacting with instruction models, we should describe the task requirement in details, trying to be specific and precise and avoiding say “not do something” but rather specify what to do.</p>
 </section>
 <section id="zero-shot-prompt">
-<h2>Zero-shot prompt<a class="headerlink" href="#zero-shot-prompt" title="Link to this heading">#</a></h2>
-<p>Zero-shot text classification is a fundamental task in natural language understanding where a model is trained on a set of labeled examples but is then able to classify new examples from previously unseen classes.</p>
-<p>Zero Shot Classification is the task of predicting a class that wasn’t seen by the model during training. This method, which leverages a pre-trained language model, can be thought of as an instance of transfer learning which generally refers to using a model trained for one task in a different application than what it was originally trained for. This is particularly useful for situations where the amount of labeled data is small.</p>
-<p>In zero shot classification, we provide the model with a prompt and a sequence of text that describes what we want our model to do, in natural language. Zero-shot classification excludes any examples of the desired task being completed. This differs from single or few-shot classification, as these tasks include a single or a few examples of the selected task.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Prompt</span><span class="p">:</span> 
-<span class="n">Extract</span> <span class="n">the</span> <span class="n">title</span><span class="p">,</span> <span class="n">h1</span><span class="p">,</span> <span class="ow">and</span> <span class="n">body</span> <span class="n">text</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">following</span> <span class="n">HTML</span>
-<span class="n">document</span><span class="p">:</span>
+<h2><span class="section-number">20.2. </span>Zero-shot prompt<a class="headerlink" href="#zero-shot-prompt" title="Link to this heading">#</a></h2>
+<p>A zero-shot prompt for LLM is a technique where the model is asked to perform a task or answer a question without providing examples or any specific training for that particular task. The model relies solely on its pre-existing knowledge and general language understanding to generate a response.</p>
+<p>For example, in zero shot text classification (see the following), we provide the model with a prompt and a sequence of text that describes what we want our model to do, in natural language. Zero-shot classification excludes any examples of the desired task being completed. This differs from single or few-shot classification, as these tasks include a single or a few examples of the selected task.</p>
+<div class="proof example admonition" id="example-0">
+<p class="admonition-title"><span class="caption-number">Example 20.1 </span> (Zero shot prompt for movie review sentiment classification)</p>
+<section class="example-content" id="proof-content">
+<p><strong>Prompt</strong>:
+Classify the sentiment of the following movie review as positive, negative, or neutral:</p>
+<p><strong>Review</strong>: ‘The visuals were stunning and the action sequences kept me on the edge of my seat. However, the plot was thin and the characters lacked depth. Overall, it was an entertaining but forgettable experience.</p>
+<p><strong>Response</strong>: neutral</p>
+</section>
+</div><p>Besides the above demonstrated classification text, LLM can accomplish a wide rangle of straight forward tasks, as shown in the following.</p>
+<div class="proof example admonition" id="example-1">
+<p class="admonition-title"><span class="caption-number">Example 20.2 </span> (Zero shot prompt for text extracting)</p>
+<section class="example-content" id="proof-content">
+<p><strong>Prompt</strong>:
+Extract the title, h1, and body text from the following HTML</p>
+<p><strong>Document</strong>:</p>
+<p>&lt;head&gt;&lt;title&gt;A simple page&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Hello
+World&lt;/h1&gt;&lt;p&gt;This is some text in a simple html page.&lt;/p&gt;&lt;/
+body&gt;&lt;/btml&gt;</p>
+<p><strong>Response</strong>:
+Title: A simple page</p>
+<p>H1: Hello World</p>
+<p>Body text: This is some text in a simple html page.</p>
+</section>
+</div><div class="proof example admonition" id="example-2">
+<p class="admonition-title"><span class="caption-number">Example 20.3 </span> (Zero shot prompt for programming task)</p>
+<section class="example-content" id="proof-content">
+<p><strong>Prompt</strong>: Write a python code to compute the 50th element in the Fibonacci sequence.</p>
+<p><strong>Response</strong>: Certainly! Here’s a Python code snippet that computes the 50th element in the Fibonacci sequence:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+        <span class="k">return</span> <span class="n">b</span>
 
-<span class="o">&lt;</span><span class="n">head</span><span class="o">&gt;&lt;</span><span class="n">title</span><span class="o">&gt;</span><span class="n">A</span> <span class="n">simple</span> <span class="n">page</span><span class="o">&lt;/</span><span class="n">title</span><span class="o">&gt;&lt;/</span><span class="n">head</span><span class="o">&gt;&lt;</span><span class="n">body</span><span class="o">&gt;&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">Hello</span>
-<span class="n">World</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">This</span> <span class="ow">is</span> <span class="n">some</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">simple</span> <span class="n">html</span> <span class="n">page</span><span class="o">.&lt;/</span><span class="n">p</span><span class="o">&gt;&lt;/</span>
-<span class="n">body</span><span class="o">&gt;&lt;/</span><span class="n">btml</span><span class="o">&gt;</span>
-
-<span class="n">Response</span><span class="p">:</span>
-<span class="n">Title</span><span class="p">:</span> <span class="n">A</span> <span class="n">simple</span> <span class="n">page</span>
-<span class="n">H1</span><span class="p">:</span> <span class="n">Hello</span> <span class="n">World</span>
-<span class="n">Body</span> <span class="n">text</span><span class="p">:</span> <span class="n">This</span> <span class="ow">is</span> <span class="n">some</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">simple</span> <span class="n">html</span> <span class="n">page</span><span class="o">.</span>
+<span class="c1"># Compute the 50th element in the Fibonacci sequence</span>
+<span class="n">fibonacci_50th</span> <span class="o">=</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fibonacci_50th</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Zero shot prompt for programming task.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Prompt: Write a python code to compute the 50th element in the Fibonacci sequence.
-
-Response: Certainly! Here&#39;s a Python code snippet that computes the 50th element in the Fibonacci sequence:
-
-
-def fibonacci(n):
-    if n == 0: return 0
-    elif n == 1: return 1
-    else:
-        a, b = 0, 1
-        for _ in range(2, n + 1):
-            a, b = b, a + b
-        return b
-
-# Compute the 50th element in the Fibonacci sequence
-fibonacci_50th = fibonacci(50)
-print(fibonacci_50th)
-
-
-When you run this code, it will calculate and print the 50th element in the Fibonacci sequence, which is 12,586,269,025.
-
-</pre></div>
-</div>
+<p>When you run this code, it will calculate and print the 50th element in the Fibonacci sequence, which is 12,586,269,025.</p>
+</section>
+</div><p>On one hand, zero shot learning offers flexibility to address a wide range of tasks without the need to construct task specific examples.</p>
+<p>On the other hand, as LLM’s pretrained knowledge is the solely relied on to generate the response, it can have variable performance across the tasks. Specifically, the effectiveness can vary depending on the complexity of the task and how well it aligns with the model’s pre-trained knowledge.</p>
 </section>
 <section id="few-shot-and-in-context-learning">
-<h2>Few-shot and in-context learning<a class="headerlink" href="#few-shot-and-in-context-learning" title="Link to this heading">#</a></h2>
-<section id="few-shot-examples-for-uninstruted-llm">
-<h3>Few-shot examples for uninstruted LLM<a class="headerlink" href="#few-shot-examples-for-uninstruted-llm" title="Link to this heading">#</a></h3>
-<p>A few-shot prompt provides multiple examples—typically, 10 to 100. Multiple examples can be useful for showing a pattern that GPT-3 should continue. Few-shot prompts and more examples will likely increase the quality of the completion because the prompt provides more for GPT-3 to learn from.</p>
+<h2><span class="section-number">20.3. </span>Few-shot and in-context learning<a class="headerlink" href="#few-shot-and-in-context-learning" title="Link to this heading">#</a></h2>
+<p>Few-shot learning is a technique where an LLM is given a small number of examples (typically 2-5) to guide its understanding of a task before it’s asked to perform that task on new, unseen data. This approach interpolates between zero-shot learning (no examples) and fine-tuning (extensive task-specific training).</p>
+<p>In the few-shot example, the model has some context for how to approach the task, potentially leading to more accurate and consistent results compared to the zero-shot approach.</p>
+<div class="proof example admonition" id="example-3">
+<p class="admonition-title"><span class="caption-number">Example 20.4 </span></p>
+<section class="example-content" id="proof-content">
+<p><strong>Pormpt</strong>: Classify the sentiment of movie reviews as positive, negative, or neutral.</p>
+<p>Examples:</p>
+<ol class="arabic simple">
+<li><p>“A masterpiece of cinema with stunning visuals and a gripping plot.”
+Sentiment: Positive</p></li>
+<li><p>“Terrible acting and a nonsensical story. Avoid at all costs.”
+Sentiment: Negative</p></li>
+<li><p>“It was okay. Nothing special, but not bad either.”
+Sentiment: Neutral</p></li>
+</ol>
+<p>Now classify this review:
+“The special effects were amazing, but the story was boring.”
+Sentiment:</p>
+<p>Response: Neutral</p>
 </section>
-<section id="few-shot-examples-for-instructed-llm">
-<h3>Few-shot examples for instructed LLM<a class="headerlink" href="#few-shot-examples-for-instructed-llm" title="Link to this heading">#</a></h3>
-</section>
+</div><p>In the following, we summarize the key differences between zero-shot and few-shot learning.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<p style="text-align: center;"><span style="background-color: #e4ac94"><strong>Computational complexity</strong></span></p></div>
+<p class="sd-card-text"><strong>LayerNorm</strong> involves both mean and variance calculation for each normalization layer, which brings sizable computational cost for high-dimensional inputs in LLM (e.g., GPT-3 <span class="math notranslate nohighlight">\(d_model = 12288\)</span>).
+<strong>RMSNorm</strong>, on the other hand, only keeps the variance calculation, reducing the normalization cost by half and increses efficiency</p>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<p style="text-align: center;"><span style="background-color: #b4c9da"><strong>Gradient propogation</strong></span></p></div>
+<p class="sd-card-text"><strong>LayerNorm</strong> stablizes the input distribution between layers through normalization and benefits deep networks training by alleviating the problem of vanishing or exploding gradients. However, LayerNorm can also be affected by noise and input shifts when calculating the mean, potentially leading to unstable gradient propagation.
+<strong>RMSNorm</strong>, by using only RMS for normalization, can provide a more robust, smoother gradient flow, especially in deeper networks. It reduces the impact of mean on gradient fluctuations, thereby improving the stability and speed of training.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text">See <span id="id1">[<a class="reference internal" href="#id1502" title="Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: https://arxiv.org/abs/1910.07467, arXiv:1910.07467.">ZS19</a>]</span> for math derivation</p>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="cot">
-<h2>CoT<a class="headerlink" href="#cot" title="Link to this heading">#</a></h2>
-<p>\subsection{Few-shot CoT prompting}</p>
-<p>\cite{wei2022chain}</p>
-<p>\subsection{Zero-shot CoT prompting}</p>
-<p>\cite{kojima2022large}</p>
-<p>:bibliography:<code class="docutils literal notranslate"><span class="pre">../llm_book.bib</span></code></p>
+<h2><span class="section-number">20.4. </span>CoT<a class="headerlink" href="#cot" title="Link to this heading">#</a></h2>
+<p><span id="id2">[<a class="reference internal" href="#id471" title="Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Ed Chi, Quoc Le, and Denny Zhou. Chain of thought prompting elicits reasoning in large language models. ArXiv:2201.11903, 2022.">WWS+22</a>]</span></p>
+<p><span id="id3">[<a class="reference internal" href="#id475" title="Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke Iwasawa. Large language models are zero-shot reasoners. arxiv.org/abs/2205.11916, 2022.">KGR+22</a>]</span></p>
+<figure class="align-default" id="chapter-prompt-fig-basic-prompt-cot-demo">
+<a class="reference internal image-reference" href="../../_images/chain_of_thought_prompt_demo.png"><img alt="../../_images/chain_of_thought_prompt_demo.png" src="../../_images/chain_of_thought_prompt_demo.png" style="width: 805.6999999999999px; height: 401.09999999999997px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 20.1 </span><span class="caption-text">COT example.</span><a class="headerlink" href="#chapter-prompt-fig-basic-prompt-cot-demo" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The idea of COT can be generalize to different tasks, as shown in the following.</p>
+<figure class="align-default" id="chapter-prompt-fig-basic-prompt-cot-demo2">
+<a class="reference internal image-reference" href="../../_images/chain_of_thought_prompt_demo2.png"><img alt="../../_images/chain_of_thought_prompt_demo2.png" src="../../_images/chain_of_thought_prompt_demo2.png" style="width: 737.8px; height: 588.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 20.2 </span><span class="caption-text">More COT examples.</span><a class="headerlink" href="#chapter-prompt-fig-basic-prompt-cot-demo2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="bibliography">
+<h2><span class="section-number">20.5. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id4">
+<div role="list" class="citation-list">
+<div class="citation" id="id475" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">KGR+22</a><span class="fn-bracket">]</span></span>
+<p>Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke Iwasawa. Large language models are zero-shot reasoners. <em>arxiv.org/abs/2205.11916</em>, 2022.</p>
+</div>
+<div class="citation" id="id471" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">WWS+22</a><span class="fn-bracket">]</span></span>
+<p>Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Ed Chi, Quoc Le, and Denny Zhou. Chain of thought prompting elicits reasoning in large language models. <em>ArXiv:2201.11903</em>, 2022.</p>
+</div>
+<div class="citation" id="id1502" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">ZS19</a><span class="fn-bracket">]</span></span>
+<p>Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: <a class="reference external" href="https://arxiv.org/abs/1910.07467">https://arxiv.org/abs/1910.07467</a>, <a class="reference external" href="https://arxiv.org/abs/1910.07467">arXiv:1910.07467</a>.</p>
+</div>
+</div>
+</div>
 </section>
 </section>
 
@@ -498,7 +581,7 @@ When you run this code, it will calculate and print the 50th element in the Fibo
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Inference acceleration: Overview</p>
+        <p class="prev-next-title"><span class="section-number">17. </span>Inference acceleration</p>
       </div>
     </a>
     <a class="right-next"
@@ -506,7 +589,7 @@ When you run this code, it will calculate and print the 50th element in the Fibo
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Advanced prompt techniques</p>
+        <p class="prev-next-title"><span class="section-number">21. </span>Advanced prompt techniques</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -526,14 +609,11 @@ When you run this code, it will calculate and print the 50th element in the Fibo
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#un-instructed-llm-vs-instructed-llm">un-instructed LLM vs instructed LLM</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompt">Zero-shot prompt</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-and-in-context-learning">Few-shot and in-context learning</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-examples-for-uninstruted-llm">Few-shot examples for uninstruted LLM</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-examples-for-instructed-llm">Few-shot examples for instructed LLM</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cot">CoT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-llm-vs-instructed-llm">20.1. Base LLM vs instructed LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompt">20.2. Zero-shot prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-and-in-context-learning">20.3. Few-shot and in-context learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cot">20.4. CoT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">20.5. Bibliography</a></li>
 </ul>
   </nav></div>
 
