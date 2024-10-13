@@ -1,4 +1,4 @@
-# LLM alignement and preference learning
+# LLM Alignement and Preference learning
 
 ## Motivation
 
@@ -175,7 +175,7 @@ The following illustrates from the DPO paper to visually compare the differences
 ```{figure} ../img/chapter_training/alignment/DPO/DPO_PPO_comparison.png
 ---
 scale: 45%
-name: chapter_foundation_fig_bert_bert_elmo
+name: chapter_training_fig_alignmenet_DPO_PPO_comparison
 ---
 DPO optimizes for human preferences while avoiding reinforcement learning. Existing methods for fine-tuning language models with human feedback first fit a reward model to a dataset of prompts and
 human preferences over pairs of responses, and then use RL to find a policy that maximizes the learned reward.

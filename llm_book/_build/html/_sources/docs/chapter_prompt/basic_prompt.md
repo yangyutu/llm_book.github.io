@@ -106,27 +106,33 @@ In the following, we summarize the key differences between zero-shot and few-sho
 ::::{grid}
 :gutter: 2
 
-:::{grid-item-card} <p style="text-align: center;"><span style="background-color: #e4ac94">**Computational complexity**</span></p>
-**LayerNorm** involves both mean and variance calculation for each normalization layer, which brings sizable computational cost for high-dimensional inputs in LLM (e.g., GPT-3 $d_model = 12288$). 
-**RMSNorm**, on the other hand, only keeps the variance calculation, reducing the normalization cost by half and increses efficiency
+:::{grid-item-card} <p style="text-align: center;"><span style="background-color: #e4ac94">**Zero-shot Prompt**</span></p>
+No task-specific examples: The model is not provided with any examples of the task it's being asked to perform. The LLM uses its broad understanding of language and concepts to interpret and respond to the prompt.
+
+Flexibility: This approach allows LLMs to attempt a wide range of tasks without providing examples.
+
+Variable performance: The effectiveness can vary depending on the complexity of the task and how well it aligns with the model's pre-trained knowledge.
 :::
 
-:::{grid-item-card} <p style="text-align: center;"><span style="background-color: #b4c9da">**Gradient propogation**</span></p>
-**LayerNorm** stablizes the input distribution between layers through normalization and benefits deep networks training by alleviating the problem of vanishing or exploding gradients. However, LayerNorm can also be affected by noise and input shifts when calculating the mean, potentially leading to unstable gradient propagation.
-**RMSNorm**, by using only RMS for normalization, can provide a more robust, smoother gradient flow, especially in deeper networks. It reduces the impact of mean on gradient fluctuations, thereby improving the stability and speed of training.
-+++
-See {cite:p}`zhang2019rootmeansquarelayer` for math derivation
+:::{grid-item-card} <p style="text-align: center;"><span style="background-color: #b4c9da">**Few-shot Prompt**</span></p>
+Limited examples: The model is provided with a small set of examples demonstrating the desired task or output format.
+
+Improved task-specific performance: Few-shot learning often leads to better results than zero-shot for specific tasks.
+
+Less flexibility: It allows for quick adaptation to new tasks without the need for model retraining. But task specific examples are needed.
 :::
 ::::
 
 
-## CoT
+## Chain-of-Thought (CoT) Prompting
 
-{cite:p}`wei2022chain`
+Chain of Thought (CoT) prompting {cite:p}`wei2022chain` is a technique used with Large Language Models (LLMs) to enhance their problem-solving capabilities, especially for complex tasks requiring multi-step reasoning. The motivation behind CoT prompting is to mimic human-like step-by-step thinking processes, addressing the limitation of LLMs in handling tasks that require intermediate logical steps. 
 
+The key idea is to prompt the model to "think aloud" by breaking down its reasoning into explicit steps, often by providing examples of such step-by-step reasoning in the prompt. This approach offers several benefits: it improves the model's performance on complex tasks, increases transparency in the decision-making process, and allows for easier error detection and correction.
 
-{cite:p}`kojima2022large`
+CoT prompting can help LLMs tackle problems that were previously challenging, such as multi-step mathematical or logical reasoning tasks.
 
+However, this method also has drawbacks: it can significantly increase the length of prompts and responses, potentially leading to higher computational costs and token usage. Moreover, the effectiveness of CoT prompting can vary depending on the specific task and the quality of the examples provided, and it may not always yield improvements for simpler tasks where direct answers suffice.
 
 
 ```{figure} ../img/chapter_prompt/prompting/chain_of_thought/chain_of_thought_prompt_demo.png
@@ -144,7 +150,28 @@ The idea of COT can be generalize to different tasks, as shown in the following.
 scale: 70%
 name: chapter_prompt_fig_basic_prompt_COT_demo2
 ---
-More COT examples.
+More COT examples for different tasks.
+```
+
+The classically CoT prompting requires CoT few-shot demonstration, a further simplification is to use sentence like "Let's think step by step" to encourage the model to directly produce a reasoning chain before generating the final answer{cite:p}`kojima2022large`. This approach is illustrated as the following. 
+
+```{figure} ../img/chapter_prompt/prompting/chain_of_thought/zero_shot_CoT.png
+---
+scale: 70%
+name: chapter_prompt_fig_basic_prompt_zero_shot_COT
+---
+Comparison of few-shot CoT and zero-shot CoT
+```
+
+```{table}
+|  | MultiArith | GSM8K |
+| :--- | ---: | ---: |
+| Zero-Shot | 17.7| 10.4 |
+| Few-Shot (2 samples) | 33.7 | 15.6 |
+| Few-Shot (8 samples) | 33.8 | 15.6 |
+| Zero-Shot-CoT | 78.7 | 40.7 |
+| Few-Shot-CoT (8 samples) | 93.0 | 48.7 |
+| Zero-Plus-Few-Shot-CoT （8 samples)  | 92.8 | 51.5 |
 ```
 
 ## Bibliography

@@ -24,6 +24,66 @@ Nonlinear activations: Operations like softmax and layer normalization require a
 Beam search: If used, beam search for text generation adds computational overhead.
 
 
+## The KV Cache
+
+### Basics
+
+
+
+::::{grid}
+:gutter: 2
+
+:::{grid-item-card} <p style="text-align: center;"><span style="background-color: #e4ac94">**Benefits**</span></p>
+
+- Faster inference with reduced computational cost: The time complexity for generating each new token becomes constant rather than increasing linearly with sequence length. By reducing redundant computations, KV caching can dramatically speed up the token generation process.
+- Efficient long sequence generation. As KV caching reduces computational complexity to constant, it is particularly beneficial for long sequence generation. 
+:::
+
+:::{grid-item-card} <p style="text-align: center;"><span style="background-color: #b4c9da">**Drawbacks**</span></p>
+- Increased memory usage: KV cache is trading inference speed at the cost of memory, which can be substantial for long sequences or large batch sizes.
+- Post-Norm can achieve good convergence effects in the early stages of training, performing particularly well in shallow models. However, in deep networks, the drawback of Post-Norm is that it may lead to gradient instability during the training process, especially as the network depth increases, gradients may become increasingly unstable during propagation.
+:::
+::::
+
+
+### Memory requirement with KV Cache
+
+**CHANGE**
+How to calculate the memory usage of KV Cache is what I want to focus on in this article. First, let's present the formula:
+
+Memory = batchsize × seqlength × hiddensize × layers × 2 × 2
+
+The multiplication of the first four parameters should be easy to understand; it's the sum of all hidden vectors corresponding to KV in each layer of the model. The first 2 refers to the K and V parts, and the second 2 refers to the number of bytes for half-precision.
+
+Let's take an example: 
+
+````{prf:example}
+for llama7B, hiddensize = 4096, seqlength = 2048, batchsize = 64, layers = 32. The calculation gives us:
+
+Memory = 64 × 2048 × 4096 × 32 × 2 × 2 ≈ 68G
+
+As we can see, KV Cache also consumes a significant amount of memory in cases of large batch sizes and long sentences.
+
+68G looks relatively large compared to the model itself, but this is in the case of a large batch. For a single batch, KV Cache would only occupy about 1G of memory, which is just about half the memory of the model parameters.
+````
+
+### The computational cost with KV Cache
+
+In {ref}`chapter_LLM_arch_sec_LLM_arch_fundamentals_forward_pass_computation`, we analyze the computational cost during a forward pass without using KV Cache. In this section, we are going to re-analyze the computatioal cost and compare it with the no-KV-Cache setting. 
+
+% https://r4j4n.github.io/blogs/posts/kv/
+
+
+
+
+### Combined with GQA
+
+
+
+
+
+
+
 
 # Inference acceleration: Quantization
 

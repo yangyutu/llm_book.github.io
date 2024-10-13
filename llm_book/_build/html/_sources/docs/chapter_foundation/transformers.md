@@ -33,7 +33,7 @@ Since 2007, Transformer {cite:p}`vaswani2017attention` has emerged as one of mos
 
 Traditionally, seq2seq tasks heavily use RNN-based encoder-decoder architectures, plus attention mechanisms, to transform one sequence into another sequence. Transformer, on the other hand, does not rely on any recurrent structure and is able to process all tokens in a sequence at the same time. This enables computation efficiency optimization via parallel optimization and address long-range dependency, both of which mitigate the shortages of RNN-based encoder-decoder architectures. 
 
-On a high level, Transformer falls into the category of encoder-decoder architecture [\autoref{ch:neural-network-and-deep-learning:Advanced:NLP:fig:transformer}], where the encoder encodes an input token sequence into low-dimensional embeddings, and the decoder takes the embeddings as input, plus some additional prompts, outputs an output sequence probabilities. The position information among tokens, originally stored in recurrent network structure, is now provided through position encoding added at the entry point of the encoder and decoder modules.  
+On a high level, Transformer falls into the category of encoder-decoder architecture, where the encoder encodes an input token sequence into low-dimensional embeddings, and the decoder takes the embeddings as input, plus some additional prompts, outputs an output sequence probabilities. The position information among tokens, originally stored in recurrent network structure, is now provided through position encoding added at the entry point of the encoder and decoder modules.  
 
 Attention mechanisms are the most crucial components in the Transformer architecture to learn contextualized embeddings and overcome the limitation of recurrent neural network in learning long-term dependencies (e.g., seq2seq model with attention). 
 
@@ -129,7 +129,7 @@ The attention output of a single head among $(Q, K, V)$ is given by
 
 $$\operatorname{Attention}\left(Q W^{Q}, K W^{K}, V W^{V}\right)=\operatorname{Softmax}\left(\frac{Q W^{Q}\left(K W^{K}\right)^{T}}{\sqrt{d_{k}}}\right) V W^{V},$$
 
-where $\sqrt{d_k}$ is the scaling factor preventing the doc product value from saturating the Softmax. This type of attention is also known as ***scaled dot product*** attention.
+where $\sqrt{d_k}$ is the scaling factor preventing the doc product value from saturating the Softmax. This type of attention is also known as **scaled dot product** attention.
 
 Note that the Softmax normalize each row such that the $\operatorname{Softmax}(\cdot)$ produces a weight matrix $w^{att}\in \mathbb{R}^{n\times m}$, with each row summing up to unit 1.
 
@@ -160,7 +160,7 @@ $$\begin{bmatrix}
 
 where $[VW^V]_i$ is the $i$th row vector of value matrix $VW^V$.
 
-We can apply mask to tokens when we want to only allow a subset of keys and values to be queried. Normally, we associate each token with a binary ***mask*** $mask \in \{0, 1\}^{m}$, where $0$ indicates exclusion of its key. With masks applied, we can compute un-normalized attention weights via 
+We can apply mask to tokens when we want to only allow a subset of keys and values to be queried. Normally, we associate each token with a binary **mask** $mask \in \{0, 1\}^{m}$, where $0$ indicates exclusion of its key. With masks applied, we can compute un-normalized attention weights via 
 
 $$
 \tilde{w}_{ij}^{att} =\left\{\begin{array}{ll}
@@ -215,7 +215,7 @@ Typically, the first layer first maps the embedding vector  of dimensionality $d
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/Transformer_arch/pointwise_FFN.png
 ---
-scale: 30%
+scale: 40%
 name: chapter_foundation_fig_pretrained_LM_transformer_pointwiseffn
 ---
 Point-wise feed-forward network to perform nonlinear transformation on the contextualized embedding at each position.
@@ -269,7 +269,7 @@ $$\begin{align}
 \end{align}
 $$
 
-where $e_i \in \mathbb{R}^{n\times d_{model}}$, $\operatorname{EncoderLalyer}: \mathbb{R}^{n\times d_{model}}\to \mathbb{R}^{n\times d_{model}}$ is an encoder sub-unit, $N$ is the number of encoder layers. Specifically, this encoder layer is given by \autoref{ch:neural-network-and-deep-learning:Advanced:NLP:def:BERTencoderLayer}.
+where $e_i \in \mathbb{R}^{n\times d_{model}}$, $\operatorname{EncoderLalyer}: \mathbb{R}^{n\times d_{model}}\to \mathbb{R}^{n\times d_{model}}$ is an encoder sub-unit, $N$ is the number of encoder layers.
 Note that Dropout operations are not shown above. Dropouts are applied after initial embeddings $e_0$, every self-attention output, and every point-wise feed-forward network output. 	
 ````
 
@@ -278,7 +278,7 @@ Also note that there is active research on where to optimally add the layer norm
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/Transformer_arch/layer_normalization_position.png
 ---
-scale: 30%
+scale: 40%
 name: chapter_foundation_fig_pretrained_LM_transformer_layernormalizationposition
 ---
 Post-layer normalization and pre-layer normalization in an encoder layer.
@@ -291,7 +291,7 @@ In the decoder side, we are similarly given an output sequence represented by in
 
 
 
-Note that there are two type of attention in the decoder module, one is self-attention among the output sequence itself and one is attention between encoder output and decoder output, i.e., ***encoder-decoder attention***. 
+Note that there are two type of attention in the decoder module, one is self-attention among the output sequence itself and one is attention between encoder output and decoder output, i.e., **encoder-decoder attention**. 
 The encoder-decoder attention uses a mask that excludes padding symbol in the input sequence. The queries come from the output of previous sub-unit and keys and values come from the final output of the encoder module. This allows decoder sub-units to attend to all positions in the input sequence. 
 
 In each decoder layer, inputs are first contextualized via multi-head self-attention. Because we restrict each input token to only attend to its preceding input tokens, we apply a mask  
@@ -366,7 +366,7 @@ Here are the key observations:
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/Transformer_arch/transformer_families.png
 ---
-scale: 30%
+scale: 50%
 name: chapter_foundation_fig_pretrained_LM_transformer_transformer_families
 ---
 Different branches of developments derived from the Transformer architecture: (left) Encoder branch, (middle) Encoder-Decoder branch, and (right) Decoder branch.
@@ -377,48 +377,48 @@ The Transformer architecture was originally intended to tackle challenges in Seq
 In the process of adapting Transformer for different applications, there have been efforts that continue the improvement on the original encoder-decoder architecture as well as efforts that use only the encoder part or the decoder part separately. 
 
 
-The objective, also known as ***denoising objective***, is to fully recover the original input from the corrupted one in a bidirectional fashion, as shown on the left side of Figure 4.1, which you will see shortly. As seen in the ***Bidirectional Encoder Representations from Transformers (BERT)*** architecture, which is a notable example of AE models, they can incorporate the context of both sides of a word. However, the first issue is that the corrupting [MASK] symbols that are used during the pre-training phase are absent from the data during the fine-tuning phase, leading to a pre-training-fine-tuning discrepancy. Secondly, the BERT model arguably assumes that the masked tokens are independent of each other.
+The objective, also known as **denoising objective**, is to fully recover the original input from the corrupted one in a bidirectional fashion, as shown on the left side of Figure 4.1, which you will see shortly. As seen in the **Bidirectional Encoder Representations from Transformers (BERT)** architecture, which is a notable example of AE models, they can incorporate the context of both sides of a word. However, the first issue is that the corrupting [MASK] symbols that are used during the pre-training phase are absent from the data during the fine-tuning phase, leading to a pre-training-fine-tuning discrepancy. Secondly, the BERT model arguably assumes that the masked tokens are independent of each other.
 
-On the other hand, AR models keep away from such assumptions regarding independence and do not naturally suffer from the pre-train-fine-tuning discrepancy because they rely on the objective predicting the next token conditioned on the previous tokens without masking them. They merely utilize the decoder part of the transformer with masked selfattention. They prevent the model from accessing words to the right of the current word in a forward direction (or to the left of the current word in a backward direction), which is called ***unidirectionality***. They are also called Causal Language Models (CLMs) due to their unidirectionality.
+On the other hand, AR models keep away from such assumptions regarding independence and do not naturally suffer from the pre-train-fine-tuning discrepancy because they rely on the objective predicting the next token conditioned on the previous tokens without masking them. They merely utilize the decoder part of the transformer with masked selfattention. They prevent the model from accessing words to the right of the current word in a forward direction (or to the left of the current word in a backward direction), which is called **unidirectionality**. They are also called **Causal Language Models (CLMs)** due to their unidirectionality.
 
 For different branches of models, we employ different training strategies:
 * Generative pretrained models like the GPT family are trained using a Causal Language Modeling objective.
 * Denoising models like the BERT family are trained using a Masked Language Modeling objective.
 * Encoder-decoder models like the T5, BART or PEGASUS models are trained using heuristics to create pairs of (inputs, labels). These heuristics can be for instance a corpus of pairs of sentences in two languages for a machine translation model, a heuristic way to identify summaries in a large corpus for a summarization model or various ways to corrupt inputs with associated uncorrupted inputs as labels which is a more flexible way to perform denoising than the previous masked language modeling.
-\end{itemize}
+
 
 ### The Encoder Branch
 
-The most influential encoder-based model is ***BERT*** {cite:p}`devlin2018bert`, which stands for Bidirectional Encoder Representations from Transformers.  BERT is pretrained with the two objectives:
+The most influential encoder-based model is **BERT** {cite:p}`devlin2018bert`, which stands for Bidirectional Encoder Representations from Transformers.  BERT is pretrained with the two objectives:
 * Predicting masked tokens in texts, known as masked language modeling (MLM)
 * Determining if two text passages follow each other, which is known as next-sentence-prediction (NSP). 
 The MLM helps learning of contextualized word-level representation, and the NSP objective aims to improve the tasks like question answering and natural language inference, which require reasoning over sentence pairs. BERT used the BookCorpus and English Wikipedia for pretraining and the model can then be fine-tuned with supervised data on downstream natural language understanding (NLU) tasks such as text classification, named entity recognition, and question-answering. At the time it was published, it achieved all state-of-the-art results on the popular GLUE benchmark. The success of BERT drew significant attention and up to date BERT like Encoder-only models dominate research and industry on natural language understanding (NLU) tasks {cite:p}`xia2020bert`. We will discuss BERT in the following chapter. 
 
-***RoBERTa*** (Robustly Optimized BERT) is a follow-up study of BERT, which reveals that the performance of BERT can be further improved by modifying the pretraining scheme. RoBERTa uses larger batches with more training data and dropped the NSP task to significantly improve the performance over the original BERT model.
+**RoBERTa** (Robustly Optimized BERT) {cite:p}`liu2019roberta` is a follow-up study of BERT, which reveals that the performance of BERT can be further improved by modifying the pretraining scheme. RoBERTa uses larger batches with more training data and dropped the NSP task to significantly improve the performance over the original BERT model.
 
-Although BERT model delivers great results, it can be expensive and difficult to deploy in production due to its model size and memory footprint. The ***ALBERT*** model [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:sec:BERT_ALBERT}] introduced three changes to make the encoder architecture more efficient. First, it reduces embedding dimensionality via matrix factorization, which saves parameters especially when the vocabulary gets large. Second, all layers share the parameters which decreases the number of effective parameters even further. Finally, ALBERT enhance the NSP objective with a more challenging sentence-ordering prediction (SOP), which primary focuses on inter-sentence coherence for sentence pairs in the same text segment.
+Although BERT model delivers great results, it can be expensive and difficult to deploy in production due to its model size and memory footprint. The **ALBERT** model {cite:p}`lan2020albertlitebertselfsupervised` introduced three changes to make the encoder architecture more efficient. First, it reduces embedding dimensionality via matrix factorization, which saves parameters especially when the vocabulary gets large. Second, all layers share the parameters which decreases the number of effective parameters even further. Finally, ALBERT enhance the NSP objective with a more challenging sentence-ordering prediction (SOP), which primary focuses on inter-sentence coherence for sentence pairs in the same text segment.
 
-By using model compression techniques like knowledge distillation, we can preserve most of the BERT performance with much smaller model size and memory footprint. Representative models include ***DistilBERT*** and ***TinyBERT***.
+By using model compression techniques like knowledge distillation, we can preserve most of the BERT performance with much smaller model size and memory footprint. Representative models include **DistilBERT** and **TinyBERT**.
 
 
 ## The Decoder Branch
 
 The decoder component in the Transformer model can be used for auto-regressive language modeling. GPT series are among the most successful auto-regressive pretrained language models, and they form the foundation of LLM.
 
-***GPT-1*** {cite:p}`radford2018improving`: One of the major contributions of the GPT-1 study is the introduction of a two-stage unsupervised pretraining and supervised fine-tuning scheme. They demonstrates that a pre-trained model with fine-tuning can achieve satisfactory results over a range of diverse tasks, not just for a single task.
+**GPT-1** {cite:p}`radford2018improving`: One of the major contributions of the GPT-1 study is the introduction of a two-stage unsupervised pretraining and supervised fine-tuning scheme. They demonstrates that a pre-trained model with fine-tuning can achieve satisfactory results over a range of diverse tasks, not just for a single task.
 
-***GPT-2*** {cite:p}`radford2019language`:  is a larger model trained on much more training data, called WebText, than the original one. It achieved state-of-the-art results on seven out of the eight tasks in a zero-shot setting in which there is no fine-tuning applied. The key contribution of GPT-2 is demonstrating the capability of zero-shot learning with extensively pretrained language model alone (i.e., no finetuning).  
+**GPT-2** {cite:p}`radford2019language`:  is a larger model trained on much more training data, called WebText, than the original one. It achieved state-of-the-art results on seven out of the eight tasks in a zero-shot setting in which there is no fine-tuning applied. The key contribution of GPT-2 is demonstrating the capability of zero-shot learning with extensively pretrained language model alone (i.e., no finetuning).  
 
-***GPT-3*** {cite:p}`brown2020language`: GPT-3 is up-scaled from GPT-2 by a factor of 100. It demonstrated that lead to significant improvements in performance and capabilities, which also marked the beginning of LLM era. Besides being able to generate impressively realistic text passages, the model also exhibits few-shot learning capabilities: with a few examples of a novel task such as text-to-code examples the model is able to accomplish the task on new examples. 
+**GPT-3** {cite:p}`brown2020language`: GPT-3 is up-scaled from GPT-2 by a factor of 100. It demonstrated that lead to significant improvements in performance and capabilities, which also marked the beginning of LLM era. Besides being able to generate impressively realistic text passages, the model also exhibits few-shot learning capabilities: with a few examples of a novel task such as text-to-code examples the model is able to accomplish the task on new examples. 
 
 ## The Encoder-decoder Branch
 
 Although it has become common to build models using a single encoder or decoder stack, there are several encoder-decoder variants of the Transformer that have novel applications across both NLU and NLG domains:
 
 
-***T5*** The T5 model unifies all NLU and NLG tasks by converting all tasks into a text-to-text paradigm. As such all tasks are framed as sequence-to-sequence tasks where adopting an encoder-decoder architecture is natural. The T5 architecture uses the original Transformer architecture. Using the large crawled C4 dataset, the model is pre-trained with masked language modeling as well as the SuperGLUE tasks by translating all of them to text-to-text tasks. The largest model with 11 billion parameters yielded state-of-the-art results on several benchmarks although being comparably large.
+**T5** The T5 model unifies all NLU and NLG tasks by converting all tasks into a text-to-text paradigm. As such all tasks are framed as sequence-to-sequence tasks where adopting an encoder-decoder architecture is natural. The T5 architecture uses the original Transformer architecture. Using the large crawled C4 dataset, the model is pre-trained with masked language modeling as well as the SuperGLUE tasks by translating all of them to text-to-text tasks. The largest model with 11 billion parameters yielded state-of-the-art results on several benchmarks although being comparably large.
 
-***BART*** BART combines the pretraining procedures of BERT and GPT within the encoder-decoder architecture. The input sequences undergoes one of
+**BART** BART combines the pretraining procedures of BERT and GPT within the encoder-decoder architecture. The input sequences undergoes one of
 several possible transformation from simple masking, sentence permutation, token deletion to document rotation. These inputs are passed through the encoder and the decoder has to reconstruct the original texts. This makes the model more flexible as it is possible to use it for NLU as well as NLG tasks and it achieves state-of-the-artperformance on both.
 
 

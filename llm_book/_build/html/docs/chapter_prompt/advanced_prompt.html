@@ -101,8 +101,8 @@
          class="form-control"
          name="q"
          id="search-input"
-         placeholder="Search this book..."
-         aria-label="Search this book..."
+         placeholder="Search..."
+         aria-label="Search..."
          autocomplete="off"
          autocorrect="off"
          autocapitalize="off"
@@ -172,17 +172,9 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        
-        <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1">
-                <a class="reference internal" href="../index.html">
-                    Table of Contents
-                </a>
-            </li>
-        </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: Unveiling the Power of Language Models in the Age of Artificial Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: LLM in the Age of AI</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
 <ul class="nav bd-sidenav">
@@ -203,7 +195,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">11. LLM Training Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM alignement and preference learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM Alignement and Preference learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">14. LLM Training Acceleration</a></li>
 
 </ul>
@@ -214,20 +206,16 @@
 
 
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="basic_prompt.html">20. Basic prompt</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">21. Advanced prompt techniques</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG)</span></p>
-<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">22. Basic RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">23. Advanced rag techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">24. Information Retrieval Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR</a></li>
 </ul>
 
     </div>
@@ -269,54 +257,6 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
-
-
-
-
-
-<div class="dropdown dropdown-download-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
-    <i class="fas fa-download"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="../../_sources/docs/chapter_prompt/advanced_prompt.md" target="_blank"
-   class="btn btn-sm btn-download-source-button dropdown-item"
-   title="Download source file"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="btn__text-container">.md</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li>
-<button onclick="window.print()"
-  class="btn btn-sm btn-download-pdf-button dropdown-item"
-  title="Print to PDF"
-  data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="btn__text-container">.pdf</span>
-</button>
-</li>
-      
-  </ul>
-</div>
-
 
 
 
@@ -376,17 +316,12 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#med-prompt-paper">21.1. Med prompt paper</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-in-context-learning">21.1.1. Dynamic in-context learning</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cot-variants">21.2. CoT variants</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-cot-with-self-consistency">21.2.1. ensemble CoT with self-consistency</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#self-generated-chain-of-thought">21.2.2. Self-generated chain of thought</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choice-shuffling-ensembling">21.2.3. Choice Shuffling Ensembling</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">21.3. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-in-context-learning">21.1. Dynamic in-context learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-cot-with-self-consistency">21.2. ensemble CoT with self-consistency</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-generated-chain-of-thought">21.3. Self-generated chain of thought</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choice-shuffling-ensembling">21.4. Choice Shuffling Ensembling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-together-the-med-prompt">21.5. Combining Together: the Med prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">21.6. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -400,24 +335,15 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="advanced-prompt-techniques">
 <h1><span class="section-number">21. </span>Advanced prompt techniques<a class="headerlink" href="#advanced-prompt-techniques" title="Link to this heading">#</a></h1>
-<section id="med-prompt-paper">
-<h2><span class="section-number">21.1. </span>Med prompt paper<a class="headerlink" href="#med-prompt-paper" title="Link to this heading">#</a></h2>
-<p>By using advanced prompting techniques, GPT-4 demonstrated significant capabilities in areas involving significant domain knowledge, such as medicine, which challenges the assumption that it requires intensive domain-specific training to match specialist capabilities​.</p>
-<p>In <span id="id1">[<a class="reference internal" href="#id492" title="Harsha Nori, Yin Tat Lee, Sheng Zhang, Dean Carignan, Richard Edgar, Nicolo Fusi, Nicholas King, Jonathan Larson, Yuanzhi Li, Weishung Liu, and others. Can generalist foundation models outcompete special-purpose tuning? case study in medicine. arXiv preprint arXiv:2311.16452, 2023.">NLZ+23</a>]</span>, authors carried out a systematic exploration of prompt engineering strategies that significantly enhance GPT-4’s performance in medical question-answering tasks. Medprompt integrates techniques like in-context learning and chain-of-thought reasoning, leading to a 27% reduction in error rate on the MedQA dataset compared to specialist models.</p>
-<p>Medprompt employs dynamic few-shot selection, self-generated chain of thought, and choice shuffle ensembling. These techniques collectively contribute to its high performance in medical benchmarks.</p>
-<p>An ablation study highlighted the relative contributions of Medprompt’s components, with chain-of-thought steps being most significant. Interestingly, GPT-4’s self-generated chain-of-thought outperformed expert-crafted prompts​.</p>
 <section id="dynamic-in-context-learning">
-<h3><span class="section-number">21.1.1. </span>Dynamic in-context learning<a class="headerlink" href="#dynamic-in-context-learning" title="Link to this heading">#</a></h3>
+<h2><span class="section-number">21.1. </span>Dynamic in-context learning<a class="headerlink" href="#dynamic-in-context-learning" title="Link to this heading">#</a></h2>
 <p>In the most common form of in-context learning (also known as few-shot learning), the foundation model is prompted with a few demonstrations, and the foundation models quickly adapt to a specific domain and learn to follow the task format. These few-shot examples applied in prompting for a particular task are typically fixed; they are unchanged across test examples.</p>
 <p>To achieve the best testing performance, it is necessary that these few-shot examples selected are broadly representative and relevant to a wide distribution of text examples.</p>
 <p>In the dynamic few-shot prompting setting, we can select can select different few-shot examples for different task inputs. The selection criterion can be based on the simiarlity to the testing case at hand.</p>
 </section>
-</section>
-<section id="cot-variants">
-<h2><span class="section-number">21.2. </span>CoT variants<a class="headerlink" href="#cot-variants" title="Link to this heading">#</a></h2>
 <section id="ensemble-cot-with-self-consistency">
-<h3><span class="section-number">21.2.1. </span>ensemble CoT with self-consistency<a class="headerlink" href="#ensemble-cot-with-self-consistency" title="Link to this heading">#</a></h3>
-<p><span id="id2">[<a class="reference internal" href="#id493" title="Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language models. arXiv preprint arXiv:2203.11171, 2022.">WWS+22</a>]</span></p>
+<h2><span class="section-number">21.2. </span>ensemble CoT with self-consistency<a class="headerlink" href="#ensemble-cot-with-self-consistency" title="Link to this heading">#</a></h2>
+<p><span id="id1">[<a class="reference internal" href="#id493" title="Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language models. arXiv preprint arXiv:2203.11171, 2022.">WWS+22</a>]</span></p>
 <p>Chain-of-thought prompting combined with pre-trained large language models has achieved encouraging results on complex reasoning tasks. In this paper, we propose a new decoding strategy, self-consistency, to replace the naive greedy decoding used in chain-of-thought prompting. It first samples a diverse set of reasoning paths instead of only taking the greedy one, and then selects the most consistent answer by marginalizing out the sampled reasoning paths. Self-consistency leverages the intuition that a complex reasoning problem typically admits multiple different ways of thinking leading to its unique correct answer.</p>
 <p>Self-consistency is far simpler than prior approaches that either train an additional verifier (Cobbe et al., 2021) or train a re-ranker given additional human annotations to improve generation quality
 (Thoppilan et al., 2022). Instead, self-consistency is entirely unsupervised, works off-the-shelf with pre-trained language models, requires no additional human annotation, and avoids any additional training, auxiliary models or fine-tuning.</p>
@@ -451,7 +377,7 @@ a higher number of diverse reasoning paths consistently improves reasoning accur
 </figure>
 </section>
 <section id="self-generated-chain-of-thought">
-<h3><span class="section-number">21.2.2. </span>Self-generated chain of thought<a class="headerlink" href="#self-generated-chain-of-thought" title="Link to this heading">#</a></h3>
+<h2><span class="section-number">21.3. </span>Self-generated chain of thought<a class="headerlink" href="#self-generated-chain-of-thought" title="Link to this heading">#</a></h2>
 <p><a class="reference internal" href="#chapter-prompt-fig-advanced-prompt-self-cot"><span class="std std-numref">Fig. 21.4</span></a></p>
 <p>During preprocessing, each question in the training dataset is passed through a lightweight embedding model to generate an embedding vector (Line 4 in Algorithm 1). We employed OpenAI’s text-embedding-ada-002 to create an embedding. For each question, GPT-4 is harnessed to create a chain of thought and a prediction of the final answer (Line 5). If the generated answer is correct and matches the ground truth label, we store the associated question, its embedding vector, the chain of thought, and the answer. Otherwise, we discard the question entirely from our retrieval pool, with the assumption that we cannot trust the reasoning if the model ultimately arrives at the wrong final answer.</p>
 <p>At inference time, given a test question, we re-embed the test sample with the same embedding model used during pre-processing, and utilize kNN to retrieve similar examples from the preprocessed pool. These examples, and their corresponding GPT-4 generated reasoning chains, are structured as context for GPT-4. The test question and corresponding answer choices are then appended at the end, which serves as the final prompt (Line 17). The model, following the few shot exemplars, then outputs a chain of thought and a candidate answer.</p>
@@ -466,7 +392,7 @@ a higher number of diverse reasoning paths consistently improves reasoning accur
 </figure>
 </section>
 <section id="choice-shuffling-ensembling">
-<h3><span class="section-number">21.2.3. </span>Choice Shuffling Ensembling<a class="headerlink" href="#choice-shuffling-ensembling" title="Link to this heading">#</a></h3>
+<h2><span class="section-number">21.4. </span>Choice Shuffling Ensembling<a class="headerlink" href="#choice-shuffling-ensembling" title="Link to this heading">#</a></h2>
 <p>Combines outputs of multiple model runs to achieve a more robust or accurate result through methods like averaging or majority vote.</p>
 <p>Example: Applying self-consistency techniques to produce multiple outputs and identifying a consensus output.
 Results: While ensembling enhances performance, it was used with consideration for computational demands. Medprompt used simpler techniques to avoid excessive inference costs</p>
@@ -475,17 +401,30 @@ Results: While ensembling enhances performance, it was used with consideration f
 <p>With choice shuffling, we shuffle the relative order of the answer choices before generating each reasoning path. We then select the most consistent answer, i.e., the one that is least sensitive to choice shuffling.</p>
 <p>Choice shuffling has an additional benefit of increasing the diversity of each reasoning path beyond temperature sampling, thereby also improving the quality of the final ensemble</p>
 </section>
+<section id="combining-together-the-med-prompt">
+<h2><span class="section-number">21.5. </span>Combining Together: the Med prompt<a class="headerlink" href="#combining-together-the-med-prompt" title="Link to this heading">#</a></h2>
+<p>By using advanced prompting techniques, GPT-4 demonstrated significant capabilities in areas involving significant domain knowledge, such as medicine, which challenges the assumption that it requires intensive domain-specific training to match specialist capabilities​.</p>
+<p>In <span id="id2">[<a class="reference internal" href="#id492" title="Harsha Nori, Yin Tat Lee, Sheng Zhang, Dean Carignan, Richard Edgar, Nicolo Fusi, Nicholas King, Jonathan Larson, Yuanzhi Li, Weishung Liu, and others. Can generalist foundation models outcompete special-purpose tuning? case study in medicine. arXiv preprint arXiv:2311.16452, 2023.">NLZ+23</a>]</span>, authors carried out a systematic exploration of prompt engineering strategies that significantly enhance GPT-4’s performance in medical question-answering tasks. Medprompt integrates techniques like in-context learning and chain-of-thought reasoning, leading to a 27% reduction in error rate on the MedQA dataset compared to specialist models.</p>
+<p>Medprompt employs dynamic few-shot selection, self-generated chain of thought, and choice shuffle ensembling. These techniques collectively contribute to its high performance in medical benchmarks.</p>
+<p>An ablation study in the following highlighted the relative contributions of Medprompt’s components.Each technique incrementally improves the model’s performance, with the final accuracy reaching 90.2%. The most significant improvements come from GPT Self-Generated CoT (+3.4%) and the 5x Choice-Shuffle Ensemble Layer (+2.1%).</p>
+<figure class="align-default" id="chapter-prompt-fig-advanced-prompt-med-prompt-abalation-study">
+<a class="reference internal image-reference" href="../../_images/med_prompt_abalation_study.png"><img alt="../../_images/med_prompt_abalation_study.png" src="../../_images/med_prompt_abalation_study.png" style="width: 795.0px; height: 419.4px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 21.5 </span><span class="caption-text">Relative contributions of different components of Medprompt via an ablation study.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-med-prompt-abalation-study" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </section>
 <section id="bibliography">
-<h2><span class="section-number">21.3. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">21.6. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id3">
 <div role="list" class="citation-list">
 <div class="citation" id="id492" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">NLZ+23</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">NLZ+23</a><span class="fn-bracket">]</span></span>
 <p>Harsha Nori, Yin Tat Lee, Sheng Zhang, Dean Carignan, Richard Edgar, Nicolo Fusi, Nicholas King, Jonathan Larson, Yuanzhi Li, Weishung Liu, and others. Can generalist foundation models outcompete special-purpose tuning? case study in medicine. <em>arXiv preprint arXiv:2311.16452</em>, 2023.</p>
 </div>
 <div class="citation" id="id493" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">WWS+22</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">WWS+22</a><span class="fn-bracket">]</span></span>
 <p>Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language models. <em>arXiv preprint arXiv:2203.11171</em>, 2022.</p>
 </div>
 </div>
@@ -557,17 +496,12 @@ Results: While ensembling enhances performance, it was used with consideration f
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#med-prompt-paper">21.1. Med prompt paper</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-in-context-learning">21.1.1. Dynamic in-context learning</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cot-variants">21.2. CoT variants</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-cot-with-self-consistency">21.2.1. ensemble CoT with self-consistency</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#self-generated-chain-of-thought">21.2.2. Self-generated chain of thought</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choice-shuffling-ensembling">21.2.3. Choice Shuffling Ensembling</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">21.3. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-in-context-learning">21.1. Dynamic in-context learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-cot-with-self-consistency">21.2. ensemble CoT with self-consistency</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-generated-chain-of-thought">21.3. Self-generated chain of thought</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choice-shuffling-ensembling">21.4. Choice Shuffling Ensembling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-together-the-med-prompt">21.5. Combining Together: the Med prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">21.6. Bibliography</a></li>
 </ul>
   </nav></div>
 
