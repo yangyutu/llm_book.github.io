@@ -103,8 +103,8 @@
          class="form-control"
          name="q"
          id="search-input"
-         placeholder="Search this book..."
-         aria-label="Search this book..."
+         placeholder="Search..."
+         aria-label="Search..."
          autocomplete="off"
          autocorrect="off"
          autocapitalize="off"
@@ -174,17 +174,9 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        
-        <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1">
-                <a class="reference internal" href="../index.html">
-                    Table of Contents
-                </a>
-            </li>
-        </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: Unveiling the Power of Language Models in the Age of Artificial Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: LLM in the Age of AI</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
 <ul class="current nav bd-sidenav">
@@ -205,7 +197,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">11. LLM Training Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM alignement and preference learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM Alignement and Preference learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">14. LLM Training Acceleration</a></li>
 
 </ul>
@@ -216,20 +208,16 @@
 
 
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">20. Basic prompt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">21. Advanced prompt techniques</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG)</span></p>
-<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">22. Basic RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">23. Advanced rag techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">24. Information Retrieval Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR</a></li>
 </ul>
 
     </div>
@@ -271,54 +259,6 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
-
-
-
-
-
-<div class="dropdown dropdown-download-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
-    <i class="fas fa-download"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="../../_sources/docs/chapter_foundation/word_embeddings.md" target="_blank"
-   class="btn btn-sm btn-download-source-button dropdown-item"
-   title="Download source file"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="btn__text-container">.md</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li>
-<button onclick="window.print()"
-  class="btn btn-sm btn-download-pdf-button dropdown-item"
-  title="Print to PDF"
-  data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="btn__text-container">.pdf</span>
-</button>
-</li>
-      
-  </ul>
-</div>
-
 
 
 
@@ -403,14 +343,14 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="word-embeddings">
-<h1><span class="section-number">4. </span>Word Embeddings<a class="headerlink" href="#word-embeddings" title="Link to this heading">#</a></h1>
+<span id="chapter-foundation-sec-word-embedding"></span><h1><span class="section-number">4. </span>Word Embeddings<a class="headerlink" href="#word-embeddings" title="Link to this heading">#</a></h1>
 <section id="overview">
 <h2><span class="section-number">4.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>Human language is structured through a complex combinations of different levels of linguistic building blocks such as characters, words, sentences, etc. Among different levels of these building blocks, words and its subunits (i.e., morphemes\footnote{A morpheme is the smallest unit of language that has a meaning. Not all morphemes are words, but all prefixes and suffixes
 are morphemes. For example, in the word <em>multimedia</em>, <em>multi-</em> is not a word but a
 prefix that changes the meaning when put together with <em>media</em>. <em>Multi-</em> is a morpheme.}) are the most basic ones.</p>
 <p>Many machine learning and deep learning approaches in natural language processing (NLP) requires explicit or implicit construction of word-level or subword level representationss. These word-level representations are used to construct representations of larger linguistic units (e.g., sentences, context, and knowledge), which are used to solve NLP tasks, ranging from simple ones such as sentiment analysis and search completion to complex ones such as text summerization, writing, question-answering, etc. Modern NLP tasks heavily hinge on the quality of word embedding and pre-trained language models that produce context-dependent or task dependent word representations.</p>
-<p>NLP tasks are faced with text data consisting of tokens from a large vocabulary (<span class="math notranslate nohighlight">\(&gt;10^5-10^6\)</span>). In sentiment analysis, we need to represent text data by numeric values such that computers can understand. One naive way to represent the feature of a word is the <em><strong>one-hot word vector</strong></em>, whose length of the typical size of the vocabulary.</p>
+<p>NLP tasks are faced with text data consisting of tokens from a large vocabulary (<span class="math notranslate nohighlight">\(&gt;10^5-10^6\)</span>). In sentiment analysis, we need to represent text data by numeric values such that computers can understand. One naive way to represent the feature of a word is the <strong>one-hot word vector</strong>, whose length of the typical size of the vocabulary.</p>
 <div class="proof example admonition" id="example-0">
 <p class="admonition-title"><span class="caption-number">Example 4.1 </span></p>
 <section class="example-content" id="proof-content">
@@ -455,8 +395,8 @@ prefix that changes the meaning when put together with <em>media</em>. <em>Multi
 </ul>
 <p>Ideally, we would like the word embeddings distributed in the vector space in certain way that capture semantic and syntactic relations and facilitates answering these questions.</p>
 <p>There are different ways to obtain word embeddings. In the following sections, we will discuss methods that utilize classical singular value decomposition as well as modern neural network.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1516">
-<caption><span class="caption-number">Table 4.1 </span><span class="caption-text">Examples of five types of semantic relationships.</span><a class="headerlink" href="#id1516" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1517">
+<caption><span class="caption-number">Table 4.1 </span><span class="caption-text">Examples of five types of semantic relationships.</span><a class="headerlink" href="#id1517" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Type of relationship</p></th>
 <th class="head"><p>Word Pair 1</p></th>
@@ -499,8 +439,8 @@ prefix that changes the meaning when put together with <em>media</em>. <em>Multi
 </tbody>
 </table>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id1517">
-<caption><span class="caption-number">Table 4.2 </span><span class="caption-text">Examples of nine types of syntactic relationships.</span><a class="headerlink" href="#id1517" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1518">
+<caption><span class="caption-number">Table 4.2 </span><span class="caption-text">Examples of nine types of syntactic relationships.</span><a class="headerlink" href="#id1518" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Type of relationship</p></th>
 <th class="head"><p>Word Pair 1</p></th>
@@ -570,7 +510,7 @@ prefix that changes the meaning when put together with <em>media</em>. <em>Multi
 </section>
 <section id="svd-based-word-embeddings">
 <span id="chapter-foundation-word-embedding-svd-word-embedding"></span><h2><span class="section-number">4.2. </span>SVD based word embeddings<a class="headerlink" href="#svd-based-word-embeddings" title="Link to this heading">#</a></h2>
-<p>Here we introduce a way to obtain low-dimensional representation of a word vector that capture the semantic and syntactic relation between words by performing SVD on a matrix constructed on a large corpus. The matrix used to perform SVD can be a <strong>co-occurrence matrix</strong> or it can be a <strong>document-term</strong> matrix, which describes the occurrences of terms in documents. When the matrix is the document-term matrix, this method is also known as <strong>latent semantic analysis</strong> (<em><strong>LSA</strong></em>)\cite{dumais2004latent}.</p>
+<p>Here we introduce a way to obtain low-dimensional representation of a word vector that capture the semantic and syntactic relation between words by performing SVD on a matrix constructed on a large corpus. The matrix used to perform SVD can be a <strong>co-occurrence matrix</strong> or it can be a <strong>document-term</strong> matrix, which describes the occurrences of terms in documents. When the matrix is the document-term matrix, this method is also known as <strong>latent semantic analysis</strong> (<strong>LSA</strong>)\cite{dumais2004latent}.</p>
 <p>Co-occurrence matrix is a big matrix whose entry encode the frequency of a pair of words occurring together within a fixed length context window.  More formally, let <span class="math notranslate nohighlight">\(M\)</span> be a co-occurrence matrix, and we have</p>
 <div class="math notranslate nohighlight">
 \[M_{ij} = \frac{\#(w_i, w_j)/n_{pair}}{\#(w_i)/n_{words}\cdot \#(w_j)/n_{words}}\]</div>
@@ -599,7 +539,7 @@ This shortcoming can be overcome by performing a SVD on a document-term matrix. 
 <h2><span class="section-number">4.3. </span>Word2Vec<a class="headerlink" href="#word2vec" title="Link to this heading">#</a></h2>
 <section id="the-model">
 <h3><span class="section-number">4.3.1. </span>The model<a class="headerlink" href="#the-model" title="Link to this heading">#</a></h3>
-<p>In <a class="reference internal" href="#chapter-foundation-word-embedding-svd-word-embedding"><span class="std std-ref">SVD based word embeddings</span></a>, we introduce a SVD based matrix decomposition method to map one-hot word vector to semantic meaning preserving dense word vector. This section, we introduce a neural networ based method. The two classical methods, called continuous bags of words (<strong>CBOW</strong>)<span id="id1">[<a class="reference internal" href="#id1088" title="Tomas Mikolov, Kai Chen, Greg Corrado, and Jeffrey Dean. Efficient estimation of word representations in vector space. arXiv preprint arXiv:1301.3781, 2013.">MCCD13</a>]</span>  and <strong>Skip-gram</strong> <span id="id2">[<a class="reference internal" href="#id1087" title="Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg S Corrado, and Jeff Dean. Distributed representations of words and phrases and their compositionality. In Advances in neural information processing systems, 3111–3119. 2013.">MSC+13</a>]</span>. Both methods employ a three-layer neural networks [\autoref{ch:neural-network-and-deep-learning:fig:skipgramcbow}], taking a one-hot vector as input and predict the probability of its nearby words. In CBOW, the inputs are surrounding words within a context window of size <span class="math notranslate nohighlight">\(c\)</span> and the goal is to predict the central word (same as multi-class classification problems); in Skip-gram, the input is the single central word and the goal is to predict its surrounding words within a context window.</p>
+<p>In <a class="reference internal" href="#chapter-foundation-word-embedding-svd-word-embedding"><span class="std std-ref">SVD based word embeddings</span></a>, we introduce a SVD based matrix decomposition method to map one-hot word vector to semantic meaning preserving dense word vector. This section, we introduce a neural networ based method. The two classical methods, called continuous bags of words (<strong>CBOW</strong>)<span id="id1">[<a class="reference internal" href="#id1088" title="Tomas Mikolov, Kai Chen, Greg Corrado, and Jeffrey Dean. Efficient estimation of word representations in vector space. arXiv preprint arXiv:1301.3781, 2013.">MCCD13</a>]</span>  and <strong>Skip-gram</strong> <span id="id2">[<a class="reference internal" href="#id1087" title="Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg S Corrado, and Jeff Dean. Distributed representations of words and phrases and their compositionality. In Advances in neural information processing systems, 3111–3119. 2013.">MSC+13</a>]</span>. Both methods employ a three-layer neural networks [<a class="reference internal" href="#chapter-foundation-fig-word-embedding-skipgramcbow"><span class="std std-numref">Fig. 4.3</span></a>], taking a one-hot vector as input and predict the probability of its nearby words. In CBOW, the inputs are surrounding words within a context window of size <span class="math notranslate nohighlight">\(c\)</span> and the goal is to predict the central word (same as multi-class classification problems); in Skip-gram, the input is the single central word and the goal is to predict its surrounding words within a context window.</p>
 <p>Denote a sequence of words <span class="math notranslate nohighlight">\(w_1, w_2, ..., w_T\)</span> (represented as integer indices) in a text, the objective of a Skip-gram model is to maximize the likelihood of observing the occurrence of its surrounding words within a context window of size <span class="math notranslate nohighlight">\(c\)</span>, given by</p>
 <div class="math notranslate nohighlight">
 \[\frac{1}{T} \sum_{t=1}^{T} \sum_{-c \leq j \leq c, j \neq 0} \log p\left(w_{t+j} | w_{t}\right)\]</div>
@@ -609,7 +549,7 @@ This shortcoming can be overcome by performing a SVD on a document-term matrix. 
 \[p(w_k|w_j) = \frac{\exp(v'_k\cdot v_j)}{\sum_{i=1}^V \exp(v'_i\cdot v_j)},\]</div>
 <p>where <span class="math notranslate nohighlight">\(v_i\)</span> is the column <span class="math notranslate nohighlight">\(i\)</span> of the input matrix <span class="math notranslate nohighlight">\(W\)</span>, and <span class="math notranslate nohighlight">\(v'_i\)</span> is the row <span class="math notranslate nohighlight">\(i\)</span> in the output matrix <span class="math notranslate nohighlight">\(W'\)</span>.</p>
 <figure class="align-default" id="chapter-foundation-fig-word-embedding-skipgramcbow">
-<a class="reference internal image-reference" href="../../_images/skip_gram_CBOW.png"><img alt="../../_images/skip_gram_CBOW.png" src="../../_images/skip_gram_CBOW.png" style="width: 2073.6px; height: 967.2px;" />
+<a class="reference internal image-reference" href="../../_images/skip_gram_CBOW.png"><img alt="../../_images/skip_gram_CBOW.png" src="../../_images/skip_gram_CBOW.png" style="width: 1036.8px; height: 483.6px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 4.3 </span><span class="caption-text">(a) The CBOW architecture that predicts the central word given its surrounding context words. (b) The Skip-gram architecture that predicts surrounding words given the central word.  The embedding layer is represented by a <span class="math notranslate nohighlight">\(V\times D\)</span> weight matrix that performs look-up for each word token integer index, where <span class="math notranslate nohighlight">\(V\)</span> is the vocabulary size and <span class="math notranslate nohighlight">\(D\)</span> is the dimensionality of the dense vector. The linear output layer is also represented by a <span class="math notranslate nohighlight">\(V\times D\)</span> weight matrix that is used to compute the logit for each token label as sort of classification over the vocabulary.</span><a class="headerlink" href="#chapter-foundation-fig-word-embedding-skipgramcbow" title="Link to this image">#</a></p>
@@ -676,14 +616,14 @@ P\left(w_{i}\right)\approx1-\sqrt{\frac{t}{f\left(w_{i}\right)}}
 </section>
 <section id="visualization">
 <h3><span class="section-number">4.3.5. </span>Visualization<a class="headerlink" href="#visualization" title="Link to this heading">#</a></h3>
-<p>We can visualize the word embedding space by projecting onto a 2D plane using two leading principal components [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:fig:word2vecvisualization}].
+<p>We can visualize the word embedding space by projecting onto a 2D plane using two leading principal components [{numref}`chapter_foundation_fig_word_embedding_word2Vec_visualization’].
 The neighboring words of <em>apple</em> include <em>macintosh, microsoft, ibm, Windows, mac, intel, computers</em> as well as <em>wine, juice</em>, which capture to some extent the two common meanings in the word <em>apple</em>.  This example also reveals the drawback of the word2vec approach, where we associate each token with a fixed/static embedding irrespective of context. For example, <em>apple</em> in <em>I like to eat an apple</em> vs <em>Apple is great company</em> means two different things and have the same embedding.</p>
 <p>Another example is the word <em>bank</em>, which has two contrasting meanings in the following two sentences:</p>
 <ul class="simple">
 <li><p><em>We went to the river bank</em>.</p></li>
 <li><p><em>I need to go to bank to make a deposit</em>.</p></li>
 </ul>
-<p>The nearest words of <em>bank</em> in the Word2Vec model are <em>banks, monetary, banking, imf, fund, currency,</em> etc. , which does not capture the second meaning. More formally, we say static word embeddings from Word2Vec model cannot address polysemy.\footnote{the coexistence of many possible meanings for a word or phrase.} On the other hand, the mean of a word can usually be inferred from its left and right context. Therefore it is also essential to develop context-dependent embeddings, which will be discussed in \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:sec:BERT_pretrainedLanguageModels}.</p>
+<p>The nearest words of <em>bank</em> in the Word2Vec model are <em>banks, monetary, banking, imf, fund, currency,</em> etc. , which does not capture the second meaning. More formally, we say static word embeddings from Word2Vec model cannot address polysemy.\footnote{the coexistence of many possible meanings for a word or phrase.} On the other hand, the mean of a word can usually be inferred from its left and right context. Therefore it is also essential to develop context-dependent embeddings, which will be discussed in <a class="reference internal" href="bert.html#chapter-foundation-sec-bert"><span class="std std-ref">BERT</span></a>.</p>
 <figure class="align-default" id="chapter-foundation-fig-word-embedding-word2vec-visualization">
 <a class="reference internal image-reference" href="../../_images/word2Vec_visualization.png"><img alt="../../_images/word2Vec_visualization.png" src="../../_images/word2Vec_visualization.png" style="width: 527.2px; height: 390.40000000000003px;" />
 </a>
@@ -762,19 +702,30 @@ s(w, c)=\sum_{g \in \mathcal{G}_{w}} {z}_{g}^{\top} {v}_{c},
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(v_c\)</span> is the column vector in the output layer matrix associated with word <span class="math notranslate nohighlight">\(c\)</span>.</p>
 <p>After the <span class="math notranslate nohighlight">\(n\)</span>-gram embeddings are trained, we can compute word embedding of each word by aggregating its constituent <span class="math notranslate nohighlight">\(n\)</span>-gram embeddings.</p>
-<p>Note that the vocabulary size of <span class="math notranslate nohighlight">\(G\)</span> can be huge for large <span class="math notranslate nohighlight">\(n\)</span>. Below is the maximum number of <span class="math notranslate nohighlight">\(n\)</span> -grams as a function of <span class="math notranslate nohighlight">\(n\)</span>.
-\begin{center}
-{\scriptsize
-\begin{tabular}{c|c}
-<span class="math notranslate nohighlight">\(n\)</span>-grams &amp; maximum number of subwords \ \hline
-3 &amp; <span class="math notranslate nohighlight">\(17576\)</span> \
-4 &amp; <span class="math notranslate nohighlight">\(26^4 \approx 4.6\times 10^5\)</span> \
-5 &amp; <span class="math notranslate nohighlight">\(26^5 \approx 1.2\times 10^7\)</span> \
-6 &amp; <span class="math notranslate nohighlight">\(26^6 \approx 3.1\times 10^8\)</span> \
-\end{tabular}	
-}
-\end{center}
-In order to bound the model memory requirements, we can use a hashing function that maps <span class="math notranslate nohighlight">\(n\)</span> -grams to <span class="math notranslate nohighlight">\(K\)</span> (e.g., <span class="math notranslate nohighlight">\(K \approx 10^6\)</span>) buckets. Note that when collison occurs, two <span class="math notranslate nohighlight">\(n\)</span>-grams will share the same embedding.</p>
+<p>Note that the vocabulary size of <span class="math notranslate nohighlight">\(G\)</span> can be huge for large <span class="math notranslate nohighlight">\(n\)</span>. Below is the maximum number of <span class="math notranslate nohighlight">\(n\)</span> -grams as a function of <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>n-grams</p></th>
+<th class="head"><p>maximum number of subwords</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>17576</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>26^4 ≈ 4.6×10^5</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>26^5 ≈ 1.2×10^7</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>26^6 ≈ 3.1×10^8</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In order to bound the model memory requirements, we can use a hashing function that maps <span class="math notranslate nohighlight">\(n\)</span> -grams to <span class="math notranslate nohighlight">\(K\)</span> (e.g., <span class="math notranslate nohighlight">\(K \approx 10^6\)</span>) buckets. Note that when collison occurs, two <span class="math notranslate nohighlight">\(n\)</span>-grams will share the same embedding.</p>
 <p>One direct application of subword representation is the Fasttext text classifier <span id="id4">[<a class="reference internal" href="#id1254" title="Armand Joulin, Edouard Grave, Piotr Bojanowski, and Tomas Mikolov. Bag of tricks for efficient text classification. arXiv preprint arXiv:1607.01759, 2016.">JGBM16</a>]</span>, which use subword embedding as the feature in the logistic regression model.</p>
 </section>
 <section id="bibliography">

@@ -17,7 +17,7 @@ These limitations of $n$-gram models motivated researchers to explore neural net
 * Better generalization with efficient model parameters: Neural models can generalize to unseen word combinations more effectively.
 * Handling longer contexts: Recurrent neural network architectures allow for theoretically unlimited context.
 
-$n$-gram models also fails to capture the semantic meaning of words.  
+
 
 ### Feed-forward Neural Language Model
 
@@ -47,7 +47,7 @@ Feed-forward neural language model brings several improvements over the traditio
 
 ```{figure} ../img/chapter_foundation/languageModeling/FeedForwardModel_v2.png
 ---
-scale:30%
+scale:20%
 name: chapter_foundation_fig_language_model_feedforward_model
 ---
 Feedforward neural netowk based language model.

@@ -1,4 +1,4 @@
-
+(chapter_foundation_sec_word_embedding)=
 # Word Embeddings
 ## Overview
 
@@ -9,7 +9,7 @@ Human language is structured through a complex combinations of different levels 
 
 Many machine learning and deep learning approaches in natural language processing (NLP) requires explicit or implicit construction of word-level or subword level representationss. These word-level representations are used to construct representations of larger linguistic units (e.g., sentences, context, and knowledge), which are used to solve NLP tasks, ranging from simple ones such as sentiment analysis and search completion to complex ones such as text summerization, writing, question-answering, etc. Modern NLP tasks heavily hinge on the quality of word embedding and pre-trained language models that produce context-dependent or task dependent word representations.
 
-NLP tasks are faced with text data consisting of tokens from a large vocabulary ($>10^5-10^6$). In sentiment analysis, we need to represent text data by numeric values such that computers can understand. One naive way to represent the feature of a word is the ***one-hot word vector***, whose length of the typical size of the vocabulary. 
+NLP tasks are faced with text data consisting of tokens from a large vocabulary ($>10^5-10^6$). In sentiment analysis, we need to represent text data by numeric values such that computers can understand. One naive way to represent the feature of a word is the **one-hot word vector**, whose length of the typical size of the vocabulary. 
 
 ````{prf:example}
 Consider a vocabulary of size $V$, the one hot encodings for selected of words are represented as follows.
@@ -151,7 +151,7 @@ There are different ways to obtain word embeddings. In the following sections, w
 (chapter_foundation_word_embedding_SVD_word_embedding)=
 ## SVD based word embeddings
 
-Here we introduce a way to obtain low-dimensional representation of a word vector that capture the semantic and syntactic relation between words by performing SVD on a matrix constructed on a large corpus. The matrix used to perform SVD can be a **co-occurrence matrix** or it can be a **document-term** matrix, which describes the occurrences of terms in documents. When the matrix is the document-term matrix, this method is also known as **latent semantic analysis** (***LSA***)\cite{dumais2004latent}. 
+Here we introduce a way to obtain low-dimensional representation of a word vector that capture the semantic and syntactic relation between words by performing SVD on a matrix constructed on a large corpus. The matrix used to perform SVD can be a **co-occurrence matrix** or it can be a **document-term** matrix, which describes the occurrences of terms in documents. When the matrix is the document-term matrix, this method is also known as **latent semantic analysis** (**LSA**)\cite{dumais2004latent}. 
 
 Co-occurrence matrix is a big matrix whose entry encode the frequency of a pair of words occurring together within a fixed length context window.  More formally, let $M$ be a co-occurrence matrix, and we have
 
@@ -191,7 +191,7 @@ A truncated SVD produces **document vectors** and **term vectors** (i.e., word e
 ## Word2Vec
 
 ### The model
-In {ref}`chapter_foundation_word_embedding_SVD_word_embedding`, we introduce a SVD based matrix decomposition method to map one-hot word vector to semantic meaning preserving dense word vector. This section, we introduce a neural networ based method. The two classical methods, called continuous bags of words (**CBOW**){cite:p}`mikolov2013efficient`  and **Skip-gram** {cite:p}`mikolov2013distributed`. Both methods employ a three-layer neural networks [\autoref{ch:neural-network-and-deep-learning:fig:skipgramcbow}], taking a one-hot vector as input and predict the probability of its nearby words. In CBOW, the inputs are surrounding words within a context window of size $c$ and the goal is to predict the central word (same as multi-class classification problems); in Skip-gram, the input is the single central word and the goal is to predict its surrounding words within a context window.
+In {ref}`chapter_foundation_word_embedding_SVD_word_embedding`, we introduce a SVD based matrix decomposition method to map one-hot word vector to semantic meaning preserving dense word vector. This section, we introduce a neural networ based method. The two classical methods, called continuous bags of words (**CBOW**){cite:p}`mikolov2013efficient`  and **Skip-gram** {cite:p}`mikolov2013distributed`. Both methods employ a three-layer neural networks [{numref}`chapter_foundation_fig_word_embedding_skipgramcbow`], taking a one-hot vector as input and predict the probability of its nearby words. In CBOW, the inputs are surrounding words within a context window of size $c$ and the goal is to predict the central word (same as multi-class classification problems); in Skip-gram, the input is the single central word and the goal is to predict its surrounding words within a context window.
 
 Denote a sequence of words $w_1, w_2, ..., w_T$ (represented as integer indices) in a text, the objective of a Skip-gram model is to maximize the likelihood of observing the occurrence of its surrounding words within a context window of size $c$, given by
 
@@ -208,7 +208,7 @@ where $v_i$ is the column $i$ of the input matrix $W$, and $v'_i$ is the row $i$
 
 ```{figure} ../img/chapter_foundation/wordEmbedding/skip_gram_CBOW.png
 ---
-scale: 80%
+scale: 40%
 name: chapter_foundation_fig_word_embedding_skipgramcbow
 ---
 (a) The CBOW architecture that predicts the central word given its surrounding context words. (b) The Skip-gram architecture that predicts surrounding words given the central word.  The embedding layer is represented by a $V\times D$ weight matrix that performs look-up for each word token integer index, where $V$ is the vocabulary size and $D$ is the dimensionality of the dense vector. The linear output layer is also represented by a $V\times D$ weight matrix that is used to compute the logit for each token label as sort of classification over the vocabulary.
@@ -291,14 +291,14 @@ $$
 
 
 ### Visualization
-We can visualize the word embedding space by projecting onto a 2D plane using two leading principal components [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:fig:word2vecvisualization}].
+We can visualize the word embedding space by projecting onto a 2D plane using two leading principal components [{numref}`chapter_foundation_fig_word_embedding_word2Vec_visualization'].
 The neighboring words of *apple* include *macintosh, microsoft, ibm, Windows, mac, intel, computers* as well as *wine, juice*, which capture to some extent the two common meanings in the word *apple*.  This example also reveals the drawback of the word2vec approach, where we associate each token with a fixed/static embedding irrespective of context. For example, *apple* in *I like to eat an apple* vs *Apple is great company* means two different things and have the same embedding.
 
 Another example is the word *bank*, which has two contrasting meanings in the following two sentences:
 * *We went to the river bank*.
 * *I need to go to bank to make a deposit*.
   
-The nearest words of *bank* in the Word2Vec model are *banks, monetary, banking, imf, fund, currency,* etc. , which does not capture the second meaning. More formally, we say static word embeddings from Word2Vec model cannot address polysemy.\footnote{the coexistence of many possible meanings for a word or phrase.} On the other hand, the mean of a word can usually be inferred from its left and right context. Therefore it is also essential to develop context-dependent embeddings, which will be discussed in \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:sec:BERT_pretrainedLanguageModels}.
+The nearest words of *bank* in the Word2Vec model are *banks, monetary, banking, imf, fund, currency,* etc. , which does not capture the second meaning. More formally, we say static word embeddings from Word2Vec model cannot address polysemy.\footnote{the coexistence of many possible meanings for a word or phrase.} On the other hand, the mean of a word can usually be inferred from its left and right context. Therefore it is also essential to develop context-dependent embeddings, which will be discussed in {ref}`chapter_foundation_sec_bert`.
 
 
 ```{figure} ../img/chapter_foundation/wordEmbedding/word2Vec_visualization.png
@@ -393,17 +393,14 @@ where $v_c$ is the column vector in the output layer matrix associated with word
 After the $n$-gram embeddings are trained, we can compute word embedding of each word by aggregating its constituent $n$-gram embeddings. 
 
 Note that the vocabulary size of $G$ can be huge for large $n$. Below is the maximum number of $n$ -grams as a function of $n$.
-\begin{center}
-	{\scriptsize
-\begin{tabular}{c|c}
-	$n$-grams & maximum number of subwords \\ \hline
-	3 & $17576$ \\
-	4 & $26^4 \approx 4.6\times 10^5$ \\
-	5 & $26^5 \approx 1.2\times 10^7$ \\
-	6 & $26^6 \approx 3.1\times 10^8$ \\
-\end{tabular}	
-}
-\end{center}
+
+| n-grams | maximum number of subwords |
+|---------|----------------------------|
+| 3       | 17576                      |
+| 4       | 26^4 ≈ 4.6×10^5            |
+| 5       | 26^5 ≈ 1.2×10^7            |
+| 6       | 26^6 ≈ 3.1×10^8            |
+
 In order to bound the model memory requirements, we can use a hashing function that maps $n$ -grams to $K$ (e.g., $K \approx 10^6$) buckets. Note that when collison occurs, two $n$-grams will share the same embedding. 
 
 One direct application of subword representation is the Fasttext text classifier {cite:p}`joulin2016bag`, which use subword embedding as the feature in the logistic regression model.

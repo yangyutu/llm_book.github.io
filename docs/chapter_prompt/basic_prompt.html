@@ -58,8 +58,6 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_prompt/basic_prompt';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -103,8 +101,8 @@
          class="form-control"
          name="q"
          id="search-input"
-         placeholder="Search this book..."
-         aria-label="Search this book..."
+         placeholder="Search..."
+         aria-label="Search..."
          autocomplete="off"
          autocorrect="off"
          autocapitalize="off"
@@ -174,17 +172,9 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        
-        <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1">
-                <a class="reference internal" href="../index.html">
-                    Table of Contents
-                </a>
-            </li>
-        </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: Unveiling the Power of Language Models in the Age of Artificial Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: LLM in the Age of AI</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
 <ul class="nav bd-sidenav">
@@ -205,7 +195,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">11. LLM Training Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM alignement and preference learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM Alignement and Preference learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">14. LLM Training Acceleration</a></li>
 
 </ul>
@@ -216,20 +206,16 @@
 
 
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">20. Basic prompt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced_prompt.html">21. Advanced prompt techniques</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG)</span></p>
-<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">22. Basic RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">23. Advanced rag techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">24. Information Retrieval Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR</a></li>
 </ul>
 
     </div>
@@ -271,54 +257,6 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
-
-
-
-
-
-<div class="dropdown dropdown-download-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
-    <i class="fas fa-download"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="../../_sources/docs/chapter_prompt/basic_prompt.md" target="_blank"
-   class="btn btn-sm btn-download-source-button dropdown-item"
-   title="Download source file"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="btn__text-container">.md</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li>
-<button onclick="window.print()"
-  class="btn btn-sm btn-download-pdf-button dropdown-item"
-  title="Print to PDF"
-  data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="btn__text-container">.pdf</span>
-</button>
-</li>
-      
-  </ul>
-</div>
-
 
 
 
@@ -381,7 +319,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-llm-vs-instructed-llm">20.1. Base LLM vs instructed LLM</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompt">20.2. Zero-shot prompt</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-and-in-context-learning">20.3. Few-shot and in-context learning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cot">20.4. CoT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-of-thought-cot-prompting">20.4. Chain-of-Thought (CoT) Prompting</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">20.5. Bibliography</a></li>
 </ul>
             </nav>
@@ -482,9 +420,10 @@ Sentiment:</p>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-<p style="text-align: center;"><span style="background-color: #e4ac94"><strong>Computational complexity</strong></span></p></div>
-<p class="sd-card-text"><strong>LayerNorm</strong> involves both mean and variance calculation for each normalization layer, which brings sizable computational cost for high-dimensional inputs in LLM (e.g., GPT-3 <span class="math notranslate nohighlight">\(d_model = 12288\)</span>).
-<strong>RMSNorm</strong>, on the other hand, only keeps the variance calculation, reducing the normalization cost by half and increses efficiency</p>
+<p style="text-align: center;"><span style="background-color: #e4ac94"><strong>Zero-shot Prompt</strong></span></p></div>
+<p class="sd-card-text">No task-specific examples: The model is not provided with any examples of the task it’s being asked to perform. The LLM uses its broad understanding of language and concepts to interpret and respond to the prompt.</p>
+<p class="sd-card-text">Flexibility: This approach allows LLMs to attempt a wide range of tasks without providing examples.</p>
+<p class="sd-card-text">Variable performance: The effectiveness can vary depending on the complexity of the task and how well it aligns with the model’s pre-trained knowledge.</p>
 </div>
 </div>
 </div>
@@ -492,22 +431,22 @@ Sentiment:</p>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-<p style="text-align: center;"><span style="background-color: #b4c9da"><strong>Gradient propogation</strong></span></p></div>
-<p class="sd-card-text"><strong>LayerNorm</strong> stablizes the input distribution between layers through normalization and benefits deep networks training by alleviating the problem of vanishing or exploding gradients. However, LayerNorm can also be affected by noise and input shifts when calculating the mean, potentially leading to unstable gradient propagation.
-<strong>RMSNorm</strong>, by using only RMS for normalization, can provide a more robust, smoother gradient flow, especially in deeper networks. It reduces the impact of mean on gradient fluctuations, thereby improving the stability and speed of training.</p>
-</div>
-<div class="sd-card-footer docutils">
-<p class="sd-card-text">See <span id="id1">[<a class="reference internal" href="#id1502" title="Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: https://arxiv.org/abs/1910.07467, arXiv:1910.07467.">ZS19</a>]</span> for math derivation</p>
+<p style="text-align: center;"><span style="background-color: #b4c9da"><strong>Few-shot Prompt</strong></span></p></div>
+<p class="sd-card-text">Limited examples: The model is provided with a small set of examples demonstrating the desired task or output format.</p>
+<p class="sd-card-text">Improved task-specific performance: Few-shot learning often leads to better results than zero-shot for specific tasks.</p>
+<p class="sd-card-text">Less flexibility: It allows for quick adaptation to new tasks without the need for model retraining. But task specific examples are needed.</p>
 </div>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="cot">
-<h2><span class="section-number">20.4. </span>CoT<a class="headerlink" href="#cot" title="Link to this heading">#</a></h2>
-<p><span id="id2">[<a class="reference internal" href="#id471" title="Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Ed Chi, Quoc Le, and Denny Zhou. Chain of thought prompting elicits reasoning in large language models. ArXiv:2201.11903, 2022.">WWS+22</a>]</span></p>
-<p><span id="id3">[<a class="reference internal" href="#id475" title="Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke Iwasawa. Large language models are zero-shot reasoners. arxiv.org/abs/2205.11916, 2022.">KGR+22</a>]</span></p>
+<section id="chain-of-thought-cot-prompting">
+<h2><span class="section-number">20.4. </span>Chain-of-Thought (CoT) Prompting<a class="headerlink" href="#chain-of-thought-cot-prompting" title="Link to this heading">#</a></h2>
+<p>Chain of Thought (CoT) prompting <span id="id1">[<a class="reference internal" href="#id470" title="Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Ed Chi, Quoc Le, and Denny Zhou. Chain of thought prompting elicits reasoning in large language models. ArXiv:2201.11903, 2022.">WWS+22</a>]</span> is a technique used with Large Language Models (LLMs) to enhance their problem-solving capabilities, especially for complex tasks requiring multi-step reasoning. The motivation behind CoT prompting is to mimic human-like step-by-step thinking processes, addressing the limitation of LLMs in handling tasks that require intermediate logical steps.</p>
+<p>The key idea is to prompt the model to “think aloud” by breaking down its reasoning into explicit steps, often by providing examples of such step-by-step reasoning in the prompt. This approach offers several benefits: it improves the model’s performance on complex tasks, increases transparency in the decision-making process, and allows for easier error detection and correction.</p>
+<p>CoT prompting can help LLMs tackle problems that were previously challenging, such as multi-step mathematical or logical reasoning tasks.</p>
+<p>However, this method also has drawbacks: it can significantly increase the length of prompts and responses, potentially leading to higher computational costs and token usage. Moreover, the effectiveness of CoT prompting can vary depending on the specific task and the quality of the examples provided, and it may not always yield improvements for simpler tasks where direct answers suffice.</p>
 <figure class="align-default" id="chapter-prompt-fig-basic-prompt-cot-demo">
 <a class="reference internal image-reference" href="../../_images/chain_of_thought_prompt_demo.png"><img alt="../../_images/chain_of_thought_prompt_demo.png" src="../../_images/chain_of_thought_prompt_demo.png" style="width: 805.6999999999999px; height: 401.09999999999997px;" />
 </a>
@@ -520,25 +459,64 @@ Sentiment:</p>
 <a class="reference internal image-reference" href="../../_images/chain_of_thought_prompt_demo2.png"><img alt="../../_images/chain_of_thought_prompt_demo2.png" src="../../_images/chain_of_thought_prompt_demo2.png" style="width: 737.8px; height: 588.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 20.2 </span><span class="caption-text">More COT examples.</span><a class="headerlink" href="#chapter-prompt-fig-basic-prompt-cot-demo2" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 20.2 </span><span class="caption-text">More COT examples for different tasks.</span><a class="headerlink" href="#chapter-prompt-fig-basic-prompt-cot-demo2" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
+<p>The classically CoT prompting requires CoT few-shot demonstration, a further simplification is to use sentence like “Let’s think step by step” to encourage the model to directly produce a reasoning chain before generating the final answer<span id="id2">[<a class="reference internal" href="#id474" title="Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke Iwasawa. Large language models are zero-shot reasoners. arxiv.org/abs/2205.11916, 2022.">KGR+22</a>]</span>. This approach is illustrated as the following.</p>
+<figure class="align-default" id="chapter-prompt-fig-basic-prompt-zero-shot-cot">
+<a class="reference internal image-reference" href="../../_images/zero_shot_CoT.png"><img alt="../../_images/zero_shot_CoT.png" src="../../_images/zero_shot_CoT.png" style="width: 1031.8px; height: 527.8px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 20.3 </span><span class="caption-text">Comparison of few-shot CoT and zero-shot CoT</span><a class="headerlink" href="#chapter-prompt-fig-basic-prompt-zero-shot-cot" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p></p></th>
+<th class="head text-right"><p>MultiArith</p></th>
+<th class="head text-right"><p>GSM8K</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Zero-Shot</p></td>
+<td class="text-right"><p>17.7</p></td>
+<td class="text-right"><p>10.4</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Few-Shot (2 samples)</p></td>
+<td class="text-right"><p>33.7</p></td>
+<td class="text-right"><p>15.6</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Few-Shot (8 samples)</p></td>
+<td class="text-right"><p>33.8</p></td>
+<td class="text-right"><p>15.6</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Zero-Shot-CoT</p></td>
+<td class="text-right"><p>78.7</p></td>
+<td class="text-right"><p>40.7</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Few-Shot-CoT (8 samples)</p></td>
+<td class="text-right"><p>93.0</p></td>
+<td class="text-right"><p>48.7</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Zero-Plus-Few-Shot-CoT （8 samples)</p></td>
+<td class="text-right"><p>92.8</p></td>
+<td class="text-right"><p>51.5</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 <section id="bibliography">
 <h2><span class="section-number">20.5. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id4">
+<div class="docutils container" id="id3">
 <div role="list" class="citation-list">
-<div class="citation" id="id475" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">KGR+22</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id474" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">KGR+22</a><span class="fn-bracket">]</span></span>
 <p>Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke Iwasawa. Large language models are zero-shot reasoners. <em>arxiv.org/abs/2205.11916</em>, 2022.</p>
 </div>
-<div class="citation" id="id471" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">WWS+22</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id470" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">WWS+22</a><span class="fn-bracket">]</span></span>
 <p>Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Ed Chi, Quoc Le, and Denny Zhou. Chain of thought prompting elicits reasoning in large language models. <em>ArXiv:2201.11903</em>, 2022.</p>
-</div>
-<div class="citation" id="id1502" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">ZS19</a><span class="fn-bracket">]</span></span>
-<p>Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: <a class="reference external" href="https://arxiv.org/abs/1910.07467">https://arxiv.org/abs/1910.07467</a>, <a class="reference external" href="https://arxiv.org/abs/1910.07467">arXiv:1910.07467</a>.</p>
 </div>
 </div>
 </div>
@@ -612,7 +590,7 @@ Sentiment:</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-llm-vs-instructed-llm">20.1. Base LLM vs instructed LLM</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompt">20.2. Zero-shot prompt</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-and-in-context-learning">20.3. Few-shot and in-context learning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cot">20.4. CoT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-of-thought-cot-prompting">20.4. Chain-of-Thought (CoT) Prompting</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">20.5. Bibliography</a></li>
 </ul>
   </nav></div>

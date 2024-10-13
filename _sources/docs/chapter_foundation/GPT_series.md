@@ -18,7 +18,7 @@ In the stage unsupervised pretraining from unlabeled data, the goal is to learn 
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/GPT/GPT_decoder_arch.png
 ---
-scale: 80%
+scale: 100%
 name: chapter_foundation_fig_gpt_gpt_decoder_architecture
 ---
 GPT uses the decoder component in the Transformer for language modeling.
@@ -48,7 +48,7 @@ GPT-1 uses the BooksCorpus dataset for pretraining. BooksCorpus is a large colle
 
 ### GPT-1 Fine Tuning
 
-To pretrained GPT model can be adopted for different downstream tasks by modifying the inputs format or adding minimal component accordingly.  a task-specific format and then adding minimal component to process the output to get task-specific predictions. As summarized in \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gptarch},
+To pretrained GPT model can be adopted for different downstream tasks by modifying the inputs format or adding minimal component accordingly.  a task-specific format and then adding minimal component to process the output to get task-specific predictions. As summarized in {numref}`chapter_foundation_fig_gpt_gpt_architecture`,
 * For **sequence tasks** such as text classification, the input is passed through the network as-is, and the output linear layer takes the last activation to make a classification decision.
 * For **sentence-pair tasks** such as textual entailment, the input that is made up of two sequences is marked with a delimiter, which helps the pre-trained model to know which part is premise or hypothesis in the case of textual entailment. Finally, the output linear layer takes the last activation to make a classification decision.
 * For **sentence vector similarity tasks**, we use the model to encode the two differently-ordered sentence pairs separately into two sequence representations, which are added element-wise before being fed into the linear output layer.
@@ -113,7 +113,7 @@ GPT-3 model {cite:p}`brown2020language` has 175 billion parameters, which is 100
 The major motivation of GPT-3 is to examine the few-shot learning ability for pretrained language model. This is inspired by the fact that humans can generally perform a new language task from only a few examples or from simple instructions - something which current NLP systems still largely struggle to do. 
 By training on the massive amount of data using a model with large number of parameters, GPT-3 achieved better results on many downstream tasks in zero-shot, one-shot, and few-shot $(K=32)$ settings without any gradient-based fine-tuning. 
 
-What is most special about GPT-3 is the ability to perform in-context ***few-shot learning*** without any model parameter updates via gradient descent [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:gpt3fewshotlearningdemo}]. In a typical few-shot learning setting, the model is given a natura language description of the task plus a few demonstration examples (e.g., input and output pairs) of the task at inference time and the model is asked to generate an output given a new input. Here the input is called ***context*** and the output is called a ***completion***. Take English sentence to French translation as an example, $K$ examples of context and completion are presented with one final example of context, and the model is expected to provide the completion. Typically, $K$ is in the range of 10 and 100. Clearly, few-shot learning is close to how human intelligence works and bring great metrics in reducing task-specific data.
+What is most special about GPT-3 is the ability to perform in-context **few-shot learning** without any model parameter updates via gradient descent [{numref}`chapter_foundation_fig_gpt_GPT3_few_shot_learning_demo`]. In a typical few-shot learning setting, the model is given a natura language description of the task plus a few demonstration examples (e.g., input and output pairs) of the task at inference time and the model is asked to generate an output given a new input. Here the input is called **context** and the output is called a **completion**. Take English sentence to French translation as an example, $K$ examples of context and completion are presented with one final example of context, and the model is expected to provide the completion. Typically, $K$ is in the range of 10 and 100. Clearly, few-shot learning is close to how human intelligence works and bring great metrics in reducing task-specific data.
 
 In the extreme end of few shot learning, one-shot learning is the case in which only one demonstration is presented. Further, zero-shot is the case where no demonstrations are given except for a natural language instruction describing the task. Zero-shot setting offers the ultimate test of the model's learning capacity, but it can also be unfairly hard due to ambiguity. 
 
@@ -236,8 +236,8 @@ As for physical or scientific reasoning, GPT-3 is not outperforming fine-tuned S
 |---|:---:|:---:|:---:|:---:|
 | Fine-tuned SOTA | 79.4 | **92.0** | **78.5** | **87.2** |
 | GPT-3 Zero-Shot | **80.5** | 68.8 | 51.4 | 57.6 |
-| GPT-3 One-Shot | **80.5**\* | 71.2 | 53.2 | 58.8 |
-| GPT-3 Few-Shot | **82.8**\* | 70.1 | 51.5 | 65.4 |
+| GPT-3 One-Shot | **80.5** | 71.2 | 53.2 | 58.8 |
+| GPT-3 Few-Shot | **82.8** | 70.1 | 51.5 | 65.4 |
 
 #### Arithmetic tasks
 

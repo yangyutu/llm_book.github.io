@@ -1,3 +1,4 @@
+(chapter_LLM_arch_sec_LLM_arch_fundamentals)=
 # LLM Architectures Fundamentals
 
 ## Overview
@@ -130,6 +131,8 @@ See {cite:p}`zhang2019rootmeansquarelayer` for math derivation
 
 ### Layer normalization position
 
+
+
 {cite:p}`xiong2020layer`
 
 The residual connection $x+F(x)$ in the Transformer layer will modify the variance of input $x$. To see this, let the variance of $x$ be $\sigma_1^2$ and the variance of $F(x)$ be $\sigma_2^2$. Then the variance of $x + F(x)$ will be given by 
@@ -159,6 +162,14 @@ wide range of applications.
 $$\operatorname{PreNorm Output} = X + \operatorname{SubLayer}(\operatorname{LayerNorm}(X))$$
 
 Intuitively, as the residual connection route $X$ is not being normalized, the gradient flow via the idenity mapping is therefore not compromised. This help the training of very deep neural networks by mitigating the vanishing gradient issue. 
+
+```{figure} ../img/chapter_foundation/pretrainedLM/Transformer_arch/layer_normalization_position.png
+---
+scale: 30%
+name: chapter_LLM_arch_fig_pretrained_LM_transformer_layernormalizationposition
+---
+Post-layer normalization and pre-layer normalization in an encoder layer.
+```
 
 ::::{grid}
 :gutter: 2
@@ -627,7 +638,8 @@ Take the following GPT-3 13B and 175B as an example, 175B model has approximate 
 
 
 
-## Computation breadown during forward pass
+(chapter_LLM_arch_sec_LLM_arch_fundamentals_forward_pass_computation)=
+## Forward Pass Computation Breadown
 
 
 b: batch_size

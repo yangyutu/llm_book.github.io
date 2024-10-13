@@ -1,7 +1,5 @@
+(chapter_foundation_sec_bert)=
 # BERT
-
-
-
 ## BERT Architecture
 
 In natural language processing, although we have seen many successful end-to-end systems , they usually require large scale training examples and the systems require a complete retrain for a different task. Alternatively, we can first learn a good representation of word sequences that not task-specific but would be likely to facilitate downstream specific tasks. Learning a good representation in prior from broadly available unlabeled data also resembles how human perform various intelligent tasks. 
@@ -12,9 +10,9 @@ With a good representation, the downstream tasks can be significantly sped up by
 Pre-training language models have several advantages: first, it enable the learning of universal language representations that suit different downstream tasks; second, it usually gives better performance in the downstream tasks after fine-tuning on a target task; finally, we can also interpret pre-training as a way of regularization to avoid overfitting on small data set.
 
 
-In \autoref{ch:neural-network-and-deep-learning:ApplicationsNLP:Sec:wordEmbedding}, we discussed different approaches (e.g., Word2Vec, GloVe) to learning a low-dimensional dense vector representation of word tokens. One significant drawback of these representations is context-independent or context-free static embedding, meaning the embedding of a word token is fixed no matter the context it is in. By contrast, in natural language, the meaning of a word is usually context-dependent. For example, in sentences  *I like to have an apple since I am thirty* vs. *I like to have an Apple to watch fun movies*, the word *apple* mean the fruit apple and the electronic device, respectively.
+In {ref}`chapter_foundation_sec_word_embedding`, we discussed different approaches (e.g., Word2Vec, GloVe) to learning a low-dimensional dense vector representation of word tokens. One significant drawback of these representations is context-independent or context-free static embedding, meaning the embedding of a word token is fixed no matter the context it is in. By contrast, in natural language, the meaning of a word is usually context-dependent. For example, in sentences  *I like to have an apple since I am thirty* vs. *I like to have an Apple to watch fun movies*, the word *apple* mean the fruit apple and the electronic device, respectively.
 
-There has been significant efforts directed to learning contextual embedding of word sequences\cite{Qiu2020PreTrained, liu2020survey}. A contextual embedding encoder usually operates at the sequence level. As shown in \autoref{ch:neural-network-and-deep-learning:ApplicationsNLP:fig:contextualizedembedding}, given
+There has been significant efforts directed to learning contextual embedding of word sequences{cite:p}`Qiu2020PreTrained, liu2020survey`. A contextual embedding encoder usually operates at the sequence level. As shown in the following, given
 a non-contextual word  embedding sequence $x_{1}, x_{2}, \cdots, x_{T}$, the contextual embeddings of the whole sequence are obtained simultaneously via 
 $$\left[{h}_{1}, {h}_{2}, \cdots, {h}_{T}\right]=\operatorname{ContextualEncoder}\left(x_{1}, x_{2}, \cdots, x_{T}\right).$$
 
@@ -29,7 +27,7 @@ Static word embedding approach vs. contextualized word embedding approach.
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/BERT_contextualizedEmbedding/contextualizedEmbedding.png
 ---
-scale: 30%
+scale: 50%
 name: chapter_foundation_fig_bert_contextualizedembedding
 ---
 A generic neural contextual embedding encoder.
@@ -60,7 +58,7 @@ In the following, we will go through detailed structure of BERT.
 
 The input to the BERT is a
 sequence of token representations. The representation of each token is a dense vector of dimensionality $d_{model}$, which is the summation of  following components:
-* ***Token embedding*** of dimensionality $d_{model}$, which is the ordinary dense word embedding. Specifically, a sub-word type of embedding, called wordPiece embedding \cite{wu2016google}, with a 30,000 token vocabulary is used. Note that A [CLS] token is added to the input word tokens at the beginning of the first sentence and a [SEP] token is inserted at the end of each sentence.
+* ***Token embedding*** of dimensionality $d_{model}$, which is the ordinary dense word embedding. Specifically, a sub-word type of embedding, called wordPiece embedding {cite:p}`wu2016google`, with a 30,000 token vocabulary is used. Note that A [CLS] token is added to the input word tokens at the beginning of the first sentence and a [SEP] token is inserted at the end of each sentence.
 * ***Segment embedding*** of dimensionality $d_{model}$, which is a marker 0 or 1 indicating if sentence A precedes sentence B. Segment embedding is typically learned from the training.
 * ***Positional embedding***  of dimensionality $d_{model}$, which encodes information of
 	position in the sentence. Positions matters in word and sentence level meanings. For example, *I love you* and *you love me* are different. Position embedding is a vector depending on where the token is located in the segment. It is a constant vector throughout the training.
@@ -77,7 +75,7 @@ Input embedding in BERT, which consists of token embedding, segmenet embedding a
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/BERT_contextualizedEmbedding/embedding_interpretation.png
 ---
-scale: 30%
+scale: 40%
 name: chapter_foundation_fig_bert_bert_embeddinginterpretation
 ---
 Embedding layer interpretation.
@@ -142,8 +140,7 @@ $$\begin{align}
 \end{align}
 $$
 
-where $e_i \in \mathbb{R}^{n\times d_{model}}$, $\operatorname{EncoderLalyer}: \mathbb{R}^{n\times d_{model}}\to \mathbb{R}^{n\times d_{model}}$ is an encoder sub-unit, $N$ is the number of encoder layers. Specifically, this encoder layer is given by \autoref{ch:neural-network-and-deep-learning:Advanced:NLP:def:BERTencoderLayer}.
-Note that Dropout operations are not shown above. Dropouts are applied after initial embeddings $e_0$, every self-attention output, and every point-wise feed-forward network output. 	
+where $e_i \in \mathbb{R}^{n\times d_{model}}$, $\operatorname{EncoderLalyer}: \mathbb{R}^{n\times d_{model}}\to \mathbb{R}^{n\times d_{model}}$ is an encoder sub-unit, $N$ is the number of encoder layers. Specifically, this encoder layer is given by {ref}`chapter_foundation_fig_bert_transformerencoder`. Note that Dropout operations are not shown above. Dropouts are applied after initial embeddings $e_0$, every self-attention output, and every point-wise feed-forward network output. 	
 ````
 Note that Dropout operations are not shown above. Dropouts are applied after initial embeddings $e_0$, every self-attention output, and every point-wise feed-forward network output. 
 
@@ -199,7 +196,7 @@ Another improve of BERT over EMLO is the tokenization strategy. BERT tokenizes w
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/BERT_contextualizedEmbedding/BERT/BERTPretrainFineTune.png
 ---
-scale: 30%
+scale: 45%
 name: chapter_foundation_fig_bert_bertpretrainfinetune
 ---
 BERT pre-training and downstream task fine tuning framework. Image from {cite:p}`devlin2018bert`.
@@ -234,7 +231,7 @@ There are several imperfections of the masking strategy.
 In the NSP, the network is trained to understand relationship between two sentences. A pre-trained model with this kind of understanding is relevant for tasks like question answering and natural language Inference. This task is also reminiscent of human language study exercise, where the learner needs to restore the correct order of sentences in a paragraph consisting of randomly displaced sentences.
 
 
-The input for NSP is a pair of segments, which can each contain multiple natural sentences, but the total combined length must be less than 512 tokens. Notably, it is found that using individual natural sentence pairs hurts performance on downstream tasks\cite{liu2019roberta}.
+The input for NSP is a pair of segments, which can each contain multiple natural sentences, but the total combined length must be less than 512 tokens. Notably, it is found that using individual natural sentence pairs hurts performance on downstream tasks{cite:p}`liu2019roberta`.
 
 The model is trained to predict if the second sentence is the next sentence in the original text. In choosing the sentences pair for each pretraining example, $50 \%$ of the time, the second sentence is the actual next sentence of the first one, and $50 \%$ of the time, it is a random sentence from the corpus. 
 
@@ -282,7 +279,7 @@ Pre-training data include the BooksCorpus ( $800 \mathrm{M}$ words) and English 
 ### Fine-tuning And Evaluation
 
 
-A pretrained BERT model can be fine-tuned to a wide range of downstream tasks, as we introduced in the previous section [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:sec:BERTDownstreamTasks}]. Depending on the task type, different architecture configurations will be adopted \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:berttasks}:
+A pretrained BERT model can be fine-tuned to a wide range of downstream tasks, as we introduced above. Depending on the task type, different architecture configurations will be adopted [{ref}`chapter_foundation_fig_bert_berttasks`]:
 * For single-sentence tasks, such as sentiment analysis, tokens of a single sentence will be fed into BERT. The embedding output corresponding to the [CLS] token will be used in a linear classifier to predict the class label.
 * For sequence-labeling tasks, where named-entity-recognition, tokens of a single sentence will be fed into BERT. The token embedding outputs will be used in a linear classifier to predict the class label of a token.
 * For sentence-pair tasks, where the relationship between two sentences will be predicted, tokens from two sentences will be fed into BERT. The embedding output corresponding to the [CLS] token will be used in a linear classifier to predict the class label.
@@ -291,7 +288,7 @@ A pretrained BERT model can be fine-tuned to a wide range of downstream tasks, a
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/BERT_contextualizedEmbedding/BERT/BERT_tasks.png
 ---
-scale: 30%
+scale: 20%
 name: chapter_foundation_fig_bert_berttasks
 ---
 BERT architecture configuration for different downstream tasks.
@@ -318,7 +315,7 @@ In ALBERT , there are three major improvements on the model architecture and the
 	The two-step projection only requires parameters $VE + EH$ and the reduction is notable when $E \ll H$.
 * ***Cross-layer parameter sharing***. In the original BERT, each encoder sub-unit (which has an attention module and a feed-forward module) has different parameters. In ALBERT, these parameters are shared in different sub-units to reduce model size and improve parameter efficiency.  The authors also mentioned that there are alternative parameter sharing strategies: only sharing feed-forward network parameters; only sharing attention module parameters; sharing both feed-forward network and attention module. 
 
-The effect of embedding factorization and parameter sharing can be illustrated in the comparison [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:tab:comparisonBERTvsALBERT}].
+The effect of embedding factorization and parameter sharing can be illustrated in the following comparison.
 
 
 ```{table} BERT model parameters
@@ -338,7 +335,7 @@ The effect of embedding factorization and parameter sharing can be illustrated i
 ```
 The third improvement in ALBERT over BERT is a new sentence-level loss to replace the next sentence prediction task. In the original BERT, the next-sentence prediction (NSP)
 
-In ALBERT, a new sentence-order prediction (SOP) loss to model inter-sentence coherence, which demonstrated better performance in multi-sentence encoding tasks was motivated to improve performance on downstream tasks involving reasoning about the relationship between sentence pairs such as natural language inference. However, several follow-up studies \cite{liu2019roberta} found that the NSP task has minimal impact and was even eliminated in several BERT variants. One possible reason is that there is a lack of difficulty in the NSP task. Specifically, the sentence pair in a negative example are randomly sampled from the corpus, and there could exist a vast topical difference that makes the prediction task much easier than the intended coherence prediction. 
+In ALBERT, a new sentence-order prediction (SOP) loss to model inter-sentence coherence, which demonstrated better performance in multi-sentence encoding tasks was motivated to improve performance on downstream tasks involving reasoning about the relationship between sentence pairs such as natural language inference. However, several follow-up studies {cite:p}`liu2019roberta` found that the NSP task has minimal impact and was even eliminated in several BERT variants. One possible reason is that there is a lack of difficulty in the NSP task. Specifically, the sentence pair in a negative example are randomly sampled from the corpus, and there could exist a vast topical difference that makes the prediction task much easier than the intended coherence prediction. 
 
 In ALBERT, a sentence-order prediction (SOP) loss replaces NSP loss. The SOP loss avoids topic prediction and instead focuses on modeling inter-sentence coherence. The positive example consists of two consecutive segments from the same document; the negative example consists of the same two consecutive segments but with their order swapped. This forces the model to learn a fine-grained representation about sentence level coherence properties. 
 
@@ -392,24 +389,24 @@ where the matrices $\boldsymbol{E}^{S}$ and $\boldsymbol{H}^{T}$ refer to the em
 
 ***Transformer-layer Distillation***. The Transformer-layer knowledge distillation includes the self-attention based distillation and hidden-state distillation. 
 
-The attention based distillation can transfer rich semantic and syntax knowledge captured in self-attention modules \cite{clark2019does}. Specifically, we impose a training loss to match self-attention matrices between the teacher and the student network, given by:
+The attention based distillation can transfer rich semantic and syntax knowledge captured in self-attention modules {cite:p}`clark2019does`. Specifically, we impose a training loss to match self-attention matrices between the teacher and the student network, given by:
 
 $$
 \mathcal{L}_{\text {attn }}=\frac{1}{H} \sum_{i=1}^{H} \operatorname{MSE}\left(\boldsymbol{A}_{i}^{S}, \boldsymbol{A}_{i}^{T}\right),
-
 $$
+
 where $H$ is the number of attention heads, $\boldsymbol{A}_{i} \in$ is the attention matrix in the $i$-th head of model. It is found that using the unnormalized attention matrix $\boldsymbol{A}_{i}$ led to a faster convergence rate and better performances.
 
 Compared to the attention based distillation, hidden-state distillation impose matching condition on outputs of Transformer layers via a training loss given by:
 
 $$
 \mathcal{L}_{\text {hidn }}=\operatorname{MSE}\left(\boldsymbol{H}^{S} \boldsymbol{W}_{h}, \boldsymbol{H}^{T}\right)
-
 $$
+
 where the matrices $\boldsymbol{H}^{S}$ and $\boldsymbol{H}^{T}$ refer to the hidden states of student and teacher networks after the feed-forward network. The matrix $\boldsymbol{W}_{h}$ is a learnable linear transformation to match the dimensionality between the student's hidden state and the teacher's hidden states.
 
 
-***Prediction-layer Distillation***. The final prediction-layer distillation follows the soft target classification task as in \cite{hinton2015distilling}. Specifically, we impose a soft cross-entropy loss between the student network's logits against the teacher's logits:
+***Prediction-layer Distillation***. The final prediction-layer distillation follows the soft target classification task as in {cite:p}`hinton2015distilling`. Specifically, we impose a soft cross-entropy loss between the student network's logits against the teacher's logits:
 
 $$
 \mathcal{L}_{\text {pred }}=\operatorname{CrossEntropy}\left(\boldsymbol{z}^{T} / \tau, \boldsymbol{z}^{S} / \tau\right)
@@ -428,7 +425,7 @@ $$
 ### MobileBERT
 
 
-MobileBERT {cite:p}`sun2020mobilebert` is designed to be as deep as BERT $_{\text {LARGE }}$ and make each layer much narrower. A deep and narrow Transformer networks have the strength of large modeling capacity like deep network and maintain a manageable model size. To maintain a good balance between self-attentions and feed-forward networks a bottleneck structures is adopted, which amounts to adding projection layers (with activation) before the entry and after the output of each Transformer layer [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:mobilebertdemo}]. Direct distill knowledge from $\mathrm{BERT}_{\text {LARGE }}$ to MobileBERT is challenge due to large discrepancy in the architecture. One solution is to first train a specially designed teacher model, an inverted-bottleneck incorporated $\mathrm{BERT}_{\text {LARGE }}$ model (IB-BERT). Then, we conduct knowledge transfer from IB-BERT to MobileBERT. 
+MobileBERT {cite:p}`sun2020mobilebert` is designed to be as deep as BERT $_{\text {LARGE }}$ and make each layer much narrower. A deep and narrow Transformer networks have the strength of large modeling capacity like deep network and maintain a manageable model size. To maintain a good balance between self-attentions and feed-forward networks a bottleneck structures is adopted, which amounts to adding projection layers (with activation) before the entry and after the output of each Transformer layer. Direct distill knowledge from $\mathrm{BERT}_{\text {LARGE }}$ to MobileBERT is challenge due to large discrepancy in the architecture. One solution is to first train a specially designed teacher model, an inverted-bottleneck incorporated $\mathrm{BERT}_{\text {LARGE }}$ model (IB-BERT). Then, we conduct knowledge transfer from IB-BERT to MobileBERT. 
 
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/BERT_contextualizedEmbedding/modelDistillation/mobile_bert_demo.png
@@ -514,12 +511,12 @@ $$
 \mathcal{L}=\mathcal{L}_{\mathrm{AT}}+\mathcal{L}_{\mathrm{VR}}.
 $$
 
+(chapter_foundation_sec_bert_electra)=
 ### Sample Efficient: ELECTRA
-\label{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:sec:ELECTRA}
 
-ELECTRA (Efficiently Learning an Encoder that Classifies Token Replacements Accurately) \cite{clark2020electra} is proposed to improve the BERT pretraining efficiency when there is a pretraining computation budget. 
+ELECTRA (Efficiently Learning an Encoder that Classifies Token Replacements Accurately) {cite:p}`clark2020electra` is proposed to improve the BERT pretraining efficiency when there is a pretraining computation budget. 
 
-The key innovation in ELECTRA is the proposition of a new generator-discriminator training framework. This framework shares some similarity to but not equivalent to adversarial training (e.g., GAN). As shown in \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:electrademo}, The generator $G$, typically a masked language model, produces an output distribution over masked tokens for replacement purpose. The generator is trained to predict masked tokens and the discriminator $D$ is trained to distinguish which token is replaced. In contrast to GAN, the gradient of discrimination loss will not passed down to the generator to train the generator to generate adversarial examples. In addition,  no NSP pre-training task is performed.
+The key innovation in ELECTRA is the proposition of a new generator-discriminator training framework. This framework shares some similarity to but not equivalent to adversarial training (e.g., GAN). As shown in {numref}`chapter_foundation_fig_bert_electrademo`, The generator $G$, typically a masked language model, produces an output distribution over masked tokens for replacement purpose. The generator is trained to predict masked tokens and the discriminator $D$ is trained to distinguish which token is replaced. In contrast to GAN, the gradient of discrimination loss will not passed down to the generator to train the generator to generate adversarial examples. In addition,  no NSP pre-training task is performed.
 
 The major benefits arising from novel architectures are two folds.
 *  The classical masked language modeling (MLM) approaches is not sample efficient since the network only learns from $15 \%$ of the tokens per example. On the other hand, ELECTRA performs discrimination task on all tokens rather than generative task on just masked tokens. 
@@ -566,7 +563,7 @@ The authors show that when is the compute budget on pretraining, ELECTRA can sig
 
 In this section, we discuss the possibility of obtaining a universal representation for different languages {cite:p}`aghajanyan2018towards`. In other words, when we pretrain a language model on corpus in different languages, the pretrained encoder is able to represent different language symbols and tokens in the same semantic vector space. This unified representation can benefit cross-lingual language processing tasks, such as translation.  
 
-One application of cross-lingual ability is to fine-tune a pretrained multilingual language model on one language for a specific task, and the model automatically acquire the capability to perform the same task in another target language (which is also known as ***Zero-shot transfer***). This application is attractive when we don't have enough training data in the target language, for example, low-resource languages. Another application scenario is to fine-tuning model in multiple languages at the same time; such cross-lingual training can improve the overall performance on all of these languages. In \cite{garcia2017translanguaging}, it is shown that a single shared sequence-to-sequence LSTM encoder-decoder model can be used to perform machine translation for multiple language pairs.
+One application of cross-lingual ability is to fine-tune a pretrained multilingual language model on one language for a specific task, and the model automatically acquire the capability to perform the same task in another target language (which is also known as ***Zero-shot transfer***). This application is attractive when we don't have enough training data in the target language, for example, low-resource languages. Another application scenario is to fine-tuning model in multiple languages at the same time; such cross-lingual training can improve the overall performance on all of these languages. In {cite:p}`garcia2017translanguaging`, it is shown that a single shared sequence-to-sequence LSTM encoder-decoder model can be used to perform machine translation for multiple language pairs.
 
 For independently learned static word embeddings (e.g., word2vec) in different languages, the embeddings corresponding to similar semantics are usually vastly different. To encode tokens of different languages into the same semantic space, one can align (i.e., translate and rotate) two different semantic vectors space by requiring tokens and their translated tokens have similar embeddings in the same semantic vector. The alignment or conversion can be realized via ***translation matrix***, which maps one's language embedding vector into another language's embedding space. 
 
@@ -593,7 +590,7 @@ Although there is no need to use bilingual parallel sentence pairs, and only the
 ### XLM, XLM-R, And XLM-E 
 
 
-One source where mBERT acquires its cross-lingual ability is from the shared vocabulary and subwords cross languages. However, for some languages, the training might suffer from the lack of shared vocabulary in monolingual dominant corpora (e.g., wikipidia). XLM (Cross-lingual Language Model Pretraining) {cite:p}`lample2019cross` adapted BERT's unsupervised pre-training masked language modeling to multi-lingual settings and proposed an additional supervised learning strategy known as Translation Language Modeling (TLM) \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:fig:xlmdemo}. 
+One source where mBERT acquires its cross-lingual ability is from the shared vocabulary and subwords cross languages. However, for some languages, the training might suffer from the lack of shared vocabulary in monolingual dominant corpora (e.g., wikipidia). XLM (Cross-lingual Language Model Pretraining) {cite:p}`lample2019cross` adapted BERT's unsupervised pre-training masked language modeling to multi-lingual settings and proposed an additional supervised learning strategy known as Translation Language Modeling (TLM) [{numref}`chapter_foundation_fig_bert_xlmdemo`]. 
 
 Compared to BERT's masked language modeling, multilingual masked language modeling (MMLM) uses text streams of an arbitrary number of sentences (truncated at 256 tokens) instead of pairs of sentences. To offset the imbalance between rare and frequent tokens (e.g. punctuations or stop words), the probability of a token being masked is adjusted to be proportional to the square root of their invert frequencies. 
 
@@ -610,10 +607,10 @@ Cross-lingual language model pretraining has a unsupervised multi-lingual masked
 ```
 
 
-Although XLM achieves better results than mBERT, it relies on bilingual parallel sentence pairs. However, it is difficult to obtain large-scale sentence pair data in many languages. In addition, bilingual parallel data is generally sentence-level, which makes it impossible to use a wider range of contextual information beyond sentences, thus causing a certain loss to the performance of the model. In order to solve this problem, Facebook has improved XLM and proposed the XLM-R (XLM-RoBERTa) model\cite{conneau2019unsupervised}. As the name suggests, the model structure of XLM-R is consistent with RoBERTa, and the biggest difference from XLM is that the pre-training task of the translation language model is removed, so that it no longer relies on bilingual parallel corpora. In order to further improve the effect of the model on small languages, XLM-R also uses the larger CommonCrawl multilingual corpus. In order to improve the cross-lingual ability of the pretrained model, one can also manually perform code-switch to enrich the training data.
+Although XLM achieves better results than mBERT, it relies on bilingual parallel sentence pairs. However, it is difficult to obtain large-scale sentence pair data in many languages. In addition, bilingual parallel data is generally sentence-level, which makes it impossible to use a wider range of contextual information beyond sentences, thus causing a certain loss to the performance of the model. In order to solve this problem, Facebook has improved XLM and proposed the XLM-R (XLM-RoBERTa) model{cite:p}`conneau2019unsupervised`. As the name suggests, the model structure of XLM-R is consistent with RoBERTa, and the biggest difference from XLM is that the pre-training task of the translation language model is removed, so that it no longer relies on bilingual parallel corpora. In order to further improve the effect of the model on small languages, XLM-R also uses the larger CommonCrawl multilingual corpus. In order to improve the cross-lingual ability of the pretrained model, one can also manually perform code-switch to enrich the training data.
 
 
-To make XLM more sample efficient in the pretraining process, we can adopt ELECTRA style discriminator training in the multi-lingual setting.  In XLM-E\cite{chi2021xlm},  two discriminative pre-training tasks, namely multilingual replaced token detection, and translation replaced token detection, are introduced. As shown in \autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:sec:ELECTRA}, the two tasks build input sequences by replacing tokens in multilingual sentences and translation pairs.  The multilingual replaced token detection task requires the model to distinguish real input tokens from corrupted monolingual sentences in different languages. Both the generator and the discriminator are shared across languages. The vocabulary is also shared for different languages. The task is the same as in monolingual ELECTRA pre-training [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:pretrainedLM:sec:ELECTRA}]. 
+To make XLM more sample efficient in the pretraining process, we can adopt ELECTRA style discriminator training in the multi-lingual setting.  In XLM-E{cite:p}`chi2021xlm`,  two discriminative pre-training tasks, namely multilingual replaced token detection, and translation replaced token detection, are introduced. As shown in {ref}`chapter_foundation_sec_bert_electra`, the two tasks build input sequences by replacing tokens in multilingual sentences and translation pairs.  The multilingual replaced token detection task requires the model to distinguish real input tokens from corrupted monolingual sentences in different languages. Both the generator and the discriminator are shared across languages. The vocabulary is also shared for different languages. The task is the same as in monolingual ELECTRA pre-training. 
 
 In the Translation Replaced Token Detection task, we have parallel translated sentences as the input. The detection of replaced tokens is allowed to attend to surrounding words in the same language and words in the translated input. 
 

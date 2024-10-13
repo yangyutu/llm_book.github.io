@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>13. LLM alignement and preference learning &#8212; LLM Foundations</title>
+    <title>13. LLM Alignement and Preference learning &#8212; LLM Foundations</title>
   
   
   
@@ -103,8 +103,8 @@
          class="form-control"
          name="q"
          id="search-input"
-         placeholder="Search this book..."
-         aria-label="Search this book..."
+         placeholder="Search..."
+         aria-label="Search..."
          autocomplete="off"
          autocorrect="off"
          autocapitalize="off"
@@ -174,17 +174,9 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        
-        <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1">
-                <a class="reference internal" href="../index.html">
-                    Table of Contents
-                </a>
-            </li>
-        </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: Unveiling the Power of Language Models in the Age of Artificial Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: LLM in the Age of AI</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
 <ul class="nav bd-sidenav">
@@ -205,7 +197,7 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="training_fundamentals.html">11. LLM Training Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="finetuning.html">12. LLM finetuning</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">13. LLM alignement and preference learning</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">13. LLM Alignement and Preference learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accelerated_training.html">14. LLM Training Acceleration</a></li>
 
 </ul>
@@ -216,20 +208,16 @@
 
 
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">20. Basic prompt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">21. Advanced prompt techniques</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG)</span></p>
-<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">22. Basic RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">23. Advanced rag techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">24. Information Retrieval Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR</a></li>
 </ul>
 
     </div>
@@ -271,54 +259,6 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
-
-
-
-
-
-<div class="dropdown dropdown-download-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
-    <i class="fas fa-download"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="../../_sources/docs/chapter_training/alignment.md" target="_blank"
-   class="btn btn-sm btn-download-source-button dropdown-item"
-   title="Download source file"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="btn__text-container">.md</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li>
-<button onclick="window.print()"
-  class="btn btn-sm btn-download-pdf-button dropdown-item"
-  title="Print to PDF"
-  data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="btn__text-container">.pdf</span>
-</button>
-</li>
-      
-  </ul>
-</div>
-
 
 
 
@@ -368,7 +308,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>LLM alignement and preference learning</h1>
+    <h1>LLM Alignement and Preference learning</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -413,7 +353,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="llm-alignement-and-preference-learning">
-<h1><span class="section-number">13. </span>LLM alignement and preference learning<a class="headerlink" href="#llm-alignement-and-preference-learning" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">13. </span>LLM Alignement and Preference learning<a class="headerlink" href="#llm-alignement-and-preference-learning" title="Link to this heading">#</a></h1>
 <section id="motivation">
 <h2><span class="section-number">13.1. </span>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
 <p>The objective function in LLM pretraining is predicting the next token on a webpage from the internet. When the trained model is properly and carefully prompted as demonstration (i.e., in-context learning as in GPT-3), the model can largely accomplish useful tasks by following these demonstrations. However, these model can often generate un-desired outputs, including un-factual content, biased and harmful text, or simply do not follow the instructions in the prompt.</p>
@@ -452,8 +392,8 @@ on this reward model. Image from <span id="id4">[<a class="reference internal" h
 </section>
 <section id="preference-data-collection">
 <h3><span class="section-number">13.2.3. </span>Preference data collection<a class="headerlink" href="#preference-data-collection" title="Link to this heading">#</a></h3>
-<div class="pst-scrollable-table-container"><table class="table" id="id1522">
-<caption><span class="caption-number">Table 13.1 </span><span class="caption-text">How labeler evaluates the response quality</span><a class="headerlink" href="#id1522" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1523">
+<caption><span class="caption-number">Table 13.1 </span><span class="caption-text">How labeler evaluates the response quality</span><a class="headerlink" href="#id1523" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Metadata</p></th>
 <th class="head text-right"><p>Scale</p></th>
@@ -564,14 +504,14 @@ In addition, we add a per-token KL penalty from the SFT model at each token to m
 It no longer uses reinforcement learning methods. Through mathematical reasoning, it simplifies the original preference alignment objective step by step, and finally trains an aligned model using simpler steps similar to SFT (Supervised Fine-Tuning).</p></li>
 </ul>
 <p>The following illustrates from the DPO paper to visually compare the differences between RLHF-PPO and DPO</p>
-<figure class="align-default" id="chapter-foundation-fig-bert-bert-elmo">
+<figure class="align-default" id="chapter-training-fig-alignmenet-dpo-ppo-comparison">
 <a class="reference internal image-reference" href="../../_images/DPO_PPO_comparison.png"><img alt="../../_images/DPO_PPO_comparison.png" src="../../_images/DPO_PPO_comparison.png" style="width: 814.95px; height: 167.85px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 13.3 </span><span class="caption-text">DPO optimizes for human preferences while avoiding reinforcement learning. Existing methods for fine-tuning language models with human feedback first fit a reward model to a dataset of prompts and
 human preferences over pairs of responses, and then use RL to find a policy that maximizes the learned reward.
 In contrast, DPO directly optimizes for the policy best satisfying the preferences with a simple classification
-objective. Image from <span id="id7">[<a class="reference internal" href="#id1504" title="Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning, and Chelsea Finn. Direct preference optimization: your language model is secretly a reward model. 2024. URL: https://arxiv.org/abs/2305.18290, arXiv:2305.18290.">RSM+24</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-bert-bert-elmo" title="Link to this image">#</a></p>
+objective. Image from <span id="id7">[<a class="reference internal" href="#id1504" title="Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning, and Chelsea Finn. Direct preference optimization: your language model is secretly a reward model. 2024. URL: https://arxiv.org/abs/2305.18290, arXiv:2305.18290.">RSM+24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignmenet-dpo-ppo-comparison" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>DPO pipelines</p>

@@ -391,8 +391,6 @@ In comparison to the Mikolov processed version of the Penn Treebank (PTB), the W
 | OOV ratio | 0.4% | | |
 ```
 ````
-## Neural Language Models
-
 
 ## Bibliography
 

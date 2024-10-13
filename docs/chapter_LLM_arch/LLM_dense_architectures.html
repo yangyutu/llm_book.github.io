@@ -103,8 +103,8 @@
          class="form-control"
          name="q"
          id="search-input"
-         placeholder="Search this book..."
-         aria-label="Search this book..."
+         placeholder="Search..."
+         aria-label="Search..."
          autocomplete="off"
          autocorrect="off"
          autocapitalize="off"
@@ -174,17 +174,9 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        
-        <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1">
-                <a class="reference internal" href="../index.html">
-                    Table of Contents
-                </a>
-            </li>
-        </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: Unveiling the Power of Language Models in the Age of Artificial Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: LLM in the Age of AI</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
 <ul class="nav bd-sidenav">
@@ -204,8 +196,8 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">11. LLM Training Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM alignement and preference learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM Alignement and Preference learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">14. LLM Training Acceleration</a></li>
 
 </ul>
@@ -216,20 +208,16 @@
 
 
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">20. Basic prompt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">21. Advanced prompt techniques</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG)</span></p>
-<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">22. Basic RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">23. Advanced rag techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">24. Information Retrieval Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR</a></li>
 </ul>
 
     </div>
@@ -271,54 +259,6 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
-
-
-
-
-
-<div class="dropdown dropdown-download-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
-    <i class="fas fa-download"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="../../_sources/docs/chapter_LLM_arch/LLM_dense_architectures.md" target="_blank"
-   class="btn btn-sm btn-download-source-button dropdown-item"
-   title="Download source file"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="btn__text-container">.md</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li>
-<button onclick="window.print()"
-  class="btn btn-sm btn-download-pdf-button dropdown-item"
-  title="Print to PDF"
-  data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="btn__text-container">.pdf</span>
-</button>
-</li>
-      
-  </ul>
-</div>
-
 
 
 
@@ -420,7 +360,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dense-architecture-examples">9.8. Dense Architecture Examples</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">9.9. Summary</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-architectures">9.10. LLama architectures</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computation-breadown-during-forward-pass">9.11. Computation breadown during forward pass</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-pass-computation-breadown">9.11. Forward Pass Computation Breadown</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">9.12. Bibliography</a></li>
 </ul>
             </nav>
@@ -434,7 +374,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="llm-architectures-fundamentals">
-<h1><span class="section-number">9. </span>LLM Architectures Fundamentals<a class="headerlink" href="#llm-architectures-fundamentals" title="Link to this heading">#</a></h1>
+<span id="chapter-llm-arch-sec-llm-arch-fundamentals"></span><h1><span class="section-number">9. </span>LLM Architectures Fundamentals<a class="headerlink" href="#llm-architectures-fundamentals" title="Link to this heading">#</a></h1>
 <section id="overview">
 <h2><span class="section-number">9.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <figure class="align-default" id="chapter-foundation-fig-pretrained-lm-transformer-arch">
@@ -522,7 +462,7 @@ R(\theta)=\left[\begin{array}{cc}
 </section>
 <section id="rms-norm-root-mean-square-norm">
 <h3><span class="section-number">9.3.2. </span>RMS Norm (Root Mean Square Norm)<a class="headerlink" href="#rms-norm-root-mean-square-norm" title="Link to this heading">#</a></h3>
-<p>A common hypothesis on why layer normalization can help stalize training and boost model convergence is the capability in  handling re-centering and re-scaling of both inputs and weight matrix. RMSNorm <span id="id3">[<a class="reference internal" href="../chapter_prompt/basic_prompt.html#id1502" title="Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: https://arxiv.org/abs/1910.07467, arXiv:1910.07467.">ZS19</a>]</span> is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. RMSNorm hypothesizes that only the re-scaling component is necessary and proposes the following simplified normalization formula</p>
+<p>A common hypothesis on why layer normalization can help stalize training and boost model convergence is the capability in  handling re-centering and re-scaling of both inputs and weight matrix. RMSNorm <span id="id3">[<a class="reference internal" href="#id1509" title="Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: https://arxiv.org/abs/1910.07467, arXiv:1910.07467.">ZS19</a>]</span> is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. RMSNorm hypothesizes that only the re-scaling component is necessary and proposes the following simplified normalization formula</p>
 <div class="math notranslate nohighlight">
 \[
 \operatorname{RMSNorm}(x)=\frac{x}{\sqrt{\frac{1}{H} \sum_{i=1}^H x_i^2}} \cdot \gamma
@@ -550,7 +490,7 @@ R(\theta)=\left[\begin{array}{cc}
 <strong>RMSNorm</strong>, by using only RMS for normalization, can provide a more robust, smoother gradient flow, especially in deeper networks. It reduces the impact of mean on gradient fluctuations, thereby improving the stability and speed of training.</p>
 </div>
 <div class="sd-card-footer docutils">
-<p class="sd-card-text">See <span id="id4">[<a class="reference internal" href="../chapter_prompt/basic_prompt.html#id1502" title="Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: https://arxiv.org/abs/1910.07467, arXiv:1910.07467.">ZS19</a>]</span> for math derivation</p>
+<p class="sd-card-text">See <span id="id4">[<a class="reference internal" href="#id1509" title="Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: https://arxiv.org/abs/1910.07467, arXiv:1910.07467.">ZS19</a>]</span> for math derivation</p>
 </div>
 </div>
 </div>
@@ -579,6 +519,13 @@ wide range of applications.</p>
 <div class="math notranslate nohighlight">
 \[\operatorname{PreNorm Output} = X + \operatorname{SubLayer}(\operatorname{LayerNorm}(X))\]</div>
 <p>Intuitively, as the residual connection route <span class="math notranslate nohighlight">\(X\)</span> is not being normalized, the gradient flow via the idenity mapping is therefore not compromised. This help the training of very deep neural networks by mitigating the vanishing gradient issue.</p>
+<figure class="align-default" id="chapter-llm-arch-fig-pretrained-lm-transformer-layernormalizationposition">
+<a class="reference internal image-reference" href="../../_images/layer_normalization_position.png"><img alt="../../_images/layer_normalization_position.png" src="../../_images/layer_normalization_position.png" style="width: 471.59999999999997px; height: 351.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 9.2 </span><span class="caption-text">Post-layer normalization and pre-layer normalization in an encoder layer.</span><a class="headerlink" href="#chapter-llm-arch-fig-pretrained-lm-transformer-layernormalizationposition" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
 <div class="sd-col sd-d-flex-row docutils">
@@ -643,7 +590,7 @@ wide range of applications.</p>
 <a class="reference internal image-reference" href="../../_images/MHA.png"><img alt="../../_images/MHA.png" src="../../_images/MHA.png" style="width: 267.5px; height: 262.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.2 </span><span class="caption-text">Multi-head attention has <span class="math notranslate nohighlight">\(H\)</span> query, key, and value heads for each token.</span><a class="headerlink" href="#chapter-llm-arch-fig-fundamentals-attention-mha" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 9.3 </span><span class="caption-text">Multi-head attention has <span class="math notranslate nohighlight">\(H\)</span> query, key, and value heads for each token.</span><a class="headerlink" href="#chapter-llm-arch-fig-fundamentals-attention-mha" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
@@ -685,7 +632,7 @@ aggressive cut in both memory bandwidth and capacity.</p>
 <a class="reference internal image-reference" href="../../_images/MHA.png"><img alt="../../_images/MHA.png" src="../../_images/MHA.png" style="width: 267.5px; height: 262.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.3 </span><span class="caption-text">Multi-head attention has <span class="math notranslate nohighlight">\(H\)</span> query, and one shared single key head and single value head for each token.</span><a class="headerlink" href="#chapter-llm-arch-fig-fundamentals-attention-mqa" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 9.4 </span><span class="caption-text">Multi-head attention has <span class="math notranslate nohighlight">\(H\)</span> query, and one shared single key head and single value head for each token.</span><a class="headerlink" href="#chapter-llm-arch-fig-fundamentals-attention-mqa" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
@@ -737,7 +684,7 @@ GQA is shown to achieve quality close to MHA with comparable speed to MQA</p>
 <a class="reference internal image-reference" href="../../_images/GQA.png"><img alt="../../_images/GQA.png" src="../../_images/GQA.png" style="width: 448.5px; height: 340.5px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.4 </span><span class="caption-text">GQA divides the key and value heads into multiple groups. Within each group, a single shared
+<p><span class="caption-number">Fig. 9.5 </span><span class="caption-text">GQA divides the key and value heads into multiple groups. Within each group, a single shared
 key and value heads are attended to by query heads. GQA interpolats between MHA and MQA.</span><a class="headerlink" href="#chapter-llm-arch-fig-fundamentals-attention-gqa" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
@@ -1057,8 +1004,8 @@ In general <span class="math notranslate nohighlight">\(d_{ff} = 4d_{model}\)</s
 <div class="math notranslate nohighlight">
 \[n_{vocab} \times d_{model} + n_{max\_len} \times d_{model} + n_{layer}(4d_{model}^2 + 8d_{model}^2 + 5d_{model})\]</div>
 <p><span class="math notranslate nohighlight">\(n_{max\_len} = 2048\)</span> in GPT-3</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1522">
-<caption><span class="caption-number">Table 9.1 </span><span class="caption-text">Parameters in a Transformer</span><a class="headerlink" href="#id1522" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1523">
+<caption><span class="caption-number">Table 9.1 </span><span class="caption-text">Parameters in a Transformer</span><a class="headerlink" href="#id1523" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Module</p></th>
 <th class="head text-left"><p>Computation</p></th>
@@ -1160,8 +1107,8 @@ In general <span class="math notranslate nohighlight">\(d_{ff} = 4d_{model}\)</s
 </section>
 <section id="summary">
 <h2><span class="section-number">9.9. </span>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table" id="id1523">
-<caption><span class="caption-number">Table 9.2 </span><span class="caption-text">Model cards of several selected LLMs with public configuration details. Here, PE denotes position embedding, #L denotes the number of layers, #H denotes the number of attention heads, dmodel denotes the size of hidden states, and MCL denotes the maximum context length during training.</span><a class="headerlink" href="#id1523" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1524">
+<caption><span class="caption-number">Table 9.2 </span><span class="caption-text">Model cards of several selected LLMs with public configuration details. Here, PE denotes position embedding, #L denotes the number of layers, #H denotes the number of attention heads, dmodel denotes the size of hidden states, and MCL denotes the maximum context length during training.</span><a class="headerlink" href="#id1524" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Model</p></th>
 <th class="head text-center"><p>Size</p></th>
@@ -1216,16 +1163,16 @@ In general <span class="math notranslate nohighlight">\(d_{ff} = 4d_{model}\)</s
 <section id="llama-architectures">
 <h2><span class="section-number">9.10. </span>LLama architectures<a class="headerlink" href="#llama-architectures" title="Link to this heading">#</a></h2>
 </section>
-<section id="computation-breadown-during-forward-pass">
-<h2><span class="section-number">9.11. </span>Computation breadown during forward pass<a class="headerlink" href="#computation-breadown-during-forward-pass" title="Link to this heading">#</a></h2>
+<section id="forward-pass-computation-breadown">
+<span id="chapter-llm-arch-sec-llm-arch-fundamentals-forward-pass-computation"></span><h2><span class="section-number">9.11. </span>Forward Pass Computation Breadown<a class="headerlink" href="#forward-pass-computation-breadown" title="Link to this heading">#</a></h2>
 <p>b: batch_size
 s: seq_len
 d: d_model
 V: vocabulary_size
 L: n_layers</p>
 <p>以矩阵乘为例, 输入 <span class="math notranslate nohighlight">\([M, K] \times[K, N]=[M, N]\)</span>, 计算时间复杂度为 <span class="math notranslate nohighlight">\(2 M N K\)</span> 。也就是说输出矩阵 <span class="math notranslate nohighlight">\(M N\)</span> 个元素, 每个元素经过一次乘法和一次加法运算。</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1524">
-<caption><span class="caption-number">Table 9.3 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id1524" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1525">
+<caption><span class="caption-number">Table 9.3 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id1525" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Module</p></th>
 <th class="head text-left"><p>Computation</p></th>
@@ -1438,7 +1385,7 @@ L: n_layers</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dense-architecture-examples">9.8. Dense Architecture Examples</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">9.9. Summary</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-architectures">9.10. LLama architectures</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computation-breadown-during-forward-pass">9.11. Computation breadown during forward pass</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-pass-computation-breadown">9.11. Forward Pass Computation Breadown</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">9.12. Bibliography</a></li>
 </ul>
   </nav></div>

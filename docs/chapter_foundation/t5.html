@@ -103,8 +103,8 @@
          class="form-control"
          name="q"
          id="search-input"
-         placeholder="Search this book..."
-         aria-label="Search this book..."
+         placeholder="Search..."
+         aria-label="Search..."
          autocomplete="off"
          autocorrect="off"
          autocapitalize="off"
@@ -174,17 +174,9 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        
-        <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1">
-                <a class="reference internal" href="../index.html">
-                    Table of Contents
-                </a>
-            </li>
-        </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: Unveiling the Power of Language Models in the Age of Artificial Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: LLM in the Age of AI</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
 <ul class="current nav bd-sidenav">
@@ -205,7 +197,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">11. LLM Training Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM alignement and preference learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM Alignement and Preference learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">14. LLM Training Acceleration</a></li>
 
 </ul>
@@ -216,20 +208,16 @@
 
 
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">20. Basic prompt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">21. Advanced prompt techniques</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG)</span></p>
-<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">22. Basic RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">23. Advanced rag techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">24. Information Retrieval Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR</a></li>
 </ul>
 
     </div>
@@ -271,54 +259,6 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
-
-
-
-
-
-<div class="dropdown dropdown-download-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
-    <i class="fas fa-download"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="../../_sources/docs/chapter_foundation/t5.md" target="_blank"
-   class="btn btn-sm btn-download-source-button dropdown-item"
-   title="Download source file"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="btn__text-container">.md</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li>
-<button onclick="window.print()"
-  class="btn btn-sm btn-download-pdf-button dropdown-item"
-  title="Print to PDF"
-  data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="btn__text-container">.pdf</span>
-</button>
-</li>
-      
-  </ul>
-</div>
-
 
 
 
@@ -423,7 +363,7 @@ document.write(`
 <div class="proof example admonition" id="example-0">
 <p class="admonition-title"><span class="caption-number">Example 7.1 </span></p>
 <section class="example-content" id="proof-content">
-<p>In order to train a single model on the diverse set of tasks described above, we need a consistent input and output format across all tasks. As recently noted by <span id="id2">[<a class="reference internal" href="GPT_series.html#id1131" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>, <a class="reference internal" href="#id1436" title="Bryan McCann, Nitish Shirish Keskar, Caiming Xiong, and Richard Socher. The natural language decathlon: multitask learning as question answering. arXiv preprint arXiv:1806.08730, 2018.">MKXS18</a>]</span>, it is possible to formulate most NLP tasks in a text-to-text format - that is, a task where the model is fed some text for context or conditioning and is then asked to produce some output text.</p>
+<p>In order to train a single model on the diverse set of tasks described above, we need a consistent input and output format across all tasks. As recently noted by <span id="id2">[<a class="reference internal" href="transformers.html#id1140" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>, <a class="reference internal" href="#id1436" title="Bryan McCann, Nitish Shirish Keskar, Caiming Xiong, and Richard Socher. The natural language decathlon: multitask learning as question answering. arXiv preprint arXiv:1806.08730, 2018.">MKXS18</a>]</span>, it is possible to formulate most NLP tasks in a text-to-text format - that is, a task where the model is fed some text for context or conditioning and is then asked to produce some output text.</p>
 <p>To specify which task the model should perform, we add a task-specific (text) prefix to the original input sequence before feeding it to the model. As an example,</p>
 <ul class="simple">
 <li><p>to ask the model to translate the sentence “That is good.” from English to German, the model would be fed the sequence “translate English to German: That is good.” and would be trained to output “Das ist gut.”</p></li>
@@ -452,7 +392,7 @@ document.write(`
 </tbody>
 </table>
 </div>
-<p>Besides using large-scale corpus of masked language pretraining, T5 model also utilizes labeled data from different downstream tasks for <em><strong>multi-task pretraining</strong></em>. The purpose is to obtain an improved task-agnostic representations via multi-task learning, since learning from multiple related tasks can improve the robustness.</p>
+<p>Besides using large-scale corpus of masked language pretraining, T5 model also utilizes labeled data from different downstream tasks for <strong>multi-task pretraining</strong>. The purpose is to obtain an improved task-agnostic representations via multi-task learning, since learning from multiple related tasks can improve the robustness.</p>
 </section>
 </section>
 <section id="bart">
@@ -619,9 +559,9 @@ The pre-trained BART model has both text representation and generation capabilit
 
 #### Language Understanding Tasks
 
-***Sequence classification*** For sequence or token classification tasks, the encoder and decoder of BART use the same input, and the state of the hidden layer at the final moment of the decoder is used as the vector representation of the input text. The vector representation is fed into the multi-class linear classifier. Similar to the [CLS] token of the BERT model, the BART model adds an additional special token at the last position of the decoder input, and uses the hidden layer state of this token as the representation of the text. 
+**Sequence classification** For sequence or token classification tasks, the encoder and decoder of BART use the same input, and the state of the hidden layer at the final moment of the decoder is used as the vector representation of the input text. The vector representation is fed into the multi-class linear classifier. Similar to the [CLS] token of the BERT model, the BART model adds an additional special token at the last position of the decoder input, and uses the hidden layer state of this token as the representation of the text. 
 
-***Token classification.*** For sequence or token classification tasks, the encoder and decoder of BART use the same input, the top hidden state of the decoder as a representation for each
+**Token classification.** For sequence or token classification tasks, the encoder and decoder of BART use the same input, the top hidden state of the decoder as a representation for each
 word. The vector representation is fed into the multi-class linear classifier. 
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/seq2seq/BART/BART_fine_tuning_classification.png
@@ -635,8 +575,8 @@ To use BART for classification problems, the same
 </div>
 <section id="text-generation-tasks">
 <h4><span class="section-number">7.2.3.1. </span>Text Generation Tasks<a class="headerlink" href="#text-generation-tasks" title="Link to this heading">#</a></h4>
-<p><em><strong>Text generation.</strong></em> BART models can be used directly for conditional text generation tasks such as text summarization. Take text summarization as an example, the input of the encoder is the text to be summarized, and the decoder generates the corresponding target text in an auto-regressive manner.</p>
-<p><em><strong>Machine translation.</strong></em> When used for machine translation tasks, the BART model cannot be directly fine-tuned because the source and target languages use different vocabulary sets. Therefore, the researchers propose to replace the input embedding layer of the BART model encoder with a small Transformer encoder, <strong>which is used to align the vocabulary in the source language to the input representation space of the target language</strong>. During the fine-tuning phase, the parameters of this newly introduced source language encoder are randomly initialized, and most of the other parameters of the BART model are pre-trained.</p>
+<p><strong>Text generation.</strong> BART models can be used directly for conditional text generation tasks such as text summarization. Take text summarization as an example, the input of the encoder is the text to be summarized, and the decoder generates the corresponding target text in an auto-regressive manner.</p>
+<p><strong>Machine translation.</strong> When used for machine translation tasks, the BART model cannot be directly fine-tuned because the source and target languages use different vocabulary sets. Therefore, the researchers propose to replace the input embedding layer of the BART model encoder with a small Transformer encoder, <strong>which is used to align the vocabulary in the source language to the input representation space of the target language</strong>. During the fine-tuning phase, the parameters of this newly introduced source language encoder are randomly initialized, and most of the other parameters of the BART model are pre-trained.</p>
 <p>There are two stages in the fine-tuning phase.</p>
 <ul class="simple">
 <li><p>First, only the source language encoder, the BART model position vector, and the self-attention input projection matrix of the first layer of the BART pretrained encoder are trained; The rest of model parameters are fixed.</p></li>
