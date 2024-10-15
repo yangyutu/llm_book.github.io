@@ -24,7 +24,7 @@ ELMo (Embeddings from Language Models):
 Before Transformers, ELMo used bidirectional LSTMs (Long Short-Term Memory networks) to create contextual word embeddings. While less common now, it was an important step in the evolution of language models.
 
 (content:chapter_foundation:transformers:transformers)=
-## Transformers
+## Transformers Anatomy
 
 (chapter_foundation_sec_pretrained_LM_transformer_arch)=
 ### Overall Architecture
@@ -65,7 +65,7 @@ For example, consider a translational task with input and target sequence given 
 * $y = (SOS, I, want, a, bottle, of, water, EOS)$
 
 The output sequence is the right-shifted target sequence with a starting token \code{SOS}. The output sequence will be fed into the decoder to predict the next token.
-
+(chapter_foundation_sec_pretrained_LM_transformer_arch_absolute_PE)=
 ### Position Encodings
 
 
@@ -86,8 +86,6 @@ where $j = \{1,...,d_{model}\}$. Note that the position encodings have the same 
 Intuitively, each dimension of the positional encoding corresponds to a sine/cosine wave of different wavelengths ranging from $2 \pi$ (when $j=1$) to approx $10000 \cdot 2 \pi$(when $j=d_{model}$). An example position encodings of dimensionality 256 for position index from 1 to 256 is shown in {numref}`chapter_foundation_fig_pretrained_LM_transformer_positionencoding`.
 
 
-
-
 ```{figure} ../img/chapter_foundation/pretrainedLM/Transformer_arch/positionEncoding.png
 ---
 scale: 30%
@@ -96,6 +94,23 @@ name: chapter_foundation_fig_pretrained_LM_transformer_positionencoding
 Example position encodings of dimensionality 256 for position index from 1 to 256.
 ```
 
+````{prf:example}
+* Let $d_{model} = 2$, we have
+
+$$\operatorname{PE}(i) = [\sin(w_0 i), \cos(w_0 i)], w_0 = 1.$$
+
+* Let $d_{model} = 4$, we have
+
+$$\operatorname{PE}(i) = [\sin(w_0 i), \cos(w_0 i), \sin(w_1 i), cos(w_1 i)],$$
+
+where $w_0 = 1, w_1 = 1/10000^{2/4}$.
+
+
+````
+
+
+
+(chapter_foundation_sec_pretrained_LM_transformer_arch_MHA)=
 ### Multihead Attention With Masks
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/Transformer_arch/Multi-head_attention.png
@@ -116,30 +131,33 @@ Multi-head attentions are used in three places:
 
 Given a query matrix $Q\in \mathbb{R}^{n\times d_{model}}$ representing $n$ queries, a key matrix $K\in \mathbb{R}^{m\times d_{model}}$ representing $m$ keys, and a value matrix $V\in \mathbb{R}^{m\times d_{model}}$ representing $m$ values, the multi-head ($h$ heads) attention associated with $(Q, K, V)$ is given by
 
-$$\operatorname{MultiHeadAttention}\left(Q,K,V\right)=Concat\left(head_1,\cdots,head_h\right)W^O$$
+$$\operatorname{MultiHeadAttention}\left(Q,K,V\right)=\text{Concat}\left(head_1,\cdots,head_H\right)W^O
+$$ (chapter_foundation_eq_transformer_arch_MHA)
 
 where $head_i \in \mathbb{R}^{n\times d_v}$ and is given by
 
 $$head_i=\operatorname{Attention}\left(QW_i^Q,KW_i^K,VW_i^V\right).$$
 
 Here
-$W^Q, W^K, W^V\in\mathbb{R}^{d_{model}\times d_k}, W^O\in\mathbb{R}^{h\times d_v\times d_{model}}$ are additional linear transformations applied to query, key, and value matrices, respectively. Note that each head has its own corresponding $W^Q, W^K, W^V$, and we omit the subscript $i$ for simplicity. In general, we require $d_k = d_v = d_{model}/h$ such that the output of $\operatorname{MultiHeadAttention}\left(Q,K,V\right)$ has the dimensionality of $n\times d_{model}$.
+$W^Q, W^K, W^V\in\mathbb{R}^{d_{model}\times d_k}, W^O\in\mathbb{R}^{h\times d_v\times d_{model}}$ are additional linear transformations applied to query, key, and value matrices, respectively. Note that each head has its own corresponding $W^Q, W^K, W^V$, and we omit the subscript $i$ for simplicity. In general, we require $d_k = d_v = d_{model}/H$ such that the output of $\operatorname{MultiHeadAttention}\left(Q,K,V\right)$ has the dimensionality of $n\times d_{model}$.
 
 The attention output of a single head among $(Q, K, V)$ is given by 
 
-$$\operatorname{Attention}\left(Q W^{Q}, K W^{K}, V W^{V}\right)=\operatorname{Softmax}\left(\frac{Q W^{Q}\left(K W^{K}\right)^{T}}{\sqrt{d_{k}}}\right) V W^{V},$$
+$$
+\operatorname{Attention}\left(Q W^{Q}, K W^{K}, V W^{V}\right)=\operatorname{Softmax}\left(\frac{Q W^{Q}\left(K W^{K}\right)^{T}}{\sqrt{d_{k}}}\right) V W^{V},
+$$ (chapter_foundation_eq_transformer_arch_scaled_dot_product_attention)
 
 where $\sqrt{d_k}$ is the scaling factor preventing the doc product value from saturating the Softmax. This type of attention is also known as **scaled dot product** attention.
 
-Note that the Softmax normalize each row such that the $\operatorname{Softmax}(\cdot)$ produces a weight matrix $w^{att}\in \mathbb{R}^{n\times m}$, with each row summing up to unit 1.
-
+The single head attention formula {eq}`chapter_foundation_eq_transformer_arch_scaled_dot_product_attention` has two steps:
+First step, the $\operatorname{Softmax}(\cdot)$ produces an attention weight matrix $w^{att}\in \mathbb{R}^{n\times m}$, with each row summing up to unit 1.
 The un-normalized weight matrix is given by
 
 $$\tilde{w}_{ij}^{att} = [QW^Q]_i[KW^K]^T_j,$$
 
-where  $[QW^Q]_i$ is the $i$th row vector of query matrix $QW^Q$, and $[KW^K]_j$ is the $j$th row vector of key matrix $KW^K$.
+where  $[QW^Q]_i$ is the $i$th row vector of query matrix $QW^Q$, and $[KW^K]_j$ is the $j$th row vector of key matrix $KW^K$. Here it means $i$th query token is attending to $j$th key token.
 
-Explicitly, we have the attention output as the weighted sum of transformed value vectors:
+Second step, we compute attention output as **the weighted sum of transformed value vectors**:
 
 $$\begin{bmatrix}
 	w^{att}_{11} & w^{att}_{12} & \cdots & w^{att}_{1m}\\ 
@@ -199,7 +217,7 @@ Transformer encoders does not scale well to long sequences. Strategies to allevi
 | Recurrent | $O\left(n \cdot d^2_{model}\right)$ | $O(n)$ |
 | Self-Attention (restricted) | $O(r \cdot n \cdot d)$ | $O(1)$ |
 
-
+(chapter_foundation_sec_pretrained_LM_transformer_arch_FFN)=
 ### Pointwise FeedForward Layer
 
 
@@ -210,7 +228,7 @@ $$
 \operatorname{FFN}(x)=\max \left(0, x W_{1}+b_{1}\right) W_{2}+b_{2}.
 $$
 
-Typically, the first layer first maps the embedding vector  of dimensionality $d_{model}$ to a larger dimensionality $d_{ff}$ (e.g., $d_{model} = 512, d_{ff}=2048$) and then the second layer map the intermediate vector to a vector with same input vector size
+Typically, the first layer first maps the embedding vector  of dimensionality $d_{model}$ to a larger dimensionality $d_{ff}$ (e.g., $d_{model} = 512, d_{ff}=2048$) and then the second layer map the intermediate vector to a vector with same input vector size. **Note that there is no nonlinear activation after the second layer otuput.**
 
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/Transformer_arch/pointwise_FFN.png
@@ -218,10 +236,10 @@ Typically, the first layer first maps the embedding vector  of dimensionality $d
 scale: 40%
 name: chapter_foundation_fig_pretrained_LM_transformer_pointwiseffn
 ---
-Point-wise feed-forward network to perform nonlinear transformation on the contextualized embedding at each position.
+Point-wise feed-forward network to perform nonlinear transformation on the contextualized embedding at each position. Residual connection and layer normalization are not shown.
 ```
 
-There are additional dropouts, residual connections, and layer-wise normalization after the point-wise feed-forward layer. Taken all together, now we can define the following encoder layer.
+There are additional **dropouts**, **residual connections**, and **layer normalization** after the point-wise feed-forward layer. Taken all together, now we can define the following encoder layer.
 
 ````{prf:definition} Encoder layer
 :label: chapter_foundation_def_pretrained_LM_transformer_encoder_layer
@@ -252,7 +270,7 @@ While self-attention is powerful for capturing contextual relationships, it's fu
 If we stack multiple self-attention layers, the output vectors are still fundamentally a weighted linear sum of input vectors. With feedforward layer added after self-attention layer acting as non-linear transformation, the model capacity of transformer will increase as we stack more layers.  
 ````
 
-### Encoder Layer Computation Summary
+### Encoder Computation Summary
 
 The whole computation in the encoder module can be summarized in the following.
 ````{prf:definition} computation in encoder module

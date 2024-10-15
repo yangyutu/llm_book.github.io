@@ -1,4 +1,4 @@
-# MOE sparse models
+# MOE Sparse Architectures (WIP)
 
 ## MOE architecture fundamentals
 

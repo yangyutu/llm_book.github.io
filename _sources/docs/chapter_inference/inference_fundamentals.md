@@ -1,4 +1,4 @@
-# LLM Decoding
+# Decoding
 
 
 ## Decoding Fundamentals

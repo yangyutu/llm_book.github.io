@@ -191,33 +191,31 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MOE sparse models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MOE Sparse Architectures (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">11. LLM Training Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM Finetuning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM Alignement and Preference learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">14. LLM Training Acceleration</a></li>
 
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">16. LLM Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">17. Inference acceleration</a></li>
-
-
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">16. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">17. Inference Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">20. Basic prompt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">21. Advanced prompt techniques</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">22. Basic RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">18. Basic prompt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">19. Advanced prompt techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">20. RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">21. Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">22. Application of LLM in IR</a></li>
 </ul>
 
     </div>
@@ -319,14 +317,14 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretrained-language-models">5.1. Pretrained Language Models</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-chapter-foundation-transformers-transformers">5.2. Transformers</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformers-anatomy">5.2. Transformers Anatomy</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-architecture">5.2.1. Overall Architecture</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-output-conventions">5.2.2. Input Output Conventions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#position-encodings">5.2.3. Position Encodings</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multihead-attention-with-masks">5.2.4. Multihead Attention With Masks</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-with-recurrent-layer-in-sequence-modeling">5.2.5. Comparison With Recurrent Layer In Sequence Modeling</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pointwise-feedforward-layer">5.2.6. Pointwise FeedForward Layer</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoder-layer-computation-summary">5.2.7. Encoder Layer Computation Summary</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoder-computation-summary">5.2.7. Encoder Computation Summary</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decoder-anatomy">5.2.8. Decoder Anatomy</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-breakdown-analysis">5.2.9. Computational Breakdown Analysis</a></li>
 </ul>
@@ -368,11 +366,11 @@ GPT models use the decoder portion of the Transformer. They process text from le
 <p>ELMo (Embeddings from Language Models):
 Before Transformers, ELMo used bidirectional LSTMs (Long Short-Term Memory networks) to create contextual word embeddings. While less common now, it was an important step in the evolution of language models.</p>
 </section>
-<section id="content-chapter-foundation-transformers-transformers">
-<span id="id1"></span><h2><span class="section-number">5.2. </span>Transformers<a class="headerlink" href="#content-chapter-foundation-transformers-transformers" title="Link to this heading">#</a></h2>
+<section id="transformers-anatomy">
+<span id="content-chapter-foundation-transformers-transformers"></span><h2><span class="section-number">5.2. </span>Transformers Anatomy<a class="headerlink" href="#transformers-anatomy" title="Link to this heading">#</a></h2>
 <section id="overall-architecture">
 <span id="chapter-foundation-sec-pretrained-lm-transformer-arch"></span><h3><span class="section-number">5.2.1. </span>Overall Architecture<a class="headerlink" href="#overall-architecture" title="Link to this heading">#</a></h3>
-<p>Since 2007, Transformer <span id="id2">[<a class="reference internal" href="#id1137" title="Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Advances in neural information processing systems, 5998–6008. 2017.">VSP+17</a>]</span> has emerged as one of most successful architectures in tackling challenging seq2seq NLP tasks like machine translation, text summarization, etc.</p>
+<p>Since 2007, Transformer <span id="id1">[<a class="reference internal" href="#id1136" title="Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Advances in neural information processing systems, 5998–6008. 2017.">VSP+17</a>]</span> has emerged as one of most successful architectures in tackling challenging seq2seq NLP tasks like machine translation, text summarization, etc.</p>
 <p>Traditionally, seq2seq tasks heavily use RNN-based encoder-decoder architectures, plus attention mechanisms, to transform one sequence into another sequence. Transformer, on the other hand, does not rely on any recurrent structure and is able to process all tokens in a sequence at the same time. This enables computation efficiency optimization via parallel optimization and address long-range dependency, both of which mitigate the shortages of RNN-based encoder-decoder architectures.</p>
 <p>On a high level, Transformer falls into the category of encoder-decoder architecture, where the encoder encodes an input token sequence into low-dimensional embeddings, and the decoder takes the embeddings as input, plus some additional prompts, outputs an output sequence probabilities. The position information among tokens, originally stored in recurrent network structure, is now provided through position encoding added at the entry point of the encoder and decoder modules.</p>
 <p>Attention mechanisms are the most crucial components in the Transformer architecture to learn contextualized embeddings and overcome the limitation of recurrent neural network in learning long-term dependencies (e.g., seq2seq model with attention).</p>
@@ -405,7 +403,7 @@ Similarly, the decoder module on the right also consists of blocks that are stac
 <p>The output sequence is the right-shifted target sequence with a starting token \code{SOS}. The output sequence will be fed into the decoder to predict the next token.</p>
 </section>
 <section id="position-encodings">
-<h3><span class="section-number">5.2.3. </span>Position Encodings<a class="headerlink" href="#position-encodings" title="Link to this heading">#</a></h3>
+<span id="chapter-foundation-sec-pretrained-lm-transformer-arch-absolute-pe"></span><h3><span class="section-number">5.2.3. </span>Position Encodings<a class="headerlink" href="#position-encodings" title="Link to this heading">#</a></h3>
 <p>Consider an input sequence represented by an integer sequence <span class="math notranslate nohighlight">\(x = (x_1,...,x_i,...,x_n), x_i\in \mathbb{N}\)</span>, <span class="math notranslate nohighlight">\(e.g., x = (3, 5, 30, 2, ..., 21)\)</span> that is fed into the Transformer architecture.  For the input sequence <span class="math notranslate nohighlight">\(s\)</span>, the word embedding vectors of dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span> alone do not encode positional information in the sequence. This can be fixed by utilizing a position encoding <span class="math notranslate nohighlight">\(PE\)</span> maps an integer index representing the position of the token in the sequence, <span class="math notranslate nohighlight">\(x^p = (1, 2, ..., n)\)</span> to <span class="math notranslate nohighlight">\(n\)</span> dense vectors with same dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span>, i.e., <span class="math notranslate nohighlight">\(\operatorname{PE}(s^p)\in \mathbb{R}^{n\times d_{model}}\)</span>.</p>
 <p>The position encoding vectors can be specified in analytical forms and then be fixed during training.  The position encoding mapping can also be learned from data. In theory, the specification of position encoding should preserve position information by mapping nearby positions to nearby high-dimensional vectors.</p>
 <p>Notably, given the token position <span class="math notranslate nohighlight">\(i \in \{1, ..., n\}\)</span> <span class="math notranslate nohighlight">\(\operatorname{PE}(i) \in \mathbb{R}^{d_{model}}\)</span> is given by</p>
@@ -425,9 +423,24 @@ Intuitively, each dimension of the positional encoding corresponds to a sine/cos
 <p><span class="caption-number">Fig. 5.2 </span><span class="caption-text">Example position encodings of dimensionality 256 for position index from 1 to 256.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-lm-transformer-positionencoding" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
+<div class="proof example admonition" id="example-0">
+<p class="admonition-title"><span class="caption-number">Example 5.1 </span></p>
+<section class="example-content" id="proof-content">
+<ul class="simple">
+<li><p>Let <span class="math notranslate nohighlight">\(d_{model} = 2\)</span>, we have</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\operatorname{PE}(i) = [\sin(w_0 i), \cos(w_0 i)], w_0 = 1.\]</div>
+<ul class="simple">
+<li><p>Let <span class="math notranslate nohighlight">\(d_{model} = 4\)</span>, we have</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\operatorname{PE}(i) = [\sin(w_0 i), \cos(w_0 i), \sin(w_1 i), cos(w_1 i)],\]</div>
+<p>where <span class="math notranslate nohighlight">\(w_0 = 1, w_1 = 1/10000^{2/4}\)</span>.</p>
 </section>
+</div></section>
 <section id="multihead-attention-with-masks">
-<h3><span class="section-number">5.2.4. </span>Multihead Attention With Masks<a class="headerlink" href="#multihead-attention-with-masks" title="Link to this heading">#</a></h3>
+<span id="chapter-foundation-sec-pretrained-lm-transformer-arch-mha"></span><h3><span class="section-number">5.2.4. </span>Multihead Attention With Masks<a class="headerlink" href="#multihead-attention-with-masks" title="Link to this heading">#</a></h3>
 <figure class="align-default" id="chapter-foundation-fig-pretrained-lm-transformer-multiheadattention">
 <a class="reference internal image-reference" href="../../_images/Multi-head_attention.png"><img alt="../../_images/Multi-head_attention.png" src="../../_images/Multi-head_attention.png" style="width: 644.4px; height: 366.3px;" />
 </a>
@@ -435,7 +448,7 @@ Intuitively, each dimension of the positional encoding corresponds to a sine/cos
 <p><span class="caption-number">Fig. 5.3 </span><span class="caption-text">The multi-head attention architecture.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-lm-transformer-multiheadattention" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Multi-head attention mechanism with masks plays a central role in both encoder and decoder side. Attention mechanism enables contexualization and masks control the context each token can get access to. Attention of multiple heads, rather than a single head, allows the model to jointly attend to information from different representation subspaces at different positions <span id="id3">[<a class="reference internal" href="#id1321" title="Jian Li, Zhaopeng Tu, Baosong Yang, Michael R Lyu, and Tong Zhang. Multi-head attention with disagreement regularization. arXiv preprint arXiv:1810.10183, 2018.">LTY+18</a>]</span>.</p>
+<p>Multi-head attention mechanism with masks plays a central role in both encoder and decoder side. Attention mechanism enables contexualization and masks control the context each token can get access to. Attention of multiple heads, rather than a single head, allows the model to jointly attend to information from different representation subspaces at different positions <span id="id2">[<a class="reference internal" href="#id1320" title="Jian Li, Zhaopeng Tu, Baosong Yang, Michael R Lyu, and Tong Zhang. Multi-head attention with disagreement regularization. arXiv preprint arXiv:1810.10183, 2018.">LTY+18</a>]</span>.</p>
 <p>Multi-head attentions are used in three places:</p>
 <ul class="simple">
 <li><p>In the encoder module, multi-head attention without using masks are used to construct intermediate contextualized embedding for each token that depends of its context. The query, key, and values are all the same input sequence.</p></li>
@@ -443,23 +456,27 @@ Intuitively, each dimension of the positional encoding corresponds to a sine/cos
 <li><p>From the encoder module to the decoder module, multi-head attention without using masks is used to construct embedding for each output token that depends of its \textit{input} context (i.e., attention between input and output sequences).</p></li>
 </ul>
 <p>Given a query matrix <span class="math notranslate nohighlight">\(Q\in \mathbb{R}^{n\times d_{model}}\)</span> representing <span class="math notranslate nohighlight">\(n\)</span> queries, a key matrix <span class="math notranslate nohighlight">\(K\in \mathbb{R}^{m\times d_{model}}\)</span> representing <span class="math notranslate nohighlight">\(m\)</span> keys, and a value matrix <span class="math notranslate nohighlight">\(V\in \mathbb{R}^{m\times d_{model}}\)</span> representing <span class="math notranslate nohighlight">\(m\)</span> values, the multi-head (<span class="math notranslate nohighlight">\(h\)</span> heads) attention associated with <span class="math notranslate nohighlight">\((Q, K, V)\)</span> is given by</p>
-<div class="math notranslate nohighlight">
-\[\operatorname{MultiHeadAttention}\left(Q,K,V\right)=Concat\left(head_1,\cdots,head_h\right)W^O\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-foundation-eq-transformer-arch-mha">
+<span class="eqno">(5.1)<a class="headerlink" href="#equation-chapter-foundation-eq-transformer-arch-mha" title="Link to this equation">#</a></span>\[\operatorname{MultiHeadAttention}\left(Q,K,V\right)=\text{Concat}\left(head_1,\cdots,head_H\right)W^O
+\]</div>
 <p>where <span class="math notranslate nohighlight">\(head_i \in \mathbb{R}^{n\times d_v}\)</span> and is given by</p>
 <div class="math notranslate nohighlight">
 \[head_i=\operatorname{Attention}\left(QW_i^Q,KW_i^K,VW_i^V\right).\]</div>
 <p>Here
-<span class="math notranslate nohighlight">\(W^Q, W^K, W^V\in\mathbb{R}^{d_{model}\times d_k}, W^O\in\mathbb{R}^{h\times d_v\times d_{model}}\)</span> are additional linear transformations applied to query, key, and value matrices, respectively. Note that each head has its own corresponding <span class="math notranslate nohighlight">\(W^Q, W^K, W^V\)</span>, and we omit the subscript <span class="math notranslate nohighlight">\(i\)</span> for simplicity. In general, we require <span class="math notranslate nohighlight">\(d_k = d_v = d_{model}/h\)</span> such that the output of <span class="math notranslate nohighlight">\(\operatorname{MultiHeadAttention}\left(Q,K,V\right)\)</span> has the dimensionality of <span class="math notranslate nohighlight">\(n\times d_{model}\)</span>.</p>
+<span class="math notranslate nohighlight">\(W^Q, W^K, W^V\in\mathbb{R}^{d_{model}\times d_k}, W^O\in\mathbb{R}^{h\times d_v\times d_{model}}\)</span> are additional linear transformations applied to query, key, and value matrices, respectively. Note that each head has its own corresponding <span class="math notranslate nohighlight">\(W^Q, W^K, W^V\)</span>, and we omit the subscript <span class="math notranslate nohighlight">\(i\)</span> for simplicity. In general, we require <span class="math notranslate nohighlight">\(d_k = d_v = d_{model}/H\)</span> such that the output of <span class="math notranslate nohighlight">\(\operatorname{MultiHeadAttention}\left(Q,K,V\right)\)</span> has the dimensionality of <span class="math notranslate nohighlight">\(n\times d_{model}\)</span>.</p>
 <p>The attention output of a single head among <span class="math notranslate nohighlight">\((Q, K, V)\)</span> is given by</p>
-<div class="math notranslate nohighlight">
-\[\operatorname{Attention}\left(Q W^{Q}, K W^{K}, V W^{V}\right)=\operatorname{Softmax}\left(\frac{Q W^{Q}\left(K W^{K}\right)^{T}}{\sqrt{d_{k}}}\right) V W^{V},\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-foundation-eq-transformer-arch-scaled-dot-product-attention">
+<span class="eqno">(5.2)<a class="headerlink" href="#equation-chapter-foundation-eq-transformer-arch-scaled-dot-product-attention" title="Link to this equation">#</a></span>\[
+\operatorname{Attention}\left(Q W^{Q}, K W^{K}, V W^{V}\right)=\operatorname{Softmax}\left(\frac{Q W^{Q}\left(K W^{K}\right)^{T}}{\sqrt{d_{k}}}\right) V W^{V},
+\]</div>
 <p>where <span class="math notranslate nohighlight">\(\sqrt{d_k}\)</span> is the scaling factor preventing the doc product value from saturating the Softmax. This type of attention is also known as <strong>scaled dot product</strong> attention.</p>
-<p>Note that the Softmax normalize each row such that the <span class="math notranslate nohighlight">\(\operatorname{Softmax}(\cdot)\)</span> produces a weight matrix <span class="math notranslate nohighlight">\(w^{att}\in \mathbb{R}^{n\times m}\)</span>, with each row summing up to unit 1.</p>
-<p>The un-normalized weight matrix is given by</p>
+<p>The single head attention formula <a class="reference internal" href="#equation-chapter-foundation-eq-transformer-arch-scaled-dot-product-attention">(5.2)</a> has two steps:
+First step, the <span class="math notranslate nohighlight">\(\operatorname{Softmax}(\cdot)\)</span> produces an attention weight matrix <span class="math notranslate nohighlight">\(w^{att}\in \mathbb{R}^{n\times m}\)</span>, with each row summing up to unit 1.
+The un-normalized weight matrix is given by</p>
 <div class="math notranslate nohighlight">
 \[\tilde{w}_{ij}^{att} = [QW^Q]_i[KW^K]^T_j,\]</div>
-<p>where  <span class="math notranslate nohighlight">\([QW^Q]_i\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>th row vector of query matrix <span class="math notranslate nohighlight">\(QW^Q\)</span>, and <span class="math notranslate nohighlight">\([KW^K]_j\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>th row vector of key matrix <span class="math notranslate nohighlight">\(KW^K\)</span>.</p>
-<p>Explicitly, we have the attention output as the weighted sum of transformed value vectors:</p>
+<p>where  <span class="math notranslate nohighlight">\([QW^Q]_i\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>th row vector of query matrix <span class="math notranslate nohighlight">\(QW^Q\)</span>, and <span class="math notranslate nohighlight">\([KW^K]_j\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>th row vector of key matrix <span class="math notranslate nohighlight">\(KW^K\)</span>. Here it means <span class="math notranslate nohighlight">\(i\)</span>th query token is attending to <span class="math notranslate nohighlight">\(j\)</span>th key token.</p>
+<p>Second step, we compute attention output as <strong>the weighted sum of transformed value vectors</strong>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{bmatrix}
 	w^{att}_{11} &amp; w^{att}_{12} &amp; \cdots &amp; w^{att}_{1m}\\ 
@@ -533,22 +550,22 @@ Intuitively, each dimension of the positional encoding corresponds to a sine/cos
 </div>
 </section>
 <section id="pointwise-feedforward-layer">
-<h3><span class="section-number">5.2.6. </span>Pointwise FeedForward Layer<a class="headerlink" href="#pointwise-feedforward-layer" title="Link to this heading">#</a></h3>
+<span id="chapter-foundation-sec-pretrained-lm-transformer-arch-ffn"></span><h3><span class="section-number">5.2.6. </span>Pointwise FeedForward Layer<a class="headerlink" href="#pointwise-feedforward-layer" title="Link to this heading">#</a></h3>
 <p>After all input embedding vectors go through multi-head self-attention layer, each of the output contextualized embedding vectors is still a linear weighted sum of input vectors, with the weight given by the attention matrix values.
 The motivation of a point-wise two-layer feed-forward network is to enhance the modeling capacity with non-linearity transformations (e.g., with ReLU activations) and interactions between different feature spaces. The pointwise feed-forward layer applies to input <span class="math notranslate nohighlight">\(x\in \mathbb{R}^{d_{model}}\)</span> at each position separately and identically (i.e., sharing parameters across positions) [<a class="reference internal" href="#chapter-foundation-fig-pretrained-lm-transformer-pointwiseffn"><span class="std std-numref">Fig. 5.4</span></a>]:</p>
 <div class="math notranslate nohighlight">
 \[
 \operatorname{FFN}(x)=\max \left(0, x W_{1}+b_{1}\right) W_{2}+b_{2}.
 \]</div>
-<p>Typically, the first layer first maps the embedding vector  of dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span> to a larger dimensionality <span class="math notranslate nohighlight">\(d_{ff}\)</span> (e.g., <span class="math notranslate nohighlight">\(d_{model} = 512, d_{ff}=2048\)</span>) and then the second layer map the intermediate vector to a vector with same input vector size</p>
+<p>Typically, the first layer first maps the embedding vector  of dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span> to a larger dimensionality <span class="math notranslate nohighlight">\(d_{ff}\)</span> (e.g., <span class="math notranslate nohighlight">\(d_{model} = 512, d_{ff}=2048\)</span>) and then the second layer map the intermediate vector to a vector with same input vector size. <strong>Note that there is no nonlinear activation after the second layer otuput.</strong></p>
 <figure class="align-default" id="chapter-foundation-fig-pretrained-lm-transformer-pointwiseffn">
-<a class="reference internal image-reference" href="../../_images/pointwise_FFN.png"><img alt="../../_images/pointwise_FFN.png" src="../../_images/pointwise_FFN.png" style="width: 644.4000000000001px; height: 290.40000000000003px;" />
+<a class="reference internal image-reference" href="../../_images/pointwise_FFN.png"><img alt="../../_images/pointwise_FFN.png" src="../../_images/pointwise_FFN.png" style="width: 650.4000000000001px; height: 294.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 5.4 </span><span class="caption-text">Point-wise feed-forward network to perform nonlinear transformation on the contextualized embedding at each position.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-lm-transformer-pointwiseffn" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 5.4 </span><span class="caption-text">Point-wise feed-forward network to perform nonlinear transformation on the contextualized embedding at each position. Residual connection and layer normalization are not shown.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-lm-transformer-pointwiseffn" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>There are additional dropouts, residual connections, and layer-wise normalization after the point-wise feed-forward layer. Taken all together, now we can define the following encoder layer.</p>
+<p>There are additional <strong>dropouts</strong>, <strong>residual connections</strong>, and <strong>layer normalization</strong> after the point-wise feed-forward layer. Taken all together, now we can define the following encoder layer.</p>
 <div class="proof definition admonition" id="chapter_foundation_def_pretrained_LM_transformer_encoder_layer">
 <p class="admonition-title"><span class="caption-number">Definition 5.1 </span> (Encoder layer)</p>
 <section class="definition-content" id="proof-content">
@@ -566,7 +583,7 @@ The motivation of a point-wise two-layer feed-forward network is to enhance the 
 <p>with <span class="math notranslate nohighlight">\(W_1\in \mathbb{R}^{d_{model}\times d_{ff}}\)</span>, <span class="math notranslate nohighlight">\(W_2\in \mathbb{R}^{d_{ff}\times d_{model}}\)</span>, <span class="math notranslate nohighlight">\(b_1,b_2 \in \mathbb{R}^{d_{ff}}\)</span>, and the <span class="math notranslate nohighlight">\(padMask\)</span> excludes padding symbols in the sequence.</p>
 </section>
 </div><p>In a typical setting, we have <span class="math notranslate nohighlight">\(d_{\text {model }}=512\)</span>, and the inner-layer has dimensionality <span class="math notranslate nohighlight">\(d_{ff}=2048\)</span>.</p>
-<div class="proof remark admonition" id="remark-1">
+<div class="proof remark admonition" id="remark-2">
 <p class="admonition-title"><span class="caption-number">Remark 5.1 </span> (Is feedforward layer necessary for Transformer?)</p>
 <section class="remark-content" id="proof-content">
 <p>Feedforward layer plays a critical role in introduce non-linearity and improving model capacity for Transformers.</p>
@@ -574,8 +591,8 @@ The motivation of a point-wise two-layer feed-forward network is to enhance the 
 <p>If we stack multiple self-attention layers, the output vectors are still fundamentally a weighted linear sum of input vectors. With feedforward layer added after self-attention layer acting as non-linear transformation, the model capacity of transformer will increase as we stack more layers.</p>
 </section>
 </div></section>
-<section id="encoder-layer-computation-summary">
-<h3><span class="section-number">5.2.7. </span>Encoder Layer Computation Summary<a class="headerlink" href="#encoder-layer-computation-summary" title="Link to this heading">#</a></h3>
+<section id="encoder-computation-summary">
+<h3><span class="section-number">5.2.7. </span>Encoder Computation Summary<a class="headerlink" href="#encoder-computation-summary" title="Link to this heading">#</a></h3>
 <p>The whole computation in the encoder module can be summarized in the following.</p>
 <div class="proof definition admonition" id="chapter_foundation_def_pretrained_LM_transformer_encoder_computation">
 <p class="admonition-title"><span class="caption-number">Definition 5.2 </span> (computation in encoder module)</p>
@@ -593,7 +610,7 @@ The motivation of a point-wise two-layer feed-forward network is to enhance the 
 <p>where <span class="math notranslate nohighlight">\(e_i \in \mathbb{R}^{n\times d_{model}}\)</span>, <span class="math notranslate nohighlight">\(\operatorname{EncoderLalyer}: \mathbb{R}^{n\times d_{model}}\to \mathbb{R}^{n\times d_{model}}\)</span> is an encoder sub-unit, <span class="math notranslate nohighlight">\(N\)</span> is the number of encoder layers.
 Note that Dropout operations are not shown above. Dropouts are applied after initial embeddings <span class="math notranslate nohighlight">\(e_0\)</span>, every self-attention output, and every point-wise feed-forward network output.</p>
 </section>
-</div><p>Also note that there is active research on where to optimally add the layer normalization in the encoder <span id="id4">[<a class="reference internal" href="#id396" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span>. As shown in <a class="reference internal" href="#chapter-foundation-fig-pretrained-lm-transformer-layernormalizationposition"><span class="std std-numref">Fig. 5.5</span></a>, post-layer normalization (the one in the original paper <span id="id5">[<a class="reference internal" href="#id1137" title="Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Advances in neural information processing systems, 5998–6008. 2017.">VSP+17</a>]</span>) adds normalization layer after multi-head attention output and feed-forward layer output. Pre-layer normalization, on the other hand, adds normalization layer before the inputs entering into the multi-head attention and feed-forward layers.</p>
+</div><p>Also note that there is active research on where to optimally add the layer normalization in the encoder <span id="id3">[<a class="reference internal" href="#id395" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span>. As shown in <a class="reference internal" href="#chapter-foundation-fig-pretrained-lm-transformer-layernormalizationposition"><span class="std std-numref">Fig. 5.5</span></a>, post-layer normalization (the one in the original paper <span id="id4">[<a class="reference internal" href="#id1136" title="Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Advances in neural information processing systems, 5998–6008. 2017.">VSP+17</a>]</span>) adds normalization layer after multi-head attention output and feed-forward layer output. Pre-layer normalization, on the other hand, adds normalization layer before the inputs entering into the multi-head attention and feed-forward layers.</p>
 <figure class="align-default" id="chapter-foundation-fig-pretrained-lm-transformer-layernormalizationposition">
 <a class="reference internal image-reference" href="../../_images/layer_normalization_position.png"><img alt="../../_images/layer_normalization_position.png" src="../../_images/layer_normalization_position.png" style="width: 628.8000000000001px; height: 468.0px;" />
 </a>
@@ -618,7 +635,7 @@ The encoder-decoder attention uses a mask that excludes padding symbol in the in
 </figcaption>
 </figure>
 <p>The whole computation in the decoder module can be summarized in the following.</p>
-<div class="proof definition admonition" id="definition-3">
+<div class="proof definition admonition" id="definition-4">
 <p class="admonition-title"><span class="caption-number">Definition 5.3 </span> (computation in decoder module)</p>
 <section class="definition-content" id="proof-content">
 <p>Given an input sequence represented by integer sequence <span class="math notranslate nohighlight">\(o = (o_1,...,o_p,...,o_n)\)</span> and its position <span class="math notranslate nohighlight">\(o^p = (1,..., p, ..., m)\)</span>. The encoder module takes <span class="math notranslate nohighlight">\(o, o^p\)</span> as inputs, combines final contextualized embedding <span class="math notranslate nohighlight">\(e_N\)</span> from the encoder, and produce <span class="math notranslate nohighlight">\(d_N \in \mathbb{R}^{n\times d_{model}}\)</span> and probabilities over the vocabulary.</p>
@@ -688,7 +705,7 @@ The encoder-decoder attention uses a mask that excludes padding symbol in the in
 <p><span class="caption-number">Fig. 5.7 </span><span class="caption-text">Different branches of developments derived from the Transformer architecture: (left) Encoder branch, (middle) Encoder-Decoder branch, and (right) Decoder branch.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-lm-transformer-transformer-families" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>The Transformer architecture was originally intended to tackle challenges in Seq2Seq tasks such as machine translation or summarization. The simplicity in architecture and effectiveness of attention mechanism draw much interest since its invention. Transformer type of architectures have become the dominant model architecture for most of NLP tasks. Moreover, Transformer architecture has also been widely adopted in computer vision <span id="id6">[<a class="reference internal" href="#id1462" title="Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, and others. An image is worth 16x16 words: transformers for image recognition at scale. arXiv preprint arXiv:2010.11929, 2020.">DBK+20</a>]</span> and recommender systems <span id="id7">[<a class="reference internal" href="#id1463" title="Fei Sun, Jun Liu, Jian Wu, Changhua Pei, Xiao Lin, Wenwu Ou, and Peng Jiang. Bert4rec: sequential recommendation with bidirectional encoder representations from transformer. In Proceedings of the 28th ACM international conference on information and knowledge management, 1441–1450. 2019.">SLW+19</a>]</span>, which were previously by other CNN and DNN architectures.</p>
+<p>The Transformer architecture was originally intended to tackle challenges in Seq2Seq tasks such as machine translation or summarization. The simplicity in architecture and effectiveness of attention mechanism draw much interest since its invention. Transformer type of architectures have become the dominant model architecture for most of NLP tasks. Moreover, Transformer architecture has also been widely adopted in computer vision <span id="id5">[<a class="reference internal" href="#id1461" title="Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, and others. An image is worth 16x16 words: transformers for image recognition at scale. arXiv preprint arXiv:2010.11929, 2020.">DBK+20</a>]</span> and recommender systems <span id="id6">[<a class="reference internal" href="#id1462" title="Fei Sun, Jun Liu, Jian Wu, Changhua Pei, Xiao Lin, Wenwu Ou, and Peng Jiang. Bert4rec: sequential recommendation with bidirectional encoder representations from transformer. In Proceedings of the 28th ACM international conference on information and knowledge management, 1441–1450. 2019.">SLW+19</a>]</span>, which were previously by other CNN and DNN architectures.</p>
 <p>In the process of adapting Transformer for different applications, there have been efforts that continue the improvement on the original encoder-decoder architecture as well as efforts that use only the encoder part or the decoder part separately.</p>
 <p>The objective, also known as <strong>denoising objective</strong>, is to fully recover the original input from the corrupted one in a bidirectional fashion, as shown on the left side of Figure 4.1, which you will see shortly. As seen in the <strong>Bidirectional Encoder Representations from Transformers (BERT)</strong> architecture, which is a notable example of AE models, they can incorporate the context of both sides of a word. However, the first issue is that the corrupting [MASK] symbols that are used during the pre-training phase are absent from the data during the fine-tuning phase, leading to a pre-training-fine-tuning discrepancy. Secondly, the BERT model arguably assumes that the masked tokens are independent of each other.</p>
 <p>On the other hand, AR models keep away from such assumptions regarding independence and do not naturally suffer from the pre-train-fine-tuning discrepancy because they rely on the objective predicting the next token conditioned on the previous tokens without masking them. They merely utilize the decoder part of the transformer with masked selfattention. They prevent the model from accessing words to the right of the current word in a forward direction (or to the left of the current word in a backward direction), which is called <strong>unidirectionality</strong>. They are also called <strong>Causal Language Models (CLMs)</strong> due to their unidirectionality.</p>
@@ -701,23 +718,23 @@ The encoder-decoder attention uses a mask that excludes padding symbol in the in
 </section>
 <section id="the-encoder-branch">
 <h3><span class="section-number">5.3.2. </span>The Encoder Branch<a class="headerlink" href="#the-encoder-branch" title="Link to this heading">#</a></h3>
-<p>The most influential encoder-based model is <strong>BERT</strong> <span id="id8">[<a class="reference internal" href="#id1138" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.">DCLT18</a>]</span>, which stands for Bidirectional Encoder Representations from Transformers.  BERT is pretrained with the two objectives:</p>
+<p>The most influential encoder-based model is <strong>BERT</strong> <span id="id7">[<a class="reference internal" href="#id1137" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.">DCLT18</a>]</span>, which stands for Bidirectional Encoder Representations from Transformers.  BERT is pretrained with the two objectives:</p>
 <ul class="simple">
 <li><p>Predicting masked tokens in texts, known as masked language modeling (MLM)</p></li>
 <li><p>Determining if two text passages follow each other, which is known as next-sentence-prediction (NSP).
-The MLM helps learning of contextualized word-level representation, and the NSP objective aims to improve the tasks like question answering and natural language inference, which require reasoning over sentence pairs. BERT used the BookCorpus and English Wikipedia for pretraining and the model can then be fine-tuned with supervised data on downstream natural language understanding (NLU) tasks such as text classification, named entity recognition, and question-answering. At the time it was published, it achieved all state-of-the-art results on the popular GLUE benchmark. The success of BERT drew significant attention and up to date BERT like Encoder-only models dominate research and industry on natural language understanding (NLU) tasks <span id="id9">[<a class="reference internal" href="#id1467" title="Patrick Xia, Shijie Wu, and Benjamin Van Durme. Which* bert? a survey organizing contextualized encoders. arXiv preprint arXiv:2010.00854, 2020.">XWVD20</a>]</span>. We will discuss BERT in the following chapter.</p></li>
+The MLM helps learning of contextualized word-level representation, and the NSP objective aims to improve the tasks like question answering and natural language inference, which require reasoning over sentence pairs. BERT used the BookCorpus and English Wikipedia for pretraining and the model can then be fine-tuned with supervised data on downstream natural language understanding (NLU) tasks such as text classification, named entity recognition, and question-answering. At the time it was published, it achieved all state-of-the-art results on the popular GLUE benchmark. The success of BERT drew significant attention and up to date BERT like Encoder-only models dominate research and industry on natural language understanding (NLU) tasks <span id="id8">[<a class="reference internal" href="#id1466" title="Patrick Xia, Shijie Wu, and Benjamin Van Durme. Which* bert? a survey organizing contextualized encoders. arXiv preprint arXiv:2010.00854, 2020.">XWVD20</a>]</span>. We will discuss BERT in the following chapter.</p></li>
 </ul>
-<p><strong>RoBERTa</strong> (Robustly Optimized BERT) <span id="id10">[<a class="reference internal" href="#id1200" title="Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. Roberta: a robustly optimized bert pretraining approach. arXiv preprint arXiv:1907.11692, 2019.">LOG+19</a>]</span> is a follow-up study of BERT, which reveals that the performance of BERT can be further improved by modifying the pretraining scheme. RoBERTa uses larger batches with more training data and dropped the NSP task to significantly improve the performance over the original BERT model.</p>
-<p>Although BERT model delivers great results, it can be expensive and difficult to deploy in production due to its model size and memory footprint. The <strong>ALBERT</strong> model <span id="id11">[<a class="reference internal" href="#id1507" title="Zhenzhong Lan, Mingda Chen, Sebastian Goodman, Kevin Gimpel, Piyush Sharma, and Radu Soricut. Albert: a lite bert for self-supervised learning of language representations. 2020. URL: https://arxiv.org/abs/1909.11942, arXiv:1909.11942.">LCG+20</a>]</span> introduced three changes to make the encoder architecture more efficient. First, it reduces embedding dimensionality via matrix factorization, which saves parameters especially when the vocabulary gets large. Second, all layers share the parameters which decreases the number of effective parameters even further. Finally, ALBERT enhance the NSP objective with a more challenging sentence-ordering prediction (SOP), which primary focuses on inter-sentence coherence for sentence pairs in the same text segment.</p>
+<p><strong>RoBERTa</strong> (Robustly Optimized BERT) <span id="id9">[<a class="reference internal" href="#id1199" title="Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. Roberta: a robustly optimized bert pretraining approach. arXiv preprint arXiv:1907.11692, 2019.">LOG+19</a>]</span> is a follow-up study of BERT, which reveals that the performance of BERT can be further improved by modifying the pretraining scheme. RoBERTa uses larger batches with more training data and dropped the NSP task to significantly improve the performance over the original BERT model.</p>
+<p>Although BERT model delivers great results, it can be expensive and difficult to deploy in production due to its model size and memory footprint. The <strong>ALBERT</strong> model <span id="id10">[<a class="reference internal" href="#id1506" title="Zhenzhong Lan, Mingda Chen, Sebastian Goodman, Kevin Gimpel, Piyush Sharma, and Radu Soricut. Albert: a lite bert for self-supervised learning of language representations. 2020. URL: https://arxiv.org/abs/1909.11942, arXiv:1909.11942.">LCG+20</a>]</span> introduced three changes to make the encoder architecture more efficient. First, it reduces embedding dimensionality via matrix factorization, which saves parameters especially when the vocabulary gets large. Second, all layers share the parameters which decreases the number of effective parameters even further. Finally, ALBERT enhance the NSP objective with a more challenging sentence-ordering prediction (SOP), which primary focuses on inter-sentence coherence for sentence pairs in the same text segment.</p>
 <p>By using model compression techniques like knowledge distillation, we can preserve most of the BERT performance with much smaller model size and memory footprint. Representative models include <strong>DistilBERT</strong> and <strong>TinyBERT</strong>.</p>
 </section>
 </section>
 <section id="the-decoder-branch">
 <h2><span class="section-number">5.4. </span>The Decoder Branch<a class="headerlink" href="#the-decoder-branch" title="Link to this heading">#</a></h2>
 <p>The decoder component in the Transformer model can be used for auto-regressive language modeling. GPT series are among the most successful auto-regressive pretrained language models, and they form the foundation of LLM.</p>
-<p><strong>GPT-1</strong> <span id="id12">[<a class="reference internal" href="#id1139" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf, 2018.">RNSS18</a>]</span>: One of the major contributions of the GPT-1 study is the introduction of a two-stage unsupervised pretraining and supervised fine-tuning scheme. They demonstrates that a pre-trained model with fine-tuning can achieve satisfactory results over a range of diverse tasks, not just for a single task.</p>
-<p><strong>GPT-2</strong> <span id="id13">[<a class="reference internal" href="#id1140" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>]</span>:  is a larger model trained on much more training data, called WebText, than the original one. It achieved state-of-the-art results on seven out of the eight tasks in a zero-shot setting in which there is no fine-tuning applied. The key contribution of GPT-2 is demonstrating the capability of zero-shot learning with extensively pretrained language model alone (i.e., no finetuning).</p>
-<p><strong>GPT-3</strong> <span id="id14">[<a class="reference internal" href="#id394" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>]</span>: GPT-3 is up-scaled from GPT-2 by a factor of 100. It demonstrated that lead to significant improvements in performance and capabilities, which also marked the beginning of LLM era. Besides being able to generate impressively realistic text passages, the model also exhibits few-shot learning capabilities: with a few examples of a novel task such as text-to-code examples the model is able to accomplish the task on new examples.</p>
+<p><strong>GPT-1</strong> <span id="id11">[<a class="reference internal" href="#id1138" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf, 2018.">RNSS18</a>]</span>: One of the major contributions of the GPT-1 study is the introduction of a two-stage unsupervised pretraining and supervised fine-tuning scheme. They demonstrates that a pre-trained model with fine-tuning can achieve satisfactory results over a range of diverse tasks, not just for a single task.</p>
+<p><strong>GPT-2</strong> <span id="id12">[<a class="reference internal" href="#id1139" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>]</span>:  is a larger model trained on much more training data, called WebText, than the original one. It achieved state-of-the-art results on seven out of the eight tasks in a zero-shot setting in which there is no fine-tuning applied. The key contribution of GPT-2 is demonstrating the capability of zero-shot learning with extensively pretrained language model alone (i.e., no finetuning).</p>
+<p><strong>GPT-3</strong> <span id="id13">[<a class="reference internal" href="#id393" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>]</span>: GPT-3 is up-scaled from GPT-2 by a factor of 100. It demonstrated that lead to significant improvements in performance and capabilities, which also marked the beginning of LLM era. Besides being able to generate impressively realistic text passages, the model also exhibits few-shot learning capabilities: with a few examples of a novel task such as text-to-code examples the model is able to accomplish the task on new examples.</p>
 </section>
 <section id="the-encoder-decoder-branch">
 <h2><span class="section-number">5.5. </span>The Encoder-decoder Branch<a class="headerlink" href="#the-encoder-decoder-branch" title="Link to this heading">#</a></h2>
@@ -728,55 +745,55 @@ several possible transformation from simple masking, sentence permutation, token
 </section>
 <section id="bibliography">
 <h2><span class="section-number">5.6. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id15">
+<div class="docutils container" id="id14">
 <div role="list" class="citation-list">
-<div class="citation" id="id394" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id14">BMR+20</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id393" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">BMR+20</a><span class="fn-bracket">]</span></span>
 <p>Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. <em>Advances in Neural Information Processing Systems</em>, 33:1877–1901, 2020.</p>
 </div>
-<div class="citation" id="id1138" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">DCLT18</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1137" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">DCLT18</a><span class="fn-bracket">]</span></span>
 <p>Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. <em>arXiv preprint arXiv:1810.04805</em>, 2018.</p>
 </div>
-<div class="citation" id="id1462" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">DBK+20</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1461" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">DBK+20</a><span class="fn-bracket">]</span></span>
 <p>Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, and others. An image is worth 16x16 words: transformers for image recognition at scale. <em>arXiv preprint arXiv:2010.11929</em>, 2020.</p>
 </div>
-<div class="citation" id="id1507" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">LCG+20</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1506" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">LCG+20</a><span class="fn-bracket">]</span></span>
 <p>Zhenzhong Lan, Mingda Chen, Sebastian Goodman, Kevin Gimpel, Piyush Sharma, and Radu Soricut. Albert: a lite bert for self-supervised learning of language representations. 2020. URL: <a class="reference external" href="https://arxiv.org/abs/1909.11942">https://arxiv.org/abs/1909.11942</a>, <a class="reference external" href="https://arxiv.org/abs/1909.11942">arXiv:1909.11942</a>.</p>
 </div>
-<div class="citation" id="id1321" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">LTY+18</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1320" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">LTY+18</a><span class="fn-bracket">]</span></span>
 <p>Jian Li, Zhaopeng Tu, Baosong Yang, Michael R Lyu, and Tong Zhang. Multi-head attention with disagreement regularization. <em>arXiv preprint arXiv:1810.10183</em>, 2018.</p>
 </div>
-<div class="citation" id="id1200" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">LOG+19</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1199" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">LOG+19</a><span class="fn-bracket">]</span></span>
 <p>Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. Roberta: a robustly optimized bert pretraining approach. <em>arXiv preprint arXiv:1907.11692</em>, 2019.</p>
 </div>
-<div class="citation" id="id1139" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id12">RNSS18</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1138" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">RNSS18</a><span class="fn-bracket">]</span></span>
 <p>Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. <em>URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf</em>, 2018.</p>
 </div>
-<div class="citation" id="id1140" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">RWC+19</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1139" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id12">RWC+19</a><span class="fn-bracket">]</span></span>
 <p>Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. <em>OpenAI Blog</em>, 1(8):9, 2019.</p>
 </div>
-<div class="citation" id="id1463" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">SLW+19</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1462" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">SLW+19</a><span class="fn-bracket">]</span></span>
 <p>Fei Sun, Jun Liu, Jian Wu, Changhua Pei, Xiao Lin, Wenwu Ou, and Peng Jiang. Bert4rec: sequential recommendation with bidirectional encoder representations from transformer. In <em>Proceedings of the 28th ACM international conference on information and knowledge management</em>, 1441–1450. 2019.</p>
 </div>
-<div class="citation" id="id1137" role="doc-biblioentry">
+<div class="citation" id="id1136" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>VSP+17<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id5">2</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id4">2</a>)</span>
 <p>Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In <em>Advances in neural information processing systems</em>, 5998–6008. 2017.</p>
 </div>
-<div class="citation" id="id1467" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">XWVD20</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1466" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">XWVD20</a><span class="fn-bracket">]</span></span>
 <p>Patrick Xia, Shijie Wu, and Benjamin Van Durme. Which* bert? a survey organizing contextualized encoders. <em>arXiv preprint arXiv:2010.00854</em>, 2020.</p>
 </div>
-<div class="citation" id="id396" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">XYH+20</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id395" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">XYH+20</a><span class="fn-bracket">]</span></span>
 <p>Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In <em>International Conference on Machine Learning</em>, 10524–10533. PMLR, 2020.</p>
 </div>
 </div>
@@ -849,14 +866,14 @@ several possible transformation from simple masking, sentence permutation, token
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretrained-language-models">5.1. Pretrained Language Models</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-chapter-foundation-transformers-transformers">5.2. Transformers</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformers-anatomy">5.2. Transformers Anatomy</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-architecture">5.2.1. Overall Architecture</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-output-conventions">5.2.2. Input Output Conventions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#position-encodings">5.2.3. Position Encodings</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multihead-attention-with-masks">5.2.4. Multihead Attention With Masks</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-with-recurrent-layer-in-sequence-modeling">5.2.5. Comparison With Recurrent Layer In Sequence Modeling</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pointwise-feedforward-layer">5.2.6. Pointwise FeedForward Layer</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoder-layer-computation-summary">5.2.7. Encoder Layer Computation Summary</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoder-computation-summary">5.2.7. Encoder Computation Summary</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decoder-anatomy">5.2.8. Decoder Anatomy</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-breakdown-analysis">5.2.9. Computational Breakdown Analysis</a></li>
 </ul>
