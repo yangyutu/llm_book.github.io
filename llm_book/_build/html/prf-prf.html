@@ -195,7 +195,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="docs/chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MOE sparse models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MOE Sparse Architectures (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="nav bd-sidenav">
@@ -207,21 +207,19 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_inference/inference_fundamentals.html">16. LLM Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_inference/inference_acceleration.html">17. Inference acceleration</a></li>
-
-
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_inference/inference_fundamentals.html">16. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_inference/inference_acceleration.html">17. Inference Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_prompt/basic_prompt.html">20. Basic prompt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_prompt/advanced_prompt.html">21. Advanced prompt techniques</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_rag/basic_rag.html">22. Basic RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_prompt/basic_prompt.html">18. Basic prompt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_prompt/advanced_prompt.html">19. Advanced prompt techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_rag/basic_rag.html">20. RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_application_IR/information_retrieval_fundamentals.html">21. Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_application_IR/application_LLM_in_IR.html">22. Application of LLM in IR</a></li>
 </ul>
 
     </div>
@@ -338,16 +336,18 @@ document.write(`
    <a href="#cap-chapter_foundation_def_pretrained_LM_transformer_encoder_layer"><strong>chapter_foundation_def_pretrained_LM_transformer_encoder_layer</strong></a> | 
    <a href="#cap-chapter_foundation_word_embedding_def_skipGramOptimization"><strong>chapter_foundation_word_embedding_def_skipGramOptimization</strong></a> | 
    <a href="#cap-definition-0"><strong>definition-0</strong></a> | 
-   <a href="#cap-definition-3"><strong>definition-3</strong></a> | 
+   <a href="#cap-definition-4"><strong>definition-4</strong></a> | 
    <a href="#cap-example-0"><strong>example-0</strong></a> | 
    <a href="#cap-example-1"><strong>example-1</strong></a> | 
    <a href="#cap-example-2"><strong>example-2</strong></a> | 
    <a href="#cap-example-3"><strong>example-3</strong></a> | 
+   <a href="#cap-example-5"><strong>example-5</strong></a> | 
    <a href="#cap-remark-0"><strong>remark-0</strong></a> | 
    <a href="#cap-remark-1"><strong>remark-1</strong></a> | 
    <a href="#cap-remark-2"><strong>remark-2</strong></a> | 
    <a href="#cap-remark-3"><strong>remark-3</strong></a> | 
-   <a href="#cap-remark-4"><strong>remark-4</strong></a>
+   <a href="#cap-remark-4"><strong>remark-4</strong></a> | 
+   <a href="#cap-remark-6"><strong>remark-6</strong></a>
    </div>
 
    <table class="indextable modindextable">
@@ -432,12 +432,12 @@ document.write(`
        <a href="docs/chapter_foundation/bert.html#definition-0"><code class="xref">definition-0</code></a> <em>(docs/chapter_foundation/bert)</em></td><td>
        <em>definition</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-definition-3"><td></td><td>
-       <strong>definition-3</strong></td><td></td></tr>
+     <tr class="cap" id="cap-definition-4"><td></td><td>
+       <strong>definition-4</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_foundation/transformers.html#definition-3"><code class="xref">definition-3</code></a> <em>(docs/chapter_foundation/transformers)</em></td><td>
+       <a href="docs/chapter_foundation/transformers.html#definition-4"><code class="xref">definition-4</code></a> <em>(docs/chapter_foundation/transformers)</em></td><td>
        <em>definition</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-example-0"><td></td><td>
@@ -445,7 +445,7 @@ document.write(`
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_training/finetuning.html#example-0"><code class="xref">example-0</code></a> <em>(docs/chapter_training/finetuning)</em></td><td>
+       <a href="docs/chapter_LLM_arch/LLM_dense_architectures.html#example-0"><code class="xref">example-0</code></a> <em>(docs/chapter_LLM_arch/LLM_dense_architectures)</em></td><td>
        <em>example</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-example-1"><td></td><td>
@@ -453,7 +453,7 @@ document.write(`
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_inference/inference_acceleration.html#example-1"><code class="xref">example-1</code></a> <em>(docs/chapter_inference/inference_acceleration)</em></td><td>
+       <a href="docs/chapter_prompt/basic_prompt.html#example-1"><code class="xref">example-1</code></a> <em>(docs/chapter_prompt/basic_prompt)</em></td><td>
        <em>example</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-example-2"><td></td><td>
@@ -461,7 +461,7 @@ document.write(`
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_inference/inference_acceleration.html#example-2"><code class="xref">example-2</code></a> <em>(docs/chapter_inference/inference_acceleration)</em></td><td>
+       <a href="docs/chapter_LLM_arch/LLM_dense_architectures.html#example-2"><code class="xref">example-2</code></a> <em>(docs/chapter_LLM_arch/LLM_dense_architectures)</em></td><td>
        <em>example</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-example-3"><td></td><td>
@@ -469,7 +469,15 @@ document.write(`
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_LLM_arch/LLM_dense_architectures.html#example-3"><code class="xref">example-3</code></a> <em>(docs/chapter_LLM_arch/LLM_dense_architectures)</em></td><td>
+       <a href="docs/chapter_prompt/basic_prompt.html#example-3"><code class="xref">example-3</code></a> <em>(docs/chapter_prompt/basic_prompt)</em></td><td>
+       <em>example</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-example-5"><td></td><td>
+       <strong>example-5</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="docs/chapter_LLM_arch/LLM_dense_architectures.html#example-5"><code class="xref">example-5</code></a> <em>(docs/chapter_LLM_arch/LLM_dense_architectures)</em></td><td>
        <em>example</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-remark-0"><td></td><td>
@@ -485,7 +493,7 @@ document.write(`
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_training/finetuning.html#remark-1"><code class="xref">remark-1</code></a> <em>(docs/chapter_training/finetuning)</em></td><td>
+       <a href="docs/chapter_training/training_fundamentals.html#remark-1"><code class="xref">remark-1</code></a> <em>(docs/chapter_training/training_fundamentals)</em></td><td>
        <em>remark</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-remark-2"><td></td><td>
@@ -493,7 +501,7 @@ document.write(`
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_LLM_arch/LLM_dense_architectures.html#remark-2"><code class="xref">remark-2</code></a> <em>(docs/chapter_LLM_arch/LLM_dense_architectures)</em></td><td>
+       <a href="docs/chapter_training/training_fundamentals.html#remark-2"><code class="xref">remark-2</code></a> <em>(docs/chapter_training/training_fundamentals)</em></td><td>
        <em>remark</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-remark-3"><td></td><td>
@@ -501,7 +509,7 @@ document.write(`
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_foundation/language_models.html#remark-3"><code class="xref">remark-3</code></a> <em>(docs/chapter_foundation/language_models)</em></td><td>
+       <a href="docs/chapter_LLM_arch/LLM_dense_architectures.html#remark-3"><code class="xref">remark-3</code></a> <em>(docs/chapter_LLM_arch/LLM_dense_architectures)</em></td><td>
        <em>remark</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-remark-4"><td></td><td>
@@ -509,7 +517,15 @@ document.write(`
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_foundation/language_models.html#remark-4"><code class="xref">remark-4</code></a> <em>(docs/chapter_foundation/language_models)</em></td><td>
+       <a href="docs/chapter_LLM_arch/LLM_dense_architectures.html#remark-4"><code class="xref">remark-4</code></a> <em>(docs/chapter_LLM_arch/LLM_dense_architectures)</em></td><td>
+       <em>remark</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-remark-6"><td></td><td>
+       <strong>remark-6</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="docs/chapter_LLM_arch/LLM_dense_architectures.html#remark-6"><code class="xref">remark-6</code></a> <em>(docs/chapter_LLM_arch/LLM_dense_architectures)</em></td><td>
        <em>remark</em></td></tr>
    </table>
 

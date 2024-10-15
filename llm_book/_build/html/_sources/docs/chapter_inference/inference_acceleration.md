@@ -1,21 +1,20 @@
-# Inference acceleration
+# Inference Acceleration
 
 ## The fundamental challenge of LLM inference
 
+### Overview
 LLM inference is **memory-IO bound, not compute bound**. In other words, it currently takes more time to load 1MB of data to the GPU’s compute cores than it does for those compute cores to perform LLM computations on 1MB of data. 
 
 This is because LLM contains relative usually simple calculations (multiplication, addition, max-pooling, etc) that can be executed by high performing GPU parallel computing units. 
-
-
 
 This means that LLM inference throughput is largely determined by how large a batch you can fit into high-bandwidth GPU memory. 
 
 More specific reasons for LLM inference to be memory-bound is because of the following:
 
-* **Model size**: Modern LLMs often have billions of parameters, requiring significant memory just to store the model weights.
-* **Attention mechanism**: Transformers, which most LLMs are based on, use attention mechanisms that can require large amounts of memory, especially for long sequences.
+* **Model parameters**: Modern LLMs often have billions of parameters, requiring significant memory just to store the model weights.
+* **Attention mechanism**: Transformers, which most LLMs are based on, use attention mechanisms that can require large amounts of memory for KV Cache [{ref}`chapter_inference_sec_inference_acceleration_KV_cache`], especially for long sequences.
 * **Activations**: Storing intermediate activations during inference can consume substantial memory.
-* **KV-cache**: For autoregressive generation, maintaining the key-value cache for past tokens uses additional memory that grows with sequence length.
+* **Input-output tensors**: For autoregressive generation, maintaining the key-value cache for past tokens uses additional memory that grows with sequence length.
 
 While LLM inference is mainly memory-bound, the following factors also contributes to the computation intensity:
 
@@ -23,11 +22,55 @@ Matrix multiplications: The core operations in LLMs are matrix multiplications, 
 Nonlinear activations: Operations like softmax and layer normalization require additional computation.
 Beam search: If used, beam search for text generation adds computational overhead.
 
+### Memory Requirement Breakdown
 
-## The KV Cache
+Assume every numerical value are stored in $p$ bytes, we can compute more accurate memory requirements as follows.
+
+```{table} Memory requirement breakdown
+| Component | Memory Requirement | Note |
+| :--- | :--- | :--- |
+| Model parameter | $V d+L\left(12 d^2+13 d\right)$ \times p | See {ref}`chapter_LLM_arch_sec_parameter_composition`|
+| Activations | $b \times s \times d \times L \times p$ | |
+|KV Cache | $2\times b \times s \times d \times L \times p$ |  See {ref}`chapter_inference_sec_inference_acceleration_KV_cache` | 
+| Input-output | $b\times s \times d \times p$ | |
+
+```
+
+It is easy to see that domiant memory cost are model paramters and KV Cache.
+
+````{prf:example}
+
+
+````
+
+
+
+(chapter_inference_sec_inference_acceleration_KV_cache)=
+## KV Cache
 
 ### Basics
 
+Key-Value (KV) caching is a crucial optimization technique used in the inference process of Large Language Models (LLMs) to significantly improve performance and reduce computational costs. This technique is particularly important for autoregressive models like GPT, which generate text one token at a time.
+In transformer-based LLMs, each layer contains self-attention mechanisms that compute attention scores using queries (Q), keys (K), and values (V). During inference, as the model generates each new token, it typically needs to recompute the attention for all previous tokens in the sequence. This process becomes increasingly computationally expensive as the generated sequence grows longer.
+
+KV caching addresses this issue by storing the key and value tensors for each layer of the transformer after they are computed for each token. When generating the next tokens, we need the new token to attend to preceding generated tokens, the model can reuse the cached K and V tensors for these tokens instead of re-computing it. This approach significantly reduces the amount of computation required for each new token, especially for long sequences.
+
+Following {numref}`chapter_inference_acceleration_fig_KV_cache_comparison_computation` illustrate the comparision of the attention computation when generating the second token on the settings of **without** KV cache and **with** KV cache.
+
+Particularly, when there is no KV cache and thus previously Key/Value tensors need to be re-computed, and as a result, redundant computation are in every module of the Transformer network:
+* **Attention layer**: 
+  * As the new token need to attend to all preceding Key/Value tensors and Key/Value tensors are dependent on Query/Key/Value tensors from lower layers, the attention layer simply recompute all steps on the entire sequence, including attention scores and weighted sum of Value (V) vectors.
+  * Without KV cache, 
+* **FFN layer & Normalization layer**: FFN and Layer Normalization operations in each transformer layer reprocess all previous tokens unnecessarily. With KV cache, these layers only applies to new token's contextual embedding.
+
+
+```{figure} ../img/chapter_inference/inference_acceleration/KV_cache/computation_comparison_with_without_KV_cache.png
+---
+scale: 35%
+name: chapter_inference_acceleration_fig_KV_cache_comparison_computation
+---
+Comparision of the attention computation on the settings of **without** KV cache and **with** KV cache.
+```
 
 
 ::::{grid}
@@ -36,58 +79,99 @@ Beam search: If used, beam search for text generation adds computational overhea
 :::{grid-item-card} <p style="text-align: center;"><span style="background-color: #e4ac94">**Benefits**</span></p>
 
 - Faster inference with reduced computational cost: The time complexity for generating each new token becomes constant rather than increasing linearly with sequence length. By reducing redundant computations, KV caching can dramatically speed up the token generation process.
-- Efficient long sequence generation. As KV caching reduces computational complexity to constant, it is particularly beneficial for long sequence generation. 
 :::
 
 :::{grid-item-card} <p style="text-align: center;"><span style="background-color: #b4c9da">**Drawbacks**</span></p>
 - Increased memory usage: KV cache is trading inference speed at the cost of memory, which can be substantial for long sequences or large batch sizes.
-- Post-Norm can achieve good convergence effects in the early stages of training, performing particularly well in shallow models. However, in deep networks, the drawback of Post-Norm is that it may lead to gradient instability during the training process, especially as the network depth increases, gradients may become increasingly unstable during propagation.
 :::
 ::::
 
-
-### Memory requirement with KV Cache
-
-**CHANGE**
-How to calculate the memory usage of KV Cache is what I want to focus on in this article. First, let's present the formula:
-
-Memory = batchsize × seqlength × hiddensize × layers × 2 × 2
-
-The multiplication of the first four parameters should be easy to understand; it's the sum of all hidden vectors corresponding to KV in each layer of the model. The first 2 refers to the K and V parts, and the second 2 refers to the number of bytes for half-precision.
-
-Let's take an example: 
-
-````{prf:example}
-for llama7B, hiddensize = 4096, seqlength = 2048, batchsize = 64, layers = 32. The calculation gives us:
-
-Memory = 64 × 2048 × 4096 × 32 × 2 × 2 ≈ 68G
-
-As we can see, KV Cache also consumes a significant amount of memory in cases of large batch sizes and long sentences.
-
-68G looks relatively large compared to the model itself, but this is in the case of a large batch. For a single batch, KV Cache would only occupy about 1G of memory, which is just about half the memory of the model parameters.
+````{prf:remark} KV-cache pre-fill for prompts
+While traditional autoregressive generation processes tokens one-by-one, we can prefil KV Cache by leveraging the fact that the prompt is known in advance.
+Specifically, we can pre-computes and stores the key (K) and value (V) representations for the entire prompt in the cache before generation begins. During token generation, the model can then access these pre-computed values, eliminating the need to recalculate them at each step. This approach reduces computational overhead, especially for tasks involving long prompts or multiple generations from the same context, leading to faster inference times.
 ````
 
-### The computational cost with KV Cache
+### Computational cost with KV Cache
 
 In {ref}`chapter_LLM_arch_sec_LLM_arch_fundamentals_forward_pass_computation`, we analyze the computational cost during a forward pass without using KV Cache. In this section, we are going to re-analyze the computatioal cost and compare it with the no-KV-Cache setting. 
 
 % https://r4j4n.github.io/blogs/posts/kv/
 
 
+```{table} Computation breakdown
+| Module | Computation | Matrix Shape Changes | FLOPs (with KV Cache) | FLOPs (without KV Cache baseline) |
+| :--- | :--- | :--- | :--- | :--- |
+| Attention | ${Q} / {K} / {V}$ Projection | $[{b}, 1, {d}] \times [{~d}, {~d}]\to[{b}, 1, {d}]$ | $3\times 2 b d^2$ | $3\times 2 b s d^2$ | 
+|  | $Q K^T$ | $[{~b}, 1, {~d}] \times [{~b}, {~d}, (L_{KV} + 1)]\to[{b}, 1, (L_{KV} + 1)]$ | $2 b d (L_{KV} + 1)$ | $2 b s^2 d$ |
+|  | Score $ \times V$ | $[{~b}, 1, (L_{KV} + 1)] \times [{~b}, (L_{KV} + 1), {~d}]\to[{b}, 1, {d}]$ | $2 b d (L_{KV} + 1)$ | $2 b s^2 d$ |
+|  | Output (with $W_o$) | $[{b}, 1, {d}] \times[{~d}, {~d}]\to[{b}, 1, {d}]$ | $2 b d^2$ | $2 b s d^2$ |
+| FFN | $f_1$ | $[{~b}, 1, {~d}] \times[{~d}, 4 {~d}] \to [{b}, 1, 4 {~d}]$ | $8 b d^2$ | $8 b s d^2$ |
+|  | $f_2$ | $[{~b}, 1, 4 {~d}] \times[4 {~d}, {~d}]\to[{b}, 1, {d}]$ | $8 b d^2$ | $8 b s d^2$ |
+| Embedding |  | $[{b}, 1, 1] \times[{~V}, {~d}]\to[{b}, 1, {d}]$ | $2 b d V$| $2 b s d V$ |
+| In total |  | | $\left(24 b d^2+4 b d (L_{KV} + 1) \right) \times L+2 b d V$ | $\left(24 b s d^2+4 b d s^2\right) \times L+2 b s d V$ |
+```
+
+Because $(L_{KV} + 1) = s$, the KV cache reduce the cost to $1/s$ of the original cost.
+
+### Inference Memory Requirement with KV Cache
+
+
+
+
+With KV Cache, the cache memory requirement for inferencing a batch of $s$-length sequence is given by
+
+$$
+M_{KV} = 2\times b \times s \times d \times L \times p
+$$ (chapter_inference_acceleration_eq_KV_cache_memory_formula)
+
+where $b$ is the batch size, $s$ is the sequence length, $d$ is the model hidden dim, $L$ is number of layers, $p$ is the byte size per model paraemters (e.g., 2 for float16). The multiplier 2 is because of both K and V are cached.
+
+
+````{prf:example}
+Consider a model (e.g., Llama7B) with $d = 4096$, $s = 2048$, $b = 64$, and $L = 32$ = 32. The calculation gives us:
+
+$$M = 2 \times 64 × 2048 × 4096 × 32 × 2 = 68 \text{GB}.$$
+
+As we can see, KV Cache also consumes a significant amount of memory in cases of large batch sizes and long sentences.
+
+68G looks relatively large compared to the model itself, but this is in the case of a large batch. For a single batch, KV Cache would only occupy about 1G of memory, which is just about half the memory of the model parameters.
+````
+
 
 
 ### Combined with GQA
 
+Grouped Query Attention (GQA)[{ref}`chapter_LLM_arch_sec_self_attention_variant_GQA`] optimizes the computational and memory cost of the regular Multi-head attention (MHA).
+
+For Multi-head attention (MHA), we have $d = H \times d_{h}$, in which $H$ is the number of heads, and $d_h$ is the subspace dimensions of the head. The memory calculation [{eq}`chapter_inference_acceleration_eq_KV_cache_memory_formula`] can also be written by
+$$
+M_{KV} = 2\times b \times s \times H \times d_{H} \times L \times p
+$$
+Then the GQA memory requirement is given by
+
+$$ 
+M_{KV, GQA} = 2\times b \times s \times G \times d_h \times L \times p
+$$ (chapter_inference_acceleration_eq_KV_cache_memory_formula_GQA)
+
+where $G$ is the number of Groups. As $G \ll H$ for large-sized LLM, the savings from GQA can be significant.
 
 
+### Blocked KV Caching via Paged Attention
 
+Traditional LLM inference systems face many inefficiencies in KV-cache memory management. For example, these systems typically pre-allocate contiguous memory chunks based on a request's maximum length, often leading to inefficient memory utilization:
+* The actual request lengths could be much shorter than their maximum potential. 
+* Even when actual lengths are known in advance, pre-allocation remains inefficient as the entire memory chunk is reserved for the duration of the request, preventing other shorter requests from utilizing unused portions.
 
+There is also a lack of mechnism for  memory sharing KV cache for different requests are stored in separate contiguous spaces. 
 
+PagedAttention {cite:p}`kwon2023efficient` is improved memory managment and sharing method. The key idea is that
+the request’s KV cache is divided into smaller blocks, each of which can contain the attention keys and values of a fixed number of tokens. The benefits are:
+* These smaller blocks enable easy use of non-contiguous space, reducing memory fragment waste.
+* By using a look-up table to locate the address of each block, the memory sharing and block re-use across different requests can be achieved. 
 
+## Quantization Fundamentals
 
-# Inference acceleration: Quantization
-
-## Basic Concepts
+### Basic Concepts
 
 **Quantization** is the process of using a finite number of low-precision values (usually int8) to approximate high-precision (usually float32) numbers with relatively low loss in inference precision.
 
@@ -108,7 +192,7 @@ with different levels of **quantization granularities**, including:
 * per-token/per-channel
 * group-wise
 
-## Where quantization and dequant happen? What is the trade off
+### Where quantization and dequant happen? What is the trade off
 
 
 
@@ -180,7 +264,7 @@ A reduced memory footprint means that the model requires less storage space, par
 
 
 
-## Standard quantization techniques
+### Standard quantization techniques
 
 To introduce standard quantization techniques, we take 16-bit floating-point model weight $W_{f16}$ and its quantization into 8-bit integer as example. 
 
@@ -236,7 +320,7 @@ $$q = \operatorname{Clip}(\operatorname{Round}(\frac{r}{s}) + z, q_{min}, q_max)
 
 where $s$ is scaling parameter, $z$ is the shifting parameter, and $q_{min}, q_{max}$ are the clipping range.
 
-## Quantized matrix multiplication
+### Quantized matrix multiplication
 
 The modern GPU hardware can significantly speed up the matrix multiplication in the integer representation. As matrix multiplication involves accumulation operations, the typical convension for accumulation data types are
 
@@ -245,7 +329,7 @@ The modern GPU hardware can significantly speed up the matrix multiplication in 
 | float16    | float16    |
 | bfloat16    | float32    |
 | int16    | int32    |
-| int6    | int32    |
+| int8    | int32    |
 
 The matrix multiplication between $X_{f16}$ and $W_{f16}$ can be approximated by
 
@@ -260,14 +344,12 @@ $$
 where the summation or accumation operation in matrix multiplication of $X_{i8}W_{i8}$ will be conducted in int-32 data type.
 
 
-## Quantization granularities
+### Quantization granularities
 
-### Overview
 
 These different granularities offer trade-offs between quantization accuracy and computational efficiency. Per-tensor is the fastest but least accurate, per-channel/per-token is the most accurate but computationally expensive, and group-wise provides a balance between the two extremes
 
-### Per-tensor quantization
-Per-tensor quantization applies the same scaling factor and zero point to an entire tensor (usually a weight matrix or activation tensor). Each weight tensor and activation tensor in the model will have its own set of quantization parameters. Note that the biggest challenges for per-tensor quantization is that a single outlier can reduce the quantization precision of all other values. 
+**Per-tensor quantization** applies the same scaling factor and zero point to an entire tensor (usually a weight matrix or activation tensor). Each weight tensor and activation tensor in the model will have its own set of quantization parameters. Note that the biggest challenges for per-tensor quantization is that a single outlier can reduce the quantization precision of all other values. 
 
 ````{prf:example} Per-tensor quantization
 Let's consider a weight matrix $W$, the quantize $W$ into int8, we have the following steps:
@@ -280,10 +362,7 @@ W_quant = round(W / scale) + zero_point
 In this case, all elements use the same scale (0.00510) and zero_point (98) for quantization and dequantization.
 ````
 
-
-### Per-channel quantization
-
-Per-channel (from model weights perspective) quantization applies different scaling factors and zero points to each channel in the tensor.
+**Per-channel (from model weights perspective) quantization** applies different scaling factors and zero points to each channel in the tensor.
 Explanation:
 This method computes separate quantization parameters for each channel (in the case of weights) or each token (in the case of activations). This allows for more fine-grained quantization, potentially preserving more information.
 
@@ -299,9 +378,7 @@ Each column in W_quant uses its own scale and zero_point for quantization and de
 ````
 
 
-### Per-token quantization
-
-Per-token (from activations perspective) quantization applies different scaling factors and zero points to each token in the tensor.
+**Per-token (from activations perspective) quantization** applies different scaling factors and zero points to each token in the tensor.
 
 For a given activation tensor $A$ of shape $(B, S, H)$, where:
 * $B$ is the batch size
@@ -312,7 +389,7 @@ There will be $S$ sets of quantization parameters; each set of parameters is com
 
 ### Groupwise quantization
 
-Group-wise quantization is a middle ground between per-tensor and per-channel quantization. It applies different quantization parameters to groups of channels or elements within a tensor.
+<!-- Group-wise quantization is a middle ground between per-tensor and per-channel quantization. It applies different quantization parameters to groups of channels or elements within a tensor.
 Explanation:
 In this approach, we divide the tensor into groups and compute separate quantization parameters for each group. This allows for more flexibility than per-tensor quantization while being more computationally efficient than per-channel quantization.
 Example:
@@ -344,10 +421,10 @@ W_quant = [[98, 255, 235, ..., 156, | 137, 0, 215, ..., 78, | ...],
 [137, 0, 215, ..., 78,  | 255, 51, 196, ..., 176, | ...],
 ...
 [255, 51, 196, ..., 176, | 98, 255, 235, ..., 156, | ...]]
-In this case, each group of 32 channels shares the same scale and zero_point for quantization and dequantization.
+In this case, each group of 32 channels shares the same scale and zero_point for quantization and dequantization. -->
 
 
-## Quantization-performance trade-off in language models
+### Quantization-performance trade-off in language models
 
 Early research [{cite:p}`bondarenko2021understandingovercomingchallengesefficient`] during the BERT era revealed significant challenges in quantizing large language models. {cite:p}`bondarenko2021understandingovercomingchallengesefficient` demonstrated that applying round-to-nearest (RTN) quantization to both weights and activations of BERT models, reducing them to 8-bit precision, resulted in substantial performance deterioration on language understanding benchmarks.
 
@@ -372,9 +449,9 @@ The problem intensifies with model size; larger models exhibit more layers with 
 
 This disparity poses a significant challenge for quantization, as traditional methods struggle to accurately represent both the outliers and the more typical values within the same low-bit format. Consequently, addressing these outliers has become a critical focus in the development of quantization techniques for large language models.
 
-# Advanced quantization techniques
+## Advanced quantization techniques
 
-## LLM.int8()
+### LLM.int8()
 
 {cite:p}`dettmers2022llmint88bitmatrixmultiplication`
 
@@ -431,15 +508,13 @@ emerge at a scale of 6.7B parameters, causing regular quantatization methods to 
 ```
 
 
-## Smooth Quant
+### Smooth Quant
 
 
-## AWQ
+### AWQ
 
 
-## GPTQ
-
-### Preliminary
+### GPTQ
 
 #### The Error Minimization Framework
 
@@ -586,15 +661,17 @@ The implication is that the impact of pruning parameter $w_q$ is $\frac{1}{2} \f
 
 
 
-## References and software
+
+
+## Bibliography
+
+Additional References and software
 
 https://lilianweng.github.io/posts/2023-01-10-inference-optimization/
 
 Quantization: 
 https://leimao.github.io/article/Neural-Networks-Quantization/
 
-
-## Bibliography
 
 ```{bibliography} ../../_bibliography/references.bib
 :filter: docname in docnames

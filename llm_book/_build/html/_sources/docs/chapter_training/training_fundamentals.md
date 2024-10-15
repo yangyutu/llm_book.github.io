@@ -1,7 +1,26 @@
 # LLM Training Fundamentals
 ## Training Overview
 
+Large Language Models (LLMs) have revolutionized natural language processing and artificial intelligence, demonstrating remarkable capabilities in understanding and generating human-like text. The process of creating these powerful models involves a complex and multi-faceted approach to training, which we will explore in this chapter.
 
+At its core, LLM training is about teaching a neural network to understand and generate language by exposing it to vast amounts of text data. This process leverages advanced machine learning techniques, particularly in the realm of deep learning and transformer architectures. The goal is to create a model that can not only recognize patterns in language but also generate coherent and contextually appropriate text across a wide range of tasks and domains.
+
+The training of LLMs can be broadly divided into several key stages, each with its own set of challenges and methodologies:
+
+1. **Pretraining**: This initial phase involves exposing the model to a diverse and extensive corpus of text data. The model learns to predict words or tokens based on context, developing a broad understanding of language structure and semantics. We'll discuss the basics of pretraining and explore the concept of continuing pretraining, which allows models to adapt to new domains or languages.
+
+2. **Optimization**: Throughout the training process, various optimization algorithms are employed to adjust the model's parameters efficiently. We'll examine popular techniques such as stochastic gradient descent (SGD), Adam, and their variants, discussing how they contribute to the model's learning process.
+
+3. **Post-training**: After the initial pretraining, models often undergo additional training phases to enhance their performance on specific tasks or to align them with desired behaviors. This includes:
+
+   - **Finetuning**: Adapting the pretrained model to specific tasks or domains.
+   - **Instruction Finetuning**: Teaching the model to follow explicit instructions or prompts.
+   - **Alignment and Preference Learning**: Ensuring the model's outputs align with human values and preferences.
+   - **Supervised Fine-Tuning (SFT) vs. Reinforcement Learning from Human Feedback (RLHF)**: Comparing different approaches to refining model behavior based on human input.
+
+Throughout this chapter, we will delve into each of these aspects, providing insights into the methodologies, challenges, and current best practices in LLM training. We'll explore how these techniques contribute to creating models that can understand context, generate human-like text, and perform a wide array of language-related tasks with increasing accuracy and reliability.
+
+By understanding these fundamental concepts, researchers and practitioners can gain a comprehensive view of the LLM training process, enabling them to develop more efficient, effective, and ethically aligned language models for various applications in AI and natural language processing.
 
 
 
@@ -232,6 +251,18 @@ The algorithm is given by the following.
 
 ## Pretraining
 
+### Fundamentals
+Pretraining has become a cornerstone in the development of large language models (LLMs), driven by the goal of creating AI systems with broad, generalizable language understanding and generation capabilities. By leveraging vast amounts of unlabeled text data, pretraining enables models to learn rich, contextual representations of language before fine-tuning on specific tasks. This approach addresses several key challenges in natural language processing: it improves data efficiency by reducing the need for task-specific annotations, enables transfer learning across different linguistic tasks and domains, automates feature learning, provides a framework to effectively utilize growing text datasets, and serves as a strong foundation for advanced NLP tasks. These advantages have made pretraining an indispensable stage in developing state-of-the-art language models, significantly advancing AI's ability to understand and generate human-like text.
+
+
+LLM Pretraining objective is Causal Language Modeling (CLM):
+Used in GPT-style models, CLM predicts the next token given the previous tokens.
+For a sequence X = [x₁, x₂, ..., xₙ], the objective is:
+CopyL_CLM = -Σ(log P(xᵢ | x₁, ..., xᵢ₋₁))  for i = 1 to n
+Where P(xᵢ | x₁, ..., xᵢ₋₁) is the probability of token xᵢ given all previous tokens.
+
+
+### Data sources
 
 \begin{figure}[H]
 	\centering
@@ -240,6 +271,31 @@ The algorithm is given by the following.
 	\label{fig:trainingdatadistributionsummary}
 \end{figure}
 
+The quality and diversity of training data significantly impact the performance of pretrained models. Common sources include:
+
+1. Web Crawls: Large-scale web crawls like Common Crawl provide diverse, multilingual data but require extensive filtering and cleaning.
+2. Books and Literature: Projects like Google Books or the Gutenberg Project offer high-quality, long-form text.
+3. Wikipedia: A reliable source of factual information across many languages and domains.
+4. Social Media and Forums: Platforms like Reddit or Twitter provide more informal, conversational language.
+5. Specialized Corpora: Domain-specific datasets (e.g., scientific papers, legal documents) for targeted pretraining.
+
+
+Challenges
+
+Data Quality and Bias: Ensuring data quality and mitigating biases present in web-scraped data is an ongoing challenge.
+Multilingual Representation: Balancing representation across languages, especially for low-resource languages, remains difficult.
+
+### Continued Pretraining
+
+Continual pretraining of large language models (LLMs) involves updating pre-trained models with new data instead of re-training them from scratch1. It allows LLMs to specialize better in the current domain and enhances knowledge transfer across diverse domains
+
+Continued pretraining, also known as domain-adaptive pretraining or post-pretraining, addresses a fundamental challenge in the application of large language models (LLMs): the mismatch between the general knowledge acquired during initial pretraining and the specific knowledge required for domain-specific tasks. While pretrained LLMs demonstrate impressive general language understanding, they may lack the nuanced knowledge and vocabulary necessary for specialized domains such as medicine, law, or specific scientific fields. Continued pretraining aims to bridge this gap by further training the model on domain-specific corpora, allowing it to adapt its learned representations and knowledge to better suit the target domain or task.
+
+While continued pretraining offers significant benefits, it also presents challenges:
+
+Catastrophic Forgetting: The model may lose its general language understanding if not carefully balanced with domain-specific learning.
+Data Requirements: High-quality, domain-specific data is crucial for effective continued pretraining.
+Computational Cost: Although more efficient than full pretraining, continued pretraining can still be computationally expensive for very large models.
 
 ## Post-training
 
@@ -271,7 +327,15 @@ Overall, SFT is particularly useful to increase the model capacity of pre-traine
 model capacity of SFT models.
 
 
+## Comparison
 
+| Approach | Training set | Training set size | Implementation <br> Complexity | Total training cost (inc. experimentation) |
+| :---: | :---: | :---: | :---: | :---: |
+| Prompt engineering | Not needed | 0 | Low | 0 (no training) |
+| RAG | Not needed | 0 | Low - Medium | 0 (no training) |
+| Supervised-Fine-tuning | labelled | Can be as little as few hundreds examples (e.g. with PEFT approaches) but can increase to several thousands depending on number of tasks | Medium - High <br> depending on use case | $ $100-5 \mathrm{~K}$ |
+| Continuous pre-training | unstructured | Can vary - from 10 K <br> tokens to Bitlions | Medium on Bedrock and Jumpstart, Higher with SageMaker Training | $-\$ 2500$ for scanning 18 <br> tokens for a 7B model |
+| Full Pretraining | unstructured | 100s of billion/trillion tokens (e.g. 700 billion tokens for BloombergGPT for 50B model) | Very High | $$500K |
 
 
 ## Bibliography

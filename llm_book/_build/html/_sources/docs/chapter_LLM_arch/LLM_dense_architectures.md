@@ -3,75 +3,40 @@
 
 ## Overview
 
+LLM have revolutionized natural language processing and artificial intelligence, demonstrating remarkable capabilities in understanding and generating human-like text. Tech companies like Google, Microsoft, Meta, OpenAI are producing LLMs with increasing sizes and capabilities just over the past few years [{numref}`chapter_foundation_fig_pretrained_LLM_timeline`]. 
 
+From a high level, LLMs share the following characteristics:
+* **Scale**: LLMs are trained on enormous datasets, often containing hundreds to thousands of billions of words or tokens. This massive scale allows them to capture intricate patterns and nuances in language. For example, GPT-3 {cite:p}`brown2020language` was trained on about 500 billion tokens, and recent Llama3 405B {cite:p}`dubey2024llama3herdmodels` was trained on 15.6T tokens.
+* **Transformer architecture**: Most modern LLMs use transformer architectures, which were introduced in the "Attention is All You Need" paper. These models can have billions of parameters - GPT-3 has 175 billion, for instance. The transformer architecture allows for efficient parallel processing and captures long-range dependencies in text.
+* **Self-supervised learning**: LLMs are typically pre-trained using self-supervised learning techniques. The most common approach is next-token prediction, where the model learns to predict the next word in a sequence given the previous words. This allows the model to learn from vast amounts of unlabeled text data.
+* **Multi-task capability**: A single LLM can perform various language tasks such as translation, summarization, question-answering, reasongin, and text generation without needing separate models for each task. This versatility makes them powerful tools for a wide range of applications.
+* **Few-shot learning via prompting**: The multi-task ability of LLMs can often be simply invoked by prompting with a few examples provided in the prompt. This "in-context learning" allows them to adapt to new tasks without model weight update.
+* **Emergent reasoning abilities**: As LLMs grow in size and complexity, they often develop capabilities that were hard to acquire among small models, for example, arithmetic reasoning and logical reasoning: Models may show ability to follow simple logical arguments or solve puzzles.
+*  **Hallucination**: LLMs can sometimes generate text that sounds plausible but is factually incorrect. This hallucination behavior is a significant challenge in deploying LLMs for applications requiring high reliability.
 
 ```{figure} ../img/chapter_LLM_arch//large_langage_models_release_timeline.png
 ---
 scale: 50%
-name: chapter_foundation_fig_pretrained_LM_transformer_arch
+name: chapter_foundation_fig_pretrained_LLM_timeline
 ---
 A timeline of existing large language models (having a size larger than 10B) in recent years. We mark the open-source LLMs in yellow color. Image from {cite:p}`zhao2023survey`.
 ```
 
 
-* **Scale**: LLMs are trained on enormous datasets, often containing hundreds of billions of words or tokens. This massive scale allows them to capture intricate patterns and nuances in language. For example, GPT-3 was trained on about 500 billion tokens, while some more recent models have used even larger datasets.
-
-* **Transformer architecture**: Most modern LLMs use transformer architectures, which were introduced in the "Attention is All You Need" paper. These models can have billions of parameters - GPT-3 has 175 billion, for instance. The transformer architecture allows for efficient parallel processing and captures long-range dependencies in text.
-
-* **Few-shot learning via prompting**: LLMs can often perform new tasks with just a few examples provided in the prompt. This "in-context learning" allows them to adapt to new tasks without changing their weights, demonstrating a form of meta-learning.
-
-* **Multi-task capability**: A single LLM can perform various language tasks such as translation, summarization, question-answering, and text generation without needing separate models for each task. This versatility makes them powerful tools for a wide range of applications.
-
-* **Self-supervised learning**: LLMs are typically pre-trained using self-supervised learning techniques. The most common approach is next-token prediction, where the model learns to predict the next word in a sequence given the previous words. This allows the model to learn from vast amounts of unlabeled text data.
-
-* **Emergent reasoning abilities**: As LLMs grow in size and complexity, they often develop capabilities that weren't explicitly trained for. For example, a) Arithmetic: Some LLMs can perform basic math operations despite not being trained specifically on mathematics. b) Logical reasoning: Models may show ability to follow simple logical arguments or solve puzzles.
-
-* **Transfer learning**: The pre-trained LLM can be fine-tuned on specific tasks or domains with much smaller datasets. This transfer learning approach is powerful because the model can leverage its general language understanding for specialized tasks, often outperforming models trained from scratch on those tasks.
-
-*  **Hallucination**: LLMs can sometimes generate text that sounds plausible but is factually incorrect or nonsensical. This "hallucination" occurs because the models are optimizing for plausible text generation rather than strict factual accuracy. It's a significant challenge in deploying LLMs for applications requiring high reliability.
-
-## Position Embeddings
-
-### Absolute Position
 
 
-### Rotary Postion Embedding
 
-#### The mechanism
-The key idea of Rotary position embedding (Rope) is to multiply query vector $\boldsymbol{q}$ (of a token) and key vector $\boldsymbol{k}$ (of another token) by a rotational matrix $R(\theta_q)$ and $R(\theta_k)$, where $\theta_q$ and $\theta_k$ are taking values to indicate the positions of query vector token and key vector token, respectively.
+This chapter aims to go over the core components and architectural considerations that form the foundation of modern LLMs. 
 
-Specifically, let $\theta_q = m\theta$ and $\theta_k = n\theta$, where $m$ and $n$ are integer positions of query vector token and key vector token. 
-Now we are showing that the rotated query-key inner product is a function of the relative position $(m - n)$
+We begin by examining **layer normalization**, a crucial technique that stabilizes the learning process and allows for training of very deep networks, enhancing the overall performance of LLMs.
 
-$$
-\begin{aligned}
-\left\langle R\left(\theta_q\right) \boldsymbol{q}, R\left(\theta_k\right) \boldsymbol{k}\right\rangle & =\boldsymbol{q}^{\top} R\left(\theta_q\right)^{\top} R\left(\theta_k\right) \boldsymbol{k} \\
-& =\boldsymbol{q}^{\top} R\left(\theta_k-\theta_q\right) \boldsymbol{k} \\
-& =\left\langle R\left(\theta_q-\theta_k\right) \boldsymbol{q}, \boldsymbol{k}\right\rangle \\
-& =\left\langle R\left(\theta (m-n)\right) \boldsymbol{q}, \boldsymbol{k}\right\rangle 
-\end{aligned}
-$$
+Next, we review the **activation** functions commonly used in LLM age, discussing their properties and impact on model performance and training dynamics.
 
-We have used the following important properties of rotational matrix:
+The **self-attention mechanism**, a cornerstone of transformer models, is explored in depth, along with its variants that have emerged to address specific challenges or improve efficiency in processing and understanding context.
 
-1. The transpose of a rotation matrix is equal to its inverse: $R(\theta)^{\top}=R(-\theta)$. 
-   
-2. The matrix multiplication of rotational matrices satisfies: $R(\theta_x)\cdot R(\theta_y) = R(\theta_x + \theta_y)$
+Next we cover **position encoding** techniques that allow transformer models to understand the sequential nature of language, with a focus on methods for handling **long context** – a critical challenge in scaling LLMs to process extensive inputs.
 
-In other words, the inner product of two rotated vectors is equal to the inner product of one vector rotated by their angle difference and the other original vector.
-
-
-#### Practival Implementations
-
-First,The rotation matrix is as follows:
-
-$$
-R(\theta)=\left[\begin{array}{cc}
-\cos (\theta) & -\sin (\theta) \\
-\sin (\theta) & \cos (\theta)
-\end{array}\right]
-$$
-
+Finally, we examining the intricate details of LLM structure and function. We break down the **distribution of parameters** across different model components, provide a detailed explanation of the **forward pass computation**, and present **examples of dense transformer architectures**.
 
 ## Layer normalization
 
@@ -104,7 +69,7 @@ A common hypothesis on why layer normalization can help stalize training and boo
 
 $$
 \operatorname{RMSNorm}(x)=\frac{x}{\sqrt{\frac{1}{H} \sum_{i=1}^H x_i^2}} \cdot \gamma
-$$
+$$(chapter_LLM_arch_RMS_nomalization_formula)
 
 where $\gamma$ is learnable parameter. Experiments show that RMSNorm can achieve on-par performance with LayerNorm with much reduced training cost.
 
@@ -195,22 +160,85 @@ The core advantages of RMS Pre-Norm lie in its computational simplicity and grad
 * Enhanced gradient stability: RMS Pre-Norm can reduce instances of vanishing gradients, especially in deep networks. This normalization method improves training efficiency by smoothing gradient flow.
 * Suitable for large-scale models: For models like LLaMA, RMS Pre-Norm supports maintaining a relatively small model size while ensuring powerful performance. This allows the model to maintain good generalization capabilities without increasing complexity.
 
+## Nonlinearity in FFN
+
+As introduced in {ref}`chapter_foundation_sec_pretrained_LM_transformer_arch_FFN`, FFN block plays a critical role in improving model capacity via nonlinear activations. 
+
+With $x$ is the input vector, $W_1, b_1$ and $W_2, b_2$ are weight matrices and biases for the two layers, the FFN block is given by
+
+$$
+\operatorname{FFN}(x)=f(xW_1+b_1)W_2+b_2
+$$
+
+where $f$ is the activation function.
+
+While in the original Transformer paper ReLU is used, many other different activations are explored. In the latest LLMs, GLU activations {cite:p}`shazeer2020gluvariantsimprovetransformer` are widely adopted and its variations SwiGLU are also widely used to achieve better performance in practice. 
 
 
-## Self-attention and Variants
+**Gated Linear Units (GLU)** is a neural network layer defined as the componentwise product of two linear transformations of the input, one of which is sigmoid-activated.
+
+$$\operatorname{GLU}(x; W, V, b)=\sigma(xW+b) \otimes xV
+$$(chapter_LLM_arch_eq_GLU)
+
+where $W, V$ are weight matrices and $b$ is the bias. Note that intuitively GLU introduces a gating mechanism on the product $xV$ via the sigmoid function $\sigma(xW+b)$. Such gating mechanism allows the model to learn when to emphasize or de-emphasize certain features.
+
+Apply GLU in the FFN block, we yield
+
+$$
+\operatorname{FFN}_{GLU}(x; W_1,W_2,V, b_1, b_2)=(\sigma(xW_1 + b) \otimes xV)W_2 + b_2
+$$(chapter_LLM_arch_eq_FFN_GLU)
+
+where $W_1, W_2, V$ are weight matrices. Note that the FFN layer with GLU have three weight matrices, as opposed to two for the original FFN.
 
 
+One variant of GLU is Swish {cite:p}`ramachandran2017searchingactivationfunctions`, which is given by
 
-Certainly! I'll provide a detailed summary of different attention modules used in Large Language Models (LLMs), including Multi-Head Attention (MHA), Grouped Query Attention (GQA), and others. I'll explain their mechanisms, advantages, and use cases.
+$$
+\operatorname{Swish}_\beta(x)=x \cdot \sigma(\beta x)
+$$(chapter_LLM_arch_eq_Swish)
+
+where $\beta$ is a hyperparameter for Swish. Compared to GLU, Swish is a self-gated activation function. As showed in {numref}`chapter_foundation_fig_pretrained_LLM_activation_swish`, Swish has the following appealing properites:
+- Smooth derivative leading to better gradient flow, while ReLU is nonsmooth at $x=0$
+- Non-monotonicity: The non-monotonic nature of Swish allows it to capture more complex relationships in the data
+- Unbounded above and bounded below, where as GLU is bounded above and below
+- Non-zero gradient for negative inputs: For very negative inputs, Swish has a small but non-zero gradient, unlike ReLU which has a zero gradient. This can help mitigate the "dying ReLU" problem.
+- Self-gating property allows the network to learn when to emphasize or de-emphasize certain features.
+
+
+```{figure} ../img/chapter_LLM_arch/activations/swish.png
+---
+scale: 50%
+name: chapter_foundation_fig_pretrained_LLM_activation_swish
+---
+(Left) The Swish activation function. (Right)  First derivatives of Swish. Image from {cite:p}`ramachandran2017searchingactivationfunctions`.
+```
+
+If we use Swish function in the GLU, we can obtain the following variations:
+$$
+SwiGLU=\text{Swish}_1(xW) \otimes xV
+\operatorname{FFN}_{SwiGLU} = (Swish_1{xW_1}\otimes xV) W_2
+$$(chapter_LLM_arch_eq_FFN_SwiGLU)
+
+
+Example activation in recent LLMs:
+
+| LLM | Activation Function |
+| :---: | :---: |
+| Mistral | SwiGLU |
+| LLaMA | SwiGLU |
+| Qwen | SwiGLU |
+
+## Self-attention Variants
+
 
 ### Multi-Head Attention (MHA)
 
-Multi-Head Attention is the foundation of many transformer-based models, including the original transformer architecture.
+Multi-Head Attention [detailed in {ref}`chapter_foundation_sec_pretrained_LM_transformer_arch_MHA`] is the foundation of many transformer-based models, including the original transformer architecture.
 
-Computation of an MHA given input $X$ matrix and project matrices $W^Q_i, W^K_i, W^V_i$ 
+The computation of an $H$-headed MHA given input $X\in \mathbb{R}^{n\times d_{model}$ matrix and $H$ project matrices $W^Q_i, W^K_i, W^V_i \in\mathbb{R}^{d_{model}\times d_{head}, i\in \{1,...,H\}$ is given by
 
 $$
-\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O
+\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_H)W^O
 $$
 
 where each head is computed as:
@@ -219,18 +247,20 @@ $$
 \text{head}_i = \text{Attention}(XW^Q_i, XW^K_i, XW^V_i)
 $$
 
+with the attention given by
 $$
 \text{Attention}(Q, K, V) = \text{Softmax}(\frac{QK^T}{\sqrt{d_k}})V
 $$
 
 ```{figure} ../img/chapter_LLM_arch/attention/MHA.png
 ---
-scale: 50%
+scale: 40%
 name: chapter_LLM_arch_fig_fundamentals_attention_MHA
 ---
 Multi-head attention has $H$ query, key, and value heads for each token.
 ```
 
+In the following, we summarize the advantages and drawbacks of MHA.
 ::::{grid}
 :gutter: 2
 
@@ -249,21 +279,30 @@ Multi-head attention has $H$ query, key, and value heads for each token.
 
 ### Multi Query Attention (MQA)
 
-{cite:p}`shazeer2019fasttransformerdecodingwritehead`
 
 
-MQA reduces $H$ key and value heads in MHA to a single key and value head, reducing the size of the key-value cache by a factor of $H$. However,
-larger models generally scale the number of heads (e.g., GPT-2 has 12 heads; GPT-3 has 96 heads), such that multi-query attention represents a more
-aggressive cut in both memory bandwidth and capacity.
+To reduce the inference cost from MHA, {cite:p}`shazeer2019fasttransformerdecodingwritehead` proposed MQA, which reduces $H$ key and value heads in MHA to a single key and value head. 
+During inference, MQA reducing the size of the key-value cache by a factor of $H$ (see {ref}`chapter_inference_sec_inference_acceleration_KV_cache`). However, larger models generally scale the number of heads (e.g., GPT-2 has 12 heads; GPT-3 has 96 heads), such that multi-query attention represents a more
+aggressive cut in both memory bandwidth and capacity footprint.
+
+In MQA, the single head attnetion is computed as
+
+$$
+\text{head}_i = \text{Attention}(XW^Q_i, XW^K, XW^V).
+$$
+
+Note that we only have one group of $W^K, W^V$ matrices.
+
 
 ```{figure} ../img/chapter_LLM_arch/attention/MHA.png
 ---
-scale: 50%
+scale: 40%
 name: chapter_LLM_arch_fig_fundamentals_attention_MQA
 ---
 Multi-head attention has $H$ query, and one shared single key head and single value head for each token.
 ```
 
+MQA often comes at the cost of quality degradation. In the following, we summarize the MHA advantages and drawbacks.
 ::::{grid}
 :gutter: 2
 
@@ -275,76 +314,72 @@ Multi-head attention has $H$ query, and one shared single key head and single va
 :::{grid-item-card} <p style="text-align: center;"><span style="background-color: #b4c9da">**Drawbacks**</span></p>
 - Computational complexity scales quadratically with sequence length (i.e., huge cost for long context applications)
 
-- Modeling capacity is largely compromised due to the usage of single head, leading to quality degradation.
+- Modeling capacity is largely compromised due to the reduction of multiple heads to single head, leading to quality degradation.
 :::
 ::::
 
-
+(chapter_LLM_arch_sec_self_attention_variant_GQA)=
 ### Grouped Query Attention (GQA)
 
-{cite:p}`ainslie2023gqatraininggeneralizedmultiquery`
-GQA is an optimization of MHA and MQA that reduces computational complexity while maintaining performance.
 
-A generalization of MQA which uses an intermediate (more than one, less than number of query heads) number of key-value heads.
+GQA {cite:p}`ainslie2023gqatraininggeneralizedmultiquery` is an optimization of MHA and MQA that reduces computational complexity while maintaining performance.
+
+Unlike MQA, GQA uses an intermediate (more than one, less than number of query heads) number of key-value heads.
 GQA is shown to achieve quality close to MHA with comparable speed to MQA
 
-
-Formula:
-
-$$
-\text{GQA}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O
-$$
-
-where:
+In GQA, the single head attnetion is computed as
 
 $$
 \text{head}_i = \text{Attention}(QW^Q_i, KW^K_{g(i)}, VW^V_{g(i)})
 $$
 
-$g(i)$ is a function that maps head index to group index.
+Here $g(i)$ is a function that maps head index to group index (e.g., $g(1): \{1, 2\} \to \{1\}$) and we have $G$ groups of $W^K,W^V$ matrices. 
 
 
-```{figure} ../img/chapter_LLM_arch/attention/GQA.png
+Studies [{numref}`chapter_LLM_arch_fig_fundamentals_attention_GQA`] show that GQA (with $G <=  8$) can improve latency by reduces parameters and computation compared to MHA and at the same time maintain most of the performance of MHA.
+
+```{figure} ../img/chapter_LLM_arch/attention/GQA_performance.png
 ---
-scale: 50%
+scale: 35%
 name: chapter_LLM_arch_fig_fundamentals_attention_GQA
 ---
-GQA divides the key and value heads into multiple groups. Within each group, a single shared
-key and value heads are attended to by query heads. GQA interpolats between MHA and MQA.
+(Top) GQA divides the key and value heads into multiple groups. Within each group, a single shared
+key and value heads are attended to by query heads. GQA interpolats between MHA and MQA. (Bottom) GQA-8 performance and latency compared with MHA and MQA. Image from {cite:p}`ainslie2023gqatraininggeneralizedmultiquery`
+
+```
+
+GQA is widely adopted in the latest LLM. Following shows example configurations of Qwen2 and Mistral LLM series {cite:p}`yang2024qwen2technicalreport,jiang2023mistral7b`. 
+
+```{table} Model configuration of Qwen2 and Mistral, which uses GQA (# KV heads is number of groups )
+| Configuration | Hidden Size | # Layers | # Query Heads | # KV Heads |
+| :--- | :---: | :---: | :---: | :---: |
+| Qwen2 0.5B | 896 | 24 | 14 | 2 |
+| Qwen2 1.5B | 1,536 | 28 | 12 | 2 |
+| Qwen2 7B | 3,584 | 28 | 28 | 4 |
+| Qwen2 72B | 8,192 | 80 | 64 | 8 |
+|Mistral 7B| 4096 | 32 | 32 | 8|
+```
+
+### Sliding Window Attention
+
+The computational complexity for MHA, MQA, GQA are scaling quadratically with the sequence length. This constrains the context length that LLM can effectively process, impacting their ability to handle long documents or maintain coherence over extended generations. 
+
+To address this challenge, recent LLMs (e.g., Mistral {cite:p}`jiang2023mistral7b`) adopts **sliding window attention**, which reduces the computational complexity by restricting each token's attention to a fixed-size window $W$ of preceding tokens, rather than attending to the entire sequence. The computational complexity is reduced from quadratic $O(s^2)$ to linear $O(\min(W, s)\times s)$, where $s$ is the sequence length. Although the token can only capture local context within its fixed window, with multiple layers stacked upon each other, a token at layer $L$ can effectively attend to previous $L\times W$ tokens. 
+
+In Mistral 7B with $L = 32$, and $W$ set to 4096, the effective attention length is about $131K$ tokens.
+
+
+```{figure} ../img/chapter_LLM_arch/attention/sliding_window_attention.png
+---
+scale: 70%
+name: chapter_LLM_arch_fig_fundamentals_attention_sliding_window_attention
+---
+Illustration of sliding window attention (Middle), which restrict each token to attend at most $W$ preceding tokens. As a comparison, MHA (Left) attends to all the preceding tokens. While at each layer the information flow is limited by window size, after $L$ layers, information can flow forward by up to $L\times W$ tokens.  Image from {cite:p}`jiang2023mistral7b`
 
 ```
 
 
-Advantages:
-- Reduces parameters and computation compared to MHA
-- Maintains most of the performance of MHA
-
-Use cases:
-- Large-scale language models where efficiency is crucial
-
-### Sliding Window Attention
-
-This method restricts attention to a local window around each token.
-
-Key idea:
-- Each token attends only to a fixed number of neighboring tokens
-
-Formula:
-
-$$
-\text{Attention}(Q_i, K_{i-w:i+w}, V_{i-w:i+w})
-$$
-
-where $w$ is the window size.
-
-Advantages:
-- Linear complexity with sequence length
-- Useful for tasks requiring local context
-
-Drawbacks:
-- Limited in capturing long-range dependencies
-
-### Sparse Attention
+<!-- ### Sparse Attention
 
 Sparse Attention introduces patterns of sparsity in the attention matrix.
 
@@ -357,122 +392,149 @@ Advantages:
 
 Examples:
 - Longformer: combines sliding window attention with global attention
-- Big Bird: uses random, window, and global attention patterns
-
-
-## Activation
+- Big Bird: uses random, window, and global attention patterns -->
 
 
 
-Certainly! I'll expand on each of these activation functions and their formulas, providing more context and explanations.
 
-1. FFN (Feed-Forward Network) Block:
 
-$$
-FFN(x)=f(xW_1+b_1)W_2+b_2
-$$
+## Position Encoding and Long Context
 
-The FFN block is a crucial component in many transformer-based architectures. It typically consists of two linear transformations with a non-linear activation function in between.
+### Absolute Position Encoding
 
-- $x$ is the input vector
-- $W_1$ and $W_2$ are weight matrices
-- $b_1$ and $b_2$ are bias vectors
-- $f$ is an activation function (often ReLU or GELU)
-
-The FFN block helps in capturing complex patterns and increasing the model's capacity. The first transformation ($xW_1+b_1$) usually projects the input to a higher dimensional space (often 4 times the input dimension), and the second transformation projects it back to the original dimension.
-
-2. GeLU (Gaussian Error Linear Unit):
+In {ref}`chapter_foundation_sec_pretrained_LM_transformer_arch_absolute_PE`, we discuss **absolute position encoding**, which maps an integer $i$ (used to represent the position of the token) to a $d_{model}$ sinusoidal vector. Specifically, let $PE(i)_j$ represent the $j$th dimention position encoding, we have
 
 $$
-\operatorname{GeLU}(x) \approx 0.5x\left(1+\tanh \left(\sqrt{\frac{2}{\pi}}\left(x+0.044715x^3\right)\right)\right)
+\operatorname{PE}(i)_j = \left\{\begin{array}{l}
+\sin \left(w_j i\right), \quad \text { if } j \text{is even} \\
+\cos \left(w_j i\right), \quad \text { if } j \text{is odd}
+\end{array}\right.
 $$
 
-GeLU is a smooth approximation of the ReLU function that incorporates properties of the Gaussian cumulative distribution function.
+where $w_j=1/10000^{j / d_{model}}$ if $j$ is even and $w_j=1/10000^{j-1 / d_{model}}$ if $j$ is odd.
 
-- It's differentiable everywhere, unlike ReLU
-- For positive inputs, it behaves similarly to ReLU
-- For negative inputs, it has a small, smooth curve instead of being zero
+While absolute position encoding has achieved success in BERT, it has several key issues when is applied in LLMs:
+* Lack of extrapolation due to limited sequence length: Models are restricted to a maximum sequence length during training (e.g., BERT 512), limiting their ability to  generalize to positions beyond the maximum length at inference time.
+* Position insensitivity: The position encoding is added on top of token embedding and go through linear projection before interacting with other tokens, instead of directly interacting with other tokens during attention score computation. 
+* Lack of invariance to shift: For two tokens with fixed relative position disance, their interaction at attention score computation layer is dependent on their absolute position. For relative position encodings, this property is by construction.
 
-The formula provided is an approximation of the true GeLU function, which is computationally efficient while maintaining the key properties of GeLU. It's used in models like BERT and GPT-3, often outperforming ReLU in deep networks.
+### ALiBi
 
-3. Swish:
+{cite:p}`press2022trainshorttestlong` is a simple approach that suprisinly addresses all drawbacks in the sinusoidal abolute position encoding above. The key idea is to 1) simply add a static, relative position dependent bias into the Softmax computation step[{numref}`chapter_LLM_arch_fig_fundamentals_position_encoding_Alibi`]. Specifically, for the attention weight between query token $i$ to all the key vectors, we have
+
+$$\operatorname{AttentionWeight} = \operatorname{Softmax}(\underbrace{Q_iK^T/d_{Head}}_{\text{scaled query-key doc product}} + \underbrace{m \cdot[−(i − 1), ..., −2, −1, 0]}_{\text{ALiBi bias vector}})
+$$
+
+where scalar $m$ is a head-specific slope hyperparameter fixed before training (e.g., for a model with 8 heads, $1/2, 1/2^2,...,1/2^8$).
+
+Note that AliBi has the following nice property by construction:
+* It is a relative position encoding
+* Long distance decay, tokens with larger distance have smaller impact.
+
+```{figure} ../img/chapter_LLM_arch/position_encoding/Alibi.png
+---
+scale: 40%
+name: chapter_LLM_arch_fig_fundamentals_position_encoding_Alibi
+---
+When computing attention weights for each head, ALiBi adds a constant bias (Right) to each attention score ($Q_iK^T), with scaling factor omitted (Left).  Image from {cite:p}`press2022trainshorttestlong`.
+```
+
+Compare with sinusoidal absolute position encoding baseline [{numref}`chapter_LLM_arch_fig_fundamentals_position_encoding_Alibi_comparison`], there are several advantages of Alibi:
+* When train and validate on the same input token length $L$, Alibi shows advantages over baseline.
+* When train on shorter L (e.g., 512), but validate on longer (e.g., 1024,...,3072), Alibi method extropolates well.
+
+
+```{figure} ../img/chapter_LLM_arch/position_encoding/Alibi_vs_absolution_PE_performance.png
+---
+scale: 70%
+name: chapter_LLM_arch_fig_fundamentals_position_encoding_Alibi_comparison
+---
+Comparision between the ALiBi models trained and evaluated on varying sequence lengths on the WikiText-103
+validation set and the sinusoidal absolute position encoding baseline. Image from {cite:p}`press2022trainshorttestlong`.
+```
+
+### Rotary Postion Embedding
+
+#### The mechanism
+
+Rotary Position Encoding (RoPE) {cite:p}`su2023roformerenhancedtransformerrotary` is a widely adopted and proved-effective position encoding method in latest LLM (e.g., Llama, Qwen, etc.). RoPE has ideas similar to ALiBi and sinusoid position encoding:
+* Like ALiBi, relative positional information is directly used in attention score computation.
+* Sinusoid functions are used in construction for their nice mathematical properties.
+
+Specifically, the key idea of RoPE is to multiply query vector $Q_m$ (of a token at position $m$) and key vector $K_n$ (of another token at position $n$) by a rotational matrix $\boldsymbol{R}(m; \Theta)$ and $\boldsymbol{R}(n; \Theta)$ before taking the scaled doc product. Here rotational matrix $\boldsymbol{R}(\cdot; \Theta)$ is constructed a group of 2D rotational matrices, whose wave-length are specified by $\Theta$. 
+
+The $d_{model}\times d_{model}$ rotational matrix is given by
 
 $$
-\operatorname{Swish}_\beta(x)=x \cdot \sigma(\beta x)
+\boldsymbol{R}_{\Theta, m}^d=\left(\begin{array}{ccccccc}
+\cos m \theta_1 & -\sin m \theta_1 & 0 & 0 & \cdots & 0 & 0 \\
+\sin m \theta_1 & \cos m \theta_1 & 0 & 0 & \cdots & 0 & 0 \\
+0 & 0 & \cos m \theta_2 & -\sin m \theta_2 & \cdots & 0 & 0 \\
+0 & 0 & \sin m \theta_2 & \cos m \theta_2 & \cdots & 0 & 0 \\
+\vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+0 & 0 & 0 & 0 & \cdots & \cos m \theta_{d / 2} & -\sin m \theta_{d / 2} \\
+0 & 0 & 0 & 0 & \cdots & \sin m \theta_{d / 2} & \cos m \theta_{d / 2}
+\end{array}\right)
 $$
 
-Swish is a self-gated activation function introduced by Google Brain.
+is the rotary matrix with pre-defined parameters $\Theta=\left\{\theta_i=10000^{-2(i-1) / d}, i \in[1,2, \ldots, d_{model} / 2]\right\}$. 
 
-- $\sigma$ is the sigmoid function: $\sigma(x) = \frac{1}{1+e^{-x}}$
-- $\beta$ is a trainable parameter or can be set to 1
+Pre-SoftMax input (omitting scaling) for query token at position $m$ and key token at position $n$ is given by 
 
-Properties of Swish:
-- Smooth and non-monotonic
-- Unbounded above and bounded below
-- Approaches linear function for large positive inputs
-- Can outperform ReLU in very deep networks
+$$
+\operatorname{PreSoftmax}(Q_m, K_n) =\left(\boldsymbol{R}_{m;\Theta m} Q_m\right) \cdot \left(\boldsymbol{R}{n;\Theta} K_n \right)
+$$
 
-4. GLU (Gated Linear Unit) in FFN:
+````{prf:example}
+For $d_{model} == 2$, the rotation matrix for position $m $ is:
+
+$$
+\boldsymbol{R}(m; \Theta)=\left[\begin{array}{cc}
+\cos (m\theta_1) & -\sin (m\theta_1) \\
+\sin (m\theta_1) & \cos (m\theta_1)
+\end{array}\right]
+$$
+
+Where $\theta_1 = 1$.
+
+For $d_{model} == 4$, the rotation matrix for position $m $ is:
+
+$$
+\boldsymbol{R}(m; \Theta)=\left[\begin{array}{cc}
+\cos (m\theta_1) & -\sin (m\theta_1) & 0 & 0 \\
+\sin (m\theta_1) & \cos (m\theta_1) & 0 & 0 \\
+0 & 0 & \cos (m\theta_2) & -\sin (m\theta_2) \\
+0 & 0 & \sin (m\theta_2) & \cos (m\theta_2)  
+\end{array}\right]
+$$
+
+Where $\theta_1 = 1, \theta_2 = 10000^{-2/4}$.
+
+````
+
+#### Properties of RoPE 
+
+**Relative position encoding**:
+Now we are showing that the rotated query-key inner product is a function of the relative position in 2D cases (the conclusion can be generalized to high-dimensional rotational matrix). Specifically, let $\theta_q = m\theta$ and $\theta_k = n\theta$, where $m$ and $n$ are integer positions of query vector token and key vector token. 
 
 $$
 \begin{aligned}
-& GLU(x)=\sigma(xW+b) \otimes xV \\
-& FFN_{GLU}=(f(xW_1) \otimes xV)W_2
+\left\langle R\left(\theta_q\right) Q_m, R\left(\theta_k\right) K_n\right\rangle & =Q_m^{\top} R\left(\theta_q\right)^{\top} R\left(\theta_k\right) K_n \\
+& =Q_m^{\top} R\left(\theta_k-\theta_q\right) K_n \\
+& =\left\langle R\left(\theta_q-\theta_k\right) Q_m, K_n\right\rangle \\
+& =\left\langle R\left(\theta (m-n)\right) Q_m, K_n\right\rangle 
 \end{aligned}
 $$
 
-GLU introduces a gating mechanism to the FFN block.
+That is, the Pre-Softmax input of $Q_m, K_n$ is a funciton of $m - n$.
 
-- $\sigma$ is the sigmoid function
-- $\otimes$ represents element-wise multiplication
-- $f$ is an activation function (often GeLU)
-- $W$, $V$, $W_1$, and $W_2$ are weight matrices
+We have used the following important properties of rotational matrix:
+1. The transpose of a rotation matrix is equal to its inverse: $R(\theta)^{\top}=R(-\theta)$. 
+2. The matrix multiplication of rotational matrices satisfies: $R(\theta_x)\cdot R(\theta_y) = R(\theta_x + \theta_y)$
 
-The gating mechanism allows the network to control information flow, potentially capturing more complex dependencies. The sigmoid function acts as a gate, determining how much of the linear transformation should pass through.
+In other words, the inner product of two rotated vectors is equal to the inner product of one vector rotated by their angle difference and the other original vector.
 
-5. GeGLU (GeLU-based Gated Linear Unit):
-
-$$
-GeGLU(x)=GeLU(xW) \otimes xV
-$$
-
-GeGLU combines the GeLU activation with the gating mechanism of GLU.
-
-- GeLU is applied to one branch ($xW$)
-- The other branch ($xV$) remains linear
-- Element-wise multiplication combines the two branches
-
-This formulation can provide the benefits of both GeLU activation and gated mechanisms, potentially leading to improved performance in some tasks.
-
-6. SwiGLU (Swish-based Gated Linear Unit):
-
-$$
-SwiGLU=\text{Swish}_\beta(xW) \otimes xV
-$$
-
-SwiGLU replaces the GeLU function in GeGLU with the Swish activation.
-
-- Swish is applied to one branch ($xW$)
-- The other branch ($xV$) remains linear
-- Element-wise multiplication combines the two branches
-
-The use of Swish can potentially provide different dynamics compared to GeLU, and the trainable parameter $\beta$ in Swish adds an extra degree of flexibility to the model.
-
-These variations on activation functions and gating mechanisms represent ongoing research in improving the performance and capabilities of neural networks, especially in the context of large language models. Each has its own strengths and may be more suitable for different types of tasks or model architectures.
-
-
-Examples in LLM:
-
-| LLM | Activation Function |
-| :---: | :---: |
-| GPT3 | GeLU |
-| LLaMA | SwiGLU |
-| LLaMA2 | SwiGLU |
-| baichuan | SwiGLU |
-| ChatGLM- <br> 6B | GeLU |
-| ChatGLM2- <br> 6B | SwiGLU |
-| Bloom | GeLU |
-| Falcon | GeLU |
+**Long-term decay**: In {cite:p}`su2023roformerenhancedtransformerrotary`, it is shown that the inner-product will decay when the relative position increase. This property aligns with desired property that a pair of tokens will have gradually descreasing semantic impact on each other when they are far apart. 
 
 ## Tokenziation, vocabulary, and weight tying
 
@@ -562,52 +624,34 @@ Below is more context about UTF-8 encoding.
 This multi-byte representation for single characters is why text processing algorithms that work at the character level can be more complex than those that work at the byte level, especially when dealing with multilingual text.
 
 ````
-
+(chapter_LLM_arch_sec_parameter_composition)=
 ## Parameter composition in Transformer models
 
-### Input layer
+In this section, we do an accounting exercise by estimating the number of parameters in a Transformer model. This will give us some insight on 
+* which component makes up the majority of parameters and
+* how the total number of parameters scales when we scale up different components.
 
-Word embedding: $n_{vocab} \times d_{model}$
-Position embedding: $n_{max\_len} \times d_{model}$
-
-### Attention layer
-
-In general $n_{head} \times d_{head} = d_{model}$
-QKV transformation matrix for $n_{head}$: $3 \times n_{head} \times d_{model} \times d_{head}$
-There is a transformation matrix takes the multi-head attention output $n_{head} \times d_{head}$ as the input and outputs a $d_{model}$ feature vector. This transformation matrix has weight parameters $n_{head} \times d_{head} \times d_{model}$
-In total, we have $4n_{head}d_{head}d_{model} = 4d_{model}^2$.
-
-### Feed-forward layer
-
-The feed-forward network after the attention layer is a two-layer, with two weight matrices of the sizes $d_{model} \times d_{ff}$ and $d_{ff} \times d_{model}$ and two bias vectors of the sizes $d_{model}$ and $d_{ff}$. 
-In general $d_{ff} = 4d_{model}$, so the total number of parameters are $8d_{model}^2 + 5d_{model}$. 
-
-### Output layer
-
-The weight-matrix in the output Softmax layer is often tied to the embedding layer.
-
-### Total weight
-
-$$n_{vocab} \times d_{model} + n_{max\_len} \times d_{model} + n_{layer}(4d_{model}^2 + 8d_{model}^2 + 5d_{model})$$
-
-$n_{max\_len} = 2048$ in GPT-3
-
-
+Let $V$ be the vocabulary size, $d$ be the model hidden dimensions, $L$ be the number of layer, 
 
 ```{table} Parameters in a Transformer
 | Module | Computation | Parameter Name | Shape | Parameter Number |
 | :--- | :--- | :--- | :--- | :--- |
-| Attention | ${Q} / {K} / {V}$ | weight / bias | $[{d}, {d}] /[{d}]$ | $3 d^2+3 d$ |
-|  | Output 映射 | weight / bias | $[{d}, {d}] /[{d}]$ | $d^2+d$ |
-|  | layernorm | $V$ 和 $\beta$ | $[{d}] /[{d}]$ | $2 d$ |
-| FFN | $f_1$ | weight / bias | $[{d}, 4 {~d}] /[{d}]$ | $4 d^2+d$ |
-|  | $f_2$ | weight / bias | $[4 {~d}, {~d}] /[4 {~d}]$ | $4 d^2+4 d$ |
-|  | Layernorm | $V$ 和 $\beta$ | $[{d}] /[{d}]$ | $2 d$ |
-| Embedding | - | - | $[{V}, {d}]$ | $V d$ |
+| Attention | ${Q} / {K} / {V}$ projection | weight / bias | $[{d}, {d}] /[{d}]$ | $3 d^2+3 d$ |
+|  | Attention output projection | weight / bias | $[{d}, {d}] /[{d}]$ | $d^2+d$ |
+|  | Layernorm | $\gamma, \beta$ | $[{d}] /[{d}]$ | $2 d$ |
+| FFN | First layer up-projection | weight / bias | $[{d}, 4 {~d}] /[{d}]$ | $4 d^2+d$ |
+|  | Second layer down-projection | weight / bias | $[4 {~d}, {~d}] /[4 {~d}]$ | $4 d^2+4 d$ |
+|  | Layernorm | $\gamma, \beta$ | $[{d}] /[{d}]$ | $2 d$ |
+| Embedding (tied) | - | - | $[{V}, {d}]$ | $V d$ |
 | **Total** |  |  |  | $V d+L\left(12 d^2+13 d\right)$ |
 ```
+The key scaling properties from this table are:
+* The total number of parameters scales linearly with number of layers $L$
+* The total number of parameters scales quadratically with model hidden dimensionality $d$.
 
-The total number of parameters scales linearly with number of layers $L$ and quadratically with model hidden dimensionality $d$.
+````{prf:remark}
+We have simplification in the above computation for MHA but the results are the same. Suppose we have $H$ heads, head dimension $d_{head}$ and $H \times d_{head} = d$. QKV transformation matrices have weight parameters $3 \times H \times d \times d_{head} = 3d^2$
+````
 
 ````{prf:example}
 Take the following GPT-3 13B and 175B as an example, 175B model has approximate 2.4 times of $L$ and $d_{model}$. Extrapolating from 13B model, we estimate the 175B model to have model parameters of $13\times 2.4^3 = 179B$, which is very close.
@@ -618,28 +662,25 @@ Take the following GPT-3 13B and 175B as an example, 175B model has approximate 
 | GPT-3 175B or "GPT-3" | 175.0B | 96 | 12288 | 96 | 128 |
 ````
 
-
-## Dense Architecture Examples 
-
-## Summary
-
-```{table} Model cards of several selected LLMs with public configuration details. Here, PE denotes position embedding, #L denotes the number of layers, #H denotes the number of attention heads, dmodel denotes the size of hidden states, and MCL denotes the maximum context length during training.
-| Model | Size | Normalization | PE | Activation | Bias | #L | #H | $d_{\text {model }}$ | MCL |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| GPT3 [55] | 175B | Pre LayerNorm | Learned | GeLU | $\checkmark$ | 96 | 96 | 12288 | 2048 |
-| Llama | 207B | Pre RMSNorm | Learned | SwiGLU | $\checkmark$ | 64 | 128 | 16384 | 1024 |
-| Qwen 2 {cite:p}`yang2024qwen2technicalreport`| 72B | Pre RMSNorm | RoPe | SwiGLU | $\checkmark$ | 80 | 64 | 8192 | ... |
-```
-
-% from A Survey of Large Language Models 
-
-
-## LLama architectures
-
-
-
 (chapter_LLM_arch_sec_LLM_arch_fundamentals_forward_pass_computation)=
 ## Forward Pass Computation Breadown
+
+In this section, we estimate the computational cost (in term of FLOPS) for a forward pass.
+
+````{prf:remark} FLOPs estimation
+If $A \in R^{m \times k}, B \in R^{k \times n}$ then, to compute $A B$ the number of floating-point arithmetic required is $2 m n k$.
+
+For example, for 
+
+$$A = \begin{bmatrix}a_{11} & a_{12} \\ a_{21} & a_{22}\end{bmatrix}, B = \begin{bmatrix}b_{11} & b_{12} \\ b_{21} & b_{22}\end{bmatrix},$$
+
+The resulting $C = AB$ has $k$ terms, which are given by
+
+$$c_{ij} = \sum_{t=1}^k a_{ik}b_{kj}.$$
+
+It is clear that for each $c_{ij}$ there are $k$ multiplications and $k$ additions (technically $k-1$ additions among $k$ terms).
+````
+
 
 
 b: batch_size
@@ -659,7 +700,7 @@ L: n_layers
 | Attention | ${Q} / {K} / {V}$ Projection | $[{b}, {s}, {d}] \times [{~d}, {~d}]\to[{b}, {s}, {d}]$ | $3\times 2 b s d^2$ |
 |  | $Q K^T$ | $[{~b}, {~s}, {~d}] \times [{~b}, {~d}, {~s}]\to[{b}, {s}, {s}]$ | $2 b s^2 d$ |
 |  | score $ \times V$ | $[{~b}, {~s}, {~s}] \times [{~b}, {~s}, {~d}]\to[{b}, {s}, {d}]$ | $2 b s^2 d$ |
-|  | Output | $[{b}, {s}, {d}] \times[{~d}, {~d}]\to[{b}, {s}, {d}]$ | $2 b s d^2$ |
+|  | Output (with $W_o$) | $[{b}, {s}, {d}] \times[{~d}, {~d}]\to[{b}, {s}, {d}]$ | $2 b s d^2$ |
 | FFN | $f_1$ | $[{~b}, {~s}, {~d}] \times[{~d}, 4 {~d}] \to [{b}, {s}, 4 {~d}]$ | $8 b s d^2$ |
 |  | $f_2$ | $[{~b}, {~s}, 4 {~d}] \times[4 {~d}, {~d}]\to[{b}, {s}, {d}]$ | $8 b s d^2$ |
 | Embedding |  | $[{b}, {s}, 1] \times[{~V}, {~d}]\to[{b}, {s}, {d}]$ | $2 b s d V$ |
@@ -675,6 +716,24 @@ Llama 7B
 
 
 Llama 405B
+
+
+
+
+
+## Dense Architecture Examples 
+
+
+
+```{table} Model cards of several selected LLMs with public configuration details. Here, PE denotes position embedding, #L denotes the number of layers, #H denotes the number of attention heads, dmodel denotes the size of hidden states, and MCL denotes the maximum context length during training.
+| Model | Size | Normalization | PE | Activation | Bias | #L | #H | $d_{\text {model }}$ | MCL |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| GPT3 [55] | 175B | Pre LayerNorm | Learned | GeLU | $\checkmark$ | 96 | 96 | 12288 | 2048 |
+| Llama | 207B | Pre RMSNorm | Learned | SwiGLU | $\checkmark$ | 64 | 128 | 16384 | 1024 |
+| Qwen 2 {cite:p}`yang2024qwen2technicalreport`| 72B | Pre RMSNorm | RoPe | SwiGLU | $\checkmark$ | 80 | 64 | 8192 | ... |
+```
+
+% from A Survey of Large Language Models 
 
 
 

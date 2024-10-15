@@ -10,7 +10,7 @@ We will discuss the following in this section
 
 
 
-### Model States
+### Model and Optimizer States
 Consider the case that we train a LLM using Adam optimizer, we need to have enough GPU memory to store
 * Copy of model parameter
 * Copy of model parameter gradients
@@ -23,62 +23,93 @@ then training a $X$ billion model requires following GPU memory amount just to s
 
 $$(2 + 2 + 12) X ~\text{(GB)}.$$
 
-The following table gives the example for the memory requirement for the common 7B and 70B models. 
-| Model Size   | GPU Memory (GB)    |
+The following table gives the example for the memory requirement for models of different sizes. 
+| Model Size   | GPU Memory     |
 | :--- | ---: |
-| 7B    | 112 B    |
-| 70B    | 1120 B    |
+| 0.5B    | 8 GB    |
+| 3B    | 48 GB    |
+| 7B    | 112 GB    |
+| 70B    | 1120 GB    |
 
 
 ### Activations
 
-First, let's have the following notations:
-* $L$ - number of transformer layers
+Let's have the following notations:
+
 * $s$ - sequence length
 * $b$ - batch size
-* $h$ - hidden dimension size
-* $a$ - number of attention heads
+* $d$ - hidden dimension size
+* $H$ - number of attention heads
 * $p$ - precision
 
+Based on the **FFN** architecture detailed in {ref}`chapter_foundation_sec_pretrained_LM_transformer_arch_FFN`, we can estimate the memory requireement for FFN activations 
+
+| Component   | Memory    | Note|
+| :--- | ---: | ---: | 
+| First Layer    | $4bsdp$   | Output dimension is $4h$ |
+| Activation    | $4bsdp$    | |
+| Second Layer    | $4bsdp$    | |
+| Dropout Layer | $sbd$ | |
+| Total| $9bsdp + bsd$ | | 
 
 
-#### MLP Part
+Based on the **MHA** architecture detailed in {ref}`chapter_foundation_sec_pretrained_LM_transformer_arch_MHA`, we can estimate the memory requireement for MHA activations. 
 
-* The output of the first linear layer, which is $4psbh$ (as this linear enlarges the output dimension to $4h$).
-* The output of the GeLU activation, which is $4psbh$ bytes.
-* The output of the second linear layer, which is $psbh$ bytes
-* The binary dropout marks specifies which dimensions are droped, which is $sbh$ 
-So in total, MLP part will require to store: $9psbh + sbh$ bytes for activations.
+| Component   | Memory    | Note|
+| :--- | ---: | ---: | 
+| Q/K/V projection    | $3bsdp$   | |
+| Softmax input and output    | $2bs^2Hp$    | $s\times s$ attention matrix for each head|
+| Dropout after Softmax | $bs^2H$ | |
+| Output from $H$ attention head | $bsdp$ | |
+| Output layer ($W_O$)| $bsdp$ | |
+| Dropout | $bsd$| |
+| Total| $5bsdp + 2bs^2Hp + bsd + bs^2H$ | | 
 
-#### Self-attention Part
 
-Attention block: which includes self attention followed by a linear projection and an attention dropout. 
-* Before entering the self-attention block, query, key, and value are passed through a linear projection layer, whose outputs requires in totoal $3psbh$ bytes
-* The Softmax output is a $b \times s\times s$ attention matrix for each head, which in total is $pas^2b$ bytes; The Softmax input is the logis, which is also $pas^2b$ bytes.
-* The Dropout mask after the Softmax layer needs $as^2b$
-* Output from Self-Attention, which will require $psbh$ bytes
-* Output from the Linear layer, which will require $psbh$ bytes. 
-* Dropout mask after the linear layer, this will require $sbh$ bytes.
+Additionally, there are two **Normalization Layers** in each Transformer Layer, the output from each such layer will require in total $2bsdp$ bytes.
 
-To sum up, we need $5psbh + sbh + 2pas²b + as²b$ bytes for Attention part.
+### Total Memory Requirement
 
-Additionally, there are 2 Norm Layers in the Transformer Layer, the output from each such layer will require to store psbh bytes, so in total 2psbh bytes.
+Now we arrive at the total amount of bytes required to store the activations for a $L$ layer Transformer:
 
-total amount of bytes required to store the activations will be approximately:
+$$M =  \underbrace{17bsdp}{Linear Layer} + \underbrace{2bs^2Hp}_{Softmax} + \underbrace{2bsd + bs^2H}_{Dropout}$$
 
-$$Lpsbh\left(16+\frac{2}{p}+\frac{2 a s}{h}+\frac{a s}{p h}\right)$$
+If we ignore the small quantity $2bsd$ and take $p = 2$ (which is float16, 2bypte), we have
 
-```
+$$M_{approx} = 34bsd + 5bs^2H$$
+
+The implication on activation memory requirement are
+* $M$ scales linearly with batch size
+* $M$ scales quadratically with sequence length. During training, we cannot afford large context windows.
+* Using technique like GQA [{ref}`chapter_LLM_arch_sec_self_attention_variant_GQA`] can help save training memory.
+<!-- ```
 def activations_memory(num_layers, seq_len, batch_size, hidden_dim, num_heads, precision=2):
     "Returns amount of GPU VRAM (in GB) required to store intermediate activations for traditional Transformer Encoder block"
     mem_bytes = num_layers * precision * seq_len * batch_size * hidden_dim * (
         16 + 2/precision + 2*num_heads*seq_len/hidden_dim + num_heads*seq_len/(precision*hidden_dim))
     return round(mem_bytes / 10**9, 2)
-```
+``` -->
+{cite:p}`yang2024qwen2technicalreport`
+
+| Model Size   | $L$ | $d$| $s$ |$H$ | $b$ |GPU Memory  |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| 0.5B  | 24 | 896 | 4096 | 14 | 1 | 2.9 GB + 2 GB = 4.9 GB |
+| 7B | 28 | 3584 | 4096 | 28 | 1 | 3.9 GB + 4 GB = 7.9GB|
+| 72B | 64 | 8192 | 4096 | 64 | 1 | 71 GB + 8 GB = 79GB |
+<!-- | 3B    | 48 GB    |
+| 7B    | 112 GB    |
+| 70B    | 1120 GB    | -->
+
 
 ### Activation Checkpointing Techniques
 
+LLM have an enormous number of parameters. In the typical backpropogation during training, we save all the activation values from the forward pass to compute gradient, which consumes a large amount of GPU memory.
 
+On one extreme, we can completely discard the activation values from the forward pass and recalculate the necessary activation values when computing gradients. While this mitigates the activation memory footprint issue, it increases the computational load and slows down training.
+
+**Gradient Checkpointing** {cite:p}`chen2016trainingdeepnetssublinear` sits in the middle of these two approaches. This method employs a strategy that selects and saves a portion of the activation values from the computational graph, discarding the rest. The discarded activation values need to be recalculated during gradient computation.
+
+Specifically, during the forward pass, activation values of computational nodes are calculated and saved. After computing the next node, the activation values of intermediate nodes are **selectively discarded**. During backpropagation, saved activations for gradient computation are used directly. If not, the actitions of the current node are recalculated using the saved activations from the previous node.
 
 ## Mixed Precision Training
 
@@ -86,22 +117,29 @@ def activations_memory(num_layers, seq_len, batch_size, hidden_dim, num_heads, p
 % https://developer.nvidia.com/blog/mixed-precision-training-deep-neural-networks/?ssp=1&darkschemeovr=1&setlang=en-US&safesearch=moderate
 
 % to change
-Deep Neural Networks (DNNs) have lead to breakthroughs in a number of areas, including image processing and understanding, language modeling, language translation, speech processing, game playing, and many others. DNN complexity has been increasing to achieve these results, which in turn has increased the computational resources required to train these networks. Mixed-precision training{cite:p}`micikevicius2017mixed` lowers the required resources by using lower-precision arithmetic, which has the following benefits.
+Training billion-scale LLM requires huge number of memory, which include model loading, optimizer state storage, and gradient storage. The idea of using low-precision for precision-insensitive computation and high-recision for precision sensitive computation leads to Mixed-precision training{cite:p}`micikevicius2017mixed`. Mixed-precision training lowers the required resources by using lower-precision arithmetic, and it therefore widely used in LLM training. It has the following benefits.
 
-* Decrease the required amount of memory. Half-precision floating point format (FP16) uses 16 bits, compared to 32 bits for single precision (FP32). Lowering the required memory enables training of larger models or training with larger minibatches.
-* Shorten the training or inference time. Execution time can be sensitive to memory or arithmetic bandwidth. Half-precision halves the number of bytes accessed, thus reducing the time spent in memory-limited layers.
+**Reduced memory footprint**: Mixed precision training leverages half-precision floating point format (FP16), which uses only 16 bits per number, in contrast to the 32 bits used by single precision (FP32). This significant reduction in memory usage offers two key advantages:
+1. Enables training of larger models: With the same memory constraints, developers can design and train models with more parameters or greater complexity.
+2. Allows for larger minibatches: Increased batch sizes can lead to more stable gradients and potentially faster convergence in some cases.
 
-Half-precision floating point format consists of 1 sign bit, 5 bits of exponent, and 10 fractional bits.  Supported exponent values fall into the $[-24, 15]$ range, which means the format supports non-zero value magnitudes in the $[2^{-24}, 65,504]$ range. Since this is narrower than the $[2-149, \sim3.4\times1038]$ range supported by single-precision format, training some networks requires extra consideration. 
-
-
-
-
+**Accelerated training and inference**: The performance gains from mixed precision training stem from two main factors:
+1. Reduced memory bandwidth usage: Since FP16 requires half the memory bandwidth of FP32, layers that are memory-bound can see substantial speed improvements.
+2. Faster arithmetic operations: Many modern GPUs have specialized hardware for FP16 (and lower precision like int8, FP8) operations , allowing them to perform these calculations much faster than FP32 operations.
+These factors combine to potentially shorten both training and inference times, especially for large models or when processing substantial amounts of data.
 
 ### Training Process
 
 This section describes three techniques for successful training of DNNs with half precision: accumulation of FP16 products into FP32; loss scaling; and an FP32 master copy of weights. With these techniques NVIDIA and Baidu Research were able to match single-precision result accuracy for all networks that were trained.{cite:p}`micikevicius2017mixed`
 
 
+As shown in {numref}`chapter_training_fig_efficient_training_mixed_precision_process_demo`, key steps in the mixed-precision training are
+
+* Maintain a master copy of model parameters, optimizer momentums and variances with fp32 precision.
+* Before the model forward pass begins, allocate new storage to save model parameters in the fp16 format.
+* Perform forward pass, the produced activations will be saved as fp16.
+* Perform backward pass, the produced gradients will be saved as fp16.
+* Use fp16 gradients to update model parameters that are saved as fp32.
 
 
 
@@ -113,13 +151,6 @@ name: chapter_training_fig_efficient_training_mixed_precision_process_demo
 Model training step with mixed precision using classifical Adam algorithm [{prf:ref}`Adam_stochastic_gradient_descent_algorithm`].
 ```
 
-key elements in the mixed-precision training
-
-* Maintain a master copy of model parameters, optimizer momentums and variances with fp32 precision.
-* Before the model forward pass begins, allocate new storage to save model parameters in the fp16 format.
-* Perform forward pass, the produced activations will be saved as fp16.
-* Perform backward pass, the produced gradients will be saved as fp16.
-* Use fp16 gradients to update model parameters that are saved as fp32.
 
 We can estimate the memory storage consumption according to the following table. Denote the model parameter size by $\Phi$. Let the storage unit be byte. We need $16\Phi$ memory storage in total. 
 
@@ -134,6 +165,9 @@ We can estimate the memory storage consumption according to the following table.
 |  **Total**: | $16 \Phi$ |
 ```
 
+
+
+<!-- 
 \begin{remark}[the size of activations and model parameters]
 The number of activations is typically much smaller than the size of the model parameters. 
 Take an MLP with input dim $D_0$, hidden dim $D_1$, and output dim $D_2$ as an example. The total number of activations, including initial inputs, are $D_0 + D_1 + D_2$. 
@@ -150,7 +184,7 @@ Although having similar theoretical performance benefits, BF16 and FP16 can have
 Out-of-the-box mixed precision training with either float16 or bfloat16 is effective at speeding up the convergence of many deep learning models, but some models may require more careful numerical accuracy management. Here are Best practice 
 Figure out by experimentation if your network is sensitive to range and/or precision of a format. For example fine-tuning bfloat16-pretrained models in float16 can easily run into range issues in float16 because of the potentially large range from training in bfloat16, so users should stick with bfloat16 fine-tuning if the model was trained in bfloat16.
 
-\end{remark}
+\end{remark} -->
 
 
 ## Distributed Parallel Training

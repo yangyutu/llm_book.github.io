@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_training/accelerated_training';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="16. LLM Decoding" href="../chapter_inference/inference_fundamentals.html" />
+    <link rel="next" title="16. Decoding" href="../chapter_inference/inference_fundamentals.html" />
     <link rel="prev" title="13. LLM Alignement and Preference learning" href="alignment.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -191,33 +191,31 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MOE sparse models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MOE Sparse Architectures (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="training_fundamentals.html">11. LLM Training Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="finetuning.html">12. LLM finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="finetuning.html">12. LLM Finetuning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="alignment.html">13. LLM Alignement and Preference learning</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">14. LLM Training Acceleration</a></li>
 
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">16. LLM Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">17. Inference acceleration</a></li>
-
-
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">16. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">17. Inference Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">20. Basic prompt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">21. Advanced prompt techniques</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">22. Basic RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">18. Basic prompt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">19. Advanced prompt techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">20. RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">21. Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">22. Application of LLM in IR</a></li>
 </ul>
 
     </div>
@@ -320,13 +318,10 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">14. LLM Training Acceleration</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-memory-requirement-for-training-llm">14.1. The Memory Requirement For Training LLM</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-states">14.1.1. Model States</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activations">14.1.2. Activations</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mlp-part">14.1.2.1. MLP Part</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#self-attention-part">14.1.2.2. Self-attention Part</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-checkpointing-techniques">14.1.3. Activation Checkpointing Techniques</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-and-optimizer-states">14.1.1. Model and Optimizer States</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activations">14.1.2. Activations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#total-memory-requirement">14.1.3. Total Memory Requirement</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-checkpointing-techniques">14.1.4. Activation Checkpointing Techniques</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mixed-precision-training">14.2. Mixed Precision Training</a><ul class="nav section-nav flex-column">
@@ -381,8 +376,8 @@ document.write(`
 <li><p>What is the formula to estimate memory requirements.</p></li>
 <li><p>What would you do in practise to reduce the memory needs if the model does not fit.</p></li>
 </ul>
-<section id="model-states">
-<h3><span class="section-number">14.1.1. </span>Model States<a class="headerlink" href="#model-states" title="Link to this heading">#</a></h3>
+<section id="model-and-optimizer-states">
+<h3><span class="section-number">14.1.1. </span>Model and Optimizer States<a class="headerlink" href="#model-and-optimizer-states" title="Link to this heading">#</a></h3>
 <p>Consider the case that we train a LLM using Adam optimizer, we need to have enough GPU memory to store</p>
 <ul class="simple">
 <li><p>Copy of model parameter</p></li>
@@ -397,19 +392,25 @@ then training a <span class="math notranslate nohighlight">\(X\)</span> billion 
 </ul>
 <div class="math notranslate nohighlight">
 \[(2 + 2 + 12) X ~\text{(GB)}.\]</div>
-<p>The following table gives the example for the memory requirement for the common 7B and 70B models.</p>
+<p>The following table gives the example for the memory requirement for models of different sizes.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Model Size</p></th>
-<th class="head text-right"><p>GPU Memory (GB)</p></th>
+<th class="head text-right"><p>GPU Memory</p></th>
 </tr>
 </thead>
 <tbody>
+<tr class="row-even"><td class="text-left"><p>0.5B</p></td>
+<td class="text-right"><p>8 GB</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>3B</p></td>
+<td class="text-right"><p>48 GB</p></td>
+</tr>
 <tr class="row-even"><td class="text-left"><p>7B</p></td>
-<td class="text-right"><p>112 B</p></td>
+<td class="text-right"><p>112 GB</p></td>
 </tr>
 <tr class="row-odd"><td class="text-left"><p>70B</p></td>
-<td class="text-right"><p>1120 B</p></td>
+<td class="text-right"><p>1120 GB</p></td>
 </tr>
 </tbody>
 </table>
@@ -417,76 +418,148 @@ then training a <span class="math notranslate nohighlight">\(X\)</span> billion 
 </section>
 <section id="activations">
 <h3><span class="section-number">14.1.2. </span>Activations<a class="headerlink" href="#activations" title="Link to this heading">#</a></h3>
-<p>First, let’s have the following notations:</p>
+<p>Let’s have the following notations:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(L\)</span> - number of transformer layers</p></li>
 <li><p><span class="math notranslate nohighlight">\(s\)</span> - sequence length</p></li>
 <li><p><span class="math notranslate nohighlight">\(b\)</span> - batch size</p></li>
-<li><p><span class="math notranslate nohighlight">\(h\)</span> - hidden dimension size</p></li>
-<li><p><span class="math notranslate nohighlight">\(a\)</span> - number of attention heads</p></li>
+<li><p><span class="math notranslate nohighlight">\(d\)</span> - hidden dimension size</p></li>
+<li><p><span class="math notranslate nohighlight">\(H\)</span> - number of attention heads</p></li>
 <li><p><span class="math notranslate nohighlight">\(p\)</span> - precision</p></li>
 </ul>
-<section id="mlp-part">
-<h4><span class="section-number">14.1.2.1. </span>MLP Part<a class="headerlink" href="#mlp-part" title="Link to this heading">#</a></h4>
-<ul class="simple">
-<li><p>The output of the first linear layer, which is <span class="math notranslate nohighlight">\(4psbh\)</span> (as this linear enlarges the output dimension to <span class="math notranslate nohighlight">\(4h\)</span>).</p></li>
-<li><p>The output of the GeLU activation, which is <span class="math notranslate nohighlight">\(4psbh\)</span> bytes.</p></li>
-<li><p>The output of the second linear layer, which is <span class="math notranslate nohighlight">\(psbh\)</span> bytes</p></li>
-<li><p>The binary dropout marks specifies which dimensions are droped, which is <span class="math notranslate nohighlight">\(sbh\)</span>
-So in total, MLP part will require to store: <span class="math notranslate nohighlight">\(9psbh + sbh\)</span> bytes for activations.</p></li>
-</ul>
-</section>
-<section id="self-attention-part">
-<h4><span class="section-number">14.1.2.2. </span>Self-attention Part<a class="headerlink" href="#self-attention-part" title="Link to this heading">#</a></h4>
-<p>Attention block: which includes self attention followed by a linear projection and an attention dropout.</p>
-<ul class="simple">
-<li><p>Before entering the self-attention block, query, key, and value are passed through a linear projection layer, whose outputs requires in totoal <span class="math notranslate nohighlight">\(3psbh\)</span> bytes</p></li>
-<li><p>The Softmax output is a <span class="math notranslate nohighlight">\(b \times s\times s\)</span> attention matrix for each head, which in total is <span class="math notranslate nohighlight">\(pas^2b\)</span> bytes; The Softmax input is the logis, which is also <span class="math notranslate nohighlight">\(pas^2b\)</span> bytes.</p></li>
-<li><p>The Dropout mask after the Softmax layer needs <span class="math notranslate nohighlight">\(as^2b\)</span></p></li>
-<li><p>Output from Self-Attention, which will require <span class="math notranslate nohighlight">\(psbh\)</span> bytes</p></li>
-<li><p>Output from the Linear layer, which will require <span class="math notranslate nohighlight">\(psbh\)</span> bytes.</p></li>
-<li><p>Dropout mask after the linear layer, this will require <span class="math notranslate nohighlight">\(sbh\)</span> bytes.</p></li>
-</ul>
-<p>To sum up, we need <span class="math notranslate nohighlight">\(5psbh + sbh + 2pas²b + as²b\)</span> bytes for Attention part.</p>
-<p>Additionally, there are 2 Norm Layers in the Transformer Layer, the output from each such layer will require to store psbh bytes, so in total 2psbh bytes.</p>
-<p>total amount of bytes required to store the activations will be approximately:</p>
-<div class="math notranslate nohighlight">
-\[Lpsbh\left(16+\frac{2}{p}+\frac{2 a s}{h}+\frac{a s}{p h}\right)\]</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">activations_memory</span><span class="p">(</span><span class="n">num_layers</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-    <span class="s2">&quot;Returns amount of GPU VRAM (in GB) required to store intermediate activations for traditional Transformer Encoder block&quot;</span>
-    <span class="n">mem_bytes</span> <span class="o">=</span> <span class="n">num_layers</span> <span class="o">*</span> <span class="n">precision</span> <span class="o">*</span> <span class="n">seq_len</span> <span class="o">*</span> <span class="n">batch_size</span> <span class="o">*</span> <span class="n">hidden_dim</span> <span class="o">*</span> <span class="p">(</span>
-        <span class="mi">16</span> <span class="o">+</span> <span class="mi">2</span><span class="o">/</span><span class="n">precision</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">num_heads</span><span class="o">*</span><span class="n">seq_len</span><span class="o">/</span><span class="n">hidden_dim</span> <span class="o">+</span> <span class="n">num_heads</span><span class="o">*</span><span class="n">seq_len</span><span class="o">/</span><span class="p">(</span><span class="n">precision</span><span class="o">*</span><span class="n">hidden_dim</span><span class="p">))</span>
-    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">mem_bytes</span> <span class="o">/</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</pre></div>
+<p>Based on the <strong>FFN</strong> architecture detailed in <a class="reference internal" href="../chapter_foundation/transformers.html#chapter-foundation-sec-pretrained-lm-transformer-arch-ffn"><span class="std std-ref">Pointwise FeedForward Layer</span></a>, we can estimate the memory requireement for FFN activations</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Component</p></th>
+<th class="head text-right"><p>Memory</p></th>
+<th class="head text-right"><p>Note</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>First Layer</p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\(4bsdp\)</span></p></td>
+<td class="text-right"><p>Output dimension is <span class="math notranslate nohighlight">\(4h\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Activation</p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\(4bsdp\)</span></p></td>
+<td class="text-right"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Second Layer</p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\(4bsdp\)</span></p></td>
+<td class="text-right"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Dropout Layer</p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\(sbd\)</span></p></td>
+<td class="text-right"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Total</p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\(9bsdp + bsd\)</span></p></td>
+<td class="text-right"><p></p></td>
+</tr>
+</tbody>
+</table>
 </div>
+<p>Based on the <strong>MHA</strong> architecture detailed in <a class="reference internal" href="../chapter_foundation/transformers.html#chapter-foundation-sec-pretrained-lm-transformer-arch-mha"><span class="std std-ref">Multihead Attention With Masks</span></a>, we can estimate the memory requireement for MHA activations.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Component</p></th>
+<th class="head text-right"><p>Memory</p></th>
+<th class="head text-right"><p>Note</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Q/K/V projection</p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\(3bsdp\)</span></p></td>
+<td class="text-right"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Softmax input and output</p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\(2bs^2Hp\)</span></p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\(s\times s\)</span> attention matrix for each head</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Dropout after Softmax</p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\(bs^2H\)</span></p></td>
+<td class="text-right"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Output from <span class="math notranslate nohighlight">\(H\)</span> attention head</p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\(bsdp\)</span></p></td>
+<td class="text-right"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Output layer (<span class="math notranslate nohighlight">\(W_O\)</span>)</p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\(bsdp\)</span></p></td>
+<td class="text-right"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Dropout</p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\(bsd\)</span></p></td>
+<td class="text-right"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Total</p></td>
+<td class="text-right"><p><span class="math notranslate nohighlight">\(5bsdp + 2bs^2Hp + bsd + bs^2H\)</span></p></td>
+<td class="text-right"><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Additionally, there are two <strong>Normalization Layers</strong> in each Transformer Layer, the output from each such layer will require in total <span class="math notranslate nohighlight">\(2bsdp\)</span> bytes.</p>
 </section>
+<section id="total-memory-requirement">
+<h3><span class="section-number">14.1.3. </span>Total Memory Requirement<a class="headerlink" href="#total-memory-requirement" title="Link to this heading">#</a></h3>
+<p>Now we arrive at the total amount of bytes required to store the activations for a <span class="math notranslate nohighlight">\(L\)</span> layer Transformer:</p>
+<div class="math notranslate nohighlight">
+\[M =  \underbrace{17bsdp}{Linear Layer} + \underbrace{2bs^2Hp}_{Softmax} + \underbrace{2bsd + bs^2H}_{Dropout}\]</div>
+<p>If we ignore the small quantity <span class="math notranslate nohighlight">\(2bsd\)</span> and take <span class="math notranslate nohighlight">\(p = 2\)</span> (which is float16, 2bypte), we have</p>
+<div class="math notranslate nohighlight">
+\[M_{approx} = 34bsd + 5bs^2H\]</div>
+<p>The implication on activation memory requirement are</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(M\)</span> scales linearly with batch size</p></li>
+<li><p><span class="math notranslate nohighlight">\(M\)</span> scales quadratically with sequence length. During training, we cannot afford large context windows.</p></li>
+<li><p>Using technique like GQA [<a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html#chapter-llm-arch-sec-self-attention-variant-gqa"><span class="std std-ref">Grouped Query Attention (GQA)</span></a>] can help save training memory.</p></li>
+</ul>
+<!-- ```
+def activations_memory(num_layers, seq_len, batch_size, hidden_dim, num_heads, precision=2):
+    "Returns amount of GPU VRAM (in GB) required to store intermediate activations for traditional Transformer Encoder block"
+    mem_bytes = num_layers * precision * seq_len * batch_size * hidden_dim * (
+        16 + 2/precision + 2*num_heads*seq_len/hidden_dim + num_heads*seq_len/(precision*hidden_dim))
+    return round(mem_bytes / 10**9, 2)
+``` -->
+<p><span id="id1">[<a class="reference internal" href="#id1518" title="An Yang, Baosong Yang, Binyuan Hui, and et al. Bo Zheng. Qwen2 technical report. 2024. URL: https://arxiv.org/abs/2407.10671, arXiv:2407.10671.">YYHBZ24</a>]</span></p>
+<p>| Model Size   | <span class="math notranslate nohighlight">\(L\)</span> | <span class="math notranslate nohighlight">\(d\)</span>| <span class="math notranslate nohighlight">\(s\)</span> |<span class="math notranslate nohighlight">\(H\)</span> | <span class="math notranslate nohighlight">\(b\)</span> |GPU Memory  |
+| :— | —: | —: | —: | —: | —: |
+| 0.5B  | 24 | 896 | 4096 | 14 | 1 | 2.9 GB + 2 GB = 4.9 GB |
+| 7B | 28 | 3584 | 4096 | 28 | 1 | 3.9 GB + 4 GB = 7.9GB|
+| 72B | 64 | 8192 | 4096 | 64 | 1 | 71 GB + 8 GB = 79GB |</p>
+<!-- | 3B    | 48 GB    |
+| 7B    | 112 GB    |
+| 70B    | 1120 GB    | -->
 </section>
 <section id="activation-checkpointing-techniques">
-<h3><span class="section-number">14.1.3. </span>Activation Checkpointing Techniques<a class="headerlink" href="#activation-checkpointing-techniques" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">14.1.4. </span>Activation Checkpointing Techniques<a class="headerlink" href="#activation-checkpointing-techniques" title="Link to this heading">#</a></h3>
+<p>LLM have an enormous number of parameters. In the typical backpropogation during training, we save all the activation values from the forward pass to compute gradient, which consumes a large amount of GPU memory.</p>
+<p>On one extreme, we can completely discard the activation values from the forward pass and recalculate the necessary activation values when computing gradients. While this mitigates the activation memory footprint issue, it increases the computational load and slows down training.</p>
+<p><strong>Gradient Checkpointing</strong> <span id="id2">[<a class="reference internal" href="#id1517" title="Tianqi Chen, Bing Xu, Chiyuan Zhang, and Carlos Guestrin. Training deep nets with sublinear memory cost. 2016. URL: https://arxiv.org/abs/1604.06174, arXiv:1604.06174.">CXZG16</a>]</span> sits in the middle of these two approaches. This method employs a strategy that selects and saves a portion of the activation values from the computational graph, discarding the rest. The discarded activation values need to be recalculated during gradient computation.</p>
+<p>Specifically, during the forward pass, activation values of computational nodes are calculated and saved. After computing the next node, the activation values of intermediate nodes are <strong>selectively discarded</strong>. During backpropagation, saved activations for gradient computation are used directly. If not, the actitions of the current node are recalculated using the saved activations from the previous node.</p>
 </section>
 </section>
 <section id="mixed-precision-training">
 <h2><span class="section-number">14.2. </span>Mixed Precision Training<a class="headerlink" href="#mixed-precision-training" title="Link to this heading">#</a></h2>
 <section id="overview">
 <h3><span class="section-number">14.2.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
-<p>Deep Neural Networks (DNNs) have lead to breakthroughs in a number of areas, including image processing and understanding, language modeling, language translation, speech processing, game playing, and many others. DNN complexity has been increasing to achieve these results, which in turn has increased the computational resources required to train these networks. Mixed-precision training<span id="id1">[<a class="reference internal" href="#id1492" title="Paulius Micikevicius, Sharan Narang, Jonah Alben, Gregory Diamos, Erich Elsen, David Garcia, Boris Ginsburg, Michael Houston, Oleksii Kuchaiev, Ganesh Venkatesh, and others. Mixed precision training. arXiv preprint arXiv:1710.03740, 2017.">MNA+17</a>]</span> lowers the required resources by using lower-precision arithmetic, which has the following benefits.</p>
-<ul class="simple">
-<li><p>Decrease the required amount of memory. Half-precision floating point format (FP16) uses 16 bits, compared to 32 bits for single precision (FP32). Lowering the required memory enables training of larger models or training with larger minibatches.</p></li>
-<li><p>Shorten the training or inference time. Execution time can be sensitive to memory or arithmetic bandwidth. Half-precision halves the number of bytes accessed, thus reducing the time spent in memory-limited layers.</p></li>
-</ul>
-<p>Half-precision floating point format consists of 1 sign bit, 5 bits of exponent, and 10 fractional bits.  Supported exponent values fall into the <span class="math notranslate nohighlight">\([-24, 15]\)</span> range, which means the format supports non-zero value magnitudes in the <span class="math notranslate nohighlight">\([2^{-24}, 65,504]\)</span> range. Since this is narrower than the <span class="math notranslate nohighlight">\([2-149, \sim3.4\times1038]\)</span> range supported by single-precision format, training some networks requires extra consideration.</p>
+<p>Training billion-scale LLM requires huge number of memory, which include model loading, optimizer state storage, and gradient storage. The idea of using low-precision for precision-insensitive computation and high-recision for precision sensitive computation leads to Mixed-precision training<span id="id3">[<a class="reference internal" href="#id1494" title="Paulius Micikevicius, Sharan Narang, Jonah Alben, Gregory Diamos, Erich Elsen, David Garcia, Boris Ginsburg, Michael Houston, Oleksii Kuchaiev, Ganesh Venkatesh, and others. Mixed precision training. arXiv preprint arXiv:1710.03740, 2017.">MNA+17</a>]</span>. Mixed-precision training lowers the required resources by using lower-precision arithmetic, and it therefore widely used in LLM training. It has the following benefits.</p>
+<p><strong>Reduced memory footprint</strong>: Mixed precision training leverages half-precision floating point format (FP16), which uses only 16 bits per number, in contrast to the 32 bits used by single precision (FP32). This significant reduction in memory usage offers two key advantages:</p>
+<ol class="arabic simple">
+<li><p>Enables training of larger models: With the same memory constraints, developers can design and train models with more parameters or greater complexity.</p></li>
+<li><p>Allows for larger minibatches: Increased batch sizes can lead to more stable gradients and potentially faster convergence in some cases.</p></li>
+</ol>
+<p><strong>Accelerated training and inference</strong>: The performance gains from mixed precision training stem from two main factors:</p>
+<ol class="arabic simple">
+<li><p>Reduced memory bandwidth usage: Since FP16 requires half the memory bandwidth of FP32, layers that are memory-bound can see substantial speed improvements.</p></li>
+<li><p>Faster arithmetic operations: Many modern GPUs have specialized hardware for FP16 (and lower precision like int8, FP8) operations , allowing them to perform these calculations much faster than FP32 operations.
+These factors combine to potentially shorten both training and inference times, especially for large models or when processing substantial amounts of data.</p></li>
+</ol>
 </section>
 <section id="training-process">
 <h3><span class="section-number">14.2.2. </span>Training Process<a class="headerlink" href="#training-process" title="Link to this heading">#</a></h3>
-<p>This section describes three techniques for successful training of DNNs with half precision: accumulation of FP16 products into FP32; loss scaling; and an FP32 master copy of weights. With these techniques NVIDIA and Baidu Research were able to match single-precision result accuracy for all networks that were trained.<span id="id2">[<a class="reference internal" href="#id1492" title="Paulius Micikevicius, Sharan Narang, Jonah Alben, Gregory Diamos, Erich Elsen, David Garcia, Boris Ginsburg, Michael Houston, Oleksii Kuchaiev, Ganesh Venkatesh, and others. Mixed precision training. arXiv preprint arXiv:1710.03740, 2017.">MNA+17</a>]</span></p>
-<figure class="align-default" id="chapter-training-fig-efficient-training-mixed-precision-process-demo">
-<a class="reference internal image-reference" href="../../_images/mixed_precision_process_demo.png"><img alt="../../_images/mixed_precision_process_demo.png" src="../../_images/mixed_precision_process_demo.png" style="width: 484.04999999999995px; height: 452.54999999999995px;" />
-</a>
-<figcaption>
-<p><span class="caption-number">Fig. 14.1 </span><span class="caption-text">Model training step with mixed precision using classifical Adam algorithm [<a class="reference internal" href="training_fundamentals.html#Adam_stochastic_gradient_descent_algorithm">Algorithm 11.2</a>].</span><a class="headerlink" href="#chapter-training-fig-efficient-training-mixed-precision-process-demo" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-<p>key elements in the mixed-precision training</p>
+<p>This section describes three techniques for successful training of DNNs with half precision: accumulation of FP16 products into FP32; loss scaling; and an FP32 master copy of weights. With these techniques NVIDIA and Baidu Research were able to match single-precision result accuracy for all networks that were trained.<span id="id4">[<a class="reference internal" href="#id1494" title="Paulius Micikevicius, Sharan Narang, Jonah Alben, Gregory Diamos, Erich Elsen, David Garcia, Boris Ginsburg, Michael Houston, Oleksii Kuchaiev, Ganesh Venkatesh, and others. Mixed precision training. arXiv preprint arXiv:1710.03740, 2017.">MNA+17</a>]</span></p>
+<p>As shown in <a class="reference internal" href="#chapter-training-fig-efficient-training-mixed-precision-process-demo"><span class="std std-numref">Fig. 14.1</span></a>, key steps in the mixed-precision training are</p>
 <ul class="simple">
 <li><p>Maintain a master copy of model parameters, optimizer momentums and variances with fp32 precision.</p></li>
 <li><p>Before the model forward pass begins, allocate new storage to save model parameters in the fp16 format.</p></li>
@@ -494,9 +567,16 @@ So in total, MLP part will require to store: <span class="math notranslate nohig
 <li><p>Perform backward pass, the produced gradients will be saved as fp16.</p></li>
 <li><p>Use fp16 gradients to update model parameters that are saved as fp32.</p></li>
 </ul>
+<figure class="align-default" id="chapter-training-fig-efficient-training-mixed-precision-process-demo">
+<a class="reference internal image-reference" href="../../_images/mixed_precision_process_demo.png"><img alt="../../_images/mixed_precision_process_demo.png" src="../../_images/mixed_precision_process_demo.png" style="width: 484.04999999999995px; height: 452.54999999999995px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 14.1 </span><span class="caption-text">Model training step with mixed precision using classifical Adam algorithm [<a class="reference internal" href="training_fundamentals.html#Adam_stochastic_gradient_descent_algorithm">Algorithm 11.2</a>].</span><a class="headerlink" href="#chapter-training-fig-efficient-training-mixed-precision-process-demo" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 <p>We can estimate the memory storage consumption according to the following table. Denote the model parameter size by <span class="math notranslate nohighlight">\(\Phi\)</span>. Let the storage unit be byte. We need <span class="math notranslate nohighlight">\(16\Phi\)</span> memory storage in total.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1516">
-<caption><span class="caption-number">Table 14.1 </span><span class="caption-text">Storage requirement for different components during LLM training using Adam.</span><a class="headerlink" href="#id1516" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1526">
+<caption><span class="caption-number">Table 14.1 </span><span class="caption-text">Storage requirement for different components during LLM training using Adam.</span><a class="headerlink" href="#id1526" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Type</p></th>
 <th class="head text-left"><p>Storage Size</p></th>
@@ -524,17 +604,24 @@ So in total, MLP part will require to store: <span class="math notranslate nohig
 </tbody>
 </table>
 </div>
-<p>\begin{remark}[the size of activations and model parameters]
-The number of activations is typically much smaller than the size of the model parameters.
-Take an MLP with input dim <span class="math notranslate nohighlight">\(D_0\)</span>, hidden dim <span class="math notranslate nohighlight">\(D_1\)</span>, and output dim <span class="math notranslate nohighlight">\(D_2\)</span> as an example. The total number of activations, including initial inputs, are <span class="math notranslate nohighlight">\(D_0 + D_1 + D_2\)</span>.</p>
-<p>The total number of model parameters are <span class="math notranslate nohighlight">\(D_0\times D_1 + D_1\times D_2\)</span>.
-\end{remark}</p>
-<p>\begin{remark}[Precision options fp16, bf16, and fp8]
-Both BF16 and FP16 are 16-bit floating-point formats used in deep learning models. The difference between them is how the bits are divided between the exponent and fraction. BF16 has the same exponent range as FP32 but with fewer bits for the fraction1. Each number has one sign bit.</p>
-<p>Although having similar theoretical performance benefits, BF16 and FP16 can have different speeds in practice. It’s recommended to try both formats and use the one with best speed while maintaining the desired numeric behavior.</p>
-<p>Out-of-the-box mixed precision training with either float16 or bfloat16 is effective at speeding up the convergence of many deep learning models, but some models may require more careful numerical accuracy management. Here are Best practice
-Figure out by experimentation if your network is sensitive to range and/or precision of a format. For example fine-tuning bfloat16-pretrained models in float16 can easily run into range issues in float16 because of the potentially large range from training in bfloat16, so users should stick with bfloat16 fine-tuning if the model was trained in bfloat16.</p>
-<p>\end{remark}</p>
+<!-- 
+\begin{remark}[the size of activations and model parameters]
+The number of activations is typically much smaller than the size of the model parameters. 
+Take an MLP with input dim $D_0$, hidden dim $D_1$, and output dim $D_2$ as an example. The total number of activations, including initial inputs, are $D_0 + D_1 + D_2$. 
+
+The total number of model parameters are $D_0\times D_1 + D_1\times D_2$.
+\end{remark}
+
+\begin{remark}[Precision options fp16, bf16, and fp8]
+Both BF16 and FP16 are 16-bit floating-point formats used in deep learning models. The difference between them is how the bits are divided between the exponent and fraction. BF16 has the same exponent range as FP32 but with fewer bits for the fraction1. Each number has one sign bit.
+
+Although having similar theoretical performance benefits, BF16 and FP16 can have different speeds in practice. It’s recommended to try both formats and use the one with best speed while maintaining the desired numeric behavior.	
+
+% https://pytorch.org/blog/what-every-user-should-know-about-mixed-precision-training-in-pytorch/
+Out-of-the-box mixed precision training with either float16 or bfloat16 is effective at speeding up the convergence of many deep learning models, but some models may require more careful numerical accuracy management. Here are Best practice 
+Figure out by experimentation if your network is sensitive to range and/or precision of a format. For example fine-tuning bfloat16-pretrained models in float16 can easily run into range issues in float16 because of the potentially large range from training in bfloat16, so users should stick with bfloat16 fine-tuning if the model was trained in bfloat16.
+
+\end{remark} -->
 </section>
 </section>
 <section id="distributed-parallel-training">
@@ -550,7 +637,7 @@ Figure out by experimentation if your network is sensitive to range and/or preci
 <h2><span class="section-number">14.4. </span>ZeRO Via DeepSpeed<a class="headerlink" href="#zero-via-deepspeed" title="Link to this heading">#</a></h2>
 <p>Data parallelism is the most widely used technique because it is simple and easy to implement. However, tt is typically challenging to apply the vanilla flavor data parallelism since it requires each GPU to store the parameters of the whole model. As a result, the size of GPU memory becomes the ceiling of the model scale we can train.</p>
 <p>Model parallelism (e.g, Megatron) [<a class="reference internal" href="#chapter-training-sec-distributed-parallel-training-model-parallelism"><span class="std std-ref">Model parallelism (tensor parallelism)</span></a>], desipte its success in T5 (11B) and Megatron-LM (8.3B) is hard to scale beyond model sizes that cannot fit into a single GPU node. This is because model parallelism typically partitions the model weights or layers across GPU devices, incurring a significant communication between devices.</p>
-<p>ZeRO (Zero Redundancy Optimizer) <span id="id3">[<a class="reference internal" href="#id1509" title="Samyam Rajbhandari, Jeff Rasley, Olatunji Ruwase, and Yuxiong He. Zero: memory optimizations toward training trillion parameter models. 2020. URL: https://arxiv.org/abs/1910.02054, arXiv:1910.02054.">RRRH20</a>]</span> adopt the data parallism paradigm, and optimize memory efficieny and commnication efficiency.</p>
+<p>ZeRO (Zero Redundancy Optimizer) <span id="id5">[<a class="reference internal" href="#id1510" title="Samyam Rajbhandari, Jeff Rasley, Olatunji Ruwase, and Yuxiong He. Zero: memory optimizations toward training trillion parameter models. 2020. URL: https://arxiv.org/abs/1910.02054, arXiv:1910.02054.">RRRH20</a>]</span> adopt the data parallism paradigm, and optimize memory efficieny and commnication efficiency.</p>
 <section id="gpu-memory-allocation">
 <h3><span class="section-number">14.4.1. </span>GPU Memory Allocation<a class="headerlink" href="#gpu-memory-allocation" title="Link to this heading">#</a></h3>
 <p>GPU memory is mainly allocated into two parts: <strong>model states</strong> and <strong>residual states</strong>.</p>
@@ -804,8 +891,8 @@ This is the mathematical principle behind Flash Attention’s parallel accelerat
 This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Phi\)</span> communication volume, in which the step 1 has <span class="math notranslate nohighlight">\((N_d-1)\Phi\)</span> and step 2 has <span class="math notranslate nohighlight">\((N_d-1)\Phi\)</span>. The naive implementation has the communication load imbalance issue as all data are sent into and sent out from Rank0 device.</p></li>
 </ol>
 <p>The <strong>RingAllReduce</strong> address the load imbalance issue by engaging all devices in data communication and reduction (i.e., more parallelism). The RingAllReduce is equivalent to first RingReduceScatter and then AllGather.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1517">
-<caption><span class="caption-number">Table 15.1 </span><span class="caption-text">Communication volumne summary for different operations. Let <span class="math notranslate nohighlight">\(\Phi\)</span> be the total data size in one device and <span class="math notranslate nohighlight">\(N\)</span> be the total number of devices.</span><a class="headerlink" href="#id1517" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1527">
+<caption><span class="caption-number">Table 15.1 </span><span class="caption-text">Communication volumne summary for different operations. Let <span class="math notranslate nohighlight">\(\Phi\)</span> be the total data size in one device and <span class="math notranslate nohighlight">\(N\)</span> be the total number of devices.</span><a class="headerlink" href="#id1527" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Type</p></th>
 <th class="head text-left"><p>Storage Size</p></th>
@@ -839,16 +926,24 @@ This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Ph
 </section>
 <section id="bibliography">
 <h2><span class="section-number">15.3. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id4">
+<div class="docutils container" id="id6">
 <div role="list" class="citation-list">
-<div class="citation" id="id1492" role="doc-biblioentry">
+<div class="citation" id="id1517" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">CXZG16</a><span class="fn-bracket">]</span></span>
+<p>Tianqi Chen, Bing Xu, Chiyuan Zhang, and Carlos Guestrin. Training deep nets with sublinear memory cost. 2016. URL: <a class="reference external" href="https://arxiv.org/abs/1604.06174">https://arxiv.org/abs/1604.06174</a>, <a class="reference external" href="https://arxiv.org/abs/1604.06174">arXiv:1604.06174</a>.</p>
+</div>
+<div class="citation" id="id1494" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>MNA+17<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id4">2</a>)</span>
 <p>Paulius Micikevicius, Sharan Narang, Jonah Alben, Gregory Diamos, Erich Elsen, David Garcia, Boris Ginsburg, Michael Houston, Oleksii Kuchaiev, Ganesh Venkatesh, and others. Mixed precision training. <em>arXiv preprint arXiv:1710.03740</em>, 2017.</p>
 </div>
-<div class="citation" id="id1509" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">RRRH20</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1510" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">RRRH20</a><span class="fn-bracket">]</span></span>
 <p>Samyam Rajbhandari, Jeff Rasley, Olatunji Ruwase, and Yuxiong He. Zero: memory optimizations toward training trillion parameter models. 2020. URL: <a class="reference external" href="https://arxiv.org/abs/1910.02054">https://arxiv.org/abs/1910.02054</a>, <a class="reference external" href="https://arxiv.org/abs/1910.02054">arXiv:1910.02054</a>.</p>
+</div>
+<div class="citation" id="id1518" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">YYHBZ24</a><span class="fn-bracket">]</span></span>
+<p>An Yang, Baosong Yang, Binyuan Hui, and et al. Bo Zheng. Qwen2 technical report. 2024. URL: <a class="reference external" href="https://arxiv.org/abs/2407.10671">https://arxiv.org/abs/2407.10671</a>, <a class="reference external" href="https://arxiv.org/abs/2407.10671">arXiv:2407.10671</a>.</p>
 </div>
 </div>
 </div>
@@ -899,7 +994,7 @@ This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Ph
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">16. </span>LLM Decoding</p>
+        <p class="prev-next-title"><span class="section-number">16. </span>Decoding</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -921,13 +1016,10 @@ This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Ph
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">14. LLM Training Acceleration</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-memory-requirement-for-training-llm">14.1. The Memory Requirement For Training LLM</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-states">14.1.1. Model States</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activations">14.1.2. Activations</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mlp-part">14.1.2.1. MLP Part</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#self-attention-part">14.1.2.2. Self-attention Part</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-checkpointing-techniques">14.1.3. Activation Checkpointing Techniques</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-and-optimizer-states">14.1.1. Model and Optimizer States</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activations">14.1.2. Activations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#total-memory-requirement">14.1.3. Total Memory Requirement</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-checkpointing-techniques">14.1.4. Activation Checkpointing Techniques</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mixed-precision-training">14.2. Mixed Precision Training</a><ul class="nav section-nav flex-column">
