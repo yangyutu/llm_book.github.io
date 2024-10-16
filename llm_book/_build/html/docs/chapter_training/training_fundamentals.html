@@ -317,31 +317,29 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-overview">11.1. Training Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-algorithms">11.2. Optimization Algorithms</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minibatch-stochastic-gradient-descent">11.2.1. Minibatch Stochastic Gradient Descent</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-gradient-method">11.2.2. Adaptive Gradient Method</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-gradient-adagrad">11.2.2.1. Adaptive Gradient (AdaGrad)</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rmsprop">11.2.2.2. RMSProp</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">11.2. Pretraining</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fundamentals">11.2.1. Fundamentals</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sources-and-cleaning">11.2.2. Data sources and cleaning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-mixture-and-schedule">11.2.3. Data mixture and schedule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continued-pretraining">11.2.4. Continued Pretraining</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#momentum-method">11.2.3. Momentum Method</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-together-adam-and-adamw">11.2.4. Combined Together: Adam and AdamW</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adam">11.2.4.1. Adam</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#l-2-weight-decay-and-adamw">11.2.4.2. <span class="math notranslate nohighlight">\(L_2\)</span> Weight Decay and AdamW</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-algorithms">11.3. Optimization Algorithms</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minibatch-stochastic-gradient-descent">11.3.1. Minibatch Stochastic Gradient Descent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-gradient-method">11.3.2. Adaptive Gradient Method</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-gradient-adagrad">11.3.2.1. Adaptive Gradient (AdaGrad)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rmsprop">11.3.2.2. RMSProp</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#momentum-method">11.3.3. Momentum Method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-together-adam-and-adamw">11.3.4. Combined Together: Adam and AdamW</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adam">11.3.4.1. Adam</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#l-2-weight-decay-and-adamw">11.3.4.2. <span class="math notranslate nohighlight">\(L_2\)</span> Weight Decay and AdamW</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">11.3. Pretraining</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fundamentals">11.3.1. Fundamentals</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sources">11.3.2. Data sources</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continued-pretraining">11.3.3. Continued Pretraining</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#post-training">11.4. Post-training</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sft-vs-rlhf">11.5. SFT Vs RLHF</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison">11.6. Comparison</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">11.7. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">11.4. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -357,30 +355,116 @@ document.write(`
 <h1><span class="section-number">11. </span>LLM Training Fundamentals<a class="headerlink" href="#llm-training-fundamentals" title="Link to this heading">#</a></h1>
 <section id="training-overview">
 <h2><span class="section-number">11.1. </span>Training Overview<a class="headerlink" href="#training-overview" title="Link to this heading">#</a></h2>
-<p>Large Language Models (LLMs) have revolutionized natural language processing and artificial intelligence, demonstrating remarkable capabilities in understanding and generating human-like text. The process of creating these powerful models involves a complex and multi-faceted approach to training, which we will explore in this chapter.</p>
-<p>At its core, LLM training is about teaching a neural network to understand and generate language by exposing it to vast amounts of text data. This process leverages advanced machine learning techniques, particularly in the realm of deep learning and transformer architectures. The goal is to create a model that can not only recognize patterns in language but also generate coherent and contextually appropriate text across a wide range of tasks and domains.</p>
-<p>The training of LLMs can be broadly divided into several key stages, each with its own set of challenges and methodologies:</p>
+<p>The chapter discuss LLM training, which can be broadly divided into two stages, each with its own purpose and methodologies:</p>
 <ol class="arabic simple">
-<li><p><strong>Pretraining</strong>: This initial phase involves exposing the model to a diverse and extensive corpus of text data. The model learns to predict words or tokens based on context, developing a broad understanding of language structure and semantics. We’ll discuss the basics of pretraining and explore the concept of continuing pretraining, which allows models to adapt to new domains or languages.</p></li>
-<li><p><strong>Optimization</strong>: Throughout the training process, various optimization algorithms are employed to adjust the model’s parameters efficiently. We’ll examine popular techniques such as stochastic gradient descent (SGD), Adam, and their variants, discussing how they contribute to the model’s learning process.</p></li>
-<li><p><strong>Post-training</strong>: After the initial pretraining, models often undergo additional training phases to enhance their performance on specific tasks or to align them with desired behaviors. This includes:</p>
+<li><p><strong>Pretraining</strong>: This initial phase involves using self-supervised learning (e.g., autoregressive learning objective) let the model to learn language structures of a diverse and extensive corpus of text data. The model learns to predict words or tokens based on context, developing a broad understanding of language structure and semantics. We’ll discuss the basics of pretraining and explore the concept of continuing pretraining, which allows models to adapt to new domains or languages.</p></li>
+<li><p><strong>Post-training</strong>: After the initial pretraining, models often undergo additional training phases to enhance their performance on specific tasks or to better follow instructions. This includes:</p>
 <ul class="simple">
-<li><p><strong>Finetuning</strong>: Adapting the pretrained model to specific tasks or domains.</p></li>
-<li><p><strong>Instruction Finetuning</strong>: Teaching the model to follow explicit instructions or prompts.</p></li>
-<li><p><strong>Alignment and Preference Learning</strong>: Ensuring the model’s outputs align with human values and preferences.</p></li>
-<li><p><strong>Supervised Fine-Tuning (SFT) vs. Reinforcement Learning from Human Feedback (RLHF)</strong>: Comparing different approaches to refining model behavior based on human input.</p></li>
+<li><p><strong>Finetuning</strong>: Adapting the pretrained model to specific tasks or domains. Particularly, <strong>instruction finetuning</strong> involves teaching the model to follow explicit instructions or prompts by training on large-scale and diverse (instruction, response) pair data. We cover this in <a class="reference internal" href="finetuning.html#chapter-training-sec-llm-finetuning"><span class="std std-ref">LLM Finetuning</span></a>.</p></li>
+<li><p><strong>Alignment and Preference Learning</strong>: Ensuring the model’s outputs align with human values and preferences.
+we cover this direction in <a class="reference internal" href="alignment.html#chapter-training-sec-llm-alignment"><span class="std std-ref">LLM Alignement and Preference learning</span></a>.</p></li>
 </ul>
 </li>
 </ol>
-<p>Throughout this chapter, we will delve into each of these aspects, providing insights into the methodologies, challenges, and current best practices in LLM training. We’ll explore how these techniques contribute to creating models that can understand context, generate human-like text, and perform a wide array of language-related tasks with increasing accuracy and reliability.</p>
-<p>By understanding these fundamental concepts, researchers and practitioners can gain a comprehensive view of the LLM training process, enabling them to develop more efficient, effective, and ethically aligned language models for various applications in AI and natural language processing.</p>
+<p>Finally, we cover fundamentals in  <strong>LLM optimization algorithms</strong>. Throughout the LLM training process, various optimization algorithms are employed to adjust the model’s parameters efficiently. We’ll examine popular techniques such as stochastic gradient descent (SGD), Adam, and their variants, discussing how they contribute to the model’s learning process.</p>
+</section>
+<section id="pretraining">
+<h2><span class="section-number">11.2. </span>Pretraining<a class="headerlink" href="#pretraining" title="Link to this heading">#</a></h2>
+<section id="fundamentals">
+<h3><span class="section-number">11.2.1. </span>Fundamentals<a class="headerlink" href="#fundamentals" title="Link to this heading">#</a></h3>
+<p>Pretraining has become a cornerstone in the development of LLM, which contributes to</p>
+<ul class="simple">
+<li><p>the general langugae understand and generation ability</p></li>
+<li><p>acquire world knowledge</p></li>
+<li><p>other emergent abilities like reasoning</p></li>
+</ul>
+<p>The dominant LLM pretraining objective is auto-regressive language modeling, which predict the next words given preceding word sequence. Given an input sequence <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1,...,x_T)\)</span>, auto-regressive language modeling minimize the negative log likelihood given by</p>
+<div class="math notranslate nohighlight">
+\[L = - \sum_{t=1}^{T} \log p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1},\theta\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1}\right)\)</span> is the predicted probability distribution for token <span class="math notranslate nohighlight">\(x_t\)</span> given preceding token sequence <span class="math notranslate nohighlight">\(\mathbf{x}_{t-k-1:t-1}\)</span> with a context window size <span class="math notranslate nohighlight">\(k\)</span> (<span class="math notranslate nohighlight">\(k\)</span> can range from hundreds to tens of thousands, depending on the model configuration).</p>
+<p>There are scaling laws <span id="id1">[<a class="reference internal" href="#id403" title="Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei. Scaling laws for neural language models. ArXiv:2001.08361, 2020.">KMH+20</a>]</span> discovered on LLM pretraining, which establishes mathematical relationships model performance given model size, dataset size, and the amount of compute. The availability of scaling laws has several benefits:</p>
+<ul class="simple">
+<li><p>It provides to benchmark to enable LLM pretraining to be done in a predictable way.</p></li>
+<li><p>It help design better training strategy by optimizing the model size and data size under compute constraint.</p></li>
+</ul>
+</section>
+<section id="data-sources-and-cleaning">
+<h3><span class="section-number">11.2.2. </span>Data sources and cleaning<a class="headerlink" href="#data-sources-and-cleaning" title="Link to this heading">#</a></h3>
+<p>The quality and diversity of training data significantly impact the performance of pretrained models. Common sources include:</p>
+<ol class="arabic simple">
+<li><p>Web Crawls: Web are avilable in large scale and serve as the primary data source to provide diverse, multilingual data, but web data usually require extensive filtering and cleaning. Example data source include CommonCrawl, C4 (The Colossal Clean Crawled Corpus), RedPajama-Data, RefinedWeb, WebText, etc.</p></li>
+<li><p>Books and Literature: Projects like BookCorpus, the Gutenberg Project, arXiv offer high-quality, long-form text.This is an important source for LLM to learn world knowledge and liguistic information.</p></li>
+<li><p>Wikipedia: A reliable source of factual information across many languages and domains.</p></li>
+<li><p>Social Media and Forums: Platforms like Reddit or X (twitter) provide more informal, conversational language.</p></li>
+<li><p>Code: Github code (as used in Codex <span id="id2">[]</span>) and code-related question-answering
+platforms (e.g., StackOverflow).</p></li>
+<li><p>Domain specific Corpora: Domain-specific datasets (e.g., scientific papers, legal documents) for targeted pretraining.</p></li>
+</ol>
+<p>The following <a class="reference internal" href="#chapter-training-fig-fundamentals-pretrain-data-distribution"><span class="std std-numref">Fig. 11.1</span></a> summarize the data source and ratio for existing LLM pretraining.</p>
+<figure class="align-default" id="chapter-training-fig-fundamentals-pretrain-data-distribution">
+<a class="reference internal image-reference" href="../../_images/training_data_distribution_summary.png"><img alt="../../_images/training_data_distribution_summary.png" src="../../_images/training_data_distribution_summary.png" style="width: 850.5px; height: 320.5px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 11.1 </span><span class="caption-text">Pretrain data source distribution for existing LLMs. Image from <span id="id3">[<a class="reference internal" href="#id1500" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-pretrain-data-distribution" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>While the scale is one factor impacting resulting model performance (i.e., the scaling law), the quality of data and the ratio of different data types play an equally important role. As dominant pretraining data is from the web, data clearning and quality control is a crucial step for sucessful LLM pretraining [<a class="reference internal" href="#chapter-training-fig-fundamentals-pretrain-data-distribution"><span class="std std-numref">Fig. 11.1</span></a>].
+The following <a class="reference internal" href="#chapter-training-fig-fundamentals-pretrain-data-clean-pipeline"><span class="std std-numref">Fig. 11.2</span></a> summarize the key steps on cleaning training data..</p>
+<figure class="align-default" id="chapter-training-fig-fundamentals-pretrain-data-clean-pipeline">
+<a class="reference internal image-reference" href="../../_images/pretraining_data_cleaning_pipeline.png"><img alt="../../_images/pretraining_data_cleaning_pipeline.png" src="../../_images/pretraining_data_cleaning_pipeline.png" style="width: 866.4px; height: 187.2px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 11.2 </span><span class="caption-text">Illustration of data cleaning pipeline for curating LLM pretraining data. Image from <span id="id4">[<a class="reference internal" href="#id1500" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-pretrain-data-clean-pipeline" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Onogoing challenges for constructing LLM pretraining data include:</p>
+<ul class="simple">
+<li><p>Data quality and bias: Ensuring data quality and mitigating biases present in web-scraped data is an ongoing challenge.</p></li>
+<li><p>Multilingual representation: Balancing representation across languages, especially for low-resource languages, remains difficult.</p></li>
+</ul>
+</section>
+<section id="data-mixture-and-schedule">
+<h3><span class="section-number">11.2.3. </span>Data mixture and schedule<a class="headerlink" href="#data-mixture-and-schedule" title="Link to this heading">#</a></h3>
+<p>With cleaned data from different data sources, it is essential to design data feeding strategies to pretrain LLM with target capabilities. Two important aspects of data feeding strategy are</p>
+<ul class="simple">
+<li><p>the portition of different data sources</p></li>
+<li><p>the order of each data source used in pretraining</p></li>
+</ul>
+</section>
+<section id="continued-pretraining">
+<h3><span class="section-number">11.2.4. </span>Continued Pretraining<a class="headerlink" href="#continued-pretraining" title="Link to this heading">#</a></h3>
+<p>Continued pretraining of LLM involves updating pre-trained models with new data (usually in large scale) instead of re-training them from scratch.
+addresses a fundamental challenge in the application of large language models (LLMs): the mismatch between the general knowledge acquired during initial pretraining and the specific knowledge required for domain-specific tasks.
+While pretrained LLMs demonstrate impressive general language understanding, they may lack the nuanced knowledge and vocabulary necessary for specialized domains such as medicine, law, or specific scientific fields. Continued pretraining aims to bridge this gap by further training the model on domain-specific corpora, allowing it to adapt its learned representations and knowledge to better suit the target domain or task.
+It improve LLM’s performance in the target domain by enhance language understanding and acquiring domain knowledge in the target domain.</p>
+<p>There are also cost associated with continued pretraining, including</p>
+<ul class="simple">
+<li><p><strong>Catastrophic forgetting</strong>: The model may degrade its general language understanding when it is heavily continued pretrained on the domain data.</p></li>
+<li><p><strong>Computational cost</strong>: Although more efficient than full pretraining, continued pretraining can still be computationally expensive for very large models.</p></li>
+<li><p><strong>Data requirements</strong>: High-quality, domain-specific data is crucial for effective continued pretraining.</p></li>
+</ul>
+<p>One example of continued pretraining is the <strong>Linly-Chinese-LLaMA-2</strong> project (<a class="github reference external" href="https://github.com/CVI-SZU/Linly">CVI-SZU/Linly</a>). The motivation behind this project is to improve the cross-lingual capability, particularly in Chinese, of many open Large Language Models (LLMs) such as Llama and Falcon. These models were initially pretrained on text data that is predominantly in English.</p>
+<p>Key technical details on the continued pretraining:</p>
+<p><strong>Training data composition</strong>: The continued pretraining used hundreds of millions of high-quality public Chinese text data, including news, community Q&amp;A, encyclopedias, literature, and scientific publications. Besides, the project incorporated 1) a large amount of Chinese-English parallel corpora in the early stages of training to help the model quickly transfer English language capabilities to Chinese and 2) English text corpus like SlimPajama and RefinedWeb to prevent the model from forgetting previously acquired knowledge.</p>
+<p><strong>Training data schedual</strong>: A curriculum learning strategy was employed. In the early stages of training, more English language materials and parallel corpora were used. As the number of training steps increased, the proportion of Chinese data was gradually increased. This helps the convergence of the model training.</p>
+<!-- ## Comparison
+
+| Approach | Training set | Training set size | Implementation <br> Complexity | Total training cost (inc. experimentation) |
+| :---: | :---: | :---: | :---: | :---: |
+| Prompt engineering | Not needed | 0 | Low | 0 (no training) |
+| RAG | Not needed | 0 | Low - Medium | 0 (no training) |
+| Supervised-Fine-tuning | labelled | Can be as little as few hundreds examples (e.g. with PEFT approaches) but can increase to several thousands depending on number of tasks | Medium - High <br> depending on use case | $ $100-5 \mathrm{~K}$ |
+| Continuous pre-training | unstructured | Can vary - from 10 K <br> tokens to Bitlions | Medium on Bedrock and Jumpstart, Higher with SageMaker Training | $-\$ 2500$ for scanning 18 <br> tokens for a 7B model |
+| Full Pretraining | unstructured | 100s of billion/trillion tokens (e.g. 700 billion tokens for BloombergGPT for 50B model) | Very High | $$500K | -->
+</section>
 </section>
 <section id="optimization-algorithms">
-<h2><span class="section-number">11.2. </span>Optimization Algorithms<a class="headerlink" href="#optimization-algorithms" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">11.3. </span>Optimization Algorithms<a class="headerlink" href="#optimization-algorithms" title="Link to this heading">#</a></h2>
 <section id="minibatch-stochastic-gradient-descent">
-<h3><span class="section-number">11.2.1. </span>Minibatch Stochastic Gradient Descent<a class="headerlink" href="#minibatch-stochastic-gradient-descent" title="Link to this heading">#</a></h3>
-<p>Batch gradient descent is usually not ideal for neural network application that involves large-size training data, such as image recognization and natural language processing. Evaluating the gradient over the whole set of training data is computational prohibitive; moreover, many samples are similar, making the gradient of the whole data sample is simply the multiplier of the gradient of a much smaller, representative sample data set.</p>
-<p>Minibatch stochastic gradient descent uses a random sample of the training data set to estimate the gradient on each step. A typical algorithm is showed as follows.</p>
+<h3><span class="section-number">11.3.1. </span>Minibatch Stochastic Gradient Descent<a class="headerlink" href="#minibatch-stochastic-gradient-descent" title="Link to this heading">#</a></h3>
+<p>The classical gradient descent algorithm requires the evaluation of the gradient over the whole set of training data. This is both computational prohibitive and sample inefficient - many samples are similar, making the gradient of the whole data sample is simply the multiplier of the gradient of a much smaller, representative sample data set.
+<strong>Minibatch stochastic gradient descent</strong> is much efficient way of gradient descent, which uses a random sample of the training data set to estimate the gradient on each step.</p>
+<p>A typical algorithm is showed as follows.</p>
 <div class="proof algorithm admonition" id="Minibatch_stochastic_gradient_descent_algorithm">
 <p class="admonition-title"><span class="caption-number">Algorithm 11.1 </span> (Minibatch stochastic gradient descent algorithm)</p>
 <section class="algorithm-content" id="proof-content">
@@ -407,16 +491,16 @@ document.write(`
 <section class="remark-content" id="proof-content">
 <ul class="simple">
 <li><p>The estimation quality of gradient via minibatch gradient descent is strongly affected by the minibatch size. In general, the gradient estimate is unbiased, irrespective of the choice of minibatch size, but its variance will decrease as the minibatch increases.</p></li>
-<li><p>For larger minibatch size, we can increase learning rate since the estimated gradient is more certain. There is an empirical <em><strong>Linear Scaling Rule</strong></em>: When the minibatch size is multiplied by <span class="math notranslate nohighlight">\(k\)</span>, multiply the learning rate by <span class="math notranslate nohighlight">\(k\)</span> <span id="id1">[<a class="reference internal" href="#id1088" title="Priya Goyal, Piotr Dollár, Ross Girshick, Pieter Noordhuis, Lukasz Wesolowski, Aapo Kyrola, Andrew Tulloch, Yangqing Jia, and Kaiming He. Accurate, large minibatch sgd: training imagenet in 1 hour. arXiv preprint arXiv:1706.02677, 2017.">GDollarG+17</a>]</span>.</p></li>
+<li><p>For larger minibatch size, we can increase learning rate since the estimated gradient is more certain. There is an empirical <em><strong>Linear Scaling Rule</strong></em>: When the minibatch size is multiplied by <span class="math notranslate nohighlight">\(k\)</span>, multiply the learning rate by <span class="math notranslate nohighlight">\(k\)</span> <span id="id5">[<a class="reference internal" href="#id1092" title="Priya Goyal, Piotr Dollár, Ross Girshick, Pieter Noordhuis, Lukasz Wesolowski, Aapo Kyrola, Andrew Tulloch, Yangqing Jia, and Kaiming He. Accurate, large minibatch sgd: training imagenet in 1 hour. arXiv preprint arXiv:1706.02677, 2017.">GDollarG+17</a>]</span>.</p></li>
 </ul>
 </section>
 </div></section>
 <section id="adaptive-gradient-method">
-<h3><span class="section-number">11.2.2. </span>Adaptive Gradient Method<a class="headerlink" href="#adaptive-gradient-method" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">11.3.2. </span>Adaptive Gradient Method<a class="headerlink" href="#adaptive-gradient-method" title="Link to this heading">#</a></h3>
 <section id="adaptive-gradient-adagrad">
-<h4><span class="section-number">11.2.2.1. </span>Adaptive Gradient (AdaGrad)<a class="headerlink" href="#adaptive-gradient-adagrad" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">11.3.2.1. </span>Adaptive Gradient (AdaGrad)<a class="headerlink" href="#adaptive-gradient-adagrad" title="Link to this heading">#</a></h4>
 <p>For simple stochastic gradient methods, we need to set the learning rate hyperparameter or even dynamically schedule learning rate, which is usually a difficult task or problem specific. Further, a uniform learning rate is usually not an effective way for high-dimensional gradient descent methods, since one learning rate could be too large for one-dimension but, on the contrary, too small for another dimension.</p>
-<p>The AdaGrad algorithm<span id="id2">[<a class="reference internal" href="#id1087" title="John Duchi, Elad Hazan, and Yoram Singer. Adaptive subgradient methods for online learning and stochastic optimization. Journal of Machine Learning Research, 12(Jul):2121–2159, 2011.">DHS11</a>]</span> addresses the issue by choosing different learning rates for each dimension. The algorithm adaptively scales the learning rate for each dimension based on the <strong>accumulated gradient magnitude</strong> on that dimension so far.</p>
+<p>The AdaGrad algorithm<span id="id6">[<a class="reference internal" href="#id1091" title="John Duchi, Elad Hazan, and Yoram Singer. Adaptive subgradient methods for online learning and stochastic optimization. Journal of Machine Learning Research, 12(Jul):2121–2159, 2011.">DHS11</a>]</span> addresses the issue by choosing different learning rates for each dimension. The algorithm adaptively scales the learning rate for each dimension based on the <strong>accumulated gradient magnitude</strong> on that dimension so far.</p>
 <p>Let <span class="math notranslate nohighlight">\(G_k\)</span> be the <strong>accumulated gradient</strong> up to iteration <span class="math notranslate nohighlight">\(k\)</span>, given by</p>
 <div class="math notranslate nohighlight">
 \[G_k = G_{k-1} + \hat{g}_k\odot \hat{g}_k, G_0 = 0.\]</div>
@@ -427,7 +511,7 @@ document.write(`
 <p>As we can see, the learning rate in AdaGrad is monotonically decreasing, which may dramatically slow down the convergence as the learning rate becomes too small. In general, AdaGrad algorithm performs best for <strong>convex optimization</strong> (however, neural network optimization is usually non-convex).</p>
 </section>
 <section id="rmsprop">
-<h4><span class="section-number">11.2.2.2. </span>RMSProp<a class="headerlink" href="#rmsprop" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">11.3.2.2. </span>RMSProp<a class="headerlink" href="#rmsprop" title="Link to this heading">#</a></h4>
 <p>As we mentioned before, AdaGrad tend to shrink learning rate too aggressively. This is an advantage when applying AdaGrad to convex function optimization as it enables the algorithm to converge fast and stably. However, non-convex function optimization usually require large, adaptive learning rate to escape bad local minimum and converge stably to better local minimums.</p>
 <p>The first remedy is to prevent the learning rate from shrinking too fast. Let <span class="math notranslate nohighlight">\(G_k\)</span> be the accumulated gradient up to iteration <span class="math notranslate nohighlight">\(k\)</span>, given by</p>
 <div class="math notranslate nohighlight">
@@ -435,7 +519,7 @@ document.write(`
 <p>Then we compute update</p>
 <div class="math notranslate nohighlight">
 \[\theta_k= \theta_{k-1} - \frac{\alpha_0}{\delta + \sqrt{G_k}} \hat{g}_k.\]</div>
-<p>which is the core part of the RMSProp algorithm <span id="id3">[<a class="reference internal" href="#id1086" title="Geoffrey Hinton. Neural Networks for Machine Learning. University of Toronto, 2012.">Hin12</a>]</span>.</p>
+<p>which is the core part of the RMSProp algorithm <span id="id7">[<a class="reference internal" href="#id1090" title="Geoffrey Hinton. Neural Networks for Machine Learning. University of Toronto, 2012.">Hin12</a>]</span>.</p>
 <p>How this modification can make the <span class="math notranslate nohighlight">\(G_k\)</span> smaller than that in the AdaGrad, as can be seen from following expansion.</p>
 <div class="proof remark admonition" id="remark-2">
 <p class="admonition-title"><span class="caption-number">Remark 11.2 </span> (Expansion of <span class="math notranslate nohighlight">\(G_k\)</span>)</p>
@@ -458,13 +542,13 @@ roughly,</p>
 </div></section>
 </section>
 <section id="momentum-method">
-<h3><span class="section-number">11.2.3. </span>Momentum Method<a class="headerlink" href="#momentum-method" title="Link to this heading">#</a></h3>
-<p>Simple SGD with small learning rate can lead to extremely slow learning for functional surfaces with long, narrow valleys <span id="id4">[<a class="reference internal" href="#id1084" title="Ilya Sutskever, James Martens, George Dahl, and Geoffrey Hinton. On the importance of initialization and momentum in deep learning. In International conference on machine learning, 1139–1147. 2013.">SMDH13</a>]</span>. One intuition inspired by the physics of a heavy ball falling down is to add momentum to the gradient descent steps. Mathematically, adding momentum is equivalent to adding historical weighted averaged gradient to the current gradient. The total gradient will then be hopefully large enough to enable fast movement on relatively flat regions.</p>
+<h3><span class="section-number">11.3.3. </span>Momentum Method<a class="headerlink" href="#momentum-method" title="Link to this heading">#</a></h3>
+<p>Simple SGD with small learning rate can lead to extremely slow learning for functional surfaces with long, narrow valleys <span id="id8">[<a class="reference internal" href="#id1088" title="Ilya Sutskever, James Martens, George Dahl, and Geoffrey Hinton. On the importance of initialization and momentum in deep learning. In International conference on machine learning, 1139–1147. 2013.">SMDH13</a>]</span>. One intuition inspired by the physics of a heavy ball falling down is to add momentum to the gradient descent steps. Mathematically, adding momentum is equivalent to adding historical weighted averaged gradient to the current gradient. The total gradient will then be hopefully large enough to enable fast movement on relatively flat regions.</p>
 <figure class="align-default" id="chapter-training-fig-optimizer-sgd-momentum">
 <a class="reference internal image-reference" href="../../_images/SGDMomentum.jpg"><img alt="../../_images/SGDMomentum.jpg" src="../../_images/SGDMomentum.jpg" style="width: 927.5999999999999px; height: 210.29999999999998px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 11.1 </span><span class="caption-text">SGD without momentum and with momentum. SGD with momentum can accumulate gradient/velocity in horizontal direction and move faster towards the minimum located at the center.</span><a class="headerlink" href="#chapter-training-fig-optimizer-sgd-momentum" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 11.3 </span><span class="caption-text">SGD without momentum and with momentum. SGD with momentum can accumulate gradient/velocity in horizontal direction and move faster towards the minimum located at the center.</span><a class="headerlink" href="#chapter-training-fig-optimizer-sgd-momentum" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Consider the gradient</p>
@@ -490,10 +574,10 @@ v_k &amp;= \alpha v_{k-1} - \hat{g}_k\\
 \end{split}\]</div>
 </section>
 <section id="combined-together-adam-and-adamw">
-<h3><span class="section-number">11.2.4. </span>Combined Together: Adam and AdamW<a class="headerlink" href="#combined-together-adam-and-adamw" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">11.3.4. </span>Combined Together: Adam and AdamW<a class="headerlink" href="#combined-together-adam-and-adamw" title="Link to this heading">#</a></h3>
 <section id="adam">
-<h4><span class="section-number">11.2.4.1. </span>Adam<a class="headerlink" href="#adam" title="Link to this heading">#</a></h4>
-<p>By combining the ideas of momentum and adaptive learning rate, we yield Adam, one of most popular gradient descent algorithm in deep learning community<span id="id5">[<a class="reference internal" href="#id1083" title="Diederik P Kingma and Jimmy Ba. Adam: a method for stochastic optimization. arXiv preprint arXiv:1412.6980, 2014.">KB14</a>]</span>. The name Adam is derived from adaptive moment estimation. As its name suggests, Adam will compute velocity via momentum type of averaging and adjust the learning rate using inverse of accumulated gradients.</p>
+<h4><span class="section-number">11.3.4.1. </span>Adam<a class="headerlink" href="#adam" title="Link to this heading">#</a></h4>
+<p>By combining the ideas of momentum and adaptive learning rate, we yield Adam, one of most popular gradient descent algorithm in deep learning community<span id="id9">[<a class="reference internal" href="#id1087" title="Diederik P Kingma and Jimmy Ba. Adam: a method for stochastic optimization. arXiv preprint arXiv:1412.6980, 2014.">KB14</a>]</span>. The name Adam is derived from adaptive moment estimation. As its name suggests, Adam will compute velocity via momentum type of averaging and adjust the learning rate using inverse of accumulated gradients.</p>
 <p>Specifically, the velocity is computed via</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -540,12 +624,12 @@ G_k &amp;= \rho_2 G_{k-1} + (1-\rho_2)\hat{g}_k \odot \hat{g}_k \\
 </section>
 </div></section>
 <section id="l-2-weight-decay-and-adamw">
-<h4><span class="section-number">11.2.4.2. </span><span class="math notranslate nohighlight">\(L_2\)</span> Weight Decay and AdamW<a class="headerlink" href="#l-2-weight-decay-and-adamw" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">11.3.4.2. </span><span class="math notranslate nohighlight">\(L_2\)</span> Weight Decay and AdamW<a class="headerlink" href="#l-2-weight-decay-and-adamw" title="Link to this heading">#</a></h4>
 <p><span class="math notranslate nohighlight">\(L_2\)</span> regularization on model parameters often reduce model overfitting and improves the generalization ability of the model. In the SGD optimization framework, the implementation of <span class="math notranslate nohighlight">\(L_2\)</span> regularization term is often realized via <strong>weight decay</strong>, resulting in an additional term in the gradient that penalize large weights. That is,</p>
 <div class="math notranslate nohighlight">
 \[{g}_{k} \leftarrow \nabla f_{k}\left({\theta}_{k-1}\right)+\lambda {\theta}_{k-1},\]</div>
 <p>where <span class="math notranslate nohighlight">\(\lambda\)</span> is the decay parameter, corresponding the strength of the regularization.</p>
-<p>AdamW <span id="id6">[<a class="reference internal" href="#id1330" title="Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. arXiv preprint arXiv:1711.05101, 2017.">LH17</a>]</span> is the algorithm that correctly implements Adam with <span class="math notranslate nohighlight">\(L_2\)</span> regularization, which is also called Adam with decoupled weight decay.</p>
+<p>AdamW <span id="id10">[<a class="reference internal" href="#id1334" title="Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. arXiv preprint arXiv:1711.05101, 2017.">LH17</a>]</span> is the algorithm that correctly implements Adam with <span class="math notranslate nohighlight">\(L_2\)</span> regularization, which is also called Adam with decoupled weight decay.</p>
 <p>The algorithm is given by the following.</p>
 <div class="proof algorithm admonition" id="Adam_stochastic_gradient_descent_algorithm_with_weight_decay">
 <p class="admonition-title"><span class="caption-number">Algorithm 11.3 </span> (Adam stochastic gradient descent algorithm with weight decay)</p>
@@ -579,139 +663,42 @@ G_k &amp;= \rho_2 G_{k-1} + (1-\rho_2)\hat{g}_k \odot \hat{g}_k \\
 </div></section>
 </section>
 </section>
-<section id="pretraining">
-<h2><span class="section-number">11.3. </span>Pretraining<a class="headerlink" href="#pretraining" title="Link to this heading">#</a></h2>
-<section id="fundamentals">
-<h3><span class="section-number">11.3.1. </span>Fundamentals<a class="headerlink" href="#fundamentals" title="Link to this heading">#</a></h3>
-<p>Pretraining has become a cornerstone in the development of large language models (LLMs), driven by the goal of creating AI systems with broad, generalizable language understanding and generation capabilities. By leveraging vast amounts of unlabeled text data, pretraining enables models to learn rich, contextual representations of language before fine-tuning on specific tasks. This approach addresses several key challenges in natural language processing: it improves data efficiency by reducing the need for task-specific annotations, enables transfer learning across different linguistic tasks and domains, automates feature learning, provides a framework to effectively utilize growing text datasets, and serves as a strong foundation for advanced NLP tasks. These advantages have made pretraining an indispensable stage in developing state-of-the-art language models, significantly advancing AI’s ability to understand and generate human-like text.</p>
-<p>LLM Pretraining objective is Causal Language Modeling (CLM):
-Used in GPT-style models, CLM predicts the next token given the previous tokens.
-For a sequence X = [x₁, x₂, …, xₙ], the objective is:
-CopyL_CLM = -Σ(log P(xᵢ | x₁, …, xᵢ₋₁))  for i = 1 to n
-Where P(xᵢ | x₁, …, xᵢ₋₁) is the probability of token xᵢ given all previous tokens.</p>
-</section>
-<section id="data-sources">
-<h3><span class="section-number">11.3.2. </span>Data sources<a class="headerlink" href="#data-sources" title="Link to this heading">#</a></h3>
-<p>\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\linewidth]{../figures/deepLearning/ApplicationsNLP_LLM/efficient_training/training_data/training_data_distribution_summary}
-\caption{Ratios of various data sources in the pre-training data for existing LLMs. Image from \cite{zhao2023survey}.}
-\label{fig:trainingdatadistributionsummary}
-\end{figure}</p>
-<p>The quality and diversity of training data significantly impact the performance of pretrained models. Common sources include:</p>
-<ol class="arabic simple">
-<li><p>Web Crawls: Large-scale web crawls like Common Crawl provide diverse, multilingual data but require extensive filtering and cleaning.</p></li>
-<li><p>Books and Literature: Projects like Google Books or the Gutenberg Project offer high-quality, long-form text.</p></li>
-<li><p>Wikipedia: A reliable source of factual information across many languages and domains.</p></li>
-<li><p>Social Media and Forums: Platforms like Reddit or Twitter provide more informal, conversational language.</p></li>
-<li><p>Specialized Corpora: Domain-specific datasets (e.g., scientific papers, legal documents) for targeted pretraining.</p></li>
-</ol>
-<p>Challenges</p>
-<p>Data Quality and Bias: Ensuring data quality and mitigating biases present in web-scraped data is an ongoing challenge.
-Multilingual Representation: Balancing representation across languages, especially for low-resource languages, remains difficult.</p>
-</section>
-<section id="continued-pretraining">
-<h3><span class="section-number">11.3.3. </span>Continued Pretraining<a class="headerlink" href="#continued-pretraining" title="Link to this heading">#</a></h3>
-<p>Continual pretraining of large language models (LLMs) involves updating pre-trained models with new data instead of re-training them from scratch1. It allows LLMs to specialize better in the current domain and enhances knowledge transfer across diverse domains</p>
-<p>Continued pretraining, also known as domain-adaptive pretraining or post-pretraining, addresses a fundamental challenge in the application of large language models (LLMs): the mismatch between the general knowledge acquired during initial pretraining and the specific knowledge required for domain-specific tasks. While pretrained LLMs demonstrate impressive general language understanding, they may lack the nuanced knowledge and vocabulary necessary for specialized domains such as medicine, law, or specific scientific fields. Continued pretraining aims to bridge this gap by further training the model on domain-specific corpora, allowing it to adapt its learned representations and knowledge to better suit the target domain or task.</p>
-<p>While continued pretraining offers significant benefits, it also presents challenges:</p>
-<p>Catastrophic Forgetting: The model may lose its general language understanding if not carefully balanced with domain-specific learning.
-Data Requirements: High-quality, domain-specific data is crucial for effective continued pretraining.
-Computational Cost: Although more efficient than full pretraining, continued pretraining can still be computationally expensive for very large models.</p>
-</section>
-</section>
-<section id="post-training">
-<h2><span class="section-number">11.4. </span>Post-training<a class="headerlink" href="#post-training" title="Link to this heading">#</a></h2>
-</section>
-<section id="sft-vs-rlhf">
-<h2><span class="section-number">11.5. </span>SFT Vs RLHF<a class="headerlink" href="#sft-vs-rlhf" title="Link to this heading">#</a></h2>
-<p>SFT adopts a teacher-forcing approach, which directly optimizes the likelihood of a demonstration output. Such a token-level training way essentially does behavior cloning as the supervision label and directly learns to imitate the demonstrations from experts without specifying a reward model as in typical RL algorithms.</p>
-<p>RLHF firstly learns the reward model, and then employs it to improve the LLM with RL training (e.g., PPO).</p>
-<p>preference annotation is much easier than writing the demonstration data, and annotators can even judge the quality of
-more superior generations than those they create, making it
-possible to explore a broader state space beyond what can
-be demonstrated by human annotators</p>
-<p>Another key point is that RLHF essentially encourages LLMs to learn correct policies by contrasting the self-generated responses (discriminating between good and bad responses). It no longer forces the model to imitate external demonstration data, and thus can mitigate the hallucination issues with SFT as discussed above</p>
-<p>RLHF inherits the drawbacks of classic RL algorithms, e.g., sample inefficiency and
-training instability. When adapted to LLMs, RLHF further
-relies on a strong SFT model as initial model checkpoint for
-efficiently achieving good performance</p>
-<p>Overall, SFT is particularly useful to increase the model capacity of pre-trained model checkpoints right after pretraining, while RLHF is promising to further improve the
-model capacity of SFT models.</p>
-</section>
-<section id="comparison">
-<h2><span class="section-number">11.6. </span>Comparison<a class="headerlink" href="#comparison" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head text-center"><p>Approach</p></th>
-<th class="head text-center"><p>Training set</p></th>
-<th class="head text-center"><p>Training set size</p></th>
-<th class="head text-center"><p>Implementation <br> Complexity</p></th>
-<th class="head text-center"><p>Total training cost (inc. experimentation)</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="text-center"><p>Prompt engineering</p></td>
-<td class="text-center"><p>Not needed</p></td>
-<td class="text-center"><p>0</p></td>
-<td class="text-center"><p>Low</p></td>
-<td class="text-center"><p>0 (no training)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p>RAG</p></td>
-<td class="text-center"><p>Not needed</p></td>
-<td class="text-center"><p>0</p></td>
-<td class="text-center"><p>Low - Medium</p></td>
-<td class="text-center"><p>0 (no training)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p>Supervised-Fine-tuning</p></td>
-<td class="text-center"><p>labelled</p></td>
-<td class="text-center"><p>Can be as little as few hundreds examples (e.g. with PEFT approaches) but can increase to several thousands depending on number of tasks</p></td>
-<td class="text-center"><p>Medium - High <br> depending on use case</p></td>
-<td class="text-center"><p><span class="math notranslate nohighlight">\( \)</span>100-5 \mathrm{~K}$</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p>Continuous pre-training</p></td>
-<td class="text-center"><p>unstructured</p></td>
-<td class="text-center"><p>Can vary - from 10 K <br> tokens to Bitlions</p></td>
-<td class="text-center"><p>Medium on Bedrock and Jumpstart, Higher with SageMaker Training</p></td>
-<td class="text-center"><p><span class="math notranslate nohighlight">\(-\$ 2500\)</span> for scanning 18 <br> tokens for a 7B model</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p>Full Pretraining</p></td>
-<td class="text-center"><p>unstructured</p></td>
-<td class="text-center"><p>100s of billion/trillion tokens (e.g. 700 billion tokens for BloombergGPT for 50B model)</p></td>
-<td class="text-center"><p>Very High</p></td>
-<td class="text-center"><p>$$500K</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
 <section id="bibliography">
-<h2><span class="section-number">11.7. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id7">
+<h2><span class="section-number">11.4. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id11">
 <div role="list" class="citation-list">
-<div class="citation" id="id1087" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">DHS11</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1091" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">DHS11</a><span class="fn-bracket">]</span></span>
 <p>John Duchi, Elad Hazan, and Yoram Singer. Adaptive subgradient methods for online learning and stochastic optimization. <em>Journal of Machine Learning Research</em>, 12(Jul):2121–2159, 2011.</p>
 </div>
-<div class="citation" id="id1088" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">GDollarG+17</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1092" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">GDollarG+17</a><span class="fn-bracket">]</span></span>
 <p>Priya Goyal, Piotr Dollár, Ross Girshick, Pieter Noordhuis, Lukasz Wesolowski, Aapo Kyrola, Andrew Tulloch, Yangqing Jia, and Kaiming He. Accurate, large minibatch sgd: training imagenet in 1 hour. <em>arXiv preprint arXiv:1706.02677</em>, 2017.</p>
 </div>
-<div class="citation" id="id1086" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">Hin12</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1090" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">Hin12</a><span class="fn-bracket">]</span></span>
 <p>Geoffrey Hinton. <em>Neural Networks for Machine Learning</em>. University of Toronto, 2012.</p>
 </div>
-<div class="citation" id="id1083" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">KB14</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id403" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">KMH+20</a><span class="fn-bracket">]</span></span>
+<p>Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei. Scaling laws for neural language models. <em>ArXiv:2001.08361</em>, 2020.</p>
+</div>
+<div class="citation" id="id1087" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">KB14</a><span class="fn-bracket">]</span></span>
 <p>Diederik P Kingma and Jimmy Ba. Adam: a method for stochastic optimization. <em>arXiv preprint arXiv:1412.6980</em>, 2014.</p>
 </div>
-<div class="citation" id="id1330" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">LH17</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1334" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">LH17</a><span class="fn-bracket">]</span></span>
 <p>Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. <em>arXiv preprint arXiv:1711.05101</em>, 2017.</p>
 </div>
-<div class="citation" id="id1084" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">SMDH13</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1088" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">SMDH13</a><span class="fn-bracket">]</span></span>
 <p>Ilya Sutskever, James Martens, George Dahl, and Geoffrey Hinton. On the importance of initialization and momentum in deep learning. In <em>International conference on machine learning</em>, 1139–1147. 2013.</p>
+</div>
+<div class="citation" id="id1500" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>ZZL+23<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id4">2</a>)</span>
+<p>Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. <em>arXiv preprint arXiv:2303.18223</em>, 2023.</p>
 </div>
 </div>
 </div>
@@ -783,31 +770,29 @@ model capacity of SFT models.</p>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-overview">11.1. Training Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-algorithms">11.2. Optimization Algorithms</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minibatch-stochastic-gradient-descent">11.2.1. Minibatch Stochastic Gradient Descent</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-gradient-method">11.2.2. Adaptive Gradient Method</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-gradient-adagrad">11.2.2.1. Adaptive Gradient (AdaGrad)</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rmsprop">11.2.2.2. RMSProp</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">11.2. Pretraining</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fundamentals">11.2.1. Fundamentals</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sources-and-cleaning">11.2.2. Data sources and cleaning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-mixture-and-schedule">11.2.3. Data mixture and schedule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continued-pretraining">11.2.4. Continued Pretraining</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#momentum-method">11.2.3. Momentum Method</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-together-adam-and-adamw">11.2.4. Combined Together: Adam and AdamW</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adam">11.2.4.1. Adam</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#l-2-weight-decay-and-adamw">11.2.4.2. <span class="math notranslate nohighlight">\(L_2\)</span> Weight Decay and AdamW</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-algorithms">11.3. Optimization Algorithms</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minibatch-stochastic-gradient-descent">11.3.1. Minibatch Stochastic Gradient Descent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-gradient-method">11.3.2. Adaptive Gradient Method</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-gradient-adagrad">11.3.2.1. Adaptive Gradient (AdaGrad)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rmsprop">11.3.2.2. RMSProp</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#momentum-method">11.3.3. Momentum Method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-together-adam-and-adamw">11.3.4. Combined Together: Adam and AdamW</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adam">11.3.4.1. Adam</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#l-2-weight-decay-and-adamw">11.3.4.2. <span class="math notranslate nohighlight">\(L_2\)</span> Weight Decay and AdamW</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">11.3. Pretraining</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fundamentals">11.3.1. Fundamentals</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sources">11.3.2. Data sources</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continued-pretraining">11.3.3. Continued Pretraining</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#post-training">11.4. Post-training</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sft-vs-rlhf">11.5. SFT Vs RLHF</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison">11.6. Comparison</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">11.7. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">11.4. Bibliography</a></li>
 </ul>
   </nav></div>
 

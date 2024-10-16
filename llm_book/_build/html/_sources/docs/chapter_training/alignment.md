@@ -1,6 +1,7 @@
+(chapter_training_sec_LLM_alignment)=
 # LLM Alignement and Preference learning
 
-## Motivation
+## Motivation and Overview
 
 The objective function in LLM pretraining is predicting the next token on a webpage from the internet. When the trained model is properly and carefully prompted as demonstration (i.e., in-context learning as in GPT-3), the model can largely accomplish useful tasks by following these demonstrations. However, these model can often generate un-desired outputs, including un-factual content, biased and harmful text, or simply do not follow the instructions in the prompt. 
 
@@ -297,6 +298,31 @@ The gradient is zero when $\hat{p}_\theta\left(y_w \succ y_l\right)=(1-\epsilon)
 ### Additional remark RL vs SFT vs DPO
 
 % https://mp.weixin.qq.com/s/WKuEcsyMFkaKf19o20Ci3g
+
+### SFT Vs RLHF
+
+% from https://arxiv.org/pdf/2303.18223
+
+SFT adopts a teacher-forcing approach, which directly optimizes the likelihood of a demonstration output. Such a token-level training way essentially does behavior cloning as the supervision label and directly learns to imitate the demonstrations from experts without specifying a reward model as in typical RL algorithms. 
+
+RLHF firstly learns the reward model, and then employs it to improve the LLM with RL training (e.g., PPO).
+
+
+ preference annotation is much easier than writing the demonstration data, and annotators can even judge the quality of
+more superior generations than those they create, making it
+possible to explore a broader state space beyond what can
+be demonstrated by human annotators
+
+Another key point is that RLHF essentially encourages LLMs to learn correct policies by contrasting the self-generated responses (discriminating between good and bad responses). It no longer forces the model to imitate external demonstration data, and thus can mitigate the hallucination issues with SFT as discussed above
+
+RLHF inherits the drawbacks of classic RL algorithms, e.g., sample inefficiency and
+training instability. When adapted to LLMs, RLHF further
+relies on a strong SFT model as initial model checkpoint for
+efficiently achieving good performance
+
+Overall, SFT is particularly useful to increase the model capacity of pre-trained model checkpoints right after pretraining, while RLHF is promising to further improve the
+model capacity of SFT models.
+
 
 ## Bibliography
 

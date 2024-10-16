@@ -645,18 +645,20 @@ Let $V$ be the vocabulary size, $d$ be the model hidden dimensions, $L$ be the n
 | Embedding (tied) | - | - | $[{V}, {d}]$ | $V d$ |
 | **Total** |  |  |  | $V d+L\left(12 d^2+13 d\right)$ |
 ```
-The key scaling properties from this table are:
+The **key scaling properties** from this table are:
 * The total number of parameters scales linearly with number of layers $L$
 * The total number of parameters scales quadratically with model hidden dimensionality $d$.
 
 ````{prf:remark}
-We have simplification in the above computation for MHA but the results are the same. Suppose we have $H$ heads, head dimension $d_{head}$ and $H \times d_{head} = d$. QKV transformation matrices have weight parameters $3 \times H \times d \times d_{head} = 3d^2$
+We have simplification in the above computation for MHA but the results are the same. Suppose we have $H$ heads, head dimension $d_{head}$ and $H \times d_{head} = d$. QKV transformation matrices have weight parameters $3 \times H \times d \times d_{head} = 3d^2$. 
+
+With GQA that has $G$ key-value shared heads, the total parameters are $d^2 + 2Gd_{head}d$.
 ````
 
 ````{prf:example}
 Take the following GPT-3 13B and 175B as an example, 175B model has approximate 2.4 times of $L$ and $d_{model}$. Extrapolating from 13B model, we estimate the 175B model to have model parameters of $13\times 2.4^3 = 179B$, which is very close.
 
-| Model Name | $n_{\text{params}}$ | $n_{\text{layers}}$ | $d_{\text{model}}$ | $n_{\text{heads}}$ | $d_{\text{head}}$ |
+| Model Name | $n_{\text{params}}$ | $L$ | $d$ | $H$ | $d_{head}$ |
 |------------|----------|----------|---------|---------|--------|
 | GPT-3 13B | 13.0B | 40 | 5140 | 40 | 128 |
 | GPT-3 175B or "GPT-3" | 175.0B | 96 | 12288 | 96 | 128 |
@@ -681,50 +683,32 @@ $$c_{ij} = \sum_{t=1}^k a_{ik}b_{kj}.$$
 It is clear that for each $c_{ij}$ there are $k$ multiplications and $k$ additions (technically $k-1$ additions among $k$ terms).
 ````
 
-
-
-b: batch_size
-s: seq_len
-d: d_model
-V: vocabulary_size
-L: n_layers
-
-
-以矩阵乘为例, 输入 $[M, K] \times[K, N]=[M, N]$, 计算时间复杂度为 $2 M N K$ 。也就是说输出矩阵 $M N$ 个元素, 每个元素经过一次乘法和一次加法运算。
-
+Let $V$ be the vocabulary size, $b$ be the batch size, $s$ be sequence length, $d$ be the model hidden dimensions, $L$ be the number of layer, we have summarized the computation breakdown in the following.
 
 
 ```{table} Computation breakdown
 | Module | Computation | Matrix Shape Changes | FLOPs |
 | :--- | :--- | :--- | :--- |
 | Attention | ${Q} / {K} / {V}$ Projection | $[{b}, {s}, {d}] \times [{~d}, {~d}]\to[{b}, {s}, {d}]$ | $3\times 2 b s d^2$ |
-|  | $Q K^T$ | $[{~b}, {~s}, {~d}] \times [{~b}, {~d}, {~s}]\to[{b}, {s}, {s}]$ | $2 b s^2 d$ |
-|  | score $ \times V$ | $[{~b}, {~s}, {~s}] \times [{~b}, {~s}, {~d}]\to[{b}, {s}, {d}]$ | $2 b s^2 d$ |
+|  | $Q K^T$ dot product | $[{~b}, {~s}, {~d}] \times [{~b}, {~d}, {~s}]\to[{b}, {s}, {s}]$ | $2 b s^2 d$ |
+|  | Score Matrix $ \dot V$ | $[{~b}, {~s}, {~s}] \times [{~b}, {~s}, {~d}]\to[{b}, {s}, {d}]$ | $2 b s^2 d$ |
 |  | Output (with $W_o$) | $[{b}, {s}, {d}] \times[{~d}, {~d}]\to[{b}, {s}, {d}]$ | $2 b s d^2$ |
-| FFN | $f_1$ | $[{~b}, {~s}, {~d}] \times[{~d}, 4 {~d}] \to [{b}, {s}, 4 {~d}]$ | $8 b s d^2$ |
-|  | $f_2$ | $[{~b}, {~s}, 4 {~d}] \times[4 {~d}, {~d}]\to[{b}, {s}, {d}]$ | $8 b s d^2$ |
+| FFN | First layer up-projection | $[{~b}, {~s}, {~d}] \times[{~d}, 4 {~d}] \to [{b}, {s}, 4 {~d}]$ | $8 b s d^2$ |
+|  | Second layer down-projection | $[{~b}, {~s}, 4 {~d}] \times[4 {~d}, {~d}]\to[{b}, {s}, {d}]$ | $8 b s d^2$ |
 | Embedding |  | $[{b}, {s}, 1] \times[{~V}, {~d}]\to[{b}, {s}, {d}]$ | $2 b s d V$ |
 | In total |  |  | $\left(24 b s d^2+4 b d s^2\right) \times L+2 b s d V$ |
 ```
 
-Some examples and trends
-
-Qwen2 0.5B
-
-
-Llama 7B
-
-
-Llama 405B
-
-
+The **key scaling properties** from this table are:
+* The total compute scales linearly with number of layers $L$, and number of batch size $b$
+* The total compute scales quadratically with model hidden dimensionality $d$ and $s$.
 
 
 
 ## Dense Architecture Examples 
 
 
-
+<!-- 
 ```{table} Model cards of several selected LLMs with public configuration details. Here, PE denotes position embedding, #L denotes the number of layers, #H denotes the number of attention heads, dmodel denotes the size of hidden states, and MCL denotes the maximum context length during training.
 | Model | Size | Normalization | PE | Activation | Bias | #L | #H | $d_{\text {model }}$ | MCL |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -733,7 +717,7 @@ Llama 405B
 | Qwen 2 {cite:p}`yang2024qwen2technicalreport`| 72B | Pre RMSNorm | RoPe | SwiGLU | $\checkmark$ | 80 | 64 | 8192 | ... |
 ```
 
-% from A Survey of Large Language Models 
+% from A Survey of Large Language Models  -->
 
 
 

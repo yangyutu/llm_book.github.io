@@ -316,7 +316,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">13.1. Motivation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation-and-overview">13.1. Motivation and Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rlhf-via-ppo">13.2. RLHF via PPO</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-methodology">13.2.1. Overall methodology</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sft">13.2.2. SFT</a></li>
@@ -336,6 +336,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing-preference-label">13.4.1. Smoothing preference label</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-dpo">13.4.2. Simple DPO</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-remark-rl-vs-sft-vs-dpo">13.4.3. Additional remark RL vs SFT vs DPO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sft-vs-rlhf">13.4.4. SFT Vs RLHF</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">13.5. Bibliography</a></li>
@@ -351,9 +352,9 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="llm-alignement-and-preference-learning">
-<h1><span class="section-number">13. </span>LLM Alignement and Preference learning<a class="headerlink" href="#llm-alignement-and-preference-learning" title="Link to this heading">#</a></h1>
-<section id="motivation">
-<h2><span class="section-number">13.1. </span>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
+<span id="chapter-training-sec-llm-alignment"></span><h1><span class="section-number">13. </span>LLM Alignement and Preference learning<a class="headerlink" href="#llm-alignement-and-preference-learning" title="Link to this heading">#</a></h1>
+<section id="motivation-and-overview">
+<h2><span class="section-number">13.1. </span>Motivation and Overview<a class="headerlink" href="#motivation-and-overview" title="Link to this heading">#</a></h2>
 <p>The objective function in LLM pretraining is predicting the next token on a webpage from the internet. When the trained model is properly and carefully prompted as demonstration (i.e., in-context learning as in GPT-3), the model can largely accomplish useful tasks by following these demonstrations. However, these model can often generate un-desired outputs, including un-factual content, biased and harmful text, or simply do not follow the instructions in the prompt.</p>
 <p>This is because the pretraining task of <em>predicting the next token</em> is inherently different from the objective training an LLM to be an instruction-following assistant that avoids generating unintended text. While continuing SFT instruction tuning data, which are (prompt, completion) pairs, can expose the LLM to what humans like to see for given prompts, it is often not enough to prevent model from producing unintended texts. Instead, we need a training methodology to explictly reward the model when it is well-behaved and penalize the model when it is mis-behaved. Training the model to learn the human preference using rewards and penalities are the core of LLM alignment and preference learning. The pioneering approach is using reinforcement learning via the PPO algorithm <span id="id1">[<a class="reference internal" href="#id1505" title="Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. 2022. URL: https://arxiv.org/abs/2203.02155, arXiv:2203.02155.">OWJ+22</a>]</span>.</p>
 <p>As shown in the <a class="reference internal" href="#chapter-training-fig-alignment-model-alignment-motivation"><span class="std std-numref">Fig. 13.1</span></a>, SFT on instruction tuning dataset and reinforcement learning via PPO can improve model helpfulness and instruction following abilities.</p>
@@ -603,6 +604,22 @@ What if preference labels are noisy? Say the labels have been flipped with some 
 <section id="additional-remark-rl-vs-sft-vs-dpo">
 <h3><span class="section-number">13.4.3. </span>Additional remark RL vs SFT vs DPO<a class="headerlink" href="#additional-remark-rl-vs-sft-vs-dpo" title="Link to this heading">#</a></h3>
 </section>
+<section id="sft-vs-rlhf">
+<h3><span class="section-number">13.4.4. </span>SFT Vs RLHF<a class="headerlink" href="#sft-vs-rlhf" title="Link to this heading">#</a></h3>
+<p>SFT adopts a teacher-forcing approach, which directly optimizes the likelihood of a demonstration output. Such a token-level training way essentially does behavior cloning as the supervision label and directly learns to imitate the demonstrations from experts without specifying a reward model as in typical RL algorithms.</p>
+<p>RLHF firstly learns the reward model, and then employs it to improve the LLM with RL training (e.g., PPO).</p>
+<p>preference annotation is much easier than writing the demonstration data, and annotators can even judge the quality of
+more superior generations than those they create, making it
+possible to explore a broader state space beyond what can
+be demonstrated by human annotators</p>
+<p>Another key point is that RLHF essentially encourages LLMs to learn correct policies by contrasting the self-generated responses (discriminating between good and bad responses). It no longer forces the model to imitate external demonstration data, and thus can mitigate the hallucination issues with SFT as discussed above</p>
+<p>RLHF inherits the drawbacks of classic RL algorithms, e.g., sample inefficiency and
+training instability. When adapted to LLMs, RLHF further
+relies on a strong SFT model as initial model checkpoint for
+efficiently achieving good performance</p>
+<p>Overall, SFT is particularly useful to increase the model capacity of pre-trained model checkpoints right after pretraining, while RLHF is promising to further improve the
+model capacity of SFT models.</p>
+</section>
 </section>
 <section id="bibliography">
 <h2><span class="section-number">13.5. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
@@ -699,7 +716,7 @@ What if preference labels are noisy? Say the labels have been flipped with some 
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">13.1. Motivation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation-and-overview">13.1. Motivation and Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rlhf-via-ppo">13.2. RLHF via PPO</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-methodology">13.2.1. Overall methodology</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sft">13.2.2. SFT</a></li>
@@ -719,6 +736,7 @@ What if preference labels are noisy? Say the labels have been flipped with some 
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing-preference-label">13.4.1. Smoothing preference label</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-dpo">13.4.2. Simple DPO</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-remark-rl-vs-sft-vs-dpo">13.4.3. Additional remark RL vs SFT vs DPO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sft-vs-rlhf">13.4.4. SFT Vs RLHF</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">13.5. Bibliography</a></li>
