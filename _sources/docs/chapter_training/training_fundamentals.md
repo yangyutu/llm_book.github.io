@@ -1,38 +1,126 @@
 # LLM Training Fundamentals
 ## Training Overview
 
-Large Language Models (LLMs) have revolutionized natural language processing and artificial intelligence, demonstrating remarkable capabilities in understanding and generating human-like text. The process of creating these powerful models involves a complex and multi-faceted approach to training, which we will explore in this chapter.
+The chapter discuss LLM training, which can be broadly divided into two stages, each with its own purpose and methodologies:
+1. **Pretraining**: This initial phase involves using self-supervised learning (e.g., autoregressive learning objective) let the model to learn language structures of a diverse and extensive corpus of text data. The model learns to predict words or tokens based on context, developing a broad understanding of language structure and semantics. We'll discuss the basics of pretraining and explore the concept of continuing pretraining, which allows models to adapt to new domains or languages.
 
-At its core, LLM training is about teaching a neural network to understand and generate language by exposing it to vast amounts of text data. This process leverages advanced machine learning techniques, particularly in the realm of deep learning and transformer architectures. The goal is to create a model that can not only recognize patterns in language but also generate coherent and contextually appropriate text across a wide range of tasks and domains.
+2. **Post-training**: After the initial pretraining, models often undergo additional training phases to enhance their performance on specific tasks or to better follow instructions. This includes:
+   - **Finetuning**: Adapting the pretrained model to specific tasks or domains. Particularly, **instruction finetuning** involves teaching the model to follow explicit instructions or prompts by training on large-scale and diverse (instruction, response) pair data. We cover this in {ref}`chapter_training_sec_LLM_finetuning`.
+   - **Alignment and Preference Learning**: Ensuring the model's outputs align with human values and preferences. 
+we cover this direction in {ref}`chapter_training_sec_LLM_alignment`.
 
-The training of LLMs can be broadly divided into several key stages, each with its own set of challenges and methodologies:
+Finally, we cover fundamentals in  **LLM optimization algorithms**. Throughout the LLM training process, various optimization algorithms are employed to adjust the model's parameters efficiently. We'll examine popular techniques such as stochastic gradient descent (SGD), Adam, and their variants, discussing how they contribute to the model's learning process.
 
-1. **Pretraining**: This initial phase involves exposing the model to a diverse and extensive corpus of text data. The model learns to predict words or tokens based on context, developing a broad understanding of language structure and semantics. We'll discuss the basics of pretraining and explore the concept of continuing pretraining, which allows models to adapt to new domains or languages.
 
-2. **Optimization**: Throughout the training process, various optimization algorithms are employed to adjust the model's parameters efficiently. We'll examine popular techniques such as stochastic gradient descent (SGD), Adam, and their variants, discussing how they contribute to the model's learning process.
 
-3. **Post-training**: After the initial pretraining, models often undergo additional training phases to enhance their performance on specific tasks or to align them with desired behaviors. This includes:
 
-   - **Finetuning**: Adapting the pretrained model to specific tasks or domains.
-   - **Instruction Finetuning**: Teaching the model to follow explicit instructions or prompts.
-   - **Alignment and Preference Learning**: Ensuring the model's outputs align with human values and preferences.
-   - **Supervised Fine-Tuning (SFT) vs. Reinforcement Learning from Human Feedback (RLHF)**: Comparing different approaches to refining model behavior based on human input.
+## Pretraining
 
-Throughout this chapter, we will delve into each of these aspects, providing insights into the methodologies, challenges, and current best practices in LLM training. We'll explore how these techniques contribute to creating models that can understand context, generate human-like text, and perform a wide array of language-related tasks with increasing accuracy and reliability.
+### Fundamentals
+Pretraining has become a cornerstone in the development of LLM, which contributes to
+* the general langugae understand and generation ability
+* acquire world knowledge
+* other emergent abilities like reasoning
 
-By understanding these fundamental concepts, researchers and practitioners can gain a comprehensive view of the LLM training process, enabling them to develop more efficient, effective, and ethically aligned language models for various applications in AI and natural language processing.
 
+The dominant LLM pretraining objective is auto-regressive language modeling, which predict the next words given preceding word sequence. Given an input sequence $\mathbf{x} = (x_1,...,x_T)$, auto-regressive language modeling minimize the negative log likelihood given by
+
+$$L = - \sum_{t=1}^{T} \log p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1},\theta\right)$$
+
+where $p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1}\right)$ is the predicted probability distribution for token $x_t$ given preceding token sequence $\mathbf{x}_{t-k-1:t-1}$ with a context window size $k$ ($k$ can range from hundreds to tens of thousands, depending on the model configuration).
+
+There are scaling laws {cite:p}`kaplan2020scaling,henighan2020scaling` discovered on LLM pretraining, which establishes mathematical relationships model performance given model size, dataset size, and the amount of compute. The availability of scaling laws has several benefits:
+* It provides to benchmark to enable LLM pretraining to be done in a predictable way.
+* It help design better training strategy by optimizing the model size and data size under compute constraint.
+
+### Data sources and cleaning
+
+The quality and diversity of training data significantly impact the performance of pretrained models. Common sources include:
+
+1. Web Crawls: Web are avilable in large scale and serve as the primary data source to provide diverse, multilingual data, but web data usually require extensive filtering and cleaning. Example data source include CommonCrawl, C4 (The Colossal Clean Crawled Corpus), RedPajama-Data, RefinedWeb, WebText, etc.
+2. Books and Literature: Projects like BookCorpus, the Gutenberg Project, arXiv offer high-quality, long-form text.This is an important source for LLM to learn world knowledge and liguistic information.
+3. Wikipedia: A reliable source of factual information across many languages and domains.
+4. Social Media and Forums: Platforms like Reddit or X (twitter) provide more informal, conversational language.
+5. Code: Github code (as used in Codex {cite:p}`chen2021evaluating`) and code-related question-answering
+platforms (e.g., StackOverflow).
+6. Domain specific Corpora: Domain-specific datasets (e.g., scientific papers, legal documents) for targeted pretraining.
+
+
+The following {numref}`chapter_training_fig_fundamentals_pretrain_data_distribution` summarize the data source and ratio for existing LLM pretraining.
+   
+```{figure} ../img/chapter_training/training_fundamentals/pretrain_data/training_data_distribution_summary.png
+---
+scale: 50%
+name: chapter_training_fig_fundamentals_pretrain_data_distribution
+---
+Pretrain data source distribution for existing LLMs. Image from {cite:p}`zhao2023survey`.
+```
+
+While the scale is one factor impacting resulting model performance (i.e., the scaling law), the quality of data and the ratio of different data types play an equally important role. As dominant pretraining data is from the web, data clearning and quality control is a crucial step for sucessful LLM pretraining [{numref}`chapter_training_fig_fundamentals_pretrain_data_distribution`]. 
+The following {numref}`chapter_training_fig_fundamentals_pretrain_data_clean_pipeline` summarize the key steps on cleaning training data.. 
+
+```{figure} ../img/chapter_training/training_fundamentals/pretrain_data/pretraining_data_cleaning_pipeline.png
+---
+scale: 60%
+name: chapter_training_fig_fundamentals_pretrain_data_clean_pipeline
+---
+Illustration of data cleaning pipeline for curating LLM pretraining data. Image from {cite:p}`zhao2023survey`.
+```
+
+Onogoing challenges for constructing LLM pretraining data include:
+* Data quality and bias: Ensuring data quality and mitigating biases present in web-scraped data is an ongoing challenge.
+* Multilingual representation: Balancing representation across languages, especially for low-resource languages, remains difficult.
+
+### Data mixture and schedule
+
+With cleaned data from different data sources, it is essential to design data feeding strategies to pretrain LLM with target capabilities. Two important aspects of data feeding strategy are 
+* the portition of different data sources
+* the order of each data source used in pretraining
+
+
+
+### Continued Pretraining
+
+Continued pretraining of LLM involves updating pre-trained models with new data (usually in large scale) instead of re-training them from scratch. 
+addresses a fundamental challenge in the application of large language models (LLMs): the mismatch between the general knowledge acquired during initial pretraining and the specific knowledge required for domain-specific tasks.
+While pretrained LLMs demonstrate impressive general language understanding, they may lack the nuanced knowledge and vocabulary necessary for specialized domains such as medicine, law, or specific scientific fields. Continued pretraining aims to bridge this gap by further training the model on domain-specific corpora, allowing it to adapt its learned representations and knowledge to better suit the target domain or task.
+It improve LLM's performance in the target domain by enhance language understanding and acquiring domain knowledge in the target domain.
+
+There are also cost associated with continued pretraining, including
+* **Catastrophic forgetting**: The model may degrade its general language understanding when it is heavily continued pretrained on the domain data.
+* **Computational cost**: Although more efficient than full pretraining, continued pretraining can still be computationally expensive for very large models.
+* **Data requirements**: High-quality, domain-specific data is crucial for effective continued pretraining.
+
+
+One example of continued pretraining is the **Linly-Chinese-LLaMA-2** project (https://github.com/CVI-SZU/Linly). The motivation behind this project is to improve the cross-lingual capability, particularly in Chinese, of many open Large Language Models (LLMs) such as Llama and Falcon. These models were initially pretrained on text data that is predominantly in English.
+
+Key technical details on the continued pretraining:
+
+**Training data composition**: The continued pretraining used hundreds of millions of high-quality public Chinese text data, including news, community Q&A, encyclopedias, literature, and scientific publications. Besides, the project incorporated 1) a large amount of Chinese-English parallel corpora in the early stages of training to help the model quickly transfer English language capabilities to Chinese and 2) English text corpus like SlimPajama and RefinedWeb to prevent the model from forgetting previously acquired knowledge. 
+
+**Training data schedual**: A curriculum learning strategy was employed. In the early stages of training, more English language materials and parallel corpora were used. As the number of training steps increased, the proportion of Chinese data was gradually increased. This helps the convergence of the model training.
+
+
+<!-- ## Comparison
+
+| Approach | Training set | Training set size | Implementation <br> Complexity | Total training cost (inc. experimentation) |
+| :---: | :---: | :---: | :---: | :---: |
+| Prompt engineering | Not needed | 0 | Low | 0 (no training) |
+| RAG | Not needed | 0 | Low - Medium | 0 (no training) |
+| Supervised-Fine-tuning | labelled | Can be as little as few hundreds examples (e.g. with PEFT approaches) but can increase to several thousands depending on number of tasks | Medium - High <br> depending on use case | $ $100-5 \mathrm{~K}$ |
+| Continuous pre-training | unstructured | Can vary - from 10 K <br> tokens to Bitlions | Medium on Bedrock and Jumpstart, Higher with SageMaker Training | $-\$ 2500$ for scanning 18 <br> tokens for a 7B model |
+| Full Pretraining | unstructured | 100s of billion/trillion tokens (e.g. 700 billion tokens for BloombergGPT for 50B model) | Very High | $$500K | -->
 
 
 ## Optimization Algorithms
 
 ### Minibatch Stochastic Gradient Descent
 
-Batch gradient descent is usually not ideal for neural network application that involves large-size training data, such as image recognization and natural language processing. Evaluating the gradient over the whole set of training data is computational prohibitive; moreover, many samples are similar, making the gradient of the whole data sample is simply the multiplier of the gradient of a much smaller, representative sample data set. 
 
-Minibatch stochastic gradient descent uses a random sample of the training data set to estimate the gradient on each step. A typical algorithm is showed as follows.
+The classical gradient descent algorithm requires the evaluation of the gradient over the whole set of training data. This is both computational prohibitive and sample inefficient - many samples are similar, making the gradient of the whole data sample is simply the multiplier of the gradient of a much smaller, representative sample data set.
+**Minibatch stochastic gradient descent** is much efficient way of gradient descent, which uses a random sample of the training data set to estimate the gradient on each step. 
 
-
+A typical algorithm is showed as follows.
 
 ```{prf:algorithm} Minibatch stochastic gradient descent algorithm
 :label: Minibatch_stochastic_gradient_descent_algorithm
@@ -248,94 +336,6 @@ The algorithm is given by the following.
 	6. Set $k=k+1$.
 	
 ```
-
-## Pretraining
-
-### Fundamentals
-Pretraining has become a cornerstone in the development of large language models (LLMs), driven by the goal of creating AI systems with broad, generalizable language understanding and generation capabilities. By leveraging vast amounts of unlabeled text data, pretraining enables models to learn rich, contextual representations of language before fine-tuning on specific tasks. This approach addresses several key challenges in natural language processing: it improves data efficiency by reducing the need for task-specific annotations, enables transfer learning across different linguistic tasks and domains, automates feature learning, provides a framework to effectively utilize growing text datasets, and serves as a strong foundation for advanced NLP tasks. These advantages have made pretraining an indispensable stage in developing state-of-the-art language models, significantly advancing AI's ability to understand and generate human-like text.
-
-
-LLM Pretraining objective is Causal Language Modeling (CLM):
-Used in GPT-style models, CLM predicts the next token given the previous tokens.
-For a sequence X = [x₁, x₂, ..., xₙ], the objective is:
-CopyL_CLM = -Σ(log P(xᵢ | x₁, ..., xᵢ₋₁))  for i = 1 to n
-Where P(xᵢ | x₁, ..., xᵢ₋₁) is the probability of token xᵢ given all previous tokens.
-
-
-### Data sources
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\linewidth]{../figures/deepLearning/ApplicationsNLP_LLM/efficient_training/training_data/training_data_distribution_summary}
-	\caption{Ratios of various data sources in the pre-training data for existing LLMs. Image from \cite{zhao2023survey}.}
-	\label{fig:trainingdatadistributionsummary}
-\end{figure}
-
-The quality and diversity of training data significantly impact the performance of pretrained models. Common sources include:
-
-1. Web Crawls: Large-scale web crawls like Common Crawl provide diverse, multilingual data but require extensive filtering and cleaning.
-2. Books and Literature: Projects like Google Books or the Gutenberg Project offer high-quality, long-form text.
-3. Wikipedia: A reliable source of factual information across many languages and domains.
-4. Social Media and Forums: Platforms like Reddit or Twitter provide more informal, conversational language.
-5. Specialized Corpora: Domain-specific datasets (e.g., scientific papers, legal documents) for targeted pretraining.
-
-
-Challenges
-
-Data Quality and Bias: Ensuring data quality and mitigating biases present in web-scraped data is an ongoing challenge.
-Multilingual Representation: Balancing representation across languages, especially for low-resource languages, remains difficult.
-
-### Continued Pretraining
-
-Continual pretraining of large language models (LLMs) involves updating pre-trained models with new data instead of re-training them from scratch1. It allows LLMs to specialize better in the current domain and enhances knowledge transfer across diverse domains
-
-Continued pretraining, also known as domain-adaptive pretraining or post-pretraining, addresses a fundamental challenge in the application of large language models (LLMs): the mismatch between the general knowledge acquired during initial pretraining and the specific knowledge required for domain-specific tasks. While pretrained LLMs demonstrate impressive general language understanding, they may lack the nuanced knowledge and vocabulary necessary for specialized domains such as medicine, law, or specific scientific fields. Continued pretraining aims to bridge this gap by further training the model on domain-specific corpora, allowing it to adapt its learned representations and knowledge to better suit the target domain or task.
-
-While continued pretraining offers significant benefits, it also presents challenges:
-
-Catastrophic Forgetting: The model may lose its general language understanding if not carefully balanced with domain-specific learning.
-Data Requirements: High-quality, domain-specific data is crucial for effective continued pretraining.
-Computational Cost: Although more efficient than full pretraining, continued pretraining can still be computationally expensive for very large models.
-
-## Post-training
-
-
-
-
-## SFT Vs RLHF
-
-% from https://arxiv.org/pdf/2303.18223
-
-SFT adopts a teacher-forcing approach, which directly optimizes the likelihood of a demonstration output. Such a token-level training way essentially does behavior cloning as the supervision label and directly learns to imitate the demonstrations from experts without specifying a reward model as in typical RL algorithms. 
-
-RLHF firstly learns the reward model, and then employs it to improve the LLM with RL training (e.g., PPO).
-
-
- preference annotation is much easier than writing the demonstration data, and annotators can even judge the quality of
-more superior generations than those they create, making it
-possible to explore a broader state space beyond what can
-be demonstrated by human annotators
-
-Another key point is that RLHF essentially encourages LLMs to learn correct policies by contrasting the self-generated responses (discriminating between good and bad responses). It no longer forces the model to imitate external demonstration data, and thus can mitigate the hallucination issues with SFT as discussed above
-
-RLHF inherits the drawbacks of classic RL algorithms, e.g., sample inefficiency and
-training instability. When adapted to LLMs, RLHF further
-relies on a strong SFT model as initial model checkpoint for
-efficiently achieving good performance
-
-Overall, SFT is particularly useful to increase the model capacity of pre-trained model checkpoints right after pretraining, while RLHF is promising to further improve the
-model capacity of SFT models.
-
-
-## Comparison
-
-| Approach | Training set | Training set size | Implementation <br> Complexity | Total training cost (inc. experimentation) |
-| :---: | :---: | :---: | :---: | :---: |
-| Prompt engineering | Not needed | 0 | Low | 0 (no training) |
-| RAG | Not needed | 0 | Low - Medium | 0 (no training) |
-| Supervised-Fine-tuning | labelled | Can be as little as few hundreds examples (e.g. with PEFT approaches) but can increase to several thousands depending on number of tasks | Medium - High <br> depending on use case | $ $100-5 \mathrm{~K}$ |
-| Continuous pre-training | unstructured | Can vary - from 10 K <br> tokens to Bitlions | Medium on Bedrock and Jumpstart, Higher with SageMaker Training | $-\$ 2500$ for scanning 18 <br> tokens for a 7B model |
-| Full Pretraining | unstructured | 100s of billion/trillion tokens (e.g. 700 billion tokens for BloombergGPT for 50B model) | Very High | $$500K |
 
 
 ## Bibliography
