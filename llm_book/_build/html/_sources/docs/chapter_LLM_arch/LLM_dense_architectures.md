@@ -235,7 +235,7 @@ Example activation in recent LLMs:
 
 Multi-Head Attention [detailed in {ref}`chapter_foundation_sec_pretrained_LM_transformer_arch_MHA`] is the foundation of many transformer-based models, including the original transformer architecture.
 
-The computation of an $H$-headed MHA given input $X\in \mathbb{R}^{n\times d_{model}$ matrix and $H$ project matrices $W^Q_i, W^K_i, W^V_i \in\mathbb{R}^{d_{model}\times d_{head}, i\in \{1,...,H\}$ is given by
+The computation of an $H$-headed MHA given input $X\in \mathbb{R}^{n\times d_{model}}$ matrix and $H$ projection matrices $W^Q_i, W^K_i, W^V_i \in\mathbb{R}^{d_{model}\times d_{head}, i\in \{1,...,H\}$ is given by
 
 $$
 \text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_H)W^O
@@ -248,8 +248,9 @@ $$
 $$
 
 with the attention given by
+
 $$
-\text{Attention}(Q, K, V) = \text{Softmax}(\frac{QK^T}{\sqrt{d_k}})V
+\text{Attention}(Q, K, V) = \text{Softmax}(\frac{QK^T}{\sqrt{d_k}})V.
 $$
 
 ```{figure} ../img/chapter_LLM_arch/attention/MHA.png
@@ -281,7 +282,7 @@ In the following, we summarize the advantages and drawbacks of MHA.
 
 
 
-To reduce the inference cost from MHA, {cite:p}`shazeer2019fasttransformerdecodingwritehead` proposed MQA, which reduces $H$ key and value heads in MHA to a single key and value head. 
+To reduce the inference cost from MHA, {cite:p}`shazeer2019fasttransformerdecodingwritehead` proposed **MQA**, which reduces $H$ key and value heads in MHA to a single key and value head. 
 During inference, MQA reducing the size of the key-value cache by a factor of $H$ (see {ref}`chapter_inference_sec_inference_acceleration_KV_cache`). However, larger models generally scale the number of heads (e.g., GPT-2 has 12 heads; GPT-3 has 96 heads), such that multi-query attention represents a more
 aggressive cut in both memory bandwidth and capacity footprint.
 
@@ -535,6 +536,17 @@ We have used the following important properties of rotational matrix:
 In other words, the inner product of two rotated vectors is equal to the inner product of one vector rotated by their angle difference and the other original vector.
 
 **Long-term decay**: In {cite:p}`su2023roformerenhancedtransformerrotary`, it is shown that the inner-product will decay when the relative position increase. This property aligns with desired property that a pair of tokens will have gradually descreasing semantic impact on each other when they are far apart. 
+
+### Understanding RoPE with Visualization
+
+```{figure} ../img/chapter_LLM_arch/position_encoding/RoPE/RoPE_visualization.png
+---
+scale: 70%
+name: chapter_LLM_arch_fig_fundamentals_position_encoding_Alibi_comparison
+---
+Visualization of 2D RoPE and its mechanism in encoding context. Image from [Blog](https://mp.weixin.qq.com/s/dn8Pb80iRF9UkRn4vPOhHA).
+```
+
 
 ## Tokenziation, vocabulary, and weight tying
 

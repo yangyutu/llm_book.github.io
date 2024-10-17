@@ -117,7 +117,7 @@ to finetuning on just one or the other. Image from {cite:p}`chung2022scalinginst
 ```
 
 
-## Parameter-Efficient Fine Tuning
+## Parameter-Efficient Fine Tuning (PEFT)
 
 ### Motivation
 
