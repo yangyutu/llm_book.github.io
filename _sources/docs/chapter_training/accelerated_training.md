@@ -394,9 +394,9 @@ $$
 From the above, we can see that all operations within the for loop satisfy the associative property. This means the for loop can be block-processed, allowing for more efficient parallel computation on GPUs.
 This is the mathematical principle behind Flash Attention's parallel acceleration.
 
-# Appendix
+## Appendix
 
-## Floating Data Types
+### Floating Data Types
 
 Float32 (FP32) stands for the standardized IEEE 32-bit floating point representation. With this data type it is possible to represent a wide range of floating numbers. In FP32, 8 bits are reserved for the "exponent", 23 bits for the "mantissa" and 1 bit for the sign of the number. In addition to that, most of the hardware supports FP32 operations and instructions.
 
@@ -424,7 +424,7 @@ name: chapter_training_fig_efficient_training_different_precision_demo
 Comparison of different float number types.
 ```
 
-## GPU Parallel Operations
+### GPU Parallel Operations
 
 
 References https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#:~:text=The%20ReduceScatter%20operation%20performs%20the%20same%20operation%20as,mapping%20since%20the%20ranks%20determine%20the%20data%20layout.

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>17. Inference Acceleration &#8212; LLM Foundations</title>
+    <title>16. Inference Acceleration &#8212; LLM Foundations</title>
   
   
   
@@ -63,8 +63,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_inference/inference_acceleration';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="18. Basic prompt" href="../chapter_prompt/basic_prompt.html" />
-    <link rel="prev" title="16. Decoding" href="inference_fundamentals.html" />
+    <link rel="next" title="17. Basic prompt" href="../chapter_prompt/basic_prompt.html" />
+    <link rel="prev" title="15. Decoding" href="inference_fundamentals.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -199,23 +199,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM Finetuning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM Alignement and Preference learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">14. LLM Training Acceleration</a></li>
-
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="inference_fundamentals.html">16. Decoding</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">17. Inference Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inference_fundamentals.html">15. Decoding</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">16. Inference Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">18. Basic prompt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">19. Advanced prompt techniques</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">20. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">17. Basic prompt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">18. Advanced prompt techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">19. RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">21. Information Retrieval Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">22. Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">20. Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">21. Application of LLM in IR</a></li>
 </ul>
 
     </div>
@@ -316,44 +315,44 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-fundamental-challenge-of-llm-inference">17.1. The fundamental challenge of LLM inference</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">17.1.1. Overview</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-requirement-breakdown">17.1.2. Memory Requirement Breakdown</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-fundamental-challenge-of-llm-inference">16.1. The fundamental challenge of LLM inference</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">16.1.1. Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-requirement-breakdown">16.1.2. Memory Requirement Breakdown</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kv-cache">17.2. KV Cache</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basics">17.2.1. Basics</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-cost-with-kv-cache">17.2.2. Computational cost with KV Cache</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-memory-requirement-with-kv-cache">17.2.3. Inference Memory Requirement with KV Cache</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-with-gqa">17.2.4. Combined with GQA</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blocked-kv-caching-via-paged-attention">17.2.5. Blocked KV Caching via Paged Attention</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kv-cache">16.2. KV Cache</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basics">16.2.1. Basics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-cost-with-kv-cache">16.2.2. Computational cost with KV Cache</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-memory-requirement-with-kv-cache">16.2.3. Inference Memory Requirement with KV Cache</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-with-gqa">16.2.4. Combined with GQA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blocked-kv-caching-via-paged-attention">16.2.5. Blocked KV Caching via Paged Attention</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-fundamentals">17.3. Quantization Fundamentals</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-concepts">17.3.1. Basic Concepts</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#where-quantization-and-dequant-happen-what-is-the-trade-off">17.3.2. Where quantization and dequant happen? What is the trade off</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-quantization-techniques">17.3.3. Standard quantization techniques</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantized-matrix-multiplication">17.3.4. Quantized matrix multiplication</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-granularities">17.3.5. Quantization granularities</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#groupwise-quantization">17.3.6. Groupwise quantization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-performance-trade-off-in-language-models">17.3.7. Quantization-performance trade-off in language models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-fundamentals">16.3. Quantization Fundamentals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-concepts">16.3.1. Basic Concepts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#where-quantization-and-dequant-happen-what-is-the-trade-off">16.3.2. Where quantization and dequant happen? What is the trade off</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-quantization-techniques">16.3.3. Standard quantization techniques</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantized-matrix-multiplication">16.3.4. Quantized matrix multiplication</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-granularities">16.3.5. Quantization granularities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#groupwise-quantization">16.3.6. Groupwise quantization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-performance-trade-off-in-language-models">16.3.7. Quantization-performance trade-off in language models</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-quantization-techniques">17.4. Advanced quantization techniques</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-int8">17.4.1. LLM.int8()</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smooth-quant">17.4.2. Smooth Quant</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#awq">17.4.3. AWQ</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gptq">17.4.4. GPTQ</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-error-minimization-framework">17.4.4.1. The Error Minimization Framework</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#speical-case-diagonal-hessian-assumption">17.4.4.2. Speical Case: Diagonal Hessian Assumption</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#general-case">17.4.4.3. General Case</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-up-hessian-computation">17.4.4.4. Speed-Up Hessian Computation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-quantization-techniques">16.4. Advanced quantization techniques</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-int8">16.4.1. LLM.int8()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smooth-quant">16.4.2. Smooth Quant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#awq">16.4.3. AWQ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gptq">16.4.4. GPTQ</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-error-minimization-framework">16.4.4.1. The Error Minimization Framework</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#speical-case-diagonal-hessian-assumption">16.4.4.2. Speical Case: Diagonal Hessian Assumption</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#general-case">16.4.4.3. General Case</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-up-hessian-computation">16.4.4.4. Speed-Up Hessian Computation</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8">17.5. FP8</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">17.6. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8">16.5. FP8</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">16.6. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -366,11 +365,11 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="inference-acceleration">
-<h1><span class="section-number">17. </span>Inference Acceleration<a class="headerlink" href="#inference-acceleration" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">16. </span>Inference Acceleration<a class="headerlink" href="#inference-acceleration" title="Link to this heading">#</a></h1>
 <section id="the-fundamental-challenge-of-llm-inference">
-<h2><span class="section-number">17.1. </span>The fundamental challenge of LLM inference<a class="headerlink" href="#the-fundamental-challenge-of-llm-inference" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">16.1. </span>The fundamental challenge of LLM inference<a class="headerlink" href="#the-fundamental-challenge-of-llm-inference" title="Link to this heading">#</a></h2>
 <section id="overview">
-<h3><span class="section-number">17.1.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.1.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
 <p>LLM inference is <strong>memory-IO bound, not compute bound</strong>. In other words, it currently takes more time to load 1MB of data to the GPU’s compute cores than it does for those compute cores to perform LLM computations on 1MB of data.</p>
 <p>This is because LLM contains relative usually simple calculations (multiplication, addition, max-pooling, etc) that can be executed by high performing GPU parallel computing units.</p>
 <p>This means that LLM inference throughput is largely determined by how large a batch you can fit into high-bandwidth GPU memory.</p>
@@ -387,10 +386,10 @@ Nonlinear activations: Operations like softmax and layer normalization require a
 Beam search: If used, beam search for text generation adds computational overhead.</p>
 </section>
 <section id="memory-requirement-breakdown">
-<h3><span class="section-number">17.1.2. </span>Memory Requirement Breakdown<a class="headerlink" href="#memory-requirement-breakdown" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.1.2. </span>Memory Requirement Breakdown<a class="headerlink" href="#memory-requirement-breakdown" title="Link to this heading">#</a></h3>
 <p>Assume every numerical value are stored in <span class="math notranslate nohighlight">\(p\)</span> bytes, we can compute more accurate memory requirements as follows.</p>
 <div class="pst-scrollable-table-container"><table class="table" id="id1531">
-<caption><span class="caption-number">Table 17.1 </span><span class="caption-text">Memory requirement breakdown</span><a class="headerlink" href="#id1531" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 16.1 </span><span class="caption-text">Memory requirement breakdown</span><a class="headerlink" href="#id1531" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Component</p></th>
 <th class="head text-left"><p>Memory Requirement</p></th>
@@ -419,19 +418,19 @@ Beam search: If used, beam search for text generation adds computational overhea
 </div>
 <p>It is easy to see that domiant memory cost are model paramters and KV Cache.</p>
 <div class="proof example admonition" id="example-0">
-<p class="admonition-title"><span class="caption-number">Example 17.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Example 16.1 </span></p>
 <section class="example-content" id="proof-content">
 </section>
 </div></section>
 </section>
 <section id="kv-cache">
-<span id="chapter-inference-sec-inference-acceleration-kv-cache"></span><h2><span class="section-number">17.2. </span>KV Cache<a class="headerlink" href="#kv-cache" title="Link to this heading">#</a></h2>
+<span id="chapter-inference-sec-inference-acceleration-kv-cache"></span><h2><span class="section-number">16.2. </span>KV Cache<a class="headerlink" href="#kv-cache" title="Link to this heading">#</a></h2>
 <section id="basics">
-<h3><span class="section-number">17.2.1. </span>Basics<a class="headerlink" href="#basics" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.2.1. </span>Basics<a class="headerlink" href="#basics" title="Link to this heading">#</a></h3>
 <p>Key-Value (KV) caching is a crucial optimization technique used in the inference process of Large Language Models (LLMs) to significantly improve performance and reduce computational costs. This technique is particularly important for autoregressive models like GPT, which generate text one token at a time.
 In transformer-based LLMs, each layer contains self-attention mechanisms that compute attention scores using queries (Q), keys (K), and values (V). During inference, as the model generates each new token, it typically needs to recompute the attention for all previous tokens in the sequence. This process becomes increasingly computationally expensive as the generated sequence grows longer.</p>
 <p>KV caching addresses this issue by storing the key and value tensors for each layer of the transformer after they are computed for each token. When generating the next tokens, we need the new token to attend to preceding generated tokens, the model can reuse the cached K and V tensors for these tokens instead of re-computing it. This approach significantly reduces the amount of computation required for each new token, especially for long sequences.</p>
-<p>Following <a class="reference internal" href="#chapter-inference-acceleration-fig-kv-cache-comparison-computation"><span class="std std-numref">Fig. 17.1</span></a> illustrate the comparision of the attention computation when generating the second token on the settings of <strong>without</strong> KV cache and <strong>with</strong> KV cache.</p>
+<p>Following <a class="reference internal" href="#chapter-inference-acceleration-fig-kv-cache-comparison-computation"><span class="std std-numref">Fig. 16.1</span></a> illustrate the comparision of the attention computation when generating the second token on the settings of <strong>without</strong> KV cache and <strong>with</strong> KV cache.</p>
 <p>Particularly, when there is no KV cache and thus previously Key/Value tensors need to be re-computed, and as a result, redundant computation are in every module of the Transformer network:</p>
 <ul class="simple">
 <li><p><strong>Attention layer</strong>:</p>
@@ -446,7 +445,7 @@ In transformer-based LLMs, each layer contains self-attention mechanisms that co
 <a class="reference internal image-reference" href="../../_images/computation_comparison_with_without_KV_cache.png"><img alt="../../_images/computation_comparison_with_without_KV_cache.png" src="../../_images/computation_comparison_with_without_KV_cache.png" style="width: 812.6999999999999px; height: 363.29999999999995px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 17.1 </span><span class="caption-text">Comparision of the attention computation on the settings of <strong>without</strong> KV cache and <strong>with</strong> KV cache.</span><a class="headerlink" href="#chapter-inference-acceleration-fig-kv-cache-comparison-computation" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 16.1 </span><span class="caption-text">Comparision of the attention computation on the settings of <strong>without</strong> KV cache and <strong>with</strong> KV cache.</span><a class="headerlink" href="#chapter-inference-acceleration-fig-kv-cache-comparison-computation" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
@@ -476,17 +475,17 @@ In transformer-based LLMs, each layer contains self-attention mechanisms that co
 </div>
 </div>
 <div class="proof remark admonition" id="remark-1">
-<p class="admonition-title"><span class="caption-number">Remark 17.1 </span> (KV-cache pre-fill for prompts)</p>
+<p class="admonition-title"><span class="caption-number">Remark 16.1 </span> (KV-cache pre-fill for prompts)</p>
 <section class="remark-content" id="proof-content">
 <p>While traditional autoregressive generation processes tokens one-by-one, we can prefil KV Cache by leveraging the fact that the prompt is known in advance.
 Specifically, we can pre-computes and stores the key (K) and value (V) representations for the entire prompt in the cache before generation begins. During token generation, the model can then access these pre-computed values, eliminating the need to recalculate them at each step. This approach reduces computational overhead, especially for tasks involving long prompts or multiple generations from the same context, leading to faster inference times.</p>
 </section>
 </div></section>
 <section id="computational-cost-with-kv-cache">
-<h3><span class="section-number">17.2.2. </span>Computational cost with KV Cache<a class="headerlink" href="#computational-cost-with-kv-cache" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.2.2. </span>Computational cost with KV Cache<a class="headerlink" href="#computational-cost-with-kv-cache" title="Link to this heading">#</a></h3>
 <p>In <a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html#chapter-llm-arch-sec-llm-arch-fundamentals-forward-pass-computation"><span class="std std-ref">Forward Pass Computation Breadown</span></a>, we analyze the computational cost during a forward pass without using KV Cache. In this section, we are going to re-analyze the computatioal cost and compare it with the no-KV-Cache setting.</p>
 <div class="pst-scrollable-table-container"><table class="table" id="id1532">
-<caption><span class="caption-number">Table 17.2 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id1532" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 16.2 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id1532" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Module</p></th>
 <th class="head text-left"><p>Computation</p></th>
@@ -550,15 +549,15 @@ Specifically, we can pre-computes and stores the key (K) and value (V) represent
 <p>Because <span class="math notranslate nohighlight">\((L_{KV} + 1) = s\)</span>, the KV cache reduce the cost to <span class="math notranslate nohighlight">\(1/s\)</span> of the original cost.</p>
 </section>
 <section id="inference-memory-requirement-with-kv-cache">
-<h3><span class="section-number">17.2.3. </span>Inference Memory Requirement with KV Cache<a class="headerlink" href="#inference-memory-requirement-with-kv-cache" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.2.3. </span>Inference Memory Requirement with KV Cache<a class="headerlink" href="#inference-memory-requirement-with-kv-cache" title="Link to this heading">#</a></h3>
 <p>With KV Cache, the cache memory requirement for inferencing a batch of <span class="math notranslate nohighlight">\(s\)</span>-length sequence is given by</p>
 <div class="math notranslate nohighlight" id="equation-chapter-inference-acceleration-eq-kv-cache-memory-formula">
-<span class="eqno">(17.1)<a class="headerlink" href="#equation-chapter-inference-acceleration-eq-kv-cache-memory-formula" title="Link to this equation">#</a></span>\[
+<span class="eqno">(16.1)<a class="headerlink" href="#equation-chapter-inference-acceleration-eq-kv-cache-memory-formula" title="Link to this equation">#</a></span>\[
 M_{KV} = 2\times b \times s \times d \times L \times p
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(b\)</span> is the batch size, <span class="math notranslate nohighlight">\(s\)</span> is the sequence length, <span class="math notranslate nohighlight">\(d\)</span> is the model hidden dim, <span class="math notranslate nohighlight">\(L\)</span> is number of layers, <span class="math notranslate nohighlight">\(p\)</span> is the byte size per model paraemters (e.g., 2 for float16). The multiplier 2 is because of both K and V are cached.</p>
 <div class="proof example admonition" id="example-2">
-<p class="admonition-title"><span class="caption-number">Example 17.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Example 16.2 </span></p>
 <section class="example-content" id="proof-content">
 <p>Consider a model (e.g., Llama7B) with <span class="math notranslate nohighlight">\(d = 4096\)</span>, <span class="math notranslate nohighlight">\(s = 2048\)</span>, <span class="math notranslate nohighlight">\(b = 64\)</span>, and <span class="math notranslate nohighlight">\(L = 32\)</span> = 32. The calculation gives us:</p>
 <div class="math notranslate nohighlight">
@@ -568,21 +567,21 @@ M_{KV} = 2\times b \times s \times d \times L \times p
 </section>
 </div></section>
 <section id="combined-with-gqa">
-<h3><span class="section-number">17.2.4. </span>Combined with GQA<a class="headerlink" href="#combined-with-gqa" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.2.4. </span>Combined with GQA<a class="headerlink" href="#combined-with-gqa" title="Link to this heading">#</a></h3>
 <p>Grouped Query Attention (GQA)[<a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html#chapter-llm-arch-sec-self-attention-variant-gqa"><span class="std std-ref">Grouped Query Attention (GQA)</span></a>] optimizes the computational and memory cost of the regular Multi-head attention (MHA).</p>
-<p>For Multi-head attention (MHA), we have <span class="math notranslate nohighlight">\(d = H \times d_{h}\)</span>, in which <span class="math notranslate nohighlight">\(H\)</span> is the number of heads, and <span class="math notranslate nohighlight">\(d_h\)</span> is the subspace dimensions of the head. The memory calculation [<a class="reference internal" href="#equation-chapter-inference-acceleration-eq-kv-cache-memory-formula">(17.1)</a>] can also be written by
+<p>For Multi-head attention (MHA), we have <span class="math notranslate nohighlight">\(d = H \times d_{h}\)</span>, in which <span class="math notranslate nohighlight">\(H\)</span> is the number of heads, and <span class="math notranslate nohighlight">\(d_h\)</span> is the subspace dimensions of the head. The memory calculation [<a class="reference internal" href="#equation-chapter-inference-acceleration-eq-kv-cache-memory-formula">(16.1)</a>] can also be written by
 $<span class="math notranslate nohighlight">\(
 M_{KV} = 2\times b \times s \times H \times d_{H} \times L \times p
 \)</span>$
 Then the GQA memory requirement is given by</p>
 <div class="math notranslate nohighlight" id="equation-chapter-inference-acceleration-eq-kv-cache-memory-formula-gqa">
-<span class="eqno">(17.2)<a class="headerlink" href="#equation-chapter-inference-acceleration-eq-kv-cache-memory-formula-gqa" title="Link to this equation">#</a></span>\[ 
+<span class="eqno">(16.2)<a class="headerlink" href="#equation-chapter-inference-acceleration-eq-kv-cache-memory-formula-gqa" title="Link to this equation">#</a></span>\[ 
 M_{KV, GQA} = 2\times b \times s \times G \times d_h \times L \times p
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(G\)</span> is the number of Groups. As <span class="math notranslate nohighlight">\(G \ll H\)</span> for large-sized LLM, the savings from GQA can be significant.</p>
 </section>
 <section id="blocked-kv-caching-via-paged-attention">
-<h3><span class="section-number">17.2.5. </span>Blocked KV Caching via Paged Attention<a class="headerlink" href="#blocked-kv-caching-via-paged-attention" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.2.5. </span>Blocked KV Caching via Paged Attention<a class="headerlink" href="#blocked-kv-caching-via-paged-attention" title="Link to this heading">#</a></h3>
 <p>Traditional LLM inference systems face many inefficiencies in KV-cache memory management. For example, these systems typically pre-allocate contiguous memory chunks based on a request’s maximum length, often leading to inefficient memory utilization:</p>
 <ul class="simple">
 <li><p>The actual request lengths could be much shorter than their maximum potential.</p></li>
@@ -598,9 +597,9 @@ the request’s KV cache is divided into smaller blocks, each of which can conta
 </section>
 </section>
 <section id="quantization-fundamentals">
-<h2><span class="section-number">17.3. </span>Quantization Fundamentals<a class="headerlink" href="#quantization-fundamentals" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">16.3. </span>Quantization Fundamentals<a class="headerlink" href="#quantization-fundamentals" title="Link to this heading">#</a></h2>
 <section id="basic-concepts">
-<h3><span class="section-number">17.3.1. </span>Basic Concepts<a class="headerlink" href="#basic-concepts" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.3.1. </span>Basic Concepts<a class="headerlink" href="#basic-concepts" title="Link to this heading">#</a></h3>
 <p><strong>Quantization</strong> is the process of using a finite number of low-precision values (usually int8) to approximate high-precision (usually float32) numbers with relatively low loss in inference precision.</p>
 <p>The objective of quantization is to <strong>reduce memory usage</strong> and improve inference speed without significantly compromising performance.</p>
 <p>In the development of different quantization methods, there are</p>
@@ -622,7 +621,7 @@ the request’s KV cache is divided into smaller blocks, each of which can conta
 </ul>
 </section>
 <section id="where-quantization-and-dequant-happen-what-is-the-trade-off">
-<h3><span class="section-number">17.3.2. </span>Where quantization and dequant happen? What is the trade off<a class="headerlink" href="#where-quantization-and-dequant-happen-what-is-the-trade-off" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.3.2. </span>Where quantization and dequant happen? What is the trade off<a class="headerlink" href="#where-quantization-and-dequant-happen-what-is-the-trade-off" title="Link to this heading">#</a></h3>
 <p>First a quantized model (together with quantization hypermeters) are loaded into GPU devices (without quantization, the model cannot even be loaded).</p>
 <p>During inference calculation, de-quantization is performed when high precision float number calcuation is needed (like Softmax).
 Note that the majority of inference computation cost is matrix computation, which can usually be conducted via integer level, and half-precision level.</p>
@@ -670,7 +669,7 @@ Some layers are bandwidth-bound (memory-limited). That means that their implemen
 A reduced memory footprint means that the model requires less storage space, parameter updates are smaller, cache utilization is higher, and so on.</p>
 </section>
 <section id="standard-quantization-techniques">
-<h3><span class="section-number">17.3.3. </span>Standard quantization techniques<a class="headerlink" href="#standard-quantization-techniques" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.3.3. </span>Standard quantization techniques<a class="headerlink" href="#standard-quantization-techniques" title="Link to this heading">#</a></h3>
 <p>To introduce standard quantization techniques, we take 16-bit floating-point model weight <span class="math notranslate nohighlight">\(W_{f16}\)</span> and its quantization into 8-bit integer as example.</p>
 <p>The <strong>Absmax/Scale quantization</strong> technique scales <span class="math notranslate nohighlight">\(W_{f16}\)</span> into the 8-bit representation in the range of <span class="math notranslate nohighlight">\([-127,127]\)</span> via multiplying with</p>
 <div class="math notranslate nohighlight">
@@ -678,7 +677,7 @@ A reduced memory footprint means that the model requires less storage space, par
 <p>which is equivalent to scaling the entire tensor to fit into the range of [0, 127]. Specificially, the value with minimal magnitude is mapped to 0 and the value with maximal magnitude is mapped to 127.</p>
 <p>That is the 8-bit integer representation is given by</p>
 <div class="math notranslate nohighlight" id="equation-chapter-inference-acceleration-quantization-eq-absmax-quantization">
-<span class="eqno">(17.3)<a class="headerlink" href="#equation-chapter-inference-acceleration-quantization-eq-absmax-quantization" title="Link to this equation">#</a></span>\[
+<span class="eqno">(16.3)<a class="headerlink" href="#equation-chapter-inference-acceleration-quantization-eq-absmax-quantization" title="Link to this equation">#</a></span>\[
 W_{i8}=\operatorname{Round}\left(\frac{127 \cdot W_{f16}}{\max_{ij}|W_{f16}|}\right)=\operatorname{Round}\left(s_{W} \mathbf{W}_{f 16}\right)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\operatorname{Round}\)</span> indicates rounding to the nearest integer.</p>
@@ -706,7 +705,7 @@ z p_{x_{i 16}}=\left\lfloor\mathbf{X}_{f 16} \cdot \min _{i j}\left(\mathbf{X}_{
 <p>where <span class="math notranslate nohighlight">\(s\)</span> is scaling parameter, <span class="math notranslate nohighlight">\(z\)</span> is the shifting parameter, and <span class="math notranslate nohighlight">\(q_{min}, q_{max}\)</span> are the clipping range.</p>
 </section>
 <section id="quantized-matrix-multiplication">
-<h3><span class="section-number">17.3.4. </span>Quantized matrix multiplication<a class="headerlink" href="#quantized-matrix-multiplication" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.3.4. </span>Quantized matrix multiplication<a class="headerlink" href="#quantized-matrix-multiplication" title="Link to this heading">#</a></h3>
 <p>The modern GPU hardware can significantly speed up the matrix multiplication in the integer representation. As matrix multiplication involves accumulation operations, the typical convension for accumulation data types are</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -742,11 +741,11 @@ X_{f16}W_{f16} &amp;\approx  \operatorname{DeQ}(X_{i8}) \operatorname{DeQ}(W_{i8
 <p>where the summation or accumation operation in matrix multiplication of <span class="math notranslate nohighlight">\(X_{i8}W_{i8}\)</span> will be conducted in int-32 data type.</p>
 </section>
 <section id="quantization-granularities">
-<h3><span class="section-number">17.3.5. </span>Quantization granularities<a class="headerlink" href="#quantization-granularities" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.3.5. </span>Quantization granularities<a class="headerlink" href="#quantization-granularities" title="Link to this heading">#</a></h3>
 <p>These different granularities offer trade-offs between quantization accuracy and computational efficiency. Per-tensor is the fastest but least accurate, per-channel/per-token is the most accurate but computationally expensive, and group-wise provides a balance between the two extremes</p>
 <p><strong>Per-tensor quantization</strong> applies the same scaling factor and zero point to an entire tensor (usually a weight matrix or activation tensor). Each weight tensor and activation tensor in the model will have its own set of quantization parameters. Note that the biggest challenges for per-tensor quantization is that a single outlier can reduce the quantization precision of all other values.</p>
 <div class="proof example admonition" id="example-3">
-<p class="admonition-title"><span class="caption-number">Example 17.3 </span> (Per-tensor quantization)</p>
+<p class="admonition-title"><span class="caption-number">Example 16.3 </span> (Per-tensor quantization)</p>
 <section class="example-content" id="proof-content">
 <p>Let’s consider a weight matrix <span class="math notranslate nohighlight">\(W\)</span>, the quantize <span class="math notranslate nohighlight">\(W\)</span> into int8, we have the following steps:</p>
 <ol class="arabic simple">
@@ -762,7 +761,7 @@ W_quant = round(W / scale) + zero_point</p></li>
 Explanation:
 This method computes separate quantization parameters for each channel (in the case of weights) or each token (in the case of activations). This allows for more fine-grained quantization, potentially preserving more information.</p>
 <div class="proof example admonition" id="example-4">
-<p class="admonition-title"><span class="caption-number">Example 17.4 </span> (Per-channel quantization)</p>
+<p class="admonition-title"><span class="caption-number">Example 16.4 </span> (Per-channel quantization)</p>
 <section class="example-content" id="proof-content">
 <p>Let’s consider the same weight matrix <span class="math notranslate nohighlight">\(W\)</span> of shape (1024, 768), but now we’ll quantize each output channel separately.</p>
 <p>To quantize this to int8 per-channel, for each of the 768 columns (channels):</p>
@@ -783,7 +782,7 @@ This method computes separate quantization parameters for each channel (in the c
 <p>There will be <span class="math notranslate nohighlight">\(S\)</span> sets of quantization parameters; each set of parameters is computed from the <span class="math notranslate nohighlight">\(H\)</span> hidden dimensionality values.</p>
 </section>
 <section id="groupwise-quantization">
-<h3><span class="section-number">17.3.6. </span>Groupwise quantization<a class="headerlink" href="#groupwise-quantization" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.3.6. </span>Groupwise quantization<a class="headerlink" href="#groupwise-quantization" title="Link to this heading">#</a></h3>
 <!-- Group-wise quantization is a middle ground between per-tensor and per-channel quantization. It applies different quantization parameters to groups of channels or elements within a tensor.
 Explanation:
 In this approach, we divide the tensor into groups and compute separate quantization parameters for each group. This allows for more flexibility than per-tensor quantization while being more computationally efficient than per-channel quantization.
@@ -819,7 +818,7 @@ W_quant = [[98, 255, 235, ..., 156, | 137, 0, 215, ..., 78, | ...],
 In this case, each group of 32 channels shares the same scale and zero_point for quantization and dequantization. -->
 </section>
 <section id="quantization-performance-trade-off-in-language-models">
-<h3><span class="section-number">17.3.7. </span>Quantization-performance trade-off in language models<a class="headerlink" href="#quantization-performance-trade-off-in-language-models" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.3.7. </span>Quantization-performance trade-off in language models<a class="headerlink" href="#quantization-performance-trade-off-in-language-models" title="Link to this heading">#</a></h3>
 <p>Early research [<span id="id2">[<a class="reference internal" href="#id1501" title="Yelysei Bondarenko, Markus Nagel, and Tijmen Blankevoort. Understanding and overcoming the challenges of efficient transformer quantization. 2021. URL: https://arxiv.org/abs/2109.12948, arXiv:2109.12948.">BNB21</a>]</span>] during the BERT era revealed significant challenges in quantizing large language models. <span id="id3">[<a class="reference internal" href="#id1501" title="Yelysei Bondarenko, Markus Nagel, and Tijmen Blankevoort. Understanding and overcoming the challenges of efficient transformer quantization. 2021. URL: https://arxiv.org/abs/2109.12948, arXiv:2109.12948.">BNB21</a>]</span> demonstrated that applying round-to-nearest (RTN) quantization to both weights and activations of BERT models, reducing them to 8-bit precision, resulted in substantial performance deterioration on language understanding benchmarks.</p>
 <p>Further ablation shows that quantization on activation is major cause of the performance drop and quantization on the model weights have minimal impact. The reason is that activation values from FFN’s input and output can have strong outliers, which can directly cause notable error in the quantization process.</p>
 <p>As summary in the following table [<span id="id4">[<a class="reference internal" href="#id1501" title="Yelysei Bondarenko, Markus Nagel, and Tijmen Blankevoort. Understanding and overcoming the challenges of efficient transformer quantization. 2021. URL: https://arxiv.org/abs/2109.12948, arXiv:2109.12948.">BNB21</a>]</span>], a strategy of quantizing only the model weights to 8-bit precision while maintaining 32-bit precision for activations (referred to as ‘W8A32’) achieved performance comparable to full-precision models. This finding highlights the importance of selective quantization strategies that preserve critical information in activations while still benefiting from the efficiency gains of weight quantization.</p>
@@ -892,9 +891,9 @@ In this case, each group of 32 channels shares the same scale and zero_point for
 </section>
 </section>
 <section id="advanced-quantization-techniques">
-<h2><span class="section-number">17.4. </span>Advanced quantization techniques<a class="headerlink" href="#advanced-quantization-techniques" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">16.4. </span>Advanced quantization techniques<a class="headerlink" href="#advanced-quantization-techniques" title="Link to this heading">#</a></h2>
 <section id="llm-int8">
-<h3><span class="section-number">17.4.1. </span>LLM.int8()<a class="headerlink" href="#llm-int8" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.4.1. </span>LLM.int8()<a class="headerlink" href="#llm-int8" title="Link to this heading">#</a></h3>
 <p><span id="id6">[<a class="reference internal" href="#id1502" title="Tim Dettmers, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. Llm.int8(): 8-bit matrix multiplication for transformers at scale. 2022. URL: https://arxiv.org/abs/2208.07339, arXiv:2208.07339.">DLBZ22</a>]</span></p>
 <p>Motivation</p>
 <p>Basic quantization methods often resulted in significant performance degradation, especially for larger models.</p>
@@ -921,32 +920,32 @@ In this case, each group of 32 channels shares the same scale and zero_point for
 <a class="reference internal image-reference" href="../../_images/LLM_int8_illustration.png"><img alt="../../_images/LLM_int8_illustration.png" src="../../_images/LLM_int8_illustration.png" style="width: 817.5px; height: 320.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 17.2 </span><span class="caption-text">Figure 2: Schematic of LLM.int8(). Given 16-bit floating-point inputs <span class="math notranslate nohighlight">\(\mathbf{X}_{f 16}\)</span> and weights <span class="math notranslate nohighlight">\(\mathbf{W}_{f 16}\)</span>, the features and weights are decomposed into sub-matrices of large magnitude features and other values. The outlier feature matrices are multiplied in 16 -bit. All other values are multiplied in 8 -bit. We perform 8 -bit vector-wise multiplication by scaling by row and column-wise absolute maximum of <span class="math notranslate nohighlight">\(\mathbf{C}_x\)</span> and <span class="math notranslate nohighlight">\(\mathbf{C}_w\)</span> and then quantizing the outputs to Int8. The Int32 matrix multiplication outputs <span class="math notranslate nohighlight">\(\mathrm{Out}_{i 32}\)</span> are dequantization by the outer product of the normalization constants <span class="math notranslate nohighlight">\(\mathbf{C}_x \otimes \mathbf{C}_w\)</span>. Finally, both outlier and regular outputs are accumulated in 16-bit floating point outputs. Image from <span id="id7">[<a class="reference internal" href="#id1502" title="Tim Dettmers, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. Llm.int8(): 8-bit matrix multiplication for transformers at scale. 2022. URL: https://arxiv.org/abs/2208.07339, arXiv:2208.07339.">DLBZ22</a>]</span>.</span><a class="headerlink" href="#chapter-inference-quantization-fig-llm-int8-illustration-plot" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 16.2 </span><span class="caption-text">Figure 2: Schematic of LLM.int8(). Given 16-bit floating-point inputs <span class="math notranslate nohighlight">\(\mathbf{X}_{f 16}\)</span> and weights <span class="math notranslate nohighlight">\(\mathbf{W}_{f 16}\)</span>, the features and weights are decomposed into sub-matrices of large magnitude features and other values. The outlier feature matrices are multiplied in 16 -bit. All other values are multiplied in 8 -bit. We perform 8 -bit vector-wise multiplication by scaling by row and column-wise absolute maximum of <span class="math notranslate nohighlight">\(\mathbf{C}_x\)</span> and <span class="math notranslate nohighlight">\(\mathbf{C}_w\)</span> and then quantizing the outputs to Int8. The Int32 matrix multiplication outputs <span class="math notranslate nohighlight">\(\mathrm{Out}_{i 32}\)</span> are dequantization by the outer product of the normalization constants <span class="math notranslate nohighlight">\(\mathbf{C}_x \otimes \mathbf{C}_w\)</span>. Finally, both outlier and regular outputs are accumulated in 16-bit floating point outputs. Image from <span id="id7">[<a class="reference internal" href="#id1502" title="Tim Dettmers, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. Llm.int8(): 8-bit matrix multiplication for transformers at scale. 2022. URL: https://arxiv.org/abs/2208.07339, arXiv:2208.07339.">DLBZ22</a>]</span>.</span><a class="headerlink" href="#chapter-inference-quantization-fig-llm-int8-illustration-plot" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-inference-quantization-fig-llm-int8-performance-plot">
 <a class="reference internal image-reference" href="../../_images/LLM_int8_performance_plot.png"><img alt="../../_images/LLM_int8_performance_plot.png" src="../../_images/LLM_int8_performance_plot.png" style="width: 593.4px; height: 489.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 17.3 </span><span class="caption-text">OPT model mean zeroshot benchmark accuracy at different quantization settings, including 16-bit baseline, regular 8-bit quantization method, and the LLM.int8() quantization method. Systematic outliers
+<p><span class="caption-number">Fig. 16.3 </span><span class="caption-text">OPT model mean zeroshot benchmark accuracy at different quantization settings, including 16-bit baseline, regular 8-bit quantization method, and the LLM.int8() quantization method. Systematic outliers
 emerge at a scale of 6.7B parameters, causing regular quantatization methods to have severe performance degradation. Image from <span id="id8">[<a class="reference internal" href="#id1502" title="Tim Dettmers, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. Llm.int8(): 8-bit matrix multiplication for transformers at scale. 2022. URL: https://arxiv.org/abs/2208.07339, arXiv:2208.07339.">DLBZ22</a>]</span>.</span><a class="headerlink" href="#chapter-inference-quantization-fig-llm-int8-performance-plot" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="smooth-quant">
-<h3><span class="section-number">17.4.2. </span>Smooth Quant<a class="headerlink" href="#smooth-quant" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.4.2. </span>Smooth Quant<a class="headerlink" href="#smooth-quant" title="Link to this heading">#</a></h3>
 </section>
 <section id="awq">
-<h3><span class="section-number">17.4.3. </span>AWQ<a class="headerlink" href="#awq" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.4.3. </span>AWQ<a class="headerlink" href="#awq" title="Link to this heading">#</a></h3>
 </section>
 <section id="gptq">
-<h3><span class="section-number">17.4.4. </span>GPTQ<a class="headerlink" href="#gptq" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.4.4. </span>GPTQ<a class="headerlink" href="#gptq" title="Link to this heading">#</a></h3>
 <section id="the-error-minimization-framework">
-<h4><span class="section-number">17.4.4.1. </span>The Error Minimization Framework<a class="headerlink" href="#the-error-minimization-framework" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">16.4.4.1. </span>The Error Minimization Framework<a class="headerlink" href="#the-error-minimization-framework" title="Link to this heading">#</a></h4>
 <p><span id="id9">[<a class="reference internal" href="#id1516" title="Yann LeCun, John Denker, and Sara Solla. Optimal brain damage. Advances in neural information processing systems, 1989.">LDS89</a>]</span></p>
 <p>If we want to remove some parameters from a model (i.e., pruning), intuitively, we want to remove parameters that have little impact on the objective function <span class="math notranslate nohighlight">\(E\)</span>. So we can perform a Taylor expansion on the objective function <span class="math notranslate nohighlight">\(E\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-chapter-inference-eq-inference-acceleration-gptq-error-minimization-objective-raw">
-<span class="eqno">(17.4)<a class="headerlink" href="#equation-chapter-inference-eq-inference-acceleration-gptq-error-minimization-objective-raw" title="Link to this equation">#</a></span>\[
+<span class="eqno">(16.4)<a class="headerlink" href="#equation-chapter-inference-eq-inference-acceleration-gptq-error-minimization-objective-raw" title="Link to this equation">#</a></span>\[
 \Delta E=\sum_i g_i \Delta w_i+\frac{1}{2} \sum_i h_{ii} \Delta w_i^2+\frac{1}{2} \sum_{i \neq j} h_{ij} \Delta w_i \Delta w_j+O\left(\Delta w^3\right)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(g_i=\frac{\partial E}{\partial w_i}\)</span> is the first-order partial derivative of the parameter, and <span class="math notranslate nohighlight">\(h_{ij}=\frac{\partial^2 E}{\partial w_i \partial w_j}\)</span> is an element of the Hessian matrix.</p>
@@ -957,13 +956,13 @@ emerge at a scale of 6.7B parameters, causing regular quantatization methods to 
 </ul>
 <p>This reduces the original <span class="math notranslate nohighlight">\(\Delta E\)</span> expression to</p>
 <div class="math notranslate nohighlight" id="equation-chapter-inference-eq-inference-acceleration-gptq-error-minimization-objective">
-<span class="eqno">(17.5)<a class="headerlink" href="#equation-chapter-inference-eq-inference-acceleration-gptq-error-minimization-objective" title="Link to this equation">#</a></span>\[
+<span class="eqno">(16.5)<a class="headerlink" href="#equation-chapter-inference-eq-inference-acceleration-gptq-error-minimization-objective" title="Link to this equation">#</a></span>\[
 \Delta E=\frac{1}{2} \sum_i h_{ii} \Delta w_i^2+\frac{1}{2} \sum_{i \neq j} h_{ij} \Delta w_i \Delta w_j
 \]</div>
 </section>
 <section id="speical-case-diagonal-hessian-assumption">
-<h4><span class="section-number">17.4.4.2. </span>Speical Case: Diagonal Hessian Assumption<a class="headerlink" href="#speical-case-diagonal-hessian-assumption" title="Link to this heading">#</a></h4>
-<p>One special case is when the Hessian matrix is a diagnoal, that is, the impact of each parameter on the objective function is independent. As a result <span class="math notranslate nohighlight">\(h_{ij}\Delta w_i \Delta w_j = 0\)</span>, the Eq. <a class="reference internal" href="#equation-chapter-inference-eq-inference-acceleration-gptq-error-minimization-objective">(17.5)</a> can be simplified to:</p>
+<h4><span class="section-number">16.4.4.2. </span>Speical Case: Diagonal Hessian Assumption<a class="headerlink" href="#speical-case-diagonal-hessian-assumption" title="Link to this heading">#</a></h4>
+<p>One special case is when the Hessian matrix is a diagnoal, that is, the impact of each parameter on the objective function is independent. As a result <span class="math notranslate nohighlight">\(h_{ij}\Delta w_i \Delta w_j = 0\)</span>, the Eq. <a class="reference internal" href="#equation-chapter-inference-eq-inference-acceleration-gptq-error-minimization-objective">(16.5)</a> can be simplified to:</p>
 <div class="math notranslate nohighlight">
 \[
 \Delta E=\frac{1}{2} \sum_i h_{ii} \Delta w_i^2.
@@ -971,9 +970,9 @@ emerge at a scale of 6.7B parameters, causing regular quantatization methods to 
 <p>From this equation, the impact of deleting a parameter <span class="math notranslate nohighlight">\(w_i\)</span> on the objective function is <span class="math notranslate nohighlight">\(\frac{1}{2} h_{ii} w_i^2\)</span>. So we only need to calculate the Hessian matrix <span class="math notranslate nohighlight">\(h_{ii}\)</span> to know the impact of each parameter on the objective. Then we can rank the parameters according to their impact from small to large, which determines the order of parameter pruning.</p>
 </section>
 <section id="general-case">
-<h4><span class="section-number">17.4.4.3. </span>General Case<a class="headerlink" href="#general-case" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">16.4.4.3. </span>General Case<a class="headerlink" href="#general-case" title="Link to this heading">#</a></h4>
 <p>OBS <span id="id10">[<a class="reference internal" href="#id1517" title="Babak Hassibi, David G Stork, and Gregory J Wolff. Optimal brain surgeon and general network pruning. In IEEE international conference on neural networks, 293–299. IEEE, 1993.">HSW93</a>]</span></p>
-<p>To analyze the general case of Eq. <a class="reference internal" href="#equation-chapter-inference-eq-inference-acceleration-gptq-error-minimization-objective">(17.5)</a>, we first write it in vector/matrix form:
+<p>To analyze the general case of Eq. <a class="reference internal" href="#equation-chapter-inference-eq-inference-acceleration-gptq-error-minimization-objective">(16.5)</a>, we first write it in vector/matrix form:
 $<span class="math notranslate nohighlight">\(
 \Delta E=\frac{1}{2} \Delta \mathbf{w}^{\mathbf{T}} \mathbf{H} \Delta \mathbf{w}
 \)</span>$ (chapter_inference_eq_inference_acceleration_GPTQ_error_minimization_objective_matrix_form)</p>
@@ -1038,7 +1037,7 @@ $<span class="math notranslate nohighlight">\(
 </div>
 </details><p>The implication is that the impact of pruning parameter <span class="math notranslate nohighlight">\(w_q\)</span> is <span class="math notranslate nohighlight">\(\frac{1}{2} \frac{w_q^2}{[\mathbf{H}^{-1}]_{qq}}\)</span>. So our pruning algorithm can be conducted by iteratively pruning parameters that has minimal impact and adjusting remaining parameters to offset the impact, as we summarize below.</p>
 <div class="proof algorithm admonition" id="OBS_network_pruning_algorithm">
-<p class="admonition-title"><span class="caption-number">Algorithm 17.1 </span> (OBS Neural Network Pruning Algorithm)</p>
+<p class="admonition-title"><span class="caption-number">Algorithm 16.1 </span> (OBS Neural Network Pruning Algorithm)</p>
 <section class="algorithm-content" id="proof-content">
 <p><strong>Inputs</strong> A trained neural network; Stop Criterion</p>
 <p><strong>Output</strong> A pruned neural network</p>
@@ -1051,15 +1050,15 @@ $<span class="math notranslate nohighlight">\(
 </section>
 </div></section>
 <section id="speed-up-hessian-computation">
-<h4><span class="section-number">17.4.4.4. </span>Speed-Up Hessian Computation<a class="headerlink" href="#speed-up-hessian-computation" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">16.4.4.4. </span>Speed-Up Hessian Computation<a class="headerlink" href="#speed-up-hessian-computation" title="Link to this heading">#</a></h4>
 </section>
 </section>
 </section>
 <section id="fp8">
-<h2><span class="section-number">17.5. </span>FP8<a class="headerlink" href="#fp8" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">16.5. </span>FP8<a class="headerlink" href="#fp8" title="Link to this heading">#</a></h2>
 </section>
 <section id="bibliography">
-<h2><span class="section-number">17.6. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">16.6. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <p>Additional References and software</p>
 <p><a class="reference external" href="https://lilianweng.github.io/posts/2023-01-10-inference-optimization/">https://lilianweng.github.io/posts/2023-01-10-inference-optimization/</a></p>
 <p>Quantization:
@@ -1129,7 +1128,7 @@ $<span class="math notranslate nohighlight">\(
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">16. </span>Decoding</p>
+        <p class="prev-next-title"><span class="section-number">15. </span>Decoding</p>
       </div>
     </a>
     <a class="right-next"
@@ -1137,7 +1136,7 @@ $<span class="math notranslate nohighlight">\(
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">18. </span>Basic prompt</p>
+        <p class="prev-next-title"><span class="section-number">17. </span>Basic prompt</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1157,44 +1156,44 @@ $<span class="math notranslate nohighlight">\(
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-fundamental-challenge-of-llm-inference">17.1. The fundamental challenge of LLM inference</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">17.1.1. Overview</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-requirement-breakdown">17.1.2. Memory Requirement Breakdown</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-fundamental-challenge-of-llm-inference">16.1. The fundamental challenge of LLM inference</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">16.1.1. Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-requirement-breakdown">16.1.2. Memory Requirement Breakdown</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kv-cache">17.2. KV Cache</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basics">17.2.1. Basics</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-cost-with-kv-cache">17.2.2. Computational cost with KV Cache</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-memory-requirement-with-kv-cache">17.2.3. Inference Memory Requirement with KV Cache</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-with-gqa">17.2.4. Combined with GQA</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blocked-kv-caching-via-paged-attention">17.2.5. Blocked KV Caching via Paged Attention</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kv-cache">16.2. KV Cache</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basics">16.2.1. Basics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-cost-with-kv-cache">16.2.2. Computational cost with KV Cache</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-memory-requirement-with-kv-cache">16.2.3. Inference Memory Requirement with KV Cache</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-with-gqa">16.2.4. Combined with GQA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blocked-kv-caching-via-paged-attention">16.2.5. Blocked KV Caching via Paged Attention</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-fundamentals">17.3. Quantization Fundamentals</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-concepts">17.3.1. Basic Concepts</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#where-quantization-and-dequant-happen-what-is-the-trade-off">17.3.2. Where quantization and dequant happen? What is the trade off</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-quantization-techniques">17.3.3. Standard quantization techniques</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantized-matrix-multiplication">17.3.4. Quantized matrix multiplication</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-granularities">17.3.5. Quantization granularities</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#groupwise-quantization">17.3.6. Groupwise quantization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-performance-trade-off-in-language-models">17.3.7. Quantization-performance trade-off in language models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-fundamentals">16.3. Quantization Fundamentals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-concepts">16.3.1. Basic Concepts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#where-quantization-and-dequant-happen-what-is-the-trade-off">16.3.2. Where quantization and dequant happen? What is the trade off</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-quantization-techniques">16.3.3. Standard quantization techniques</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantized-matrix-multiplication">16.3.4. Quantized matrix multiplication</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-granularities">16.3.5. Quantization granularities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#groupwise-quantization">16.3.6. Groupwise quantization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-performance-trade-off-in-language-models">16.3.7. Quantization-performance trade-off in language models</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-quantization-techniques">17.4. Advanced quantization techniques</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-int8">17.4.1. LLM.int8()</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smooth-quant">17.4.2. Smooth Quant</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#awq">17.4.3. AWQ</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gptq">17.4.4. GPTQ</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-error-minimization-framework">17.4.4.1. The Error Minimization Framework</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#speical-case-diagonal-hessian-assumption">17.4.4.2. Speical Case: Diagonal Hessian Assumption</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#general-case">17.4.4.3. General Case</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-up-hessian-computation">17.4.4.4. Speed-Up Hessian Computation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-quantization-techniques">16.4. Advanced quantization techniques</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-int8">16.4.1. LLM.int8()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smooth-quant">16.4.2. Smooth Quant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#awq">16.4.3. AWQ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gptq">16.4.4. GPTQ</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-error-minimization-framework">16.4.4.1. The Error Minimization Framework</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#speical-case-diagonal-hessian-assumption">16.4.4.2. Speical Case: Diagonal Hessian Assumption</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#general-case">16.4.4.3. General Case</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-up-hessian-computation">16.4.4.4. Speed-Up Hessian Computation</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8">17.5. FP8</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">17.6. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8">16.5. FP8</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">16.6. Bibliography</a></li>
 </ul>
   </nav></div>
 

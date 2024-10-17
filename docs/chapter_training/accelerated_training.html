@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_training/accelerated_training';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="16. Decoding" href="../chapter_inference/inference_fundamentals.html" />
+    <link rel="next" title="15. Decoding" href="../chapter_inference/inference_fundamentals.html" />
     <link rel="prev" title="13. LLM Alignement and Preference learning" href="alignment.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -199,23 +199,22 @@
 <li class="toctree-l1"><a class="reference internal" href="finetuning.html">12. LLM Finetuning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="alignment.html">13. LLM Alignement and Preference learning</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">14. LLM Training Acceleration</a></li>
-
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">16. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">17. Inference Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">15. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">16. Inference Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">18. Basic prompt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">19. Advanced prompt techniques</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">20. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">17. Basic prompt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">18. Advanced prompt techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">19. RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">21. Information Retrieval Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">22. Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">20. Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">21. Application of LLM in IR</a></li>
 </ul>
 
     </div>
@@ -316,7 +315,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">14. LLM Training Acceleration</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-memory-requirement-for-training-llm">14.1. The Memory Requirement For Training LLM</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-and-optimizer-states">14.1.1. Model and Optimizer States</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activations">14.1.2. Activations</a></li>
@@ -345,16 +343,13 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-online-softmax-to-flash-attention">14.5.3. From Online Softmax To Flash Attention</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">14.6. Appendix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floating-data-types">14.6.1. Floating Data Types</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-parallel-operations">14.6.2. GPU Parallel Operations</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">15. Appendix</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#floating-data-types">15.1. Floating Data Types</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-parallel-operations">15.2. GPU Parallel Operations</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">15.3. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">14.7. Bibliography</a></li>
 </ul>
-</li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -803,11 +798,10 @@ o_i^{\prime} &amp; =o_{i-1}^{\prime}\left(e^{m_{i-1}-m_i}\right) \frac{d_{i-1}^{
 This is the mathematical principle behind Flash Attention’s parallel acceleration.</p>
 </section>
 </section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="appendix">
-<h1><span class="section-number">15. </span>Appendix<a class="headerlink" href="#appendix" title="Link to this heading">#</a></h1>
+<section id="appendix">
+<h2><span class="section-number">14.6. </span>Appendix<a class="headerlink" href="#appendix" title="Link to this heading">#</a></h2>
 <section id="floating-data-types">
-<h2><span class="section-number">15.1. </span>Floating Data Types<a class="headerlink" href="#floating-data-types" title="Link to this heading">#</a></h2>
+<h3><span class="section-number">14.6.1. </span>Floating Data Types<a class="headerlink" href="#floating-data-types" title="Link to this heading">#</a></h3>
 <p>Float32 (FP32) stands for the standardized IEEE 32-bit floating point representation. With this data type it is possible to represent a wide range of floating numbers. In FP32, 8 bits are reserved for the “exponent”, 23 bits for the “mantissa” and 1 bit for the sign of the number. In addition to that, most of the hardware supports FP32 operations and instructions.</p>
 <p>In the float16 (FP16) data type, 5 bits are reserved for the exponent and 10 bits are reserved for the mantissa. This makes the representable range of FP16 numbers much lower than FP32. This exposes FP16 numbers to the risk of overflowing (trying to represent a number that is very large) and underflowing (representing a number that is very small).</p>
 <p>For example, if you do 10k * 10k you end up with 100M which is not possible to represent in FP16, as the largest number possible is 64k. And thus you’d end up with NaN (Not a Number) result and if you have sequential computation like in neural networks, all the prior work is destroyed. Usually, loss scaling is used to overcome this issue, but it doesn’t always work well.</p>
@@ -821,67 +815,67 @@ This is the mathematical principle behind Flash Attention’s parallel accelerat
 <a class="reference internal image-reference" href="../../_images/different_precision_demo.png"><img alt="../../_images/different_precision_demo.png" src="../../_images/different_precision_demo.png" style="width: 387.90000000000003px; height: 297.90000000000003px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 15.1 </span><span class="caption-text">Comparison of different float number types.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-different-precision-demo" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 14.3 </span><span class="caption-text">Comparison of different float number types.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-different-precision-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="gpu-parallel-operations">
-<h2><span class="section-number">15.2. </span>GPU Parallel Operations<a class="headerlink" href="#gpu-parallel-operations" title="Link to this heading">#</a></h2>
+<h3><span class="section-number">14.6.2. </span>GPU Parallel Operations<a class="headerlink" href="#gpu-parallel-operations" title="Link to this heading">#</a></h3>
 <p>References <a class="reference external" href="https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#:~:text=The%20ReduceScatter%20operation%20performs%20the%20same%20operation%20as,mapping%20since%20the%20ranks%20determine%20the%20data%20layout">https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#:~:text=The ReduceScatter operation performs the same operation as,mapping since the ranks determine the data layout</a>.</p>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-broadcast">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_broadcast.png"><img alt="../../_images/gpu_parallel_operation_broadcast.png" src="../../_images/gpu_parallel_operation_broadcast.png" style="width: 799.5px; height: 198.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 15.2 </span><span class="caption-text">Broadcast operation: data in one device is sent to all other devices.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-broadcast" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 14.4 </span><span class="caption-text">Broadcast operation: data in one device is sent to all other devices.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-broadcast" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-scatter">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_scatter.png"><img alt="../../_images/gpu_parallel_operation_scatter.png" src="../../_images/gpu_parallel_operation_scatter.png" style="width: 799.5px; height: 198.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 15.3 </span><span class="caption-text">Scatter operation.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-scatter" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 14.5 </span><span class="caption-text">Scatter operation.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-scatter" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-gather">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_gather.png"><img alt="../../_images/gpu_parallel_operation_gather.png" src="../../_images/gpu_parallel_operation_gather.png" style="width: 800.25px; height: 198.75px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 15.4 </span><span class="caption-text">Gather operation: every device broadcasts their data patition to a designated devices. Eventually, this desigated device has the complete data.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-gather" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 14.6 </span><span class="caption-text">Gather operation: every device broadcasts their data patition to a designated devices. Eventually, this desigated device has the complete data.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-gather" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-reduce">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_reduce.png"><img alt="../../_images/gpu_parallel_operation_reduce.png" src="../../_images/gpu_parallel_operation_reduce.png" style="width: 801.0px; height: 199.5px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 15.5 </span><span class="caption-text">Reduce operation.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-reduce" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 14.7 </span><span class="caption-text">Reduce operation.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-reduce" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-allgather">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_allgather.png"><img alt="../../_images/gpu_parallel_operation_allgather.png" src="../../_images/gpu_parallel_operation_allgather.png" style="width: 800.25px; height: 198.75px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 15.6 </span><span class="caption-text">AllGather operation: every device broadcasts their chuck of data to all other devices. Eventually, every device has a complete data copy.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-allgather" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 14.8 </span><span class="caption-text">AllGather operation: every device broadcasts their chuck of data to all other devices. Eventually, every device has a complete data copy.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-allgather" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-allgather-ring">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_allgather_ring.png"><img alt="../../_images/gpu_parallel_operation_allgather_ring.png" src="../../_images/gpu_parallel_operation_allgather_ring.png" style="width: 639.0px; height: 459.75px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 15.7 </span><span class="caption-text">Communication efficient implementation for AllGather via ring style. Every device sends its chuck of data to the next device in the ring.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-allgather-ring" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 14.9 </span><span class="caption-text">Communication efficient implementation for AllGather via ring style. Every device sends its chuck of data to the next device in the ring.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-allgather-ring" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-reducescatter">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_reducescatter.png"><img alt="../../_images/gpu_parallel_operation_reducescatter.png" src="../../_images/gpu_parallel_operation_reducescatter.png" style="width: 800.25px; height: 198.75px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 15.8 </span><span class="caption-text">ReduceScatter operation performs the same operation as Reduce, except that the result is scattered in equal-sized blocks across devices.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-reducescatter" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 14.10 </span><span class="caption-text">ReduceScatter operation performs the same operation as Reduce, except that the result is scattered in equal-sized blocks across devices.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-reducescatter" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-allreduce">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_allreduce.png"><img alt="../../_images/gpu_parallel_operation_allreduce.png" src="../../_images/gpu_parallel_operation_allreduce.png" style="width: 799.5px; height: 198.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 15.9 </span><span class="caption-text">AllReduce operation.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-allreduce" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 14.11 </span><span class="caption-text">AllReduce operation.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-allreduce" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>A <strong>naive AllReduce</strong> implementation would be two steps:</p>
@@ -892,7 +886,7 @@ This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Ph
 </ol>
 <p>The <strong>RingAllReduce</strong> address the load imbalance issue by engaging all devices in data communication and reduction (i.e., more parallelism). The RingAllReduce is equivalent to first RingReduceScatter and then AllGather.</p>
 <div class="pst-scrollable-table-container"><table class="table" id="id1527">
-<caption><span class="caption-number">Table 15.1 </span><span class="caption-text">Communication volumne summary for different operations. Let <span class="math notranslate nohighlight">\(\Phi\)</span> be the total data size in one device and <span class="math notranslate nohighlight">\(N\)</span> be the total number of devices.</span><a class="headerlink" href="#id1527" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 14.2 </span><span class="caption-text">Communication volumne summary for different operations. Let <span class="math notranslate nohighlight">\(\Phi\)</span> be the total data size in one device and <span class="math notranslate nohighlight">\(N\)</span> be the total number of devices.</span><a class="headerlink" href="#id1527" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Type</p></th>
 <th class="head text-left"><p>Storage Size</p></th>
@@ -924,8 +918,9 @@ This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Ph
 </table>
 </div>
 </section>
+</section>
 <section id="bibliography">
-<h2><span class="section-number">15.3. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">14.7. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id6">
 <div role="list" class="citation-list">
 <div class="citation" id="id1517" role="doc-biblioentry">
@@ -994,7 +989,7 @@ This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Ph
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">16. </span>Decoding</p>
+        <p class="prev-next-title"><span class="section-number">15. </span>Decoding</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1014,7 +1009,6 @@ This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Ph
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">14. LLM Training Acceleration</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-memory-requirement-for-training-llm">14.1. The Memory Requirement For Training LLM</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-and-optimizer-states">14.1.1. Model and Optimizer States</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activations">14.1.2. Activations</a></li>
@@ -1043,16 +1037,13 @@ This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Ph
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-online-softmax-to-flash-attention">14.5.3. From Online Softmax To Flash Attention</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">14.6. Appendix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floating-data-types">14.6.1. Floating Data Types</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-parallel-operations">14.6.2. GPU Parallel Operations</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">15. Appendix</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#floating-data-types">15.1. Floating Data Types</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-parallel-operations">15.2. GPU Parallel Operations</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">15.3. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">14.7. Bibliography</a></li>
 </ul>
-</li>
-</ul>
-
   </nav></div>
 
 </div></div>
