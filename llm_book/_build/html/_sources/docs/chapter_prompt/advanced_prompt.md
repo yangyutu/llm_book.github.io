@@ -1,33 +1,25 @@
-# Advanced prompt techniques
-
-## Dynamic in-context learning
-
-In the most common form of in-context learning (also known as few-shot learning), the foundation model is prompted with a few demonstrations, and the foundation models quickly adapt to a specific domain and learn to follow the task format. These few-shot examples applied in prompting for a particular task are typically fixed; they are unchanged across test examples. 
-
-To achieve the best testing performance, it is necessary that these few-shot examples selected are broadly representative and relevant to a wide distribution of text examples. 
-
-In the dynamic few-shot prompting setting, we can select can select different few-shot examples for different task inputs. The selection criterion can be based on the simiarlity to the testing case at hand.
+# Advanced prompting Techniques
 
 
-## ensemble CoT with self-consistency
 
-{cite:p}`wang2022self`
 
-Chain-of-thought prompting combined with pre-trained large language models has achieved encouraging results on complex reasoning tasks. In this paper, we propose a new decoding strategy, self-consistency, to replace the naive greedy decoding used in chain-of-thought prompting. It first samples a diverse set of reasoning paths instead of only taking the greedy one, and then selects the most consistent answer by marginalizing out the sampled reasoning paths. Self-consistency leverages the intuition that a complex reasoning problem typically admits multiple different ways of thinking leading to its unique correct answer.
+## CoT with self-consistency
 
-Self-consistency is far simpler than prior approaches that either train an additional verifier (Cobbe et al., 2021) or train a re-ranker given additional human annotations to improve generation quality
-(Thoppilan et al., 2022). Instead, self-consistency is entirely unsupervised, works off-the-shelf with pre-trained language models, requires no additional human annotation, and avoids any additional training, auxiliary models or fine-tuning.
-
+**Chain-of-thought** prompting combined with pre-trained large language models has achieved encouraging results on complex reasoning tasks. {cite:p}`wang2022self` propose a **self-consistency** strategy to improve the performance of chain-of-thought prompting. 
+The key idea is that [{numref}`chapter_prompt_fig_advanced_prompt_cot_self_consistency_num_paths`]:
+1. First we samples a diverse set of reasoning paths 
+2. Then we select the most consistent answer by marginalizing out the sampled reasoning paths. 
+Self-consistency is based on the intuition that a complex reasoning problem typically admits multiple different ways of thinking leading to its unique correct answer.
 
 ```{figure} ../img/chapter_prompt/advanced_prompt/cot_self_consistency.png
 ---
 scale: 80%
-name: hapter_prompt_fig_advanced_prompt_cot_self_consistency_num_paths
+name: chapter_prompt_fig_advanced_prompt_cot_self_consistency_num_paths
 ---
 CoT with self-consistency.
 ```
 
-Sampling scheme:
+<!-- Sampling scheme:
     - for UL2-20B and LaMDA-137B we applied temperature sampling with T = 0.5 and truncated at the top-k (k = 40) tokens with the highest probability, 
     - for PaLM-540B we applied T = 0.7, k = 40, 
     - for GPT-3 we use T = 0.7 without top-k truncation.
@@ -38,12 +30,10 @@ scale: 80%
 name: chapter_prompt_fig_advanced_prompt_cot_self_consistency_example
 ---
 CoT with self-consistency examples.
-```
+``` -->
 
 
-Self-consistency (blue) significantly improves accuracy over CoT-prompting with greedy
-decoding (orange) across arithmetic and commonsense reasoning tasks, over LaMDA-137B. Sampling
-a higher number of diverse reasoning paths consistently improves reasoning accuracy
+As shown in the following [{numref}`chapter_prompt_fig_advanced_prompt_cot_self_consistency_num_paths`], using over LaMDA-137B, self-consistency (blue) significantly improves accuracy over CoT-prompting with greedy decoding (orange) across arithmetic and commonsense reasoning tasks. Sampling a higher number of diverse reasoning paths consistently improves reasoning accuracy.
 
 
 ```{figure} ../img/chapter_prompt/advanced_prompt/cot_self_consistency_num_paths.png
@@ -91,6 +81,13 @@ With choice shuffling, we shuffle the relative order of the answer choices befor
 
 Choice shuffling has an additional benefit of increasing the diversity of each reasoning path beyond temperature sampling, thereby also improving the quality of the final ensemble
 
+## Dynamic In-Context Learning
+
+In the most common form of in-context learning (also known as few-shot learning),LLM is prompted with a few demonstrations, and produce responses following the task format in the prompt. These few-shot examples used in prompting for a particular task are typically fixed; they are unchanged across test examples. 
+
+To achieve the best testing performance, it is necessary that these few-shot examples selected are broadly representative and relevant to a wide distribution of text examples. 
+
+In the dynamic few-shot prompting setting, we can select can select different few-shot examples for different task inputs. The selection criterion can be based on the simiarlity to the testing case at hand.
 
 ## Combining Together: the Med prompt 
 

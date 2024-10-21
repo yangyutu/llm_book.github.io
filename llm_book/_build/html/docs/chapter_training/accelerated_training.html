@@ -213,7 +213,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">20. Information Retrieval Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">20. Information Retrieval and Text Ranking</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">21. Application of LLM in IR</a></li>
 </ul>
 
@@ -337,18 +337,12 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-stage-one">14.4.2. ZeRO-Stage-One</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flash-attention">14.5. Flash Attention</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#online-softmax-motivation">14.5.1. Online Softmax Motivation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#online-softmax-algorithm">14.5.2. Online Softmax Algorithm</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-online-softmax-to-flash-attention">14.5.3. From Online Softmax To Flash Attention</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">14.5. Appendix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floating-data-types">14.5.1. Floating Data Types</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-parallel-operations">14.5.2. GPU Parallel Operations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">14.6. Appendix</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floating-data-types">14.6.1. Floating Data Types</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-parallel-operations">14.6.2. GPU Parallel Operations</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">14.7. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">14.6. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -683,125 +677,138 @@ When <span class="math notranslate nohighlight">\(N_d\)</span> is very large, th
 \]</div>
 <p>When <span class="math notranslate nohighlight">\(K=12\)</span>, this becomes <span class="math notranslate nohighlight">\(\frac{1}{4}\)</span>, meaning the memory usage is <span class="math notranslate nohighlight">\(\frac{1}{4}\)</span> of the original.</p>
 </section>
-</div></section>
-</section>
-<section id="flash-attention">
-<h2><span class="section-number">14.5. </span>Flash Attention<a class="headerlink" href="#flash-attention" title="Link to this heading">#</a></h2>
-<section id="online-softmax-motivation">
-<h3><span class="section-number">14.5.1. </span>Online Softmax Motivation<a class="headerlink" href="#online-softmax-motivation" title="Link to this heading">#</a></h3>
-<p>A typical computation of Softmax
-$<span class="math notranslate nohighlight">\(a_i = \mathbf{Softmax} (x_i | x_1,...,x_N) = \frac{\exp(x_i)}{\sum_{j}^N \exp(x_j)}\)</span>$
-within the self-attention module involves the following three steps:</p>
-<ol class="arabic simple">
-<li><p>Motivated by preventing overflow, we first find the maximum value <span class="math notranslate nohighlight">\(m\)</span> of <span class="math notranslate nohighlight">\(\{x_1,...,x_N\}\)</span>
-$<span class="math notranslate nohighlight">\(
+</div><!-- 
+## Flash Attention
+
+
+### Online Softmax Motivation
+
+A typical computation of Softmax 
+$$a_i = \mathbf{Softmax} (x_i | x_1,...,x_N) = \frac{\exp(x_i)}{\sum_{j}^N \exp(x_j)}$$
+within the self-attention module involves the following three steps:
+
+1. Motivated by preventing overflow, we first find the maximum value $m$ of $\{x_1,...,x_N\}$
+$$
 \begin{aligned}
-\text{for }  i &amp; \leftarrow 1, N \text{ do} \\
-m &amp; = \max(m, x_i)
+\text{for }  i & \leftarrow 1, N \text{ do} \\
+m & = \max(m, x_i)
 \end{aligned}
-\)</span>$</p></li>
-<li><p>Calculate the denominator of Softmax (with offset to <span class="math notranslate nohighlight">\(m\)</span>)
-$<span class="math notranslate nohighlight">\(
+$$
+
+2. Calculate the denominator of Softmax (with offset to $m$)
+$$
 \begin{aligned}
-\text{for } i &amp; \leftarrow 1, N \text{ do} \\
-d_i &amp; = d_{i-1} + \exp(x_i-m)
+\text{for } i & \leftarrow 1, N \text{ do} \\
+d_i & = d_{i-1} + \exp(x_i-m)
 \end{aligned}
-\)</span>$</p></li>
-<li><p>Calculate the Softmax for each corresponding position</p></li>
-</ol>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+$$
+
+3. Calculate the Softmax for each corresponding position
+
+$$
 \begin{aligned}
-\text{for } i &amp; \leftarrow 1, N \text{ do} \\
-a_i &amp; = \frac{\exp(x_i-m)}{d_N}
+\text{for } i & \leftarrow 1, N \text{ do} \\
+a_i & = \frac{\exp(x_i-m)}{d_N}
 \end{aligned}
-\end{split}\]</div>
-<p>Without any optimization, at least six communications with the GPU are required (three writes and three reads). If we apply some parallel partitioning to each step of the for loop, we would also need to add the communication costs of operations like reduce_sum and reduce_max. Is it possible to fuse certain operations to reduce communication?</p>
-<p>Based on previous experience with layernorm parallelization, we need to look for an Online Algorithm.</p>
-</section>
-<section id="online-softmax-algorithm">
-<h3><span class="section-number">14.5.2. </span>Online Softmax Algorithm<a class="headerlink" href="#online-softmax-algorithm" title="Link to this heading">#</a></h3>
-<p>Nvidia :cite:<code class="docutils literal notranslate"><span class="pre">milakov2018onlinenormalizercalculationsoftmax</span></code></p>
-<p>Since we’re looking for an Online algorithm, we need to find a recursive expression.
-For the second step, <span class="math notranslate nohighlight">\(d_i=d_{i-1}+e^{x_i-m_N}\)</span>, we aim to remove its dependency on <span class="math notranslate nohighlight">\(m_N\)</span>.
-Let <span class="math notranslate nohighlight">\(d_i^{\prime}=\sum_j^i e^{x_j-m_i}\)</span>, note that here we subtract the current maximum instead of the global maximum. This expression has the following property:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+$$
+
+Without any optimization, at least six communications with the GPU are required (three writes and three reads). If we apply some parallel partitioning to each step of the for loop, we would also need to add the communication costs of operations like reduce_sum and reduce_max. Is it possible to fuse certain operations to reduce communication? 
+
+Based on previous experience with layernorm parallelization, we need to look for an Online Algorithm.
+
+### Online Softmax Algorithm
+
+Nvidia :cite:`milakov2018onlinenormalizercalculationsoftmax`
+
+Since we're looking for an Online algorithm, we need to find a recursive expression.
+For the second step, $d_i=d_{i-1}+e^{x_i-m_N}$, we aim to remove its dependency on $m_N$.
+Let $d_i^{\prime}=\sum_j^i e^{x_j-m_i}$, note that here we subtract the current maximum instead of the global maximum. This expression has the following property:
+
+$$
 \begin{aligned}
-d_i^{\prime} &amp; =\sum_j^i e^{x_j-m_i} \\
-&amp; =\sum_j^{i-1} e^{x_j-m_i}+e^{x_i-m_i} \\
-&amp; =\sum_j^{i-1} e^{x_j-m_{i-1}+m_{i-1}-m_i}+e^{x_i-m_i} \\
-&amp; =\left(\sum_j^{i-1} e^{x_j-m_{i-1}}\right) e^{m_{i-1}-m_i}+e^{x_i-m_i} \\
-&amp; =d_{i-1}^{\prime} e^{m_{i-1}-m_i}+e^{x_i-m_i}
+d_i^{\prime} & =\sum_j^i e^{x_j-m_i} \\
+& =\sum_j^{i-1} e^{x_j-m_i}+e^{x_i-m_i} \\
+& =\sum_j^{i-1} e^{x_j-m_{i-1}+m_{i-1}-m_i}+e^{x_i-m_i} \\
+& =\left(\sum_j^{i-1} e^{x_j-m_{i-1}}\right) e^{m_{i-1}-m_i}+e^{x_i-m_i} \\
+& =d_{i-1}^{\prime} e^{m_{i-1}-m_i}+e^{x_i-m_i}
 \end{aligned}
-\end{split}\]</div>
-<p>We can see that the calculation of <span class="math notranslate nohighlight">\(d_i^{\prime}\)</span> depends on <span class="math notranslate nohighlight">\(d_{i-1}^{\prime}, m_i, m_{i-1}\)</span>, allowing us to merge the first two steps. The previous three steps can be reduced to two:</p>
-<p>Find the maximum value <span class="math notranslate nohighlight">\(m\)</span> of <span class="math notranslate nohighlight">\(x\)</span>, calculate the denominator of softmax.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+$$
+
+We can see that the calculation of $d_i^{\prime}$ depends on $d_{i-1}^{\prime}, m_i, m_{i-1}$, allowing us to merge the first two steps. The previous three steps can be reduced to two:
+
+Find the maximum value $m$ of $x$, calculate the denominator of softmax.
+
+$$
 \begin{aligned}
-&amp; \text { for } i \leftarrow 1, N \text { do } \\
-&amp; \quad m_i=\max \left(m_i, x_i\right) \\
-&amp; \quad d_i^{\prime}=d_{i-1}^{\prime} e^{m_{i-1}-m_i}+e^{x_i-m_i}
+& \text { for } i \leftarrow 1, N \text { do } \\
+& \quad m_i=\max \left(m_i, x_i\right) \\
+& \quad d_i^{\prime}=d_{i-1}^{\prime} e^{m_{i-1}-m_i}+e^{x_i-m_i}
 \end{aligned}
-\end{split}\]</div>
-<p>Calculate the softmax for each position</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+$$
+
+Calculate the softmax for each position
+
+$$
 \begin{aligned}
-\text { for } i &amp; \leftarrow 1, N \text { do } \\
-a_i &amp; =\frac{e^{x_i-m_N}}{d_N}
+\text { for } i & \leftarrow 1, N \text { do } \\
+a_i & =\frac{e^{x_i-m_N}}{d_N}
 \end{aligned}
-\end{split}\]</div>
-<p>Can we further fuse operators? Not really, because the denominator in the second step depends on the calculation from the first step.
-However, we can use GPU shared memory to store intermediate results and implement the above two steps in a single kernel. This way, we only need to communicate with global memory twice: once to write data and once to read results.</p>
-</section>
-<section id="from-online-softmax-to-flash-attention">
-<h3><span class="section-number">14.5.3. </span>From Online Softmax To Flash Attention<a class="headerlink" href="#from-online-softmax-to-flash-attention" title="Link to this heading">#</a></h3>
-<p>Using a method similar to Online Softmax, we can place all Attention operations into a single for loop (implementable in one Kernel).
-Let’s first look at how it’s calculated:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+$$
+
+Can we further fuse operators? Not really, because the denominator in the second step depends on the calculation from the first step.
+However, we can use GPU shared memory to store intermediate results and implement the above two steps in a single kernel. This way, we only need to communicate with global memory twice: once to write data and once to read results.
+
+### From Online Softmax To Flash Attention
+
+Using a method similar to Online Softmax, we can place all Attention operations into a single for loop (implementable in one Kernel).
+Let's first look at how it's calculated:
+
+$$
 \begin{aligned}
-\text { for } i &amp; \leftarrow 1, N \text { do } \\
-a_i &amp; =\frac{e^{x_i-m_N}}{d_N^{\prime}} \\
-o_i &amp; =\sum_j^i a_j v_j=\sum_j^i \frac{e^{x_j-m_N}}{d_N^{\prime}} v_j
+\text { for } i & \leftarrow 1, N \text { do } \\
+a_i & =\frac{e^{x_i-m_N}}{d_N^{\prime}} \\
+o_i & =\sum_j^i a_j v_j=\sum_j^i \frac{e^{x_j-m_N}}{d_N^{\prime}} v_j
 \end{aligned}
-\end{split}\]</div>
-<p>We can see that <span class="math notranslate nohighlight">\(o_i\)</span> contains <span class="math notranslate nohighlight">\(m_N\)</span> and <span class="math notranslate nohighlight">\(d_N^{\prime}\)</span>. We want to eliminate these dependencies. Similar to Online Softmax, we define:</p>
-<div class="math notranslate nohighlight">
-\[
+$$
+
+We can see that $o_i$ contains $m_N$ and $d_N^{\prime}$. We want to eliminate these dependencies. Similar to Online Softmax, we define:
+
+$$
 o_i^{\prime}=\sum_j^i \frac{e^{x_j-m_i}}{d_i^{\prime}} v_j
-\]</div>
-<p>Let’s find the recursive expression. The key is to identify <span class="math notranslate nohighlight">\(o_{i-1}^{\prime}\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+$$
+
+Let's find the recursive expression. The key is to identify $o_{i-1}^{\prime}$:
+
+$$
 \begin{aligned}
-\sigma_i^{\prime} &amp; =\sum_j^i \frac{e^{x_j-m_i}}{d_i^{\prime}} v_j \\
-&amp; =\sum_j^{i-1} \frac{e^{x_j-m_i}}{d_i^{\prime}} v_j+\frac{e^{x_i-m_i}}{d_i^{\prime}} v_i \\
-&amp; =\sum_j^{i-1} \frac{e^{x_j-m_{i-1}}}{d_{i-1}^{\prime}} \frac{e^{x_j-m_i}}{e^{x_j-m_{i-1}}} \frac{d_{i-1}^{\prime}}{d_i^{\prime}} v_j+\frac{e^{x_i-m_i}}{d_i^{\prime}} v_i \\
-&amp; =\left(\sum_j^{i-1} \frac{e^{x_j-m_{i-1}}}{d_{i-1}^{\prime}} v_j\right) \frac{e^{x_j-m_i}}{e^{x_j-m_{i-1}}} \frac{d_{i-1}^{\prime}}{d_i^{\prime}}+\frac{e^{x_i-m_i}}{d_i^{\prime}} v_i \\
-&amp; =o_{i-1}^{\prime}\left(e^{m_{i-1}-m_i}\right) \frac{d_{i-1}^{\prime}}{d_i^{\prime}}+\frac{e^{x_i-m_i}}{d_i^{\prime}} v_i
+\sigma_i^{\prime} & =\sum_j^i \frac{e^{x_j-m_i}}{d_i^{\prime}} v_j \\
+& =\sum_j^{i-1} \frac{e^{x_j-m_i}}{d_i^{\prime}} v_j+\frac{e^{x_i-m_i}}{d_i^{\prime}} v_i \\
+& =\sum_j^{i-1} \frac{e^{x_j-m_{i-1}}}{d_{i-1}^{\prime}} \frac{e^{x_j-m_i}}{e^{x_j-m_{i-1}}} \frac{d_{i-1}^{\prime}}{d_i^{\prime}} v_j+\frac{e^{x_i-m_i}}{d_i^{\prime}} v_i \\
+& =\left(\sum_j^{i-1} \frac{e^{x_j-m_{i-1}}}{d_{i-1}^{\prime}} v_j\right) \frac{e^{x_j-m_i}}{e^{x_j-m_{i-1}}} \frac{d_{i-1}^{\prime}}{d_i^{\prime}}+\frac{e^{x_i-m_i}}{d_i^{\prime}} v_i \\
+& =o_{i-1}^{\prime}\left(e^{m_{i-1}-m_i}\right) \frac{d_{i-1}^{\prime}}{d_i^{\prime}}+\frac{e^{x_i-m_i}}{d_i^{\prime}} v_i
 \end{aligned}
-\end{split}\]</div>
-<p>We can see that the calculation of <span class="math notranslate nohighlight">\(o_i\)</span> depends on <span class="math notranslate nohighlight">\(o_{i-1}, m_i, m_{i-1}, d_i^{\prime}, d_{i-1}^{\prime}\)</span>. This allows us to place the entire Attention calculation into a single for loop:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+$$
+
+We can see that the calculation of $o_i$ depends on $o_{i-1}, m_i, m_{i-1}, d_i^{\prime}, d_{i-1}^{\prime}$. This allows us to place the entire Attention calculation into a single for loop:
+
+$$
 \begin{aligned}
-\text { for } i &amp; \leftarrow 1, N  \text{ do } \\
-m_i &amp; =\max \left(m_i, x_i\right) \\
-d_i^{\prime} &amp; =d_{i-1}^{\prime} e^{m_{i-1}-m_i}+e^{x_i-m_i} \\
-o_i^{\prime} &amp; =o_{i-1}^{\prime}\left(e^{m_{i-1}-m_i}\right) \frac{d_{i-1}^{\prime}}{d_i^{\prime}}+\frac{e^{x_i-m_i}}{d_i^{\prime}} v_i
+\text { for } i & \leftarrow 1, N  \text{ do } \\
+m_i & =\max \left(m_i, x_i\right) \\
+d_i^{\prime} & =d_{i-1}^{\prime} e^{m_{i-1}-m_i}+e^{x_i-m_i} \\
+o_i^{\prime} & =o_{i-1}^{\prime}\left(e^{m_{i-1}-m_i}\right) \frac{d_{i-1}^{\prime}}{d_i^{\prime}}+\frac{e^{x_i-m_i}}{d_i^{\prime}} v_i
 \end{aligned}
-\end{split}\]</div>
-<p>From the above, we can see that all operations within the for loop satisfy the associative property. This means the for loop can be block-processed, allowing for more efficient parallel computation on GPUs.
-This is the mathematical principle behind Flash Attention’s parallel acceleration.</p>
+$$
+
+From the above, we can see that all operations within the for loop satisfy the associative property. This means the for loop can be block-processed, allowing for more efficient parallel computation on GPUs.
+
+ -->
 </section>
 </section>
 <section id="appendix">
-<h2><span class="section-number">14.6. </span>Appendix<a class="headerlink" href="#appendix" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">14.5. </span>Appendix<a class="headerlink" href="#appendix" title="Link to this heading">#</a></h2>
 <section id="floating-data-types">
-<h3><span class="section-number">14.6.1. </span>Floating Data Types<a class="headerlink" href="#floating-data-types" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">14.5.1. </span>Floating Data Types<a class="headerlink" href="#floating-data-types" title="Link to this heading">#</a></h3>
 <p>Float32 (FP32) stands for the standardized IEEE 32-bit floating point representation. With this data type it is possible to represent a wide range of floating numbers. In FP32, 8 bits are reserved for the “exponent”, 23 bits for the “mantissa” and 1 bit for the sign of the number. In addition to that, most of the hardware supports FP32 operations and instructions.</p>
 <p>In the float16 (FP16) data type, 5 bits are reserved for the exponent and 10 bits are reserved for the mantissa. This makes the representable range of FP16 numbers much lower than FP32. This exposes FP16 numbers to the risk of overflowing (trying to represent a number that is very large) and underflowing (representing a number that is very small).</p>
 <p>For example, if you do 10k * 10k you end up with 100M which is not possible to represent in FP16, as the largest number possible is 64k. And thus you’d end up with NaN (Not a Number) result and if you have sequential computation like in neural networks, all the prior work is destroyed. Usually, loss scaling is used to overcome this issue, but it doesn’t always work well.</p>
@@ -820,7 +827,7 @@ This is the mathematical principle behind Flash Attention’s parallel accelerat
 </figure>
 </section>
 <section id="gpu-parallel-operations">
-<h3><span class="section-number">14.6.2. </span>GPU Parallel Operations<a class="headerlink" href="#gpu-parallel-operations" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">14.5.2. </span>GPU Parallel Operations<a class="headerlink" href="#gpu-parallel-operations" title="Link to this heading">#</a></h3>
 <p>References <a class="reference external" href="https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#:~:text=The%20ReduceScatter%20operation%20performs%20the%20same%20operation%20as,mapping%20since%20the%20ranks%20determine%20the%20data%20layout">https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#:~:text=The ReduceScatter operation performs the same operation as,mapping since the ranks determine the data layout</a>.</p>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-broadcast">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_broadcast.png"><img alt="../../_images/gpu_parallel_operation_broadcast.png" src="../../_images/gpu_parallel_operation_broadcast.png" style="width: 799.5px; height: 198.0px;" />
@@ -920,7 +927,7 @@ This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Ph
 </section>
 </section>
 <section id="bibliography">
-<h2><span class="section-number">14.7. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">14.6. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id6">
 <div role="list" class="citation-list">
 <div class="citation" id="id1517" role="doc-biblioentry">
@@ -1031,18 +1038,12 @@ This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Ph
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-stage-one">14.4.2. ZeRO-Stage-One</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flash-attention">14.5. Flash Attention</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#online-softmax-motivation">14.5.1. Online Softmax Motivation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#online-softmax-algorithm">14.5.2. Online Softmax Algorithm</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-online-softmax-to-flash-attention">14.5.3. From Online Softmax To Flash Attention</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">14.5. Appendix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floating-data-types">14.5.1. Floating Data Types</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-parallel-operations">14.5.2. GPU Parallel Operations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">14.6. Appendix</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floating-data-types">14.6.1. Floating Data Types</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-parallel-operations">14.6.2. GPU Parallel Operations</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">14.7. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">14.6. Bibliography</a></li>
 </ul>
   </nav></div>
 

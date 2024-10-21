@@ -268,7 +268,7 @@ $$
 When $K=12$, this becomes $\frac{1}{4}$, meaning the memory usage is $\frac{1}{4}$ of the original.
 
 ````
-
+<!-- 
 ## Flash Attention
 
 
@@ -392,7 +392,8 @@ o_i^{\prime} & =o_{i-1}^{\prime}\left(e^{m_{i-1}-m_i}\right) \frac{d_{i-1}^{\pri
 $$
 
 From the above, we can see that all operations within the for loop satisfy the associative property. This means the for loop can be block-processed, allowing for more efficient parallel computation on GPUs.
-This is the mathematical principle behind Flash Attention's parallel acceleration.
+
+ -->
 
 ## Appendix
 

@@ -3,12 +3,16 @@
 
 ## Motivation and Overview
 
+Although a pretrained LLM (e.g., GPT-3) can already perform multitask, including reasoning, via prompting (e.g., few-shot prompting and CoT prompting), further finetuning can usually better adapt to downstream applications (including better following prompt instruction). Particularly for LLMs on the smaller end (<10B), prompt iteration can usually only achieve limited performance gain, finetuning is a much more efficient way to improve model performance with small amount of training data. Fundamentally, this is because the generic pretraining objective (predicting the next token) does not fully align with the downstream application objective: following instructions and conducting specific tasks.
+
+This chapter explores two primary approaches to LLM finetuning: **Instruction Finetuning** and **Parameter-Efficient Fine Tuning (PEFT)**. Instruction Finetuning focuses on teaching the model to follow specific instructions or prompts, enhancing its ability to understand instruction and reponse to instructions. PEFT techniques, on the other hand, aiming to finetune the model by updating only a small subset of its parameters, offering a more computationally efficient approach to customization.
+
 % https://stanford-cs324.github.io/winter2022/lectures/adaptation/
 
 ## Instruction Finetuning
 
 ### Basics
-Instruction finetuning for Large Language Models (LLMs) was developed to address the gap between the general knowledge and capabilities of pre-trained models and the specific tasks or behaviors desired in real-world applications. While pre-trained LLMs possess broad knowledge, they often lack the ability to follow specific instructions or perform targeted tasks consistently.
+Instruction finetuning {cite:p}`lou2024large` for LLMs was developed to address the gap between the general knowledge and capabilities of pre-trained base models and the specific tasks or behaviors desired in real-world applications. While pre-trained LLMs possess broad knowledge, they often lack the ability to follow specific instructions or perform targeted tasks consistently.
 
 As shown in the following example, a base LLM (without insturction finetuning) often fails to understand the intent of the prompt, and instead blindly performs text generation. An instructed LLM, on the other hand, understands the intent and provides useful responses. 
 ````{prf:example} Comparision of base LLM and instructed LLM in response to a prompt
@@ -34,11 +38,7 @@ The core idea of instruction finetuning [{numref}`chapter_training_fig_finetunin
 1. Creating a dataset of instruction-output pairs covering a wide range of tasks.
 2. Fine-tuning the pre-trained LLM on this dataset, often using supervised learning techniques.
 
-
-Instruction tuning often substantially improves zero shot performance on unseen tasks {cite:p}`wei2021finetuned`.
-
-
-
+Instruction tuning can often substantially improves zero shot performance on unseen tasks {cite:p}`wei2021finetuned`.
 
 ```{figure} ../img/chapter_training/finetuning/instruction_finetuning/instruction_finetuning_demo.png
 ---
@@ -116,30 +116,27 @@ Jointly finetuning on non-CoT and CoT data improves performance on both evaluati
 to finetuning on just one or the other. Image from {cite:p}`chung2022scalinginstructionfinetunedlanguagemodels`.
 ```
 
-
+(chapter_training_sec_LLM_finetuning_PEFT)=
 ## Parameter-Efficient Fine Tuning (PEFT)
 
 ### Motivation
 
-The motivation for parameter-efficient finetuning of large language models (LLMs) stems from several factors:
+To adapt a LLM to a specific downstream task, Full-size fine-tunning the whole LLM is usually not cost effective. For models whose model parameters are at the 1B or above, it is difficult to fine-tune the model using a single consumer grade GPU. Full-size finetuning also runs the risk of Catastrophic Forgetting {cite:p}`luo2024empiricalstudycatastrophicforgetting` which means LLMs forget prior knowledge when learning new data. 
 
-1. Resource constraints: Full finetuning of LLMs requires significant computational resources and time.
-2. Overfitting concerns: Traditional finetuning can lead to overfitting on small datasets.
-3. Storage efficiency: Storing multiple versions of large models for different tasks is impractical.
-4. Adaptability: The need to quickly adapt models to new tasks or domains without extensive retraining.
-5. Environmental considerations: Reducing the carbon footprint associated with training large AI models.
-
-To adapt a LLM to a specific downstream task, Full-size fine-tunning the whole LLM is usually not cost effective. For models whose model parameters are at the 1B or above, it is difficult to fine-tune the model using a single consumer grade GPU. 
-
-Fine-tuning large pre-trained models is an effective transfer mechanism in NLP. However, in the
-presence of many downstream tasks, fine-tuning
-is parameter inefficient: an entire new model is
-required for every task. 
-
-It also runs the risk of Catastrophic Forgetting {cite:p}`luo2024empiricalstudycatastrophicforgetting` which means
-LLMs forget prior knowledge when learning new data. 
+since the size
+of the fine-tuned dataset is typically much smaller than the
+pretrained dataset, performing full fine-tuning to update all
+the pretrained parameters may lead to overfittin
 
 
+PEFT {cite:p}`xu2023parameterefficientfinetuningmethodspretrained` emerges as a cost-effiective approach to LLM finetuning. In essence, PEFT only pdates only a small
+number of additional parameters or updates a subset of the
+pretrained parameters, preserving the knowledge captured by
+the PLM while adapting it to the target task and reducing
+the risk of catastrophic forgetting.
+
+
+(chapter_training_sec_LLM_finetuning_Adapter_tuning)=
 ### Adapter Tuning
 
 The key idea of Adapter Tuning {cite:p}`houlsby2019parameterefficienttransferlearningnlp` is to add several additional trainable modules (i.e., layers) to the Transformer that acting as adapting module and at the same time freeze the remaining model weights the original LLM. The intuition is that by these adapter modules can be trained to assist the original LLM to better adapt to downstream tasks. 
@@ -149,63 +146,98 @@ As shown in {numref}`chapter_training_fig_finetuning_adapter_arch`, in each Tran
 
 ```{figure} ../img/chapter_training/finetuning/adapter/adapter_arch.png
 ---
-scale: 60%
+scale: 50%
 name: chapter_training_fig_finetuning_adapter_arch
 ---
 Architecture of the adapter module and its integration with the Transformer. (Left) Adapter module are added at different places in each Transformer layer: after the projection following multihead attention and after the position-wise FFD layers. (Right) The adapter consists of a bottleneck first mapping the input to lower dimensions and then mappign the output to higher dimensions.  Image from {cite:p}`houlsby2019parameterefficienttransferlearningnlp`.
 ```
 
 
+(chapter_training_sec_LLM_finetuning_prompt_tuning)=
+### Prompt Tuning
 
-<!-- ### Prompt Tuning
+Prompt tuning {cite:p}`lester2021power` is a technique that involves learning a small set of continuous task-specific vectors (soft prompts) while keeping the pretrained model parameters frozen. Specifically [{numref}`chapter_training_fig_finetuning_prompt_tuning`], additional $l$ learnable prompt token vectors, $P=\left[P_1\right],\left[P_2\right], \cdots,\left[P_l\right]$, are combined with the model input $X \in \mathbb{R}^{n \times d}$ to generate the final input $\hat{X}$, that is, 
 
-Prompt tuning is a technique that involves learning a small set of continuous task-specific vectors (soft prompts) while keeping the pretrained model parameters frozen.
+$$\hat{X} = \operatorname{Concat}(P, X) = [P, X] \in \mathbb{R}^{(l+n)\times d}.$$
 
-Key points:
-- Introduces trainable "soft prompt" tokens to the input
-- Only updates these soft prompt parameters during finetuning
-- Can achieve performance comparable to full finetuning with significantly fewer parameters
-- Allows for efficient multi-task learning by using different soft prompts for different tasks
+During fine-tuning, only the prompt token parameters of $P$ are updated through gradient descent, while pretrained parameters remain frozen. When applying prompt tuning to the multi-task fine-tuning scenario, we can have task-specific prompt tokens work with a fixed pretrained model.
 
-Example: P-Tuning v2 (Liu et al., 2021) showed that prompt tuning can match or outperform full finetuning across various NLP tasks.
+```{figure} ../img/chapter_training/finetuning/prompt_tuning/prompt_tuning.png
+---
+scale: 35%
+name: chapter_training_fig_finetuning_prompt_tuning
+---
+Illustration of prompt tuning, where we concat a task-dependent prompt tokens into existing prompt 
+```
 
- ### Model Adaptation
+Studies [{numref}`chapter_training_fig_finetuning_prompt_tuning_study`] show that using longer prompt length will achieve much better model performance than using single tuning prompt. One useful tuning prompt token initilization is *class label* initialization, where we used the 
+the embeddings for the string representations of each class in the downstream task and use them to initialize one of the tokens in the prompt.
 
-Model adaptation techniques focus on modifying specific parts of the model architecture to achieve efficient finetuning.
+```{figure} ../img/chapter_training/finetuning/prompt_tuning/prompt_tuning_study.png
+---
+scale: 25%
+name: chapter_training_fig_finetuning_prompt_tuning_study
+---
+Studies on the impact of length of prompt tuning tokens and its initialization. 
+```
 
-### LLaMA Adapters
+(chapter_training_sec_LLM_finetuning_prefix_tuning)=
+### Prefix-tuning
 
-LLaMA Adapters is a method introduced for efficient finetuning of LLaMA models:
+Prefix-tuning {cite:p}`li2021prefix` proposes to prepend soft prompts $P=$ $\left[P_1\right],\left[P_2\right], \cdots,\left[P_l\right]$ ( $l$ denotes the length of the prefix) to the hidden states of the multi-head attention layer, differing from prompt-tuning that adds soft prompts to the input. To ensure stable training, a FFN is introduced to parameterize the soft prompts, as direct optimization of the soft prompts can lead to instability. Two sets of prefix vectors $\hat{P}_k$ and $\hat{P}_v$ are concatenated to the original key $(K)$ and value $(V)$ vectors of the attention layer. The self-attention mechanism with prefix-tuning can be represented by Equation 8. During training, only $\hat{P}_k, \hat{P}_v$, and the parameters of FFN are optimized, while all other parameters of PLMs remain frozen. The structure of prefix-tuning is illustrated in {numref}`chapter_training_fig_finetuning_prefix_tuning`. After training, the FFN is discarded, and only $P_k$ and $P_v$ are used for inference.
 
-- Adds adapter layers after each transformer block
-- Uses a prefix-tuning approach by adding trainable tokens to the beginning of the input sequence
-- Combines the benefits of adapter-based and prefix-tuning methods
-- Achieves competitive performance with only about 1.2M parameters per task
+$$
+head=\operatorname{Attention}\left(X W_q,\operatorname{Concat}\left[\hat{P}_k, X W_k\right],\operatorname{Concat}\left[\hat{P}_v, X W_v\right]\right) 
+$$
 
-Key advantages:
-- Maintains the pretrained model weights unchanged
-- Allows for efficient multi-task learning
-- Significantly reduces the number of trainable parameters compared to full finetuning -->
+where $\hat{P}_k=\operatorname{FFN}\left(P_k\right), \hat{P}_v=\operatorname{FFN}\left(P_v\right).$
+
+
+```{figure} ../img/chapter_training/finetuning/prefix_tuning/prefix_tuning.png
+---
+scale: 40%
+name: chapter_training_fig_finetuning_prefix_tuning
+---
+Illustration of prefix tuning, where we concat task dependent prefix vectors into original $K,V$ matrices. 
+```
+
 
 ### LoRA (Low-Rank Adaptation)
 
 #### The hypothesis and method
 
-During full fine-tuning, the model is initialized to pre-trained weights $\Phi_0$ and updated to $\Phi_0+\Delta \Phi$ by repeatedly following the gradient to maximize the conditional language modeling objective:
+LoRA {cite:p}`hu2021loralowrankadaptationlarge` is one of the most influential strategy among PEFT strategies. Compared with {ref}`chapter_training_sec_LLM_finetuning_Adapter_tuning`, which needs to add sequential layers vertically, and with {ref}`chapter_training_sec_LLM_finetuning_prompt_tuning`,{ref}`chapter_training_sec_LLM_finetuning_prefix_tuning`, which need to expand input vectors with extra tokens, LoRA is much more elegant approach from the perspective of archectural design and mathematics.
+
+Use the notation that each downstream task is represented by a training dataset of input-target pairs: $Z = \{(x_i, y_i), i=1,2,...,N\}$, where both $x_i$ is the input prompt tokens, and $y_i$ are response/completion tokens.
+
+The key observation is that, we can express model fine-tuning on model weight $\Phi$ in its full-update-formulation
 
 $$
 \max _{\Phi} \sum_{(x, y) \in \mathcal{Z}} \sum_{t=1}^{|y|} \log \left(P_{\Phi}\left(y_t \mid x, y_{<t}\right)\right)
 $$
 
-
-One of the main drawbacks for full fine-tuning is that for each downstream task, we learn a different set of parameters $\Delta \Phi$ whose dimension $|\Delta \Phi|$ equals $\left|\Phi_0\right|$. Thus, if the pre-trained model is large (such as GPT-3 with $\left|\Phi_0\right| \approx 175$ Billion), storing and deploying many independent instances of fine-tuned models can be challenging, if at all feasible.
-
-In this paper, we adopt a more parameter-efficient approach, where the task-specific parameter increment $\Delta \Phi=\Delta \Phi(\Theta)$ is further encoded by a much smaller-sized set of parameters $\Theta$ with $|\Theta| \ll\left|\Phi_0\right|$. The task of finding $\Delta \Phi$ thus becomes optimizing over $\Theta$ :
+as its incremental update form
 
 $$
-\max _{\Theta} \sum_{(x, y) \in \mathcal{Z}} \sum_{t=1}^{|y|} \log \left(p_{\Phi_0+\Delta \Phi(\Theta)}\left(y_t \mid x, y_{<t}\right)\right)
+\max _{\theta} \sum_{(x, y) \in \mathcal{Z}} \sum_{t=1}^{|y|} \log \left(p_{\Phi_0+\Delta \Phi(\theta)}\left(y_t \mid x, y_{<t}\right)\right)
 $$
 
+and make the **assumption that task-specific parameter increment $\Delta \Phi=\Delta \Phi(\Theta)$ is further encoded by a much smaller-sized set of parameters $\Theta$ with $|\Theta| \ll\left|\Phi_0\right|**$.
+
+Specifically and as a further approximation, we only consider the LoRA on projeciton matrices $W_Q, W_K, W_V$. Take $W_Q$ as example. 
+
+$$H = XW^Q = X(W^{Q}_0 + \Delta W) = X(W^Q_0 + \underbrace{B^QA^Q}_{\text{Low Rank}}).$$
+
+Here during finetuning, we freeze $W^Q_0$ and update low rank matrices $B^Q \in \mathbb{R}^{d_{model}\times r}$, $A^Q \in \mathbb{R}^{r\times d_{head}$, with $r \ll \min(d_{model}, d_{head})$ (e.g., $r <= 8$).
+
+
+```{figure} ../img/chapter_training/finetuning/LoRA/LoRA.png
+---
+scale: 40%
+name: chapter_training_fig_finetuning_LoRA
+---
+Illustration of LoRA, where we provide low-rank matrix adapation on projection matrices in the attention layer. 
+```
 
 
 Hypothesis:
@@ -233,15 +265,54 @@ The selection of low rank matrices
  full rank (i.e., d) is as high as 12,288
 
 
-### Training
+````{prf:remark} $A,B$ initialization and model inference
+* To help stablize training, $A,B$ is initialized in a way to ensure $AB = 0$. Specifically, we can set one matrix (say $A$) to zero, and initialize $B$ with random values. For $AB\neq 0$, the initial training phase can be unstable due to large changes of model weights. 
 
-````{prf:remark} LoRA low rank matrices initialization
-
-
+* After training, we only need to save low-rank matrices $A$ and $B$ for different tasks. During inference, we can add $AB$ onto the original projection matrices. Unlike previous Adapter approach, there is no additional inference latency.
 ````
 
+#### Study Results
 
-During training, we frezze the model weights $W$ and only train the low-rank matrices $A$ and $B$. When saving weights, we only need to save the low-rank matrix parts. According to statistics in the LoRA paper, this operation reduces the memory consumption from 1.2 TB to 350 GB when fine-tuning GPT3 175B; when $r=4$, the final saved model is reduced from 350 GB to 35 MB, greatly reducing training costs.
+As shown in the following, LoRA has been successfully applied to various models, including RoBERT and GPT-3, showing competitive performance with full finetuning while using only 0.01% of the trainable parameters.
+
+
+```{table} RoBERT with different adaptation methods on the language understanding GLUE benchmark. 
+| Model & Method | # Trainable Parameters | Avg. |
+|----------------|------------------------|------|
+| RoB_base (FT)* | 125.0M | 86.4 |
+| RoB_base (Adpt^D)* | 0.9M | 85.4 |
+| RoB_base (LoRA) | 0.3M | 87.2 |
+```
+
+```{table} GPT-3-175B with different adaptation methods on the language understanding benchmark.
+| Model&Method | # Trainable Parameters | WikiSQL Acc. (%) | MNLI-m Acc. (%)| SAMSum R1/R2/RL|
+| :---: | :---: | :---: | :---: | :---: |
+| GPT-3 (FT) | $175,255.8 \mathrm{M}$ | $73.8$ | 89.5 | $52.0 / 28.0 / 44.5$ |
+| GPT-3 (Adapter $^{\mathrm{H}}$ ) | 40.1 M | 73.2 | 91.5 | $53.2 / 29.0 / 45.1$ |
+| GPT-3 (LoRA) | 4.7 M | 73.4 | $\mathbf{91.7}$ | 53.8/29.8 /45.9 |
+| GPT-3 (LoRA) | 37.7 M | $\mathbf{7 4 . 0}$ | $\mathbf{9 1 . 6}$ | $53.4 / 29.2 / 45.1$ |
+```
+
+The paper also studies the effect of low rank parameter $r$ on model performance as well as adaptation choices on $\left\{W^Q,W^K,W^V,W^O\right\}$, 
+
+As shown in the following table, 
+* $r$ as small as one suffices for adapting both $W^Q$ and $W^V$ on these datasets while training $W^Q$ alone needs a larger $r$. 
+* Adapting more matrices will improve model performance but has marginal gain when adapting all matrices.
+
+```{table} Validation accuracy on WikiSQL and MultiNLI with different rank $r$.
+|  | Weight Type | $r=1$ | $r=2$ | $r=4$ | $r=8$ | $r=64$ |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| WikiSQL | $W^Q$ | 68.8 | 69.6 | 70.5 | 70.4 | 70.0 |
+|  | $W^Q, W^V$ | 73.4 | 73.3 | 73.7 | 73.8 | 73.5 |
+|  | $W^Q, W^K, W^V, W^O$ | 74.1 | 73.7 | 74.0 | 74.0 | 73.9 |
+| MultiNLI | $W_q$ | 90.7 | 90.9 | 91.1 | 90.7 | 90.7 |
+|  | $W^Q, W^V$ | 91.3 | 91.4 | 91.3 | 91.6 | 91.4 |
+|  | $W^Q, W^K, W^V, W^O$ | 91.2 | 91.7 | 91.7 | 91.5 | 91.4 |
+```
+
+<!-- 
+
+During training, we freeze the model weights $W$ and only train the low-rank matrices $A$ and $B$. When saving weights, we only need to save the low-rank matrix parts. According to statistics in the LoRA paper, this operation reduces the memory consumption from 1.2 TB to 350 GB when fine-tuning GPT3 175B; when $r=4$, the final saved model is reduced from 350 GB to 35 MB, greatly reducing training costs.
 
 Regarding the training part, let's look at an interesting question: Overall, LoRA's memory savings are significant, but does LoRA save memory at every moment during training?
 
@@ -260,23 +331,8 @@ But why can LoRA reduce overall memory usage? Because:
 - LoRA is not applied to every layer of the model; for example, in the paper, LoRA is only applied to the attention part
 - Although LoRA may cause the peak memory usage of a certain layer to be higher than full fine-tuning, this intermediate result can be cleared after calculating the gradient and doesn't need to be kept continuously
 - When the trainable weights are reduced from $d * d$ to $2 * r * d$, the optimizer states that need to be saved are also reduced (and those are in fp32).
+ -->
 
-### Inference
-
-{cite:p}`hu2021loralowrankadaptationlarge`
-
-
-
-
-Our simple linear design allows us to merge the trainable matrices with the frozen weights
-when deployed, introducing no inference latency compared to a fully fine-tuned model, by
-construction.
-
-No Additional Inference Latency. When deployed in production, we can explicitly compute and store $W=W_0+B A$ and perform inference as usual. Note that both $W_0$ and $B A$ are in $\mathbb{R}^{d \times k}$. When we need to switch to another downstream task, we can recover $W_0$ by subtracting $B A$ and then adding a different $B^{\prime} A^{\prime}$, a quick operation with very little memory overhead. Critically, this
-
-#### Analysis 
-
-OPTIMAL RANK r FOR LORA
 
 ## Bibliography
 
