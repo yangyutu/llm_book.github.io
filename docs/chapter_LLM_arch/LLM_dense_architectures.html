@@ -199,23 +199,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM Finetuning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM Alignement and Preference learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">14. LLM Training Acceleration</a></li>
-
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">16. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">17. Inference Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">15. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">16. Inference Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">18. Basic prompt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">19. Advanced prompt techniques</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">20. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">17. Basic prompt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">18. Advanced prompt techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">19. RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">21. Information Retrieval Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">22. Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">20. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">21. Application of LLM in IR</a></li>
 </ul>
 
     </div>
@@ -370,7 +369,7 @@ document.write(`
 <p>LLM have revolutionized natural language processing and artificial intelligence, demonstrating remarkable capabilities in understanding and generating human-like text. Tech companies like Google, Microsoft, Meta, OpenAI are producing LLMs with increasing sizes and capabilities just over the past few years [<a class="reference internal" href="#chapter-foundation-fig-pretrained-llm-timeline"><span class="std std-numref">Fig. 9.1</span></a>].</p>
 <p>From a high level, LLMs share the following characteristics:</p>
 <ul class="simple">
-<li><p><strong>Scale</strong>: LLMs are trained on enormous datasets, often containing hundreds to thousands of billions of words or tokens. This massive scale allows them to capture intricate patterns and nuances in language. For example, GPT-3 <span id="id1">[<a class="reference internal" href="#id404" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>]</span> was trained on about 500 billion tokens, and recent Llama3 405B <span id="id2">[<a class="reference internal" href="#id1538" title="Abhimanyu Dubey and et al Abhinav Jauhri. The llama 3 herd of models. 2024. URL: https://arxiv.org/abs/2407.21783, arXiv:2407.21783.">DAJ24</a>]</span> was trained on 15.6T tokens.</p></li>
+<li><p><strong>Scale</strong>: LLMs are trained on enormous datasets, often containing hundreds to thousands of billions of words or tokens. This massive scale allows them to capture intricate patterns and nuances in language. For example, GPT-3 <span id="id1">[<a class="reference internal" href="../chapter_foundation/transformers.html#id393" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>]</span> was trained on about 500 billion tokens, and recent Llama3 405B <span id="id2">[<a class="reference internal" href="#id1538" title="Abhimanyu Dubey and et al Abhinav Jauhri. The llama 3 herd of models. 2024. URL: https://arxiv.org/abs/2407.21783, arXiv:2407.21783.">DAJ24</a>]</span> was trained on 15.6T tokens.</p></li>
 <li><p><strong>Transformer architecture</strong>: Most modern LLMs use transformer architectures, which were introduced in the “Attention is All You Need” paper. These models can have billions of parameters - GPT-3 has 175 billion, for instance. The transformer architecture allows for efficient parallel processing and captures long-range dependencies in text.</p></li>
 <li><p><strong>Self-supervised learning</strong>: LLMs are typically pre-trained using self-supervised learning techniques. The most common approach is next-token prediction, where the model learns to predict the next word in a sequence given the previous words. This allows the model to learn from vast amounts of unlabeled text data.</p></li>
 <li><p><strong>Multi-task capability</strong>: A single LLM can perform various language tasks such as translation, summarization, question-answering, reasongin, and text generation without needing separate models for each task. This versatility makes them powerful tools for a wide range of applications.</p></li>
@@ -382,7 +381,7 @@ document.write(`
 <a class="reference internal image-reference" href="../../_images/large_langage_models_release_timeline.png"><img alt="../../_images/large_langage_models_release_timeline.png" src="../../_images/large_langage_models_release_timeline.png" style="width: 673.0px; height: 334.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.1 </span><span class="caption-text">A timeline of existing large language models (having a size larger than 10B) in recent years. We mark the open-source LLMs in yellow color. Image from <span id="id3">[<a class="reference internal" href="#id1514" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-llm-timeline" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 9.1 </span><span class="caption-text">A timeline of existing large language models (having a size larger than 10B) in recent years. We mark the open-source LLMs in yellow color. Image from <span id="id3">[<a class="reference internal" href="../chapter_training/training_fundamentals.html#id1500" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-llm-timeline" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>This chapter aims to go over the core components and architectural considerations that form the foundation of modern LLMs.</p>
@@ -455,7 +454,7 @@ document.write(`
 </section>
 <section id="layer-normalization-position">
 <h3><span class="section-number">9.2.3. </span>Layer normalization position<a class="headerlink" href="#layer-normalization-position" title="Link to this heading">#</a></h3>
-<p><span id="id7">[<a class="reference internal" href="#id406" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span></p>
+<p><span id="id7">[<a class="reference internal" href="../chapter_foundation/transformers.html#id395" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span></p>
 <p>The residual connection <span class="math notranslate nohighlight">\(x+F(x)\)</span> in the Transformer layer will modify the variance of input <span class="math notranslate nohighlight">\(x\)</span>. To see this, let the variance of <span class="math notranslate nohighlight">\(x\)</span> be <span class="math notranslate nohighlight">\(\sigma_1^2\)</span> and the variance of <span class="math notranslate nohighlight">\(F(x)\)</span> be <span class="math notranslate nohighlight">\(\sigma_2^2\)</span>. Then the variance of <span class="math notranslate nohighlight">\(x + F(x)\)</span> will be given by</p>
 <div class="math notranslate nohighlight">
 \[ 
@@ -476,7 +475,7 @@ wide range of applications.</p>
 \[\operatorname{PreNorm Output} = X + \operatorname{SubLayer}(\operatorname{LayerNorm}(X))\]</div>
 <p>Intuitively, as the residual connection route <span class="math notranslate nohighlight">\(X\)</span> is not being normalized, the gradient flow via the idenity mapping is therefore not compromised. This help the training of very deep neural networks by mitigating the vanishing gradient issue.</p>
 <figure class="align-default" id="chapter-llm-arch-fig-pretrained-lm-transformer-layernormalizationposition">
-<a class="reference internal image-reference" href="../../_images/layer_normalization_position.png"><img alt="../../_images/layer_normalization_position.png" src="../../_images/layer_normalization_position.png" style="width: 471.59999999999997px; height: 351.0px;" />
+<a class="reference internal image-reference" href="../../_images/layer_normalization_position.png"><img alt="../../_images/layer_normalization_position.png" src="../../_images/layer_normalization_position.png" style="width: 471.59999999999997px; height: 354.59999999999997px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 9.2 </span><span class="caption-text">Post-layer normalization and pre-layer normalization in an encoder layer.</span><a class="headerlink" href="#chapter-llm-arch-fig-pretrained-lm-transformer-layernormalizationposition" title="Link to this image">#</a></p>
@@ -594,7 +593,7 @@ SwiGLU=\text{Swish}_1(xW) \otimes xV
 <section id="multi-head-attention-mha">
 <h3><span class="section-number">9.4.1. </span>Multi-Head Attention (MHA)<a class="headerlink" href="#multi-head-attention-mha" title="Link to this heading">#</a></h3>
 <p>Multi-Head Attention [detailed in <a class="reference internal" href="../chapter_foundation/transformers.html#chapter-foundation-sec-pretrained-lm-transformer-arch-mha"><span class="std std-ref">Multihead Attention With Masks</span></a>] is the foundation of many transformer-based models, including the original transformer architecture.</p>
-<p>The computation of an <span class="math notranslate nohighlight">\(H\)</span>-headed MHA given input <span class="math notranslate nohighlight">\(X\in \mathbb{R}^{n\times d_{model}}\)</span> matrix and <span class="math notranslate nohighlight">\(H\)</span> projection matrices <span class="math notranslate nohighlight">\(W^Q_i, W^K_i, W^V_i \in\mathbb{R}^{d_{model}\times d_{head}, i\in \{1,...,H\}\)</span> is given by</p>
+<p>The computation of an <span class="math notranslate nohighlight">\(H\)</span>-headed MHA given input <span class="math notranslate nohighlight">\(X\in \mathbb{R}^{n\times d_{model}}\)</span> matrix and <span class="math notranslate nohighlight">\(H\)</span> projection matrices <span class="math notranslate nohighlight">\(W^Q_i, W^K_i, W^V_i \in\mathbb{R}^{d_{model}}\times d_{head}\)</span>, <span class="math notranslate nohighlight">\(i\in \{1,...,H\}\)</span> is given by</p>
 <div class="math notranslate nohighlight">
 \[
 \text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_H)W^O
@@ -713,7 +712,7 @@ GQA is shown to achieve quality close to MHA with comparable speed to MQA</p>
 key and value heads are attended to by query heads. GQA interpolats between MHA and MQA. (Bottom) GQA-8 performance and latency compared with MHA and MQA. Image from <span id="id13">[<a class="reference internal" href="#id1533" title="Joshua Ainslie, James Lee-Thorp, Michiel de Jong, Yury Zemlyanskiy, Federico Lebrón, and Sumit Sanghai. Gqa: training generalized multi-query transformer models from multi-head checkpoints. 2023. URL: https://arxiv.org/abs/2305.13245, arXiv:2305.13245.">ALTdJ+23</a>]</span></span><a class="headerlink" href="#chapter-llm-arch-fig-fundamentals-attention-gqa" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>GQA is widely adopted in the latest LLM. Following shows example configurations of Qwen2 and Mistral LLM series <span id="id14">[<a class="reference internal" href="#id1537" title="An Yang, Baosong Yang, Binyuan Hui, and et al. Bo Zheng. Qwen2 technical report. 2024. URL: https://arxiv.org/abs/2407.10671, arXiv:2407.10671.">YYHBZ24</a>, <a class="reference internal" href="#id1541" title="Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed. Mistral 7b. 2023. URL: https://arxiv.org/abs/2310.06825, arXiv:2310.06825.">JSM+23</a>]</span>.</p>
+<p>GQA is widely adopted in the latest LLM. Following shows example configurations of Qwen2 and Mistral LLM series <span id="id14">[<a class="reference internal" href="#id1541" title="Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed. Mistral 7b. 2023. URL: https://arxiv.org/abs/2310.06825, arXiv:2310.06825.">JSM+23</a>, <a class="reference internal" href="../chapter_training/accelerated_training.html#id1518" title="An Yang, Baosong Yang, Binyuan Hui, and et al. Bo Zheng. Qwen2 technical report. 2024. URL: https://arxiv.org/abs/2407.10671, arXiv:2407.10671.">YYHBZ24</a>]</span>.</p>
 <div class="pst-scrollable-table-container"><table class="table" id="id1545">
 <caption><span class="caption-number">Table 9.1 </span><span class="caption-text">Model configuration of Qwen2 and Mistral, which uses GQA (# KV heads is number of groups )</span><a class="headerlink" href="#id1545" title="Link to this table">#</a></caption>
 <thead>

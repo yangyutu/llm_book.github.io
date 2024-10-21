@@ -235,7 +235,7 @@ Example activation in recent LLMs:
 
 Multi-Head Attention [detailed in {ref}`chapter_foundation_sec_pretrained_LM_transformer_arch_MHA`] is the foundation of many transformer-based models, including the original transformer architecture.
 
-The computation of an $H$-headed MHA given input $X\in \mathbb{R}^{n\times d_{model}}$ matrix and $H$ projection matrices $W^Q_i, W^K_i, W^V_i \in\mathbb{R}^{d_{model}\times d_{head}, i\in \{1,...,H\}$ is given by
+The computation of an $H$-headed MHA given input $X\in \mathbb{R}^{n\times d_{model}}$ matrix and $H$ projection matrices $W^Q_i, W^K_i, W^V_i \in\mathbb{R}^{d_{model}}\times d_{head}$, $i\in \{1,...,H\}$ is given by
 
 $$
 \text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_H)W^O

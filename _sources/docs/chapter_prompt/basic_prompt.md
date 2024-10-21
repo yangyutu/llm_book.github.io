@@ -1,4 +1,4 @@
-# Basic prompt
+# Basic prompting
 
 ## Base LLM vs instructed LLM
 
