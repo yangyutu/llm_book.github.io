@@ -38,7 +38,7 @@ Next we cover **position encoding** techniques that allow transformer models to 
 
 Finally, we examining the intricate details of LLM structure and function. We break down the **distribution of parameters** across different model components, provide a detailed explanation of the **forward pass computation**, and present **examples of dense transformer architectures**.
 
-## Layer normalization
+## Layer Normalization
 
 ### Layer normalization basics
 
@@ -96,9 +96,36 @@ See {cite:p}`zhang2019rootmeansquarelayer` for math derivation
 
 ### Layer normalization position
 
+It has been shown that {cite:p}`xiong2020layer` where to replace the normalization layer has an impact on model training, covergence, and final performance.
+
+The Post-Norm (as in the vanilla Transformer architecture) has can stablize the variance of the output by applying the LayerNorm after the residual connection, which is given by 
+
+$$\operatorname{PostNorm Output} = \operatorname{LayerNorm}(X + \operatorname{SubLayer}(X))$$
+
+Here the SubLayer could be the FeedForward Layer or the Attention Layer.
+
+The Pre-Norm normalize the input to SubLayers, which is given by
+
+$$\operatorname{PreNorm Output} = X + \operatorname{SubLayer}(\operatorname{LayerNorm}(X)).$$
+
+It is shown in {cite:p}`xiong2020layer` that the gradients at last layer $L$ satisfy the following condition:
+
+$$||G_{PostNorm,L}||_F \leq \mathcal{O}(d \sqrt{\ln d}), ||G_{PreNorm,L}||_F \leq \mathcal{O}\left(d \sqrt{\frac{\ln d}{L}}\right)
+.$$
+
+which intuitively implies the following
+* The gradient norm magnitude in the Pre-Norm Transformer will be likely to stay the same for any layer index $l$
+* Gradient norm in the Post-LN Transformer will likely increase as layer index $l$ and be very large at the last layer $L$.
+
+Such gradient norm behavior has implication on training stability. 
+* For Post-norm model, it often requires learning rate scheduling and warm up (initializing from a small vaue) to stablize training. 
+* When it comes to training very deep models, Post-norm can lead to more unstable gradients during training, especially in very deep networks. This can lead to slower convergence and increased likelihood of training failure.
+* On the other hand, Pre-Norm Transformers without the warm-up stage can reach comparable results with Post-Norm, simplifying the hyper-parameter tuning; 
+* Pre-Norm, thanks to its stable gradient, is suitable for LLM architecture, which are very deep transformers.
 
 
-{cite:p}`xiong2020layer`
+
+<!-- l decreases
 
 The residual connection $x+F(x)$ in the Transformer layer will modify the variance of input $x$. To see this, let the variance of $x$ be $\sigma_1^2$ and the variance of $F(x)$ be $\sigma_2^2$. Then the variance of $x + F(x)$ will be given by 
 
@@ -106,27 +133,11 @@ $$
 Var[x + F(x)] = \sigma_1^2 + \sigma_2^2 + \rho \sigma_1\sigma_2
 $$
 
-The Post-Norm thus can stablize the variance of the output by applying the LayerNorm after the residual connection, which is given by
-
-$$\operatorname{PostNorm Output} = \operatorname{LayerNorm}(X + \operatorname{SubLayer}(X))$$
-
-Here the SubLayer could be the FeedForward Layer or the Attention Layer.
 
 Clearly, the normalization will reduce the effect of identity mapping $I(x) = x$ and therefore the gradient flow via the residual connection (aka high-way connection). 
 As a result, using Post-Norm in general will require carefully designed learning rate warm-up stage (the optimization starts with
-a small/tiny learning rate, and then gradually increases it to a pre-defined maximum value within certain number of steps.) to speed up model training and covergence, including learning rate warm-up and other hyper-parameter tuning.
-
-When it comes to training very deep models, Post-norm can lead to more unstable gradients during training, especially in very deep networks. This can lead to slower convergence and increased likelihood of training failure.
-
-
-
-Pre-LN Transformers without the warm-up stage can reach comparable results
-with baselines while requiring significantly less training time and hyper-parameter tuning on a
-wide range of applications.
-
-$$\operatorname{PreNorm Output} = X + \operatorname{SubLayer}(\operatorname{LayerNorm}(X))$$
-
-Intuitively, as the residual connection route $X$ is not being normalized, the gradient flow via the idenity mapping is therefore not compromised. This help the training of very deep neural networks by mitigating the vanishing gradient issue. 
+a small/tiny learning rate, and then gradually increases it to a pre-defined maximum value within certain number of steps.) to speed up model training and covergence, including learning rate warm-up and other hyper-parameter tuning. -->
+ 
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/Transformer_arch/layer_normalization_position.png
 ---
@@ -151,6 +162,13 @@ Post-layer normalization and pre-layer normalization in an encoder layer.
 - Post-Norm can achieve good convergence effects in the early stages of training, performing particularly well in shallow models. However, in deep networks, the drawback of Post-Norm is that it may lead to gradient instability during the training process, especially as the network depth increases, gradients may become increasingly unstable during propagation.
 :::
 ::::
+
+Another modification of Post-Norm to enable training of very deep Post-Norm Transformer model (up to 1000 layers) is **Deep-Norm** {cite:p}`wang2022deepnetscalingtransformers1000`, which gives 
+
+$$\operatorname{DeepNorm Output} = \operatorname{LayerNorm}(\alphaX + \operatorname{SubLayer}(X))$$
+
+Here $\alpha > 1$ is a constant, which up scales the residual connection (to help gradient vanishing issue for deep models). Besides, the weights in the SubLayers are scaled by $\beta < 1$ (i.e., make it smaller) during initalization. 
+
 
 ### Layer normalization example choices
 

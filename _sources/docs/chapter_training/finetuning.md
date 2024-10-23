@@ -239,7 +239,7 @@ name: chapter_training_fig_finetuning_LoRA
 Illustration of LoRA, where we provide low-rank matrix adapation on projection matrices in the attention layer. 
 ```
 
-
+<!-- 
 Hypothesis:
 
 
@@ -262,7 +262,7 @@ These parameter-efficient finetuning techniques represent significant advancemen
 The selection of low rank matrices
 
 
- full rank (i.e., d) is as high as 12,288
+ full rank (i.e., d) is as high as 12,288 -->
 
 
 ````{prf:remark} $A,B$ initialization and model inference
@@ -333,6 +333,53 @@ But why can LoRA reduce overall memory usage? Because:
 - When the trainable weights are reduced from $d * d$ to $2 * r * d$, the optimizer states that need to be saved are also reduced (and those are in fp32).
  -->
 
+### Discussion: PEFT vs FMT
+{cite:p}`zhang2024scaling`
+How does finetuning affect the generalization capability of the base LLM? While finetuning on task-specific data improves task-specific performance, it may specialize the base LLM towards the task and hurt the models' generalization. We examine this for different finetuning methods by performing zero-shot translation for LLMs finetuned on WMT14 En-De and WMT19 En-Zh (Fewshot results are in Appendix). We focus on generalization to related tasks, where the target language is shared, i.e. De and Zh , and generalization should be relatively easier (Johnson et al., 2017). We report average performance for translation from a diverse set of source languages other than English.
+
+Figure 6 shows the results. While specializing on a downstream task, finetuning could still elicit and improve the generalization for closely related tasks, although the overall zero-shot translation quality is inferior. Note whether finetuning benefits generalization is method- and task-dependent. Overall, Prompt and LoRA achieve relatively better results than FMT particularly when the base LLM is large, mostly because LLM parameters are frozen and the learned knowledge get inherited. This also suggests that when generalization capability is a big concern, PET should be considered.
+
+## Scaling Law for Fine Tuning
+
+When adapting LLM to specific downstream tasks, there are two popular ways of finetuning: **full-model tuning (FMT)** that updates all LLM parameters and PEFT that only optimizes a small amount of (newly added) parameters, such as prompt tuning and LoRA.
+
+It is an open question on how the resulting model performs with regards to fine-tuning data size, model size, and tuning parameter size (in the PEFT case)
+
+{cite:p}`zhang2024scaling` proposes the following multiplicative joint scaling law for LLM finetuning:
+
+$$
+\hat{\mathcal{L}}\left(X, D_f\right)=A \times \frac{1}{X^\alpha} \times \frac{1}{D_f^\beta}+E,
+$$
+
+where $\{A, E, \alpha, \beta\}$ are data-specific parameters to be fitted, $D_f$ denotes finetuning data size, and $X$ refer to other scaling factors (like model size, and tuning parameter size) and $L$ is perplexity. After fitting to scaling experiments, larger $\alpha$ or $\beta$ means the bigger contribution from these factors. 
+
+The key findings are
+* Finetuning model performance scales better on model size than fine-tuning data size, as indicated by larger $\alpha$ then $\beta$ in {numref}`chapter_training_fig_finetuning_ft_scaling_on_translation_task,chapter_training_fig_finetuning_ft_scaling_on_summary_task`. This suggests that using a larger LLM model is preferred over finetuning over larger data.
+* Finetuning data size have more pronounced influence on FMT than PET (much larger $\beta$ in FMT), where LoRA scales better than Prompt. In other words, FMT is more data hungary and also benefits more from increasing finetuning data.
+* Compared across different PEFT approach, scaling tuning parameters is ineffective, delivering limited gains for both LoRA and Prompt. At the end of day, the amount of newly added trainable parameters often forms a bottleneck for the expressivity of the model.
+
+```{figure} ../img/chapter_training/finetuning/FT_scaling_on_translation_task.png
+---
+scale: 80%
+name: chapter_training_fig_finetuning_ft_scaling_on_translation_task
+---
+Joint scaling law for model size (from 1B to 16B) and fine-tuning data sizes for translation task. Image from {cite:p}`zhang2024scaling`.
+```
+```{figure} ../img/chapter_training/finetuning/FT_scaling_on_translation_task.png
+---
+scale: 80%
+name: chapter_training_fig_finetuning_ft_scaling_on_summary_task
+---
+Joint scaling law for model size (from 1B to 16B) and fine-tuning data sizes for summarization task. Image from {cite:p}`zhang2024scaling`.
+```
+
+```{figure} ../img/chapter_training/finetuning/PEFT_scaling_law.png
+---
+scale: 80%
+name: chapter_training_fig_finetuning_ft_scaling_on_PEFT_scaling_law
+---
+Joint scaling law for tuning parameter size and fine-tuning data sizes for summarization task. Image from {cite:p}`zhang2024scaling`.
+```
 
 ## Bibliography
 
