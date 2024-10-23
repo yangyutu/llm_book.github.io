@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_training/finetuning';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="13. LLM Alignement and Preference learning" href="alignment.html" />
+    <link rel="next" title="13. LLM Alignement and Preference Learning" href="alignment.html" />
     <link rel="prev" title="11. LLM Training Fundamentals" href="training_fundamentals.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -197,7 +197,7 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="training_fundamentals.html">11. LLM Training Fundamentals</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">12. LLM Finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="alignment.html">13. LLM Alignement and Preference learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alignment.html">13. LLM Alignement and Preference Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accelerated_training.html">14. LLM Training Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
@@ -207,8 +207,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">17. Basic prompt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">18. Advanced prompt techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">17. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">18. Advanced Prompting Techniques</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">19. RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
@@ -332,9 +332,11 @@ document.write(`
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#study-results">12.3.5.2. Study Results</a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion-peft-vs-fmt">12.3.6. Discussion: PEFT vs FMT</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">12.4. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-law-for-fine-tuning">12.4. Scaling Law for Fine Tuning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">12.5. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -381,13 +383,13 @@ You should change your car’s oil every 5,000 to 7,500 miles, or as recommended
 <li><p>Creating a dataset of instruction-output pairs covering a wide range of tasks.</p></li>
 <li><p>Fine-tuning the pre-trained LLM on this dataset, often using supervised learning techniques.</p></li>
 </ol>
-<p>Instruction tuning can often substantially improves zero shot performance on unseen tasks <span id="id2">[<a class="reference internal" href="#id495" title="Jason Wei, Maarten Bosma, Vincent Y Zhao, Kelvin Guu, Adams Wei Yu, Brian Lester, Nan Du, Andrew M Dai, and Quoc V Le. Finetuned language models are zero-shot learners. ArXiv:2109.01652, 2021.">WBZ+21</a>]</span>.</p>
+<p>Instruction tuning can often substantially improves zero shot performance on unseen tasks <span id="id2">[<a class="reference internal" href="#id500" title="Jason Wei, Maarten Bosma, Vincent Y Zhao, Kelvin Guu, Adams Wei Yu, Brian Lester, Nan Du, Andrew M Dai, and Quoc V Le. Finetuned language models are zero-shot learners. ArXiv:2109.01652, 2021.">WBZ+21</a>]</span>.</p>
 <figure class="align-default" id="chapter-training-fig-finetuning-instruction-finetuning">
 <a class="reference internal image-reference" href="../../_images/instruction_finetuning_demo.png"><img alt="../../_images/instruction_finetuning_demo.png" src="../../_images/instruction_finetuning_demo.png" style="width: 812.8000000000001px; height: 324.8px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 12.1 </span><span class="caption-text">Overview of instruction tuning and FLAN. Instruction tuning finetunes a pretrained language model on a mixture of tasks phrased as instructions. At inference time, we evaluate on
-an unseen task type; for instance, we could evaluate the model on natural language inference (NLI) when no NLI tasks were seen during instruction tuning. Image from <span id="id3">[<a class="reference internal" href="#id1525" title="Hyung Won Chung, Le Hou, Shayne Longpre, Barret Zoph, Yi Tay, William Fedus, Yunxuan Li, Xuezhi Wang, Mostafa Dehghani, Siddhartha Brahma, Albert Webson, Shixiang Shane Gu, Zhuyun Dai, Mirac Suzgun, Xinyun Chen, Aakanksha Chowdhery, Alex Castro-Ros, Marie Pellat, Kevin Robinson, Dasha Valter, Sharan Narang, Gaurav Mishra, Adams Yu, Vincent Zhao, Yanping Huang, Andrew Dai, Hongkun Yu, Slav Petrov, Ed H. Chi, Jeff Dean, Jacob Devlin, Adam Roberts, Denny Zhou, Quoc V. Le, and Jason Wei. Scaling instruction-finetuned language models. 2022. URL: https://arxiv.org/abs/2210.11416, arXiv:2210.11416.">CHL+22</a>]</span></span><a class="headerlink" href="#chapter-training-fig-finetuning-instruction-finetuning" title="Link to this image">#</a></p>
+an unseen task type; for instance, we could evaluate the model on natural language inference (NLI) when no NLI tasks were seen during instruction tuning. Image from <span id="id3">[<a class="reference internal" href="#id1530" title="Hyung Won Chung, Le Hou, Shayne Longpre, Barret Zoph, Yi Tay, William Fedus, Yunxuan Li, Xuezhi Wang, Mostafa Dehghani, Siddhartha Brahma, Albert Webson, Shixiang Shane Gu, Zhuyun Dai, Mirac Suzgun, Xinyun Chen, Aakanksha Chowdhery, Alex Castro-Ros, Marie Pellat, Kevin Robinson, Dasha Valter, Sharan Narang, Gaurav Mishra, Adams Yu, Vincent Zhao, Yanping Huang, Andrew Dai, Hongkun Yu, Slav Petrov, Ed H. Chi, Jeff Dean, Jacob Devlin, Adam Roberts, Denny Zhou, Quoc V. Le, and Jason Wei. Scaling instruction-finetuned language models. 2022. URL: https://arxiv.org/abs/2210.11416, arXiv:2210.11416.">CHL+22</a>]</span></span><a class="headerlink" href="#chapter-training-fig-finetuning-instruction-finetuning" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
@@ -430,13 +432,13 @@ an unseen task type; for instance, we could evaluate the model on natural langua
 <a class="reference internal image-reference" href="../../_images/instruction_finetuning_comparison.png"><img alt="../../_images/instruction_finetuning_comparison.png" src="../../_images/instruction_finetuning_comparison.png" style="width: 732.0px; height: 244.2px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 12.2 </span><span class="caption-text">Comparing instruction tuning with pretrain–finetune and prompting. Image from <span id="id4">[<a class="reference internal" href="#id495" title="Jason Wei, Maarten Bosma, Vincent Y Zhao, Kelvin Guu, Adams Wei Yu, Brian Lester, Nan Du, Andrew M Dai, and Quoc V Le. Finetuned language models are zero-shot learners. ArXiv:2109.01652, 2021.">WBZ+21</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-instruction-finetuning-comparison" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 12.2 </span><span class="caption-text">Comparing instruction tuning with pretrain–finetune and prompting. Image from <span id="id4">[<a class="reference internal" href="#id500" title="Jason Wei, Maarten Bosma, Vincent Y Zhao, Kelvin Guu, Adams Wei Yu, Brian Lester, Nan Du, Andrew M Dai, and Quoc V Le. Finetuned language models are zero-shot learners. ArXiv:2109.01652, 2021.">WBZ+21</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-instruction-finetuning-comparison" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="scaling-instruction-finetuning">
 <h3><span class="section-number">12.2.3. </span>Scaling Instruction Finetuning<a class="headerlink" href="#scaling-instruction-finetuning" title="Link to this heading">#</a></h3>
-<p>Instruction Finetuning LLM can improve model performance and generalization to unseen tasks. In <span id="id5">[<a class="reference internal" href="#id1525" title="Hyung Won Chung, Le Hou, Shayne Longpre, Barret Zoph, Yi Tay, William Fedus, Yunxuan Li, Xuezhi Wang, Mostafa Dehghani, Siddhartha Brahma, Albert Webson, Shixiang Shane Gu, Zhuyun Dai, Mirac Suzgun, Xinyun Chen, Aakanksha Chowdhery, Alex Castro-Ros, Marie Pellat, Kevin Robinson, Dasha Valter, Sharan Narang, Gaurav Mishra, Adams Yu, Vincent Zhao, Yanping Huang, Andrew Dai, Hongkun Yu, Slav Petrov, Ed H. Chi, Jeff Dean, Jacob Devlin, Adam Roberts, Denny Zhou, Quoc V. Le, and Jason Wei. Scaling instruction-finetuned language models. 2022. URL: https://arxiv.org/abs/2210.11416, arXiv:2210.11416.">CHL+22</a>]</span>, scaling instruction finetuning over the number of tasks and model sizes are explored.</p>
+<p>Instruction Finetuning LLM can improve model performance and generalization to unseen tasks. In <span id="id5">[<a class="reference internal" href="#id1530" title="Hyung Won Chung, Le Hou, Shayne Longpre, Barret Zoph, Yi Tay, William Fedus, Yunxuan Li, Xuezhi Wang, Mostafa Dehghani, Siddhartha Brahma, Albert Webson, Shixiang Shane Gu, Zhuyun Dai, Mirac Suzgun, Xinyun Chen, Aakanksha Chowdhery, Alex Castro-Ros, Marie Pellat, Kevin Robinson, Dasha Valter, Sharan Narang, Gaurav Mishra, Adams Yu, Vincent Zhao, Yanping Huang, Andrew Dai, Hongkun Yu, Slav Petrov, Ed H. Chi, Jeff Dean, Jacob Devlin, Adam Roberts, Denny Zhou, Quoc V. Le, and Jason Wei. Scaling instruction-finetuned language models. 2022. URL: https://arxiv.org/abs/2210.11416, arXiv:2210.11416.">CHL+22</a>]</span>, scaling instruction finetuning over the number of tasks and model sizes are explored.</p>
 <p>The key methodological aspects of the study are:</p>
 <ul class="simple">
 <li><p>Instruction finetuned LLMs on a diverse set of language tasks (up to 1,836 ). Training data is constructed as mixtures of different number of tasks.</p></li>
@@ -452,7 +454,7 @@ an unseen task type; for instance, we could evaluate the model on natural langua
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 12.3 </span><span class="caption-text">Scaling behavior of multi-task instruction finetuning with respect to model size (# parameters) and
-number of finetuning tasks. Image from <span id="id6">[<a class="reference internal" href="#id1525" title="Hyung Won Chung, Le Hou, Shayne Longpre, Barret Zoph, Yi Tay, William Fedus, Yunxuan Li, Xuezhi Wang, Mostafa Dehghani, Siddhartha Brahma, Albert Webson, Shixiang Shane Gu, Zhuyun Dai, Mirac Suzgun, Xinyun Chen, Aakanksha Chowdhery, Alex Castro-Ros, Marie Pellat, Kevin Robinson, Dasha Valter, Sharan Narang, Gaurav Mishra, Adams Yu, Vincent Zhao, Yanping Huang, Andrew Dai, Hongkun Yu, Slav Petrov, Ed H. Chi, Jeff Dean, Jacob Devlin, Adam Roberts, Denny Zhou, Quoc V. Le, and Jason Wei. Scaling instruction-finetuned language models. 2022. URL: https://arxiv.org/abs/2210.11416, arXiv:2210.11416.">CHL+22</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-instruction-model-scaling-behavior" title="Link to this image">#</a></p>
+number of finetuning tasks. Image from <span id="id6">[<a class="reference internal" href="#id1530" title="Hyung Won Chung, Le Hou, Shayne Longpre, Barret Zoph, Yi Tay, William Fedus, Yunxuan Li, Xuezhi Wang, Mostafa Dehghani, Siddhartha Brahma, Albert Webson, Shixiang Shane Gu, Zhuyun Dai, Mirac Suzgun, Xinyun Chen, Aakanksha Chowdhery, Alex Castro-Ros, Marie Pellat, Kevin Robinson, Dasha Valter, Sharan Narang, Gaurav Mishra, Adams Yu, Vincent Zhao, Yanping Huang, Andrew Dai, Hongkun Yu, Slav Petrov, Ed H. Chi, Jeff Dean, Jacob Devlin, Adam Roberts, Denny Zhou, Quoc V. Le, and Jason Wei. Scaling instruction-finetuned language models. 2022. URL: https://arxiv.org/abs/2210.11416, arXiv:2210.11416.">CHL+22</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-instruction-model-scaling-behavior" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The study also explores the impact of inclusion/exclusion of CoT training data on reasoning tasks. One key observation [<a class="reference internal" href="#chapter-training-fig-finetuning-instruction-cot-data-impact"><span class="std std-numref">Fig. 12.4</span></a>] is that instruction finetuning without CoT actually degrades reasoning ability. On the other hand, including just nine CoT datasets improves performance on all evaluations (including reasoning and non-reasoning tasks).</p>
@@ -461,7 +463,7 @@ number of finetuning tasks. Image from <span id="id6">[<a class="reference inter
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 12.4 </span><span class="caption-text">Jointly finetuning on non-CoT and CoT data improves performance on both evaluations, compared
-to finetuning on just one or the other. Image from <span id="id7">[<a class="reference internal" href="#id1525" title="Hyung Won Chung, Le Hou, Shayne Longpre, Barret Zoph, Yi Tay, William Fedus, Yunxuan Li, Xuezhi Wang, Mostafa Dehghani, Siddhartha Brahma, Albert Webson, Shixiang Shane Gu, Zhuyun Dai, Mirac Suzgun, Xinyun Chen, Aakanksha Chowdhery, Alex Castro-Ros, Marie Pellat, Kevin Robinson, Dasha Valter, Sharan Narang, Gaurav Mishra, Adams Yu, Vincent Zhao, Yanping Huang, Andrew Dai, Hongkun Yu, Slav Petrov, Ed H. Chi, Jeff Dean, Jacob Devlin, Adam Roberts, Denny Zhou, Quoc V. Le, and Jason Wei. Scaling instruction-finetuned language models. 2022. URL: https://arxiv.org/abs/2210.11416, arXiv:2210.11416.">CHL+22</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-instruction-cot-data-impact" title="Link to this image">#</a></p>
+to finetuning on just one or the other. Image from <span id="id7">[<a class="reference internal" href="#id1530" title="Hyung Won Chung, Le Hou, Shayne Longpre, Barret Zoph, Yi Tay, William Fedus, Yunxuan Li, Xuezhi Wang, Mostafa Dehghani, Siddhartha Brahma, Albert Webson, Shixiang Shane Gu, Zhuyun Dai, Mirac Suzgun, Xinyun Chen, Aakanksha Chowdhery, Alex Castro-Ros, Marie Pellat, Kevin Robinson, Dasha Valter, Sharan Narang, Gaurav Mishra, Adams Yu, Vincent Zhao, Yanping Huang, Andrew Dai, Hongkun Yu, Slav Petrov, Ed H. Chi, Jeff Dean, Jacob Devlin, Adam Roberts, Denny Zhou, Quoc V. Le, and Jason Wei. Scaling instruction-finetuned language models. 2022. URL: https://arxiv.org/abs/2210.11416, arXiv:2210.11416.">CHL+22</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-instruction-cot-data-impact" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -470,7 +472,7 @@ to finetuning on just one or the other. Image from <span id="id7">[<a class="ref
 <span id="chapter-training-sec-llm-finetuning-peft"></span><h2><span class="section-number">12.3. </span>Parameter-Efficient Fine Tuning (PEFT)<a class="headerlink" href="#parameter-efficient-fine-tuning-peft" title="Link to this heading">#</a></h2>
 <section id="motivation">
 <h3><span class="section-number">12.3.1. </span>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h3>
-<p>To adapt a LLM to a specific downstream task, Full-size fine-tunning the whole LLM is usually not cost effective. For models whose model parameters are at the 1B or above, it is difficult to fine-tune the model using a single consumer grade GPU. Full-size finetuning also runs the risk of Catastrophic Forgetting <span id="id8">[<a class="reference internal" href="#id1517" title="Yun Luo, Zhen Yang, Fandong Meng, Yafu Li, Jie Zhou, and Yue Zhang. An empirical study of catastrophic forgetting in large language models during continual fine-tuning. 2024. URL: https://arxiv.org/abs/2308.08747, arXiv:2308.08747.">LYM+24</a>]</span> which means LLMs forget prior knowledge when learning new data.</p>
+<p>To adapt a LLM to a specific downstream task, Full-size fine-tunning the whole LLM is usually not cost effective. For models whose model parameters are at the 1B or above, it is difficult to fine-tune the model using a single consumer grade GPU. Full-size finetuning also runs the risk of Catastrophic Forgetting <span id="id8">[<a class="reference internal" href="#id1522" title="Yun Luo, Zhen Yang, Fandong Meng, Yafu Li, Jie Zhou, and Yue Zhang. An empirical study of catastrophic forgetting in large language models during continual fine-tuning. 2024. URL: https://arxiv.org/abs/2308.08747, arXiv:2308.08747.">LYM+24</a>]</span> which means LLMs forget prior knowledge when learning new data.</p>
 <p>since the size
 of the fine-tuned dataset is typically much smaller than the
 pretrained dataset, performing full fine-tuning to update all
@@ -483,13 +485,13 @@ the risk of catastrophic forgetting.</p>
 </section>
 <section id="adapter-tuning">
 <span id="chapter-training-sec-llm-finetuning-adapter-tuning"></span><h3><span class="section-number">12.3.2. </span>Adapter Tuning<a class="headerlink" href="#adapter-tuning" title="Link to this heading">#</a></h3>
-<p>The key idea of Adapter Tuning <span id="id10">[<a class="reference internal" href="#id1515" title="Neil Houlsby, Andrei Giurgiu, Stanislaw Jastrzebski, Bruna Morrone, Quentin de Laroussilhe, Andrea Gesmundo, Mona Attariyan, and Sylvain Gelly. Parameter-efficient transfer learning for nlp. 2019. URL: https://arxiv.org/abs/1902.00751, arXiv:1902.00751.">HGJ+19</a>]</span> is to add several additional trainable modules (i.e., layers) to the Transformer that acting as adapting module and at the same time freeze the remaining model weights the original LLM. The intuition is that by these adapter modules can be trained to assist the original LLM to better adapt to downstream tasks.</p>
+<p>The key idea of Adapter Tuning <span id="id10">[<a class="reference internal" href="#id1520" title="Neil Houlsby, Andrei Giurgiu, Stanislaw Jastrzebski, Bruna Morrone, Quentin de Laroussilhe, Andrea Gesmundo, Mona Attariyan, and Sylvain Gelly. Parameter-efficient transfer learning for nlp. 2019. URL: https://arxiv.org/abs/1902.00751, arXiv:1902.00751.">HGJ+19</a>]</span> is to add several additional trainable modules (i.e., layers) to the Transformer that acting as adapting module and at the same time freeze the remaining model weights the original LLM. The intuition is that by these adapter modules can be trained to assist the original LLM to better adapt to downstream tasks.</p>
 <p>As shown in <a class="reference internal" href="#chapter-training-fig-finetuning-adapter-arch"><span class="std std-numref">Fig. 12.5</span></a>, in each Transformer layer, adapter module are added at different places: after the multihead attention and after FFD. The output of the adapter is directly fed into the following layer normalization. The adaptor module can use a bottleneck architure to save compute cost. Specifically, The adapters first project the original <span class="math notranslate nohighlight">\(d_{model}\)</span>-dimensional features into a smaller dimension, <span class="math notranslate nohighlight">\(m\)</span>, apply a nonlinearity, then project back to <span class="math notranslate nohighlight">\(d_{model}\)</span> dimensions.</p>
 <figure class="align-default" id="chapter-training-fig-finetuning-adapter-arch">
 <a class="reference internal image-reference" href="../../_images/adapter_arch.png"><img alt="../../_images/adapter_arch.png" src="../../_images/adapter_arch.png" style="width: 561.5px; height: 404.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 12.5 </span><span class="caption-text">Architecture of the adapter module and its integration with the Transformer. (Left) Adapter module are added at different places in each Transformer layer: after the projection following multihead attention and after the position-wise FFD layers. (Right) The adapter consists of a bottleneck first mapping the input to lower dimensions and then mappign the output to higher dimensions.  Image from <span id="id11">[<a class="reference internal" href="#id1515" title="Neil Houlsby, Andrei Giurgiu, Stanislaw Jastrzebski, Bruna Morrone, Quentin de Laroussilhe, Andrea Gesmundo, Mona Attariyan, and Sylvain Gelly. Parameter-efficient transfer learning for nlp. 2019. URL: https://arxiv.org/abs/1902.00751, arXiv:1902.00751.">HGJ+19</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-adapter-arch" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 12.5 </span><span class="caption-text">Architecture of the adapter module and its integration with the Transformer. (Left) Adapter module are added at different places in each Transformer layer: after the projection following multihead attention and after the position-wise FFD layers. (Right) The adapter consists of a bottleneck first mapping the input to lower dimensions and then mappign the output to higher dimensions.  Image from <span id="id11">[<a class="reference internal" href="#id1520" title="Neil Houlsby, Andrei Giurgiu, Stanislaw Jastrzebski, Bruna Morrone, Quentin de Laroussilhe, Andrea Gesmundo, Mona Attariyan, and Sylvain Gelly. Parameter-efficient transfer learning for nlp. 2019. URL: https://arxiv.org/abs/1902.00751, arXiv:1902.00751.">HGJ+19</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-adapter-arch" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -536,7 +538,7 @@ head=\operatorname{Attention}\left(X W_q,\operatorname{Concat}\left[\hat{P}_k, X
 <h3><span class="section-number">12.3.5. </span>LoRA (Low-Rank Adaptation)<a class="headerlink" href="#lora-low-rank-adaptation" title="Link to this heading">#</a></h3>
 <section id="the-hypothesis-and-method">
 <h4><span class="section-number">12.3.5.1. </span>The hypothesis and method<a class="headerlink" href="#the-hypothesis-and-method" title="Link to this heading">#</a></h4>
-<p>LoRA <span id="id14">[<a class="reference internal" href="#id1516" title="Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen. Lora: low-rank adaptation of large language models. 2021. URL: https://arxiv.org/abs/2106.09685, arXiv:2106.09685.">HSW+21</a>]</span> is one of the most influential strategy among PEFT strategies. Compared with <a class="reference internal" href="#chapter-training-sec-llm-finetuning-adapter-tuning"><span class="std std-ref">Adapter Tuning</span></a>, which needs to add sequential layers vertically, and with <a class="reference internal" href="#chapter-training-sec-llm-finetuning-prompt-tuning"><span class="std std-ref">Prompt Tuning</span></a>,<a class="reference internal" href="#chapter-training-sec-llm-finetuning-prefix-tuning"><span class="std std-ref">Prefix-tuning</span></a>, which need to expand input vectors with extra tokens, LoRA is much more elegant approach from the perspective of archectural design and mathematics.</p>
+<p>LoRA <span id="id14">[<a class="reference internal" href="#id1521" title="Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen. Lora: low-rank adaptation of large language models. 2021. URL: https://arxiv.org/abs/2106.09685, arXiv:2106.09685.">HSW+21</a>]</span> is one of the most influential strategy among PEFT strategies. Compared with <a class="reference internal" href="#chapter-training-sec-llm-finetuning-adapter-tuning"><span class="std std-ref">Adapter Tuning</span></a>, which needs to add sequential layers vertically, and with <a class="reference internal" href="#chapter-training-sec-llm-finetuning-prompt-tuning"><span class="std std-ref">Prompt Tuning</span></a>,<a class="reference internal" href="#chapter-training-sec-llm-finetuning-prefix-tuning"><span class="std std-ref">Prefix-tuning</span></a>, which need to expand input vectors with extra tokens, LoRA is much more elegant approach from the perspective of archectural design and mathematics.</p>
 <p>Use the notation that each downstream task is represented by a training dataset of input-target pairs: <span class="math notranslate nohighlight">\(Z = \{(x_i, y_i), i=1,2,...,N\}\)</span>, where both <span class="math notranslate nohighlight">\(x_i\)</span> is the input prompt tokens, and <span class="math notranslate nohighlight">\(y_i\)</span> are response/completion tokens.</p>
 <p>The key observation is that, we can express model fine-tuning on model weight <span class="math notranslate nohighlight">\(\Phi\)</span> in its full-update-formulation</p>
 <div class="math notranslate nohighlight">
@@ -560,24 +562,30 @@ head=\operatorname{Attention}\left(X W_q,\operatorname{Concat}\left[\hat{P}_k, X
 <p><span class="caption-number">Fig. 12.9 </span><span class="caption-text">Illustration of LoRA, where we provide low-rank matrix adapation on projection matrices in the attention layer.</span><a class="headerlink" href="#chapter-training-fig-finetuning-lora" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Hypothesis:</p>
-<p>LoRA is a parameter-efficient finetuning technique that approximates weight updates using low-rank decomposition:</p>
-<ul class="simple">
-<li><p>Freezes the pretrained model weights</p></li>
-<li><p>Injects trainable rank decomposition matrices into each layer of the Transformer architecture</p></li>
-<li><p>Significantly reduces the number of trainable parameters</p></li>
-<li><p>Can be applied to various parts of the model (e.g., attention layers, feed-forward layers)</p></li>
-</ul>
-<p>Key points:</p>
-<ul class="simple">
-<li><p>Achieves performance comparable to full finetuning with only a fraction of the trainable parameters</p></li>
-<li><p>Allows for easy switching between tasks by changing the LoRA weights</p></li>
-<li><p>Can be combined with other techniques like prompt tuning for further improvements</p></li>
-</ul>
-<p>Example: LoRA has been successfully applied to various models, including GPT-3, showing competitive performance with full finetuning while using only 0.01% of the trainable parameters.</p>
-<p>These parameter-efficient finetuning techniques represent significant advancements in making large language models more accessible and adaptable. They allow for efficient use of computational resources, enable quick adaptation to new tasks, and contribute to more sustainable AI development practices.</p>
-<p>The selection of low rank matrices</p>
-<p>full rank (i.e., d) is as high as 12,288</p>
+<!-- 
+Hypothesis:
+
+
+LoRA is a parameter-efficient finetuning technique that approximates weight updates using low-rank decomposition:
+
+- Freezes the pretrained model weights
+- Injects trainable rank decomposition matrices into each layer of the Transformer architecture
+- Significantly reduces the number of trainable parameters
+- Can be applied to various parts of the model (e.g., attention layers, feed-forward layers)
+
+Key points:
+- Achieves performance comparable to full finetuning with only a fraction of the trainable parameters
+- Allows for easy switching between tasks by changing the LoRA weights
+- Can be combined with other techniques like prompt tuning for further improvements
+
+Example: LoRA has been successfully applied to various models, including GPT-3, showing competitive performance with full finetuning while using only 0.01% of the trainable parameters.
+
+These parameter-efficient finetuning techniques represent significant advancements in making large language models more accessible and adaptable. They allow for efficient use of computational resources, enable quick adaptation to new tasks, and contribute to more sustainable AI development practices.
+
+The selection of low rank matrices
+
+
+ full rank (i.e., d) is as high as 12,288 -->
 <div class="proof remark admonition" id="remark-1">
 <p class="admonition-title"><span class="caption-number">Remark 12.1 </span> (<span class="math notranslate nohighlight">\(A,B\)</span> initialization and model inference)</p>
 <section class="remark-content" id="proof-content">
@@ -590,8 +598,8 @@ head=\operatorname{Attention}\left(X W_q,\operatorname{Concat}\left[\hat{P}_k, X
 <section id="study-results">
 <h4><span class="section-number">12.3.5.2. </span>Study Results<a class="headerlink" href="#study-results" title="Link to this heading">#</a></h4>
 <p>As shown in the following, LoRA has been successfully applied to various models, including RoBERT and GPT-3, showing competitive performance with full finetuning while using only 0.01% of the trainable parameters.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1535">
-<caption><span class="caption-number">Table 12.1 </span><span class="caption-text">RoBERT with different adaptation methods on the language understanding GLUE benchmark.</span><a class="headerlink" href="#id1535" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1540">
+<caption><span class="caption-number">Table 12.1 </span><span class="caption-text">RoBERT with different adaptation methods on the language understanding GLUE benchmark.</span><a class="headerlink" href="#id1540" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Model &amp; Method</p></th>
 <th class="head"><p># Trainable Parameters</p></th>
@@ -614,8 +622,8 @@ head=\operatorname{Attention}\left(X W_q,\operatorname{Concat}\left[\hat{P}_k, X
 </tbody>
 </table>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id1536">
-<caption><span class="caption-number">Table 12.2 </span><span class="caption-text">GPT-3-175B with different adaptation methods on the language understanding benchmark.</span><a class="headerlink" href="#id1536" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1541">
+<caption><span class="caption-number">Table 12.2 </span><span class="caption-text">GPT-3-175B with different adaptation methods on the language understanding benchmark.</span><a class="headerlink" href="#id1541" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Model&amp;Method</p></th>
 <th class="head text-center"><p># Trainable Parameters</p></th>
@@ -658,8 +666,8 @@ head=\operatorname{Attention}\left(X W_q,\operatorname{Concat}\left[\hat{P}_k, X
 <li><p><span class="math notranslate nohighlight">\(r\)</span> as small as one suffices for adapting both <span class="math notranslate nohighlight">\(W^Q\)</span> and <span class="math notranslate nohighlight">\(W^V\)</span> on these datasets while training <span class="math notranslate nohighlight">\(W^Q\)</span> alone needs a larger <span class="math notranslate nohighlight">\(r\)</span>.</p></li>
 <li><p>Adapting more matrices will improve model performance but has marginal gain when adapting all matrices.</p></li>
 </ul>
-<div class="pst-scrollable-table-container"><table class="table" id="id1537">
-<caption><span class="caption-number">Table 12.3 </span><span class="caption-text">Validation accuracy on WikiSQL and MultiNLI with different rank <span class="math notranslate nohighlight">\(r\)</span>.</span><a class="headerlink" href="#id1537" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1542">
+<caption><span class="caption-number">Table 12.3 </span><span class="caption-text">Validation accuracy on WikiSQL and MultiNLI with different rank <span class="math notranslate nohighlight">\(r\)</span>.</span><a class="headerlink" href="#id1542" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-center"><p></p></th>
 <th class="head text-center"><p>Weight Type</p></th>
@@ -746,30 +754,74 @@ But why can LoRA reduce overall memory usage? Because:
  -->
 </section>
 </section>
+<section id="discussion-peft-vs-fmt">
+<h3><span class="section-number">12.3.6. </span>Discussion: PEFT vs FMT<a class="headerlink" href="#discussion-peft-vs-fmt" title="Link to this heading">#</a></h3>
+<p><span id="id15">[]</span>
+How does finetuning affect the generalization capability of the base LLM? While finetuning on task-specific data improves task-specific performance, it may specialize the base LLM towards the task and hurt the models’ generalization. We examine this for different finetuning methods by performing zero-shot translation for LLMs finetuned on WMT14 En-De and WMT19 En-Zh (Fewshot results are in Appendix). We focus on generalization to related tasks, where the target language is shared, i.e. De and Zh , and generalization should be relatively easier (Johnson et al., 2017). We report average performance for translation from a diverse set of source languages other than English.</p>
+<p>Figure 6 shows the results. While specializing on a downstream task, finetuning could still elicit and improve the generalization for closely related tasks, although the overall zero-shot translation quality is inferior. Note whether finetuning benefits generalization is method- and task-dependent. Overall, Prompt and LoRA achieve relatively better results than FMT particularly when the base LLM is large, mostly because LLM parameters are frozen and the learned knowledge get inherited. This also suggests that when generalization capability is a big concern, PET should be considered.</p>
+</section>
+</section>
+<section id="scaling-law-for-fine-tuning">
+<h2><span class="section-number">12.4. </span>Scaling Law for Fine Tuning<a class="headerlink" href="#scaling-law-for-fine-tuning" title="Link to this heading">#</a></h2>
+<p>When adapting LLM to specific downstream tasks, there are two popular ways of finetuning: <strong>full-model tuning (FMT)</strong> that updates all LLM parameters and PEFT that only optimizes a small amount of (newly added) parameters, such as prompt tuning and LoRA.</p>
+<p>It is an open question on how the resulting model performs with regards to fine-tuning data size, model size, and tuning parameter size (in the PEFT case)</p>
+<p><span id="id16">[]</span> proposes the following multiplicative joint scaling law for LLM finetuning:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\mathcal{L}}\left(X, D_f\right)=A \times \frac{1}{X^\alpha} \times \frac{1}{D_f^\beta}+E,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\{A, E, \alpha, \beta\}\)</span> are data-specific parameters to be fitted, <span class="math notranslate nohighlight">\(D_f\)</span> denotes finetuning data size, and <span class="math notranslate nohighlight">\(X\)</span> refer to other scaling factors (like model size, and tuning parameter size) and <span class="math notranslate nohighlight">\(L\)</span> is perplexity. After fitting to scaling experiments, larger <span class="math notranslate nohighlight">\(\alpha\)</span> or <span class="math notranslate nohighlight">\(\beta\)</span> means the bigger contribution from these factors.</p>
+<p>The key findings are</p>
+<ul class="simple">
+<li><p>Finetuning model performance scales better on model size than fine-tuning data size, as indicated by larger <span class="math notranslate nohighlight">\(\alpha\)</span> then <span class="math notranslate nohighlight">\(\beta\)</span> in <code class="xref std std-numref docutils literal notranslate"><span class="pre">chapter_training_fig_finetuning_ft_scaling_on_translation_task,chapter_training_fig_finetuning_ft_scaling_on_summary_task</span></code>. This suggests that using a larger LLM model is preferred over finetuning over larger data.</p></li>
+<li><p>Finetuning data size have more pronounced influence on FMT than PET (much larger <span class="math notranslate nohighlight">\(\beta\)</span> in FMT), where LoRA scales better than Prompt. In other words, FMT is more data hungary and also benefits more from increasing finetuning data.</p></li>
+<li><p>Compared across different PEFT approach, scaling tuning parameters is ineffective, delivering limited gains for both LoRA and Prompt. At the end of day, the amount of newly added trainable parameters often forms a bottleneck for the expressivity of the model.</p></li>
+</ul>
+<figure class="align-default" id="chapter-training-fig-finetuning-ft-scaling-on-translation-task">
+<a class="reference internal image-reference" href="../../_images/FT_scaling_on_translation_task.png"><img alt="../../_images/FT_scaling_on_translation_task.png" src="../../_images/FT_scaling_on_translation_task.png" style="width: 765.6px; height: 266.40000000000003px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 12.10 </span><span class="caption-text">Joint scaling law for model size (from 1B to 16B) and fine-tuning data sizes for translation task. Image from <span id="id17">[]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-ft-scaling-on-translation-task" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="chapter-training-fig-finetuning-ft-scaling-on-summary-task">
+<a class="reference internal image-reference" href="../../_images/FT_scaling_on_translation_task.png"><img alt="../../_images/FT_scaling_on_translation_task.png" src="../../_images/FT_scaling_on_translation_task.png" style="width: 765.6px; height: 266.40000000000003px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 12.11 </span><span class="caption-text">Joint scaling law for model size (from 1B to 16B) and fine-tuning data sizes for summarization task. Image from <span id="id18">[]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-ft-scaling-on-summary-task" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="chapter-training-fig-finetuning-ft-scaling-on-peft-scaling-law">
+<a class="reference internal image-reference" href="../../_images/PEFT_scaling_law.png"><img alt="../../_images/PEFT_scaling_law.png" src="../../_images/PEFT_scaling_law.png" style="width: 780.8000000000001px; height: 524.8000000000001px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 12.12 </span><span class="caption-text">Joint scaling law for tuning parameter size and fine-tuning data sizes for summarization task. Image from <span id="id19">[]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-ft-scaling-on-peft-scaling-law" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </section>
 <section id="bibliography">
-<h2><span class="section-number">12.4. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id15">
+<h2><span class="section-number">12.5. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id20">
 <div role="list" class="citation-list">
-<div class="citation" id="id1525" role="doc-biblioentry">
+<div class="citation" id="id1530" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>CHL+22<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id5">2</a>,<a role="doc-backlink" href="#id6">3</a>,<a role="doc-backlink" href="#id7">4</a>)</span>
 <p>Hyung Won Chung, Le Hou, Shayne Longpre, Barret Zoph, Yi Tay, William Fedus, Yunxuan Li, Xuezhi Wang, Mostafa Dehghani, Siddhartha Brahma, Albert Webson, Shixiang Shane Gu, Zhuyun Dai, Mirac Suzgun, Xinyun Chen, Aakanksha Chowdhery, Alex Castro-Ros, Marie Pellat, Kevin Robinson, Dasha Valter, Sharan Narang, Gaurav Mishra, Adams Yu, Vincent Zhao, Yanping Huang, Andrew Dai, Hongkun Yu, Slav Petrov, Ed H. Chi, Jeff Dean, Jacob Devlin, Adam Roberts, Denny Zhou, Quoc V. Le, and Jason Wei. Scaling instruction-finetuned language models. 2022. URL: <a class="reference external" href="https://arxiv.org/abs/2210.11416">https://arxiv.org/abs/2210.11416</a>, <a class="reference external" href="https://arxiv.org/abs/2210.11416">arXiv:2210.11416</a>.</p>
 </div>
-<div class="citation" id="id1515" role="doc-biblioentry">
+<div class="citation" id="id1520" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>HGJ+19<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id10">1</a>,<a role="doc-backlink" href="#id11">2</a>)</span>
 <p>Neil Houlsby, Andrei Giurgiu, Stanislaw Jastrzebski, Bruna Morrone, Quentin de Laroussilhe, Andrea Gesmundo, Mona Attariyan, and Sylvain Gelly. Parameter-efficient transfer learning for nlp. 2019. URL: <a class="reference external" href="https://arxiv.org/abs/1902.00751">https://arxiv.org/abs/1902.00751</a>, <a class="reference external" href="https://arxiv.org/abs/1902.00751">arXiv:1902.00751</a>.</p>
 </div>
-<div class="citation" id="id1516" role="doc-biblioentry">
+<div class="citation" id="id1521" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id14">HSW+21</a><span class="fn-bracket">]</span></span>
 <p>Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen. Lora: low-rank adaptation of large language models. 2021. URL: <a class="reference external" href="https://arxiv.org/abs/2106.09685">https://arxiv.org/abs/2106.09685</a>, <a class="reference external" href="https://arxiv.org/abs/2106.09685">arXiv:2106.09685</a>.</p>
 </div>
-<div class="citation" id="id1517" role="doc-biblioentry">
+<div class="citation" id="id1522" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">LYM+24</a><span class="fn-bracket">]</span></span>
 <p>Yun Luo, Zhen Yang, Fandong Meng, Yafu Li, Jie Zhou, and Yue Zhang. An empirical study of catastrophic forgetting in large language models during continual fine-tuning. 2024. URL: <a class="reference external" href="https://arxiv.org/abs/2308.08747">https://arxiv.org/abs/2308.08747</a>, <a class="reference external" href="https://arxiv.org/abs/2308.08747">arXiv:2308.08747</a>.</p>
 </div>
-<div class="citation" id="id495" role="doc-biblioentry">
+<div class="citation" id="id500" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>WBZ+21<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id4">2</a>)</span>
 <p>Jason Wei, Maarten Bosma, Vincent Y Zhao, Kelvin Guu, Adams Wei Yu, Brian Lester, Nan Du, Andrew M Dai, and Quoc V Le. Finetuned language models are zero-shot learners. <em>ArXiv:2109.01652</em>, 2021.</p>
@@ -823,7 +875,7 @@ But why can LoRA reduce overall memory usage? Because:
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">13. </span>LLM Alignement and Preference learning</p>
+        <p class="prev-next-title"><span class="section-number">13. </span>LLM Alignement and Preference Learning</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -860,9 +912,11 @@ But why can LoRA reduce overall memory usage? Because:
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#study-results">12.3.5.2. Study Results</a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion-peft-vs-fmt">12.3.6. Discussion: PEFT vs FMT</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">12.4. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-law-for-fine-tuning">12.4. Scaling Law for Fine Tuning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">12.5. Bibliography</a></li>
 </ul>
   </nav></div>
 

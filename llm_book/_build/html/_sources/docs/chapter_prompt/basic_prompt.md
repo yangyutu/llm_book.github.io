@@ -1,6 +1,6 @@
-# Basic prompting
+# Basic Prompting
 
-## Base LLM vs instructed LLM
+## Base LLM vs Instructed LLM
 
 
 The purpose of presenting few-shot examples in the prompt is to explain our intent to the model; in other words, describe the task instruction to the model in the form of demonstrations. However, few-shot can be expensive in terms of token usage and restricts the input length due to limited context length. So, why not just give the instruction directly?

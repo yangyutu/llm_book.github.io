@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>17. Basic prompting &#8212; LLM Foundations</title>
+    <title>17. Basic Prompting &#8212; LLM Foundations</title>
   
   
   
@@ -61,7 +61,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_prompt/basic_prompt';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="18. Advanced prompting Techniques" href="advanced_prompt.html" />
+    <link rel="next" title="18. Advanced Prompting Techniques" href="advanced_prompt.html" />
     <link rel="prev" title="16. Inference Acceleration" href="../chapter_inference/inference_acceleration.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -205,8 +205,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">17. Basic prompting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advanced_prompt.html">18. Advanced prompting Techniques</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">17. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_prompt.html">18. Advanced Prompting Techniques</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">19. RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
@@ -303,7 +303,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Basic prompting</h1>
+    <h1>Basic Prompting</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -313,7 +313,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-llm-vs-instructed-llm">17.1. Base LLM vs instructed LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-llm-vs-instructed-llm">17.1. Base LLM vs Instructed LLM</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompt">17.2. Zero-shot prompt</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-and-in-context-learning">17.3. Few-shot and in-context learning</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-of-thought-cot-prompting">17.4. Chain-of-Thought (CoT) Prompting</a></li>
@@ -330,9 +330,9 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="basic-prompting">
-<h1><span class="section-number">17. </span>Basic prompting<a class="headerlink" href="#basic-prompting" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">17. </span>Basic Prompting<a class="headerlink" href="#basic-prompting" title="Link to this heading">#</a></h1>
 <section id="base-llm-vs-instructed-llm">
-<h2><span class="section-number">17.1. </span>Base LLM vs instructed LLM<a class="headerlink" href="#base-llm-vs-instructed-llm" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">17.1. </span>Base LLM vs Instructed LLM<a class="headerlink" href="#base-llm-vs-instructed-llm" title="Link to this heading">#</a></h2>
 <p>The purpose of presenting few-shot examples in the prompt is to explain our intent to the model; in other words, describe the task instruction to the model in the form of demonstrations. However, few-shot can be expensive in terms of token usage and restricts the input length due to limited context length. So, why not just give the instruction directly?</p>
 <p>Instructed LM (e.g. InstructGPT, natural instruction) finetunes a pretrained model with high-quality tuples of (task instruction, input, ground truth output) to make LM better understand user intention and follow instruction. RLHF (Reinforcement Learning from Human Feedback) is a common method to do so. The benefit of instruction following style fine-tuning improves the model to be more aligned with human intention and greatly reduces the cost of communication.</p>
 <p>When interacting with instruction models, we should describe the task requirement in details, trying to be specific and precise and avoiding say “not do something” but rather specify what to do.</p>
@@ -564,7 +564,7 @@ Sentiment:</p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">18. </span>Advanced prompting Techniques</p>
+        <p class="prev-next-title"><span class="section-number">18. </span>Advanced Prompting Techniques</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -584,7 +584,7 @@ Sentiment:</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-llm-vs-instructed-llm">17.1. Base LLM vs instructed LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-llm-vs-instructed-llm">17.1. Base LLM vs Instructed LLM</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompt">17.2. Zero-shot prompt</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-and-in-context-learning">17.3. Few-shot and in-context learning</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-of-thought-cot-prompting">17.4. Chain-of-Thought (CoT) Prompting</a></li>

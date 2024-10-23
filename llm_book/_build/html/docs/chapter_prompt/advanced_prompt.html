@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>18. Advanced prompting Techniques &#8212; LLM Foundations</title>
+    <title>18. Advanced Prompting Techniques &#8212; LLM Foundations</title>
   
   
   
@@ -58,11 +58,13 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_prompt/advanced_prompt';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="19. RAG" href="../chapter_rag/basic_rag.html" />
-    <link rel="prev" title="17. Basic prompting" href="basic_prompt.html" />
+    <link rel="prev" title="17. Basic Prompting" href="basic_prompt.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -205,8 +207,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="basic_prompt.html">17. Basic prompting</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">18. Advanced prompting Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_prompt.html">17. Basic Prompting</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">18. Advanced Prompting Techniques</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">19. RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
@@ -303,7 +305,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Advanced prompting Techniques</h1>
+    <h1>Advanced Prompting Techniques</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -313,12 +315,13 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cot-with-self-consistency">18.1. CoT with self-consistency</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-generated-chain-of-thought">18.2. Self-generated chain of thought</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choice-shuffling-ensembling">18.3. Choice Shuffling Ensembling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-in-context-learning">18.4. Dynamic In-Context Learning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-together-the-med-prompt">18.5. Combining Together: the Med prompt</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">18.6. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cot-with-self-consistency">18.1. CoT with Self-Consistency</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-generated-cot">18.2. Self-Generated CoT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-back-prompting">18.3. Step Back Prompting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choice-shuffling-ensembling">18.4. Choice Shuffling Ensembling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-in-context-learning">18.5. Dynamic In-Context Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-together-example-med-prompt">18.6. Combining Together Example: Med Prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">18.7. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -331,11 +334,11 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="advanced-prompting-techniques">
-<h1><span class="section-number">18. </span>Advanced prompting Techniques<a class="headerlink" href="#advanced-prompting-techniques" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">18. </span>Advanced Prompting Techniques<a class="headerlink" href="#advanced-prompting-techniques" title="Link to this heading">#</a></h1>
 <section id="cot-with-self-consistency">
-<h2><span class="section-number">18.1. </span>CoT with self-consistency<a class="headerlink" href="#cot-with-self-consistency" title="Link to this heading">#</a></h2>
-<p><strong>Chain-of-thought</strong> prompting combined with pre-trained large language models has achieved encouraging results on complex reasoning tasks. <span id="id1">[<a class="reference internal" href="#id494" title="Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language models. arXiv preprint arXiv:2203.11171, 2022.">WWS+22</a>]</span> propose a <strong>self-consistency</strong> strategy to improve the performance of chain-of-thought prompting.
-The key idea is that [<code class="xref std std-numref docutils literal notranslate"><span class="pre">chapter_prompt_fig_advanced_prompt_cot_self_consistency_num_paths</span></code>]:</p>
+<h2><span class="section-number">18.1. </span>CoT with Self-Consistency<a class="headerlink" href="#cot-with-self-consistency" title="Link to this heading">#</a></h2>
+<p><strong>Chain-of-thought</strong> prompting combined with pre-trained large language models has achieved encouraging results on complex reasoning tasks. <span id="id1">[<a class="reference internal" href="#id497" title="Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language models. arXiv preprint arXiv:2203.11171, 2022.">WWS+22</a>]</span> propose a <strong>self-consistency</strong> strategy to further improve the performance of chain-of-thought prompting.
+The key idea is that <code class="xref std std-numref docutils literal notranslate"><span class="pre">chapter_prompt_fig_advanced_prompt_cot_self_consistency_num_paths</span></code>:</p>
 <ol class="arabic simple">
 <li><p>First we samples a diverse set of reasoning paths</p></li>
 <li><p>Then we select the most consistent answer by marginalizing out the sampled reasoning paths.
@@ -345,7 +348,7 @@ Self-consistency is based on the intuition that a complex reasoning problem typi
 <a class="reference internal image-reference" href="../../_images/cot_self_consistency.png"><img alt="../../_images/cot_self_consistency.png" src="../../_images/cot_self_consistency.png" style="width: 853.6px; height: 397.6px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 18.1 </span><span class="caption-text">CoT with self-consistency.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-cot-self-consistency-num-paths" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 18.1 </span><span class="caption-text">CoT with self-consistency. Image from <span id="id2">[]</span>.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-cot-self-consistency-num-paths" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <!-- Sampling scheme:
@@ -361,19 +364,17 @@ name: chapter_prompt_fig_advanced_prompt_cot_self_consistency_example
 CoT with self-consistency examples.
 ``` -->
 <p>As shown in the following [<code class="xref std std-numref docutils literal notranslate"><span class="pre">chapter_prompt_fig_advanced_prompt_cot_self_consistency_num_paths</span></code>], using over LaMDA-137B, self-consistency (blue) significantly improves accuracy over CoT-prompting with greedy decoding (orange) across arithmetic and commonsense reasoning tasks. Sampling a higher number of diverse reasoning paths consistently improves reasoning accuracy.</p>
-<figure class="align-default" id="id2">
+<figure class="align-default" id="id3">
 <a class="reference internal image-reference" href="../../_images/cot_self_consistency_num_paths.png"><img alt="../../_images/cot_self_consistency_num_paths.png" src="../../_images/cot_self_consistency_num_paths.png" style="width: 855.2px; height: 146.4px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 18.2 </span><span class="caption-text">The effect of the number of sampled reasoning paths.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 18.2 </span><span class="caption-text">The effect of the number of sampled reasoning paths.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
-<section id="self-generated-chain-of-thought">
-<h2><span class="section-number">18.2. </span>Self-generated chain of thought<a class="headerlink" href="#self-generated-chain-of-thought" title="Link to this heading">#</a></h2>
-<p><a class="reference internal" href="#chapter-prompt-fig-advanced-prompt-self-cot"><span class="std std-numref">Fig. 18.3</span></a></p>
-<p>During preprocessing, each question in the training dataset is passed through a lightweight embedding model to generate an embedding vector (Line 4 in Algorithm 1). We employed OpenAI’s text-embedding-ada-002 to create an embedding. For each question, GPT-4 is harnessed to create a chain of thought and a prediction of the final answer (Line 5). If the generated answer is correct and matches the ground truth label, we store the associated question, its embedding vector, the chain of thought, and the answer. Otherwise, we discard the question entirely from our retrieval pool, with the assumption that we cannot trust the reasoning if the model ultimately arrives at the wrong final answer.</p>
-<p>At inference time, given a test question, we re-embed the test sample with the same embedding model used during pre-processing, and utilize kNN to retrieve similar examples from the preprocessed pool. These examples, and their corresponding GPT-4 generated reasoning chains, are structured as context for GPT-4. The test question and corresponding answer choices are then appended at the end, which serves as the final prompt (Line 17). The model, following the few shot exemplars, then outputs a chain of thought and a candidate answer.</p>
+<section id="self-generated-cot">
+<h2><span class="section-number">18.2. </span>Self-Generated CoT<a class="headerlink" href="#self-generated-cot" title="Link to this heading">#</a></h2>
+<p>When using CoT in prompt writing, we often need experts to manually compose CoT example reasoning steps. Self-Generated CoT aims to automate the CoT examples using LLM itself. The finding is that CoT rationales generated by GPT-4 are longer and provide finer-grained step-by-step reasoning logic. The following examples compare the manually crafted CoT and self-generated CoT <a class="reference internal" href="#chapter-prompt-fig-advanced-prompt-self-cot"><span class="std std-numref">Fig. 18.3</span></a>.</p>
 <!-- ![Self-generated CoT demonstration. Comparison of expert-crafted and GPT-4-generated chain-of-thought (CoT) prompts.](../img/chapter_prompt/advanced_prompt/medprompt_cot_example.png)
 :label:`chapter_prompt_fig_advanced_prompt_self_cot` -->
 <figure class="align-default" id="chapter-prompt-fig-advanced-prompt-self-cot">
@@ -383,46 +384,101 @@ CoT with self-consistency examples.
 <p><span class="caption-number">Fig. 18.3 </span><span class="caption-text">Self-generated CoT demonstration. Comparison of expert-crafted and GPT-4-generated chain-of-thought (CoT) prompts.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-self-cot" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
+<p>Note that a key challenge with the self-generated CoT rationales are they can be incorrect reasoning chains due to halluciation. This can be mitigated by asking LLM to produce both reasoning chain as well the likelihood answer (similar to two step zero-shot CoT <a class="reference internal" href="basic_prompt.html#chapter-prompt-fig-basic-prompt-zero-shot-cot"><span class="std std-numref">Fig. 17.3</span></a>). If this answer does not match the ground truth label, then the reasoning sample can be discarded. Note that there can still be cases that incorrect reasoning chain leading to correct answers.</p>
+</section>
+<section id="step-back-prompting">
+<h2><span class="section-number">18.3. </span>Step Back Prompting<a class="headerlink" href="#step-back-prompting" title="Link to this heading">#</a></h2>
+<p>Complex multi-step reasoning tasks, particularly domain specific reasoning such as Physics and Chemistry remain challenge to LLM. These questions are usually  knowledge-intensive question answering, involving many low-level details, thus requiring factual knowledge, multi-hop commonsense reasoning.</p>
+<p>For example, a question from chemical physics -  <em>What happens to the pressure, P, of an ideal gas if the temperature is increased by a factor of 2 and the
+volume is increased by a factor of 8 ?</em> would require the understanding the physical principle on gas first, and then perform reasoning to get the answer.</p>
+<p>The idea of <strong>Step Back prompting</strong> <span id="id4">[]</span> is inspired by how human approaches these type of taks - humans often step back and do abstractions to arrive at
+high-level principles to guide the reasoning process [<a class="reference internal" href="#chapter-prompt-fig-advanced-prompt-step-back-demo"><span class="std std-numref">Fig. 18.4</span></a>].</p>
+<p>The prompting involves two steps:</p>
+<ul class="simple">
+<li><p><strong>Abstraction</strong>: Instead of addressing the question directly, we first prompt the LLM to ask a generic step-back question about a higher-level principle and relevant context, which encourages the model to produce relevant facts and principles.</p></li>
+<li><p><strong>Reasoning</strong>: Grounding on the facts produced in the first stepregarding the high-level concept or principle, the LLM then reason about the solution to the original question.</p></li>
+</ul>
+<figure class="align-default" id="chapter-prompt-fig-advanced-prompt-step-back-demo">
+<a class="reference internal image-reference" href="../../_images/step_back_demo.png"><img alt="../../_images/step_back_demo.png" src="../../_images/step_back_demo.png" style="width: 880.8000000000001px; height: 360.8px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 18.4 </span><span class="caption-text">Illustration of Step-Back prompting, which consists of two steps of <strong>Abstraction</strong> and <strong>Reasoning</strong>. Here shows an example of MMLU high-school physics where the first principle of Ideal Gas Law is retrieved via abstraction before generating answers. Image from <span id="id5">[]</span>.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-step-back-demo" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The following table shows the performance on MMLU tasks, Step-Back prompting shows furhter improvement on CoT prompting.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id1527">
+<caption><span class="caption-number">Table 18.1 </span><span class="caption-text">Performance of Step-Back prompting on MMLU tasks.</span><a class="headerlink" href="#id1527" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Method</p></th>
+<th class="head text-center"><p>MMLU Physics</p></th>
+<th class="head text-center"><p>MMLU Chemistry</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>GPT-4</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(69.4 \%(2.0 \%)\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(80.9 \%(0.7 \%)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>GPT-4 1-shot</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(78.4 \%(2.4 \%)\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(80.5 \%(1.6 \%)\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>GPT-4 + CoT</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(82.9 \%(0.5 \%)\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(85.3 \%(1.0 \%)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>GPT-4 + CoT 1-shot</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(79.3 \%(1.0 \%)\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(82.8 \%(0.5 \%)\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>GPT-4 + Step-Back</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{8 4 . 5 \% ( 1 . 2 \% )}\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{8 5 . 6 \% ( 1 . 4 \% )}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 <section id="choice-shuffling-ensembling">
-<h2><span class="section-number">18.3. </span>Choice Shuffling Ensembling<a class="headerlink" href="#choice-shuffling-ensembling" title="Link to this heading">#</a></h2>
-<p>Combines outputs of multiple model runs to achieve a more robust or accurate result through methods like averaging or majority vote.</p>
-<p>Example: Applying self-consistency techniques to produce multiple outputs and identifying a consensus output.
-Results: While ensembling enhances performance, it was used with consideration for computational demands. Medprompt used simpler techniques to avoid excessive inference costs</p>
-<p>Choise shuffling aims to mitigate the position bias for GPT-4 type of LLM that has exhibited for multiple choices questions.</p>
-<p>Self-consistency replaces the naive single-path or greedy decoding with a diverse set of reasoning paths when prompted multiple times at some non-zero temperature, a setting that introduces a degree of randomness in generations.</p>
+<h2><span class="section-number">18.4. </span>Choice Shuffling Ensembling<a class="headerlink" href="#choice-shuffling-ensembling" title="Link to this heading">#</a></h2>
+<p>Choice shuffling ensembling combines two key ideas to improve prompting effectiveness for multi-choice questions:</p>
+<ul class="simple">
+<li><p>Ensembling - combines outputs of multiple model runs to achieve a more robust or accurate result through methods like averaging or majority vote.</p></li>
+<li><p>Bias mitigation - shuffle the choices can mitigate the position bias that LLM or GPT-4 has (a tendency to favor certain options in multiple choice answers over others regardless of the option content)</p></li>
+</ul>
 <p>With choice shuffling, we shuffle the relative order of the answer choices before generating each reasoning path. We then select the most consistent answer, i.e., the one that is least sensitive to choice shuffling.</p>
-<p>Choice shuffling has an additional benefit of increasing the diversity of each reasoning path beyond temperature sampling, thereby also improving the quality of the final ensemble</p>
+<p>Choice shuffling has an additional benefit of increasing the diversity of each reasoning path beyond temperature sampling, thereby also improving the quality of the final ensemble.</p>
 </section>
 <section id="dynamic-in-context-learning">
-<h2><span class="section-number">18.4. </span>Dynamic In-Context Learning<a class="headerlink" href="#dynamic-in-context-learning" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">18.5. </span>Dynamic In-Context Learning<a class="headerlink" href="#dynamic-in-context-learning" title="Link to this heading">#</a></h2>
 <p>In the most common form of in-context learning (also known as few-shot learning),LLM is prompted with a few demonstrations, and produce responses following the task format in the prompt. These few-shot examples used in prompting for a particular task are typically fixed; they are unchanged across test examples.</p>
 <p>To achieve the best testing performance, it is necessary that these few-shot examples selected are broadly representative and relevant to a wide distribution of text examples.</p>
 <p>In the dynamic few-shot prompting setting, we can select can select different few-shot examples for different task inputs. The selection criterion can be based on the simiarlity to the testing case at hand.</p>
+<p>For example, at inference time, given a test question, we re-embed the test sample with the same embedding model used during pre-processing, and utilize kNN to retrieve similar examples from the preprocessed examples.</p>
 </section>
-<section id="combining-together-the-med-prompt">
-<h2><span class="section-number">18.5. </span>Combining Together: the Med prompt<a class="headerlink" href="#combining-together-the-med-prompt" title="Link to this heading">#</a></h2>
+<section id="combining-together-example-med-prompt">
+<h2><span class="section-number">18.6. </span>Combining Together Example: Med Prompt<a class="headerlink" href="#combining-together-example-med-prompt" title="Link to this heading">#</a></h2>
 <p>By using advanced prompting techniques, GPT-4 demonstrated significant capabilities in areas involving significant domain knowledge, such as medicine, which challenges the assumption that it requires intensive domain-specific training to match specialist capabilities​.</p>
-<p>In <span id="id3">[<a class="reference internal" href="#id493" title="Harsha Nori, Yin Tat Lee, Sheng Zhang, Dean Carignan, Richard Edgar, Nicolo Fusi, Nicholas King, Jonathan Larson, Yuanzhi Li, Weishung Liu, and others. Can generalist foundation models outcompete special-purpose tuning? case study in medicine. arXiv preprint arXiv:2311.16452, 2023.">NLZ+23</a>]</span>, authors carried out a systematic exploration of prompt engineering strategies that significantly enhance GPT-4’s performance in medical question-answering tasks. Medprompt integrates techniques like in-context learning and chain-of-thought reasoning, leading to a 27% reduction in error rate on the MedQA dataset compared to specialist models.</p>
+<p>In <span id="id6">[<a class="reference internal" href="#id496" title="Harsha Nori, Yin Tat Lee, Sheng Zhang, Dean Carignan, Richard Edgar, Nicolo Fusi, Nicholas King, Jonathan Larson, Yuanzhi Li, Weishung Liu, and others. Can generalist foundation models outcompete special-purpose tuning? case study in medicine. arXiv preprint arXiv:2311.16452, 2023.">NLZ+23</a>]</span>, authors carried out a systematic exploration of prompt engineering strategies that significantly enhance GPT-4’s performance in medical question-answering tasks. Medprompt integrates techniques like in-context learning and chain-of-thought reasoning, leading to a 27% reduction in error rate on the MedQA dataset compared to specialist models.</p>
 <p>Medprompt employs dynamic few-shot selection, self-generated chain of thought, and choice shuffle ensembling. These techniques collectively contribute to its high performance in medical benchmarks.</p>
 <p>An ablation study in the following highlighted the relative contributions of Medprompt’s components.Each technique incrementally improves the model’s performance, with the final accuracy reaching 90.2%. The most significant improvements come from GPT Self-Generated CoT (+3.4%) and the 5x Choice-Shuffle Ensemble Layer (+2.1%).</p>
 <figure class="align-default" id="chapter-prompt-fig-advanced-prompt-med-prompt-abalation-study">
 <a class="reference internal image-reference" href="../../_images/med_prompt_abalation_study.png"><img alt="../../_images/med_prompt_abalation_study.png" src="../../_images/med_prompt_abalation_study.png" style="width: 795.0px; height: 419.4px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 18.4 </span><span class="caption-text">Relative contributions of different components of Medprompt via an ablation study.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-med-prompt-abalation-study" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 18.5 </span><span class="caption-text">Relative contributions of different components of Medprompt via an ablation study.</span><a class="headerlink" href="#chapter-prompt-fig-advanced-prompt-med-prompt-abalation-study" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="bibliography">
-<h2><span class="section-number">18.6. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id4">
+<h2><span class="section-number">18.7. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id7">
 <div role="list" class="citation-list">
-<div class="citation" id="id493" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">NLZ+23</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id496" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">NLZ+23</a><span class="fn-bracket">]</span></span>
 <p>Harsha Nori, Yin Tat Lee, Sheng Zhang, Dean Carignan, Richard Edgar, Nicolo Fusi, Nicholas King, Jonathan Larson, Yuanzhi Li, Weishung Liu, and others. Can generalist foundation models outcompete special-purpose tuning? case study in medicine. <em>arXiv preprint arXiv:2311.16452</em>, 2023.</p>
 </div>
-<div class="citation" id="id494" role="doc-biblioentry">
+<div class="citation" id="id497" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">WWS+22</a><span class="fn-bracket">]</span></span>
 <p>Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language models. <em>arXiv preprint arXiv:2203.11171</em>, 2022.</p>
 </div>
@@ -467,7 +523,7 @@ Results: While ensembling enhances performance, it was used with consideration f
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">17. </span>Basic prompting</p>
+        <p class="prev-next-title"><span class="section-number">17. </span>Basic Prompting</p>
       </div>
     </a>
     <a class="right-next"
@@ -495,12 +551,13 @@ Results: While ensembling enhances performance, it was used with consideration f
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cot-with-self-consistency">18.1. CoT with self-consistency</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-generated-chain-of-thought">18.2. Self-generated chain of thought</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choice-shuffling-ensembling">18.3. Choice Shuffling Ensembling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-in-context-learning">18.4. Dynamic In-Context Learning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-together-the-med-prompt">18.5. Combining Together: the Med prompt</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">18.6. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cot-with-self-consistency">18.1. CoT with Self-Consistency</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-generated-cot">18.2. Self-Generated CoT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-back-prompting">18.3. Step Back Prompting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choice-shuffling-ensembling">18.4. Choice Shuffling Ensembling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-in-context-learning">18.5. Dynamic In-Context Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-together-example-med-prompt">18.6. Combining Together Example: Med Prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">18.7. Bibliography</a></li>
 </ul>
   </nav></div>
 

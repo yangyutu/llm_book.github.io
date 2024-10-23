@@ -197,7 +197,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">11. LLM Training Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM Finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM Alignement and Preference learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM Alignement and Preference Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">14. LLM Training Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
@@ -207,8 +207,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">17. Basic prompt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">18. Advanced prompt techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">17. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">18. Advanced Prompting Techniques</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">19. RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
@@ -316,7 +316,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">9.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization">9.2. Layer normalization</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization">9.2. Layer Normalization</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization-basics">9.2.1. Layer normalization basics</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-norm-root-mean-square-norm">9.2.2. RMS Norm (Root Mean Square Norm)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization-position">9.2.3. Layer normalization position</a></li>
@@ -369,7 +369,7 @@ document.write(`
 <p>LLM have revolutionized natural language processing and artificial intelligence, demonstrating remarkable capabilities in understanding and generating human-like text. Tech companies like Google, Microsoft, Meta, OpenAI are producing LLMs with increasing sizes and capabilities just over the past few years [<a class="reference internal" href="#chapter-foundation-fig-pretrained-llm-timeline"><span class="std std-numref">Fig. 9.1</span></a>].</p>
 <p>From a high level, LLMs share the following characteristics:</p>
 <ul class="simple">
-<li><p><strong>Scale</strong>: LLMs are trained on enormous datasets, often containing hundreds to thousands of billions of words or tokens. This massive scale allows them to capture intricate patterns and nuances in language. For example, GPT-3 <span id="id1">[<a class="reference internal" href="../chapter_foundation/transformers.html#id393" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>]</span> was trained on about 500 billion tokens, and recent Llama3 405B <span id="id2">[<a class="reference internal" href="#id1538" title="Abhimanyu Dubey and et al Abhinav Jauhri. The llama 3 herd of models. 2024. URL: https://arxiv.org/abs/2407.21783, arXiv:2407.21783.">DAJ24</a>]</span> was trained on 15.6T tokens.</p></li>
+<li><p><strong>Scale</strong>: LLMs are trained on enormous datasets, often containing hundreds to thousands of billions of words or tokens. This massive scale allows them to capture intricate patterns and nuances in language. For example, GPT-3 <span id="id1">[<a class="reference internal" href="../chapter_foundation/transformers.html#id393" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>]</span> was trained on about 500 billion tokens, and recent Llama3 405B <span id="id2">[<a class="reference internal" href="#id1540" title="Abhimanyu Dubey and et al Abhinav Jauhri. The llama 3 herd of models. 2024. URL: https://arxiv.org/abs/2407.21783, arXiv:2407.21783.">DAJ24</a>]</span> was trained on 15.6T tokens.</p></li>
 <li><p><strong>Transformer architecture</strong>: Most modern LLMs use transformer architectures, which were introduced in the “Attention is All You Need” paper. These models can have billions of parameters - GPT-3 has 175 billion, for instance. The transformer architecture allows for efficient parallel processing and captures long-range dependencies in text.</p></li>
 <li><p><strong>Self-supervised learning</strong>: LLMs are typically pre-trained using self-supervised learning techniques. The most common approach is next-token prediction, where the model learns to predict the next word in a sequence given the previous words. This allows the model to learn from vast amounts of unlabeled text data.</p></li>
 <li><p><strong>Multi-task capability</strong>: A single LLM can perform various language tasks such as translation, summarization, question-answering, reasongin, and text generation without needing separate models for each task. This versatility makes them powerful tools for a wide range of applications.</p></li>
@@ -392,10 +392,10 @@ document.write(`
 <p>Finally, we examining the intricate details of LLM structure and function. We break down the <strong>distribution of parameters</strong> across different model components, provide a detailed explanation of the <strong>forward pass computation</strong>, and present <strong>examples of dense transformer architectures</strong>.</p>
 </section>
 <section id="layer-normalization">
-<h2><span class="section-number">9.2. </span>Layer normalization<a class="headerlink" href="#layer-normalization" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">9.2. </span>Layer Normalization<a class="headerlink" href="#layer-normalization" title="Link to this heading">#</a></h2>
 <section id="layer-normalization-basics">
 <h3><span class="section-number">9.2.1. </span>Layer normalization basics<a class="headerlink" href="#layer-normalization-basics" title="Link to this heading">#</a></h3>
-<p>The LayerNorm was originally proposed to overcome the  in combating the internal covariate shift issue <span id="id4">[<a class="reference internal" href="#id1524" title="Sergey Ioffe and Christian Szegedy. Batch normalization: accelerating deep network training by reducing internal covariate shift. 2015. URL: https://arxiv.org/abs/1502.03167, arXiv:1502.03167.">IS15</a>]</span>, where a layer’s input distribution changes as previous layers are updated, causing the difficulty of traning deep models.</p>
+<p>The LayerNorm was originally proposed to overcome the  in combating the internal covariate shift issue <span id="id4">[<a class="reference internal" href="#id1526" title="Sergey Ioffe and Christian Szegedy. Batch normalization: accelerating deep network training by reducing internal covariate shift. 2015. URL: https://arxiv.org/abs/1502.03167, arXiv:1502.03167.">IS15</a>]</span>, where a layer’s input distribution changes as previous layers are updated, causing the difficulty of traning deep models.</p>
 <p>The key idea in LayerNorm is to normalize the input to the neural network layer via</p>
 <ul class="simple">
 <li><p>re-centering by subtracting the mean</p></li>
@@ -417,7 +417,7 @@ document.write(`
 </section>
 <section id="rms-norm-root-mean-square-norm">
 <h3><span class="section-number">9.2.2. </span>RMS Norm (Root Mean Square Norm)<a class="headerlink" href="#rms-norm-root-mean-square-norm" title="Link to this heading">#</a></h3>
-<p>A common hypothesis on why layer normalization can help stalize training and boost model convergence is the capability in  handling re-centering and re-scaling of both inputs and weight matrix. RMSNorm <span id="id5">[<a class="reference internal" href="#id1523" title="Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: https://arxiv.org/abs/1910.07467, arXiv:1910.07467.">ZS19</a>]</span> is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. RMSNorm hypothesizes that only the re-scaling component is necessary and proposes the following simplified normalization formula</p>
+<p>A common hypothesis on why layer normalization can help stalize training and boost model convergence is the capability in  handling re-centering and re-scaling of both inputs and weight matrix. RMSNorm <span id="id5">[<a class="reference internal" href="#id1525" title="Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: https://arxiv.org/abs/1910.07467, arXiv:1910.07467.">ZS19</a>]</span> is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. RMSNorm hypothesizes that only the re-scaling component is necessary and proposes the following simplified normalization formula</p>
 <div class="math notranslate nohighlight" id="equation-chapter-llm-arch-rms-nomalization-formula">
 <span class="eqno">(9.2)<a class="headerlink" href="#equation-chapter-llm-arch-rms-nomalization-formula" title="Link to this equation">#</a></span>\[
 \operatorname{RMSNorm}(x)=\frac{x}{\sqrt{\frac{1}{H} \sum_{i=1}^H x_i^2}} \cdot \gamma
@@ -445,7 +445,7 @@ document.write(`
 <strong>RMSNorm</strong>, by using only RMS for normalization, can provide a more robust, smoother gradient flow, especially in deeper networks. It reduces the impact of mean on gradient fluctuations, thereby improving the stability and speed of training.</p>
 </div>
 <div class="sd-card-footer docutils">
-<p class="sd-card-text">See <span id="id6">[<a class="reference internal" href="#id1523" title="Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: https://arxiv.org/abs/1910.07467, arXiv:1910.07467.">ZS19</a>]</span> for math derivation</p>
+<p class="sd-card-text">See <span id="id6">[<a class="reference internal" href="#id1525" title="Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: https://arxiv.org/abs/1910.07467, arXiv:1910.07467.">ZS19</a>]</span> for math derivation</p>
 </div>
 </div>
 </div>
@@ -454,26 +454,42 @@ document.write(`
 </section>
 <section id="layer-normalization-position">
 <h3><span class="section-number">9.2.3. </span>Layer normalization position<a class="headerlink" href="#layer-normalization-position" title="Link to this heading">#</a></h3>
-<p><span id="id7">[<a class="reference internal" href="../chapter_foundation/transformers.html#id395" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span></p>
-<p>The residual connection <span class="math notranslate nohighlight">\(x+F(x)\)</span> in the Transformer layer will modify the variance of input <span class="math notranslate nohighlight">\(x\)</span>. To see this, let the variance of <span class="math notranslate nohighlight">\(x\)</span> be <span class="math notranslate nohighlight">\(\sigma_1^2\)</span> and the variance of <span class="math notranslate nohighlight">\(F(x)\)</span> be <span class="math notranslate nohighlight">\(\sigma_2^2\)</span>. Then the variance of <span class="math notranslate nohighlight">\(x + F(x)\)</span> will be given by</p>
-<div class="math notranslate nohighlight">
-\[ 
-Var[x + F(x)] = \sigma_1^2 + \sigma_2^2 + \rho \sigma_1\sigma_2
-\]</div>
-<p>The Post-Norm thus can stablize the variance of the output by applying the LayerNorm after the residual connection, which is given by</p>
+<p>It has been shown that <span id="id7">[<a class="reference internal" href="../chapter_foundation/transformers.html#id395" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span> where to replace the normalization layer has an impact on model training, covergence, and final performance.</p>
+<p>The Post-Norm (as in the vanilla Transformer architecture) has can stablize the variance of the output by applying the LayerNorm after the residual connection, which is given by</p>
 <div class="math notranslate nohighlight">
 \[\operatorname{PostNorm Output} = \operatorname{LayerNorm}(X + \operatorname{SubLayer}(X))\]</div>
 <p>Here the SubLayer could be the FeedForward Layer or the Attention Layer.</p>
-<p>Clearly, the normalization will reduce the effect of identity mapping <span class="math notranslate nohighlight">\(I(x) = x\)</span> and therefore the gradient flow via the residual connection (aka high-way connection).
-As a result, using Post-Norm in general will require carefully designed learning rate warm-up stage (the optimization starts with
-a small/tiny learning rate, and then gradually increases it to a pre-defined maximum value within certain number of steps.) to speed up model training and covergence, including learning rate warm-up and other hyper-parameter tuning.</p>
-<p>When it comes to training very deep models, Post-norm can lead to more unstable gradients during training, especially in very deep networks. This can lead to slower convergence and increased likelihood of training failure.</p>
-<p>Pre-LN Transformers without the warm-up stage can reach comparable results
-with baselines while requiring significantly less training time and hyper-parameter tuning on a
-wide range of applications.</p>
+<p>The Pre-Norm normalize the input to SubLayers, which is given by</p>
 <div class="math notranslate nohighlight">
-\[\operatorname{PreNorm Output} = X + \operatorname{SubLayer}(\operatorname{LayerNorm}(X))\]</div>
-<p>Intuitively, as the residual connection route <span class="math notranslate nohighlight">\(X\)</span> is not being normalized, the gradient flow via the idenity mapping is therefore not compromised. This help the training of very deep neural networks by mitigating the vanishing gradient issue.</p>
+\[\operatorname{PreNorm Output} = X + \operatorname{SubLayer}(\operatorname{LayerNorm}(X)).\]</div>
+<p>It is shown in <span id="id8">[<a class="reference internal" href="../chapter_foundation/transformers.html#id395" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span> that the gradients at last layer <span class="math notranslate nohighlight">\(L\)</span> satisfy the following condition:</p>
+<div class="math notranslate nohighlight">
+\[||G_{PostNorm,L}||_F \leq \mathcal{O}(d \sqrt{\ln d}), ||G_{PreNorm,L}||_F \leq \mathcal{O}\left(d \sqrt{\frac{\ln d}{L}}\right)
+.\]</div>
+<p>which intuitively implies the following</p>
+<ul class="simple">
+<li><p>The gradient norm magnitude in the Pre-Norm Transformer will be likely to stay the same for any layer index <span class="math notranslate nohighlight">\(l\)</span></p></li>
+<li><p>Gradient norm in the Post-LN Transformer will likely increase as layer index <span class="math notranslate nohighlight">\(l\)</span> and be very large at the last layer <span class="math notranslate nohighlight">\(L\)</span>.</p></li>
+</ul>
+<p>Such gradient norm behavior has implication on training stability.</p>
+<ul class="simple">
+<li><p>For Post-norm model, it often requires learning rate scheduling and warm up (initializing from a small vaue) to stablize training.</p></li>
+<li><p>When it comes to training very deep models, Post-norm can lead to more unstable gradients during training, especially in very deep networks. This can lead to slower convergence and increased likelihood of training failure.</p></li>
+<li><p>On the other hand, Pre-Norm Transformers without the warm-up stage can reach comparable results with Post-Norm, simplifying the hyper-parameter tuning;</p></li>
+<li><p>Pre-Norm, thanks to its stable gradient, is suitable for LLM architecture, which are very deep transformers.</p></li>
+</ul>
+<!-- l decreases
+
+The residual connection $x+F(x)$ in the Transformer layer will modify the variance of input $x$. To see this, let the variance of $x$ be $\sigma_1^2$ and the variance of $F(x)$ be $\sigma_2^2$. Then the variance of $x + F(x)$ will be given by 
+
+$$ 
+Var[x + F(x)] = \sigma_1^2 + \sigma_2^2 + \rho \sigma_1\sigma_2
+$$
+
+
+Clearly, the normalization will reduce the effect of identity mapping $I(x) = x$ and therefore the gradient flow via the residual connection (aka high-way connection). 
+As a result, using Post-Norm in general will require carefully designed learning rate warm-up stage (the optimization starts with
+a small/tiny learning rate, and then gradually increases it to a pre-defined maximum value within certain number of steps.) to speed up model training and covergence, including learning rate warm-up and other hyper-parameter tuning. -->
 <figure class="align-default" id="chapter-llm-arch-fig-pretrained-lm-transformer-layernormalizationposition">
 <a class="reference internal image-reference" href="../../_images/layer_normalization_position.png"><img alt="../../_images/layer_normalization_position.png" src="../../_images/layer_normalization_position.png" style="width: 471.59999999999997px; height: 354.59999999999997px;" />
 </a>
@@ -510,6 +526,10 @@ wide range of applications.</p>
 </div>
 </div>
 </div>
+<p>Another modification of Post-Norm to enable training of very deep Post-Norm Transformer model (up to 1000 layers) is <strong>Deep-Norm</strong> <span id="id9">[]</span>, which gives</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{DeepNorm Output} = \operatorname{LayerNorm}(\alphaX + \operatorname{SubLayer}(X))\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\alpha &gt; 1\)</span> is a constant, which up scales the residual connection (to help gradient vanishing issue for deep models). Besides, the weights in the SubLayers are scaled by <span class="math notranslate nohighlight">\(\beta &lt; 1\)</span> (i.e., make it smaller) during initalization.</p>
 </section>
 <section id="layer-normalization-example-choices">
 <h3><span class="section-number">9.2.4. </span>Layer normalization example choices<a class="headerlink" href="#layer-normalization-example-choices" title="Link to this heading">#</a></h3>
@@ -530,7 +550,7 @@ wide range of applications.</p>
 \operatorname{FFN}(x)=f(xW_1+b_1)W_2+b_2
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(f\)</span> is the activation function.</p>
-<p>While in the original Transformer paper ReLU is used, many other different activations are explored. In the latest LLMs, GLU activations <span id="id8">[<a class="reference internal" href="#id1539" title="Noam Shazeer. Glu variants improve transformer. 2020. URL: https://arxiv.org/abs/2002.05202, arXiv:2002.05202.">Sha20</a>]</span> are widely adopted and its variations SwiGLU are also widely used to achieve better performance in practice.</p>
+<p>While in the original Transformer paper ReLU is used, many other different activations are explored. In the latest LLMs, GLU activations <span id="id10">[<a class="reference internal" href="#id1541" title="Noam Shazeer. Glu variants improve transformer. 2020. URL: https://arxiv.org/abs/2002.05202, arXiv:2002.05202.">Sha20</a>]</span> are widely adopted and its variations SwiGLU are also widely used to achieve better performance in practice.</p>
 <p><strong>Gated Linear Units (GLU)</strong> is a neural network layer defined as the componentwise product of two linear transformations of the input, one of which is sigmoid-activated.</p>
 <div class="math notranslate nohighlight" id="equation-chapter-llm-arch-eq-glu">
 <span class="eqno">(9.3)<a class="headerlink" href="#equation-chapter-llm-arch-eq-glu" title="Link to this equation">#</a></span>\[\operatorname{GLU}(x; W, V, b)=\sigma(xW+b) \otimes xV
@@ -542,7 +562,7 @@ wide range of applications.</p>
 \operatorname{FFN}_{GLU}(x; W_1,W_2,V, b_1, b_2)=(\sigma(xW_1 + b) \otimes xV)W_2 + b_2
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(W_1, W_2, V\)</span> are weight matrices. Note that the FFN layer with GLU have three weight matrices, as opposed to two for the original FFN.</p>
-<p>One variant of GLU is Swish <span id="id9">[<a class="reference internal" href="#id1540" title="Prajit Ramachandran, Barret Zoph, and Quoc V. Le. Searching for activation functions. 2017. URL: https://arxiv.org/abs/1710.05941, arXiv:1710.05941.">RZL17</a>]</span>, which is given by</p>
+<p>One variant of GLU is Swish <span id="id11">[<a class="reference internal" href="#id1542" title="Prajit Ramachandran, Barret Zoph, and Quoc V. Le. Searching for activation functions. 2017. URL: https://arxiv.org/abs/1710.05941, arXiv:1710.05941.">RZL17</a>]</span>, which is given by</p>
 <div class="math notranslate nohighlight" id="equation-chapter-llm-arch-eq-swish">
 <span class="eqno">(9.5)<a class="headerlink" href="#equation-chapter-llm-arch-eq-swish" title="Link to this equation">#</a></span>\[
 \operatorname{Swish}_\beta(x)=x \cdot \sigma(\beta x)
@@ -559,7 +579,7 @@ wide range of applications.</p>
 <a class="reference internal image-reference" href="../../_images/swish.png"><img alt="../../_images/swish.png" src="../../_images/swish.png" style="width: 767.5px; height: 270.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.3 </span><span class="caption-text">(Left) The Swish activation function. (Right)  First derivatives of Swish. Image from <span id="id10">[<a class="reference internal" href="#id1540" title="Prajit Ramachandran, Barret Zoph, and Quoc V. Le. Searching for activation functions. 2017. URL: https://arxiv.org/abs/1710.05941, arXiv:1710.05941.">RZL17</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-llm-activation-swish" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 9.3 </span><span class="caption-text">(Left) The Swish activation function. (Right)  First derivatives of Swish. Image from <span id="id12">[<a class="reference internal" href="#id1542" title="Prajit Ramachandran, Barret Zoph, and Quoc V. Le. Searching for activation functions. 2017. URL: https://arxiv.org/abs/1710.05941, arXiv:1710.05941.">RZL17</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-llm-activation-swish" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>If we use Swish function in the GLU, we can obtain the following variations:
@@ -647,7 +667,7 @@ SwiGLU=\text{Swish}_1(xW) \otimes xV
 </section>
 <section id="multi-query-attention-mqa">
 <h3><span class="section-number">9.4.2. </span>Multi Query Attention (MQA)<a class="headerlink" href="#multi-query-attention-mqa" title="Link to this heading">#</a></h3>
-<p>To reduce the inference cost from MHA, <span id="id11">[<a class="reference internal" href="#id1534" title="Noam Shazeer. Fast transformer decoding: one write-head is all you need. 2019. URL: https://arxiv.org/abs/1911.02150, arXiv:1911.02150.">Sha19</a>]</span> proposed <strong>MQA</strong>, which reduces <span class="math notranslate nohighlight">\(H\)</span> key and value heads in MHA to a single key and value head.
+<p>To reduce the inference cost from MHA, <span id="id13">[<a class="reference internal" href="#id1536" title="Noam Shazeer. Fast transformer decoding: one write-head is all you need. 2019. URL: https://arxiv.org/abs/1911.02150, arXiv:1911.02150.">Sha19</a>]</span> proposed <strong>MQA</strong>, which reduces <span class="math notranslate nohighlight">\(H\)</span> key and value heads in MHA to a single key and value head.
 During inference, MQA reducing the size of the key-value cache by a factor of <span class="math notranslate nohighlight">\(H\)</span> (see <a class="reference internal" href="../chapter_inference/inference_acceleration.html#chapter-inference-sec-inference-acceleration-kv-cache"><span class="std std-ref">KV Cache</span></a>). However, larger models generally scale the number of heads (e.g., GPT-2 has 12 heads; GPT-3 has 96 heads), such that multi-query attention represents a more
 aggressive cut in both memory bandwidth and capacity footprint.</p>
 <p>In MQA, the single head attnetion is computed as</p>
@@ -694,7 +714,7 @@ aggressive cut in both memory bandwidth and capacity footprint.</p>
 </section>
 <section id="grouped-query-attention-gqa">
 <span id="chapter-llm-arch-sec-self-attention-variant-gqa"></span><h3><span class="section-number">9.4.3. </span>Grouped Query Attention (GQA)<a class="headerlink" href="#grouped-query-attention-gqa" title="Link to this heading">#</a></h3>
-<p>GQA <span id="id12">[<a class="reference internal" href="#id1533" title="Joshua Ainslie, James Lee-Thorp, Michiel de Jong, Yury Zemlyanskiy, Federico Lebrón, and Sumit Sanghai. Gqa: training generalized multi-query transformer models from multi-head checkpoints. 2023. URL: https://arxiv.org/abs/2305.13245, arXiv:2305.13245.">ALTdJ+23</a>]</span> is an optimization of MHA and MQA that reduces computational complexity while maintaining performance.</p>
+<p>GQA <span id="id14">[<a class="reference internal" href="#id1535" title="Joshua Ainslie, James Lee-Thorp, Michiel de Jong, Yury Zemlyanskiy, Federico Lebrón, and Sumit Sanghai. Gqa: training generalized multi-query transformer models from multi-head checkpoints. 2023. URL: https://arxiv.org/abs/2305.13245, arXiv:2305.13245.">ALTdJ+23</a>]</span> is an optimization of MHA and MQA that reduces computational complexity while maintaining performance.</p>
 <p>Unlike MQA, GQA uses an intermediate (more than one, less than number of query heads) number of key-value heads.
 GQA is shown to achieve quality close to MHA with comparable speed to MQA</p>
 <p>In GQA, the single head attnetion is computed as</p>
@@ -709,12 +729,12 @@ GQA is shown to achieve quality close to MHA with comparable speed to MQA</p>
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 9.6 </span><span class="caption-text">(Top) GQA divides the key and value heads into multiple groups. Within each group, a single shared
-key and value heads are attended to by query heads. GQA interpolats between MHA and MQA. (Bottom) GQA-8 performance and latency compared with MHA and MQA. Image from <span id="id13">[<a class="reference internal" href="#id1533" title="Joshua Ainslie, James Lee-Thorp, Michiel de Jong, Yury Zemlyanskiy, Federico Lebrón, and Sumit Sanghai. Gqa: training generalized multi-query transformer models from multi-head checkpoints. 2023. URL: https://arxiv.org/abs/2305.13245, arXiv:2305.13245.">ALTdJ+23</a>]</span></span><a class="headerlink" href="#chapter-llm-arch-fig-fundamentals-attention-gqa" title="Link to this image">#</a></p>
+key and value heads are attended to by query heads. GQA interpolats between MHA and MQA. (Bottom) GQA-8 performance and latency compared with MHA and MQA. Image from <span id="id15">[<a class="reference internal" href="#id1535" title="Joshua Ainslie, James Lee-Thorp, Michiel de Jong, Yury Zemlyanskiy, Federico Lebrón, and Sumit Sanghai. Gqa: training generalized multi-query transformer models from multi-head checkpoints. 2023. URL: https://arxiv.org/abs/2305.13245, arXiv:2305.13245.">ALTdJ+23</a>]</span></span><a class="headerlink" href="#chapter-llm-arch-fig-fundamentals-attention-gqa" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>GQA is widely adopted in the latest LLM. Following shows example configurations of Qwen2 and Mistral LLM series <span id="id14">[<a class="reference internal" href="#id1541" title="Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed. Mistral 7b. 2023. URL: https://arxiv.org/abs/2310.06825, arXiv:2310.06825.">JSM+23</a>, <a class="reference internal" href="../chapter_training/accelerated_training.html#id1518" title="An Yang, Baosong Yang, Binyuan Hui, and et al. Bo Zheng. Qwen2 technical report. 2024. URL: https://arxiv.org/abs/2407.10671, arXiv:2407.10671.">YYHBZ24</a>]</span>.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1545">
-<caption><span class="caption-number">Table 9.1 </span><span class="caption-text">Model configuration of Qwen2 and Mistral, which uses GQA (# KV heads is number of groups )</span><a class="headerlink" href="#id1545" title="Link to this table">#</a></caption>
+<p>GQA is widely adopted in the latest LLM. Following shows example configurations of Qwen2 and Mistral LLM series <span id="id16">[<a class="reference internal" href="#id1543" title="Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed. Mistral 7b. 2023. URL: https://arxiv.org/abs/2310.06825, arXiv:2310.06825.">JSM+23</a>, <a class="reference internal" href="../chapter_training/accelerated_training.html#id1518" title="An Yang, Baosong Yang, Binyuan Hui, and et al. Bo Zheng. Qwen2 technical report. 2024. URL: https://arxiv.org/abs/2407.10671, arXiv:2407.10671.">YYHBZ24</a>]</span>.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id1547">
+<caption><span class="caption-number">Table 9.1 </span><span class="caption-text">Model configuration of Qwen2 and Mistral, which uses GQA (# KV heads is number of groups )</span><a class="headerlink" href="#id1547" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Configuration</p></th>
 <th class="head text-center"><p>Hidden Size</p></th>
@@ -761,13 +781,13 @@ key and value heads are attended to by query heads. GQA interpolats between MHA 
 <section id="sliding-window-attention">
 <h3><span class="section-number">9.4.4. </span>Sliding Window Attention<a class="headerlink" href="#sliding-window-attention" title="Link to this heading">#</a></h3>
 <p>The computational complexity for MHA, MQA, GQA are scaling quadratically with the sequence length. This constrains the context length that LLM can effectively process, impacting their ability to handle long documents or maintain coherence over extended generations.</p>
-<p>To address this challenge, recent LLMs (e.g., Mistral <span id="id15">[<a class="reference internal" href="#id1541" title="Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed. Mistral 7b. 2023. URL: https://arxiv.org/abs/2310.06825, arXiv:2310.06825.">JSM+23</a>]</span>) adopts <strong>sliding window attention</strong>, which reduces the computational complexity by restricting each token’s attention to a fixed-size window <span class="math notranslate nohighlight">\(W\)</span> of preceding tokens, rather than attending to the entire sequence. The computational complexity is reduced from quadratic <span class="math notranslate nohighlight">\(O(s^2)\)</span> to linear <span class="math notranslate nohighlight">\(O(\min(W, s)\times s)\)</span>, where <span class="math notranslate nohighlight">\(s\)</span> is the sequence length. Although the token can only capture local context within its fixed window, with multiple layers stacked upon each other, a token at layer <span class="math notranslate nohighlight">\(L\)</span> can effectively attend to previous <span class="math notranslate nohighlight">\(L\times W\)</span> tokens.</p>
+<p>To address this challenge, recent LLMs (e.g., Mistral <span id="id17">[<a class="reference internal" href="#id1543" title="Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed. Mistral 7b. 2023. URL: https://arxiv.org/abs/2310.06825, arXiv:2310.06825.">JSM+23</a>]</span>) adopts <strong>sliding window attention</strong>, which reduces the computational complexity by restricting each token’s attention to a fixed-size window <span class="math notranslate nohighlight">\(W\)</span> of preceding tokens, rather than attending to the entire sequence. The computational complexity is reduced from quadratic <span class="math notranslate nohighlight">\(O(s^2)\)</span> to linear <span class="math notranslate nohighlight">\(O(\min(W, s)\times s)\)</span>, where <span class="math notranslate nohighlight">\(s\)</span> is the sequence length. Although the token can only capture local context within its fixed window, with multiple layers stacked upon each other, a token at layer <span class="math notranslate nohighlight">\(L\)</span> can effectively attend to previous <span class="math notranslate nohighlight">\(L\times W\)</span> tokens.</p>
 <p>In Mistral 7B with <span class="math notranslate nohighlight">\(L = 32\)</span>, and <span class="math notranslate nohighlight">\(W\)</span> set to 4096, the effective attention length is about <span class="math notranslate nohighlight">\(131K\)</span> tokens.</p>
 <figure class="align-default" id="chapter-llm-arch-fig-fundamentals-attention-sliding-window-attention">
 <a class="reference internal image-reference" href="../../_images/sliding_window_attention.png"><img alt="../../_images/sliding_window_attention.png" src="../../_images/sliding_window_attention.png" style="width: 800.0999999999999px; height: 261.09999999999997px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.7 </span><span class="caption-text">Illustration of sliding window attention (Middle), which restrict each token to attend at most <span class="math notranslate nohighlight">\(W\)</span> preceding tokens. As a comparison, MHA (Left) attends to all the preceding tokens. While at each layer the information flow is limited by window size, after <span class="math notranslate nohighlight">\(L\)</span> layers, information can flow forward by up to <span class="math notranslate nohighlight">\(L\times W\)</span> tokens.  Image from <span id="id16">[<a class="reference internal" href="#id1541" title="Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed. Mistral 7b. 2023. URL: https://arxiv.org/abs/2310.06825, arXiv:2310.06825.">JSM+23</a>]</span></span><a class="headerlink" href="#chapter-llm-arch-fig-fundamentals-attention-sliding-window-attention" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 9.7 </span><span class="caption-text">Illustration of sliding window attention (Middle), which restrict each token to attend at most <span class="math notranslate nohighlight">\(W\)</span> preceding tokens. As a comparison, MHA (Left) attends to all the preceding tokens. While at each layer the information flow is limited by window size, after <span class="math notranslate nohighlight">\(L\)</span> layers, information can flow forward by up to <span class="math notranslate nohighlight">\(L\times W\)</span> tokens.  Image from <span id="id18">[<a class="reference internal" href="#id1543" title="Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed. Mistral 7b. 2023. URL: https://arxiv.org/abs/2310.06825, arXiv:2310.06825.">JSM+23</a>]</span></span><a class="headerlink" href="#chapter-llm-arch-fig-fundamentals-attention-sliding-window-attention" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <!-- ### Sparse Attention
@@ -808,7 +828,7 @@ Examples:
 </section>
 <section id="alibi">
 <h3><span class="section-number">9.5.2. </span>ALiBi<a class="headerlink" href="#alibi" title="Link to this heading">#</a></h3>
-<p><span id="id17">[<a class="reference internal" href="#id1543" title="Ofir Press, Noah A. Smith, and Mike Lewis. Train short, test long: attention with linear biases enables input length extrapolation. 2022. URL: https://arxiv.org/abs/2108.12409, arXiv:2108.12409.">PSL22</a>]</span> is a simple approach that suprisinly addresses all drawbacks in the sinusoidal abolute position encoding above. The key idea is to 1) simply add a static, relative position dependent bias into the Softmax computation step[<a class="reference internal" href="#chapter-llm-arch-fig-fundamentals-position-encoding-alibi"><span class="std std-numref">Fig. 9.8</span></a>]. Specifically, for the attention weight between query token <span class="math notranslate nohighlight">\(i\)</span> to all the key vectors, we have</p>
+<p><span id="id19">[<a class="reference internal" href="#id1545" title="Ofir Press, Noah A. Smith, and Mike Lewis. Train short, test long: attention with linear biases enables input length extrapolation. 2022. URL: https://arxiv.org/abs/2108.12409, arXiv:2108.12409.">PSL22</a>]</span> is a simple approach that suprisinly addresses all drawbacks in the sinusoidal abolute position encoding above. The key idea is to 1) simply add a static, relative position dependent bias into the Softmax computation step[<a class="reference internal" href="#chapter-llm-arch-fig-fundamentals-position-encoding-alibi"><span class="std std-numref">Fig. 9.8</span></a>]. Specifically, for the attention weight between query token <span class="math notranslate nohighlight">\(i\)</span> to all the key vectors, we have</p>
 <div class="math notranslate nohighlight">
 \[\operatorname{AttentionWeight} = \operatorname{Softmax}(\underbrace{Q_iK^T/d_{Head}}_{\text{scaled query-key doc product}} + \underbrace{m \cdot[−(i − 1), ..., −2, −1, 0]}_{\text{ALiBi bias vector}})
 \]</div>
@@ -822,7 +842,7 @@ Examples:
 <a class="reference internal image-reference" href="../../_images/Alibi.png"><img alt="../../_images/Alibi.png" src="../../_images/Alibi.png" style="width: 492.8px; height: 204.8px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.8 </span><span class="caption-text">When computing attention weights for each head, ALiBi adds a constant bias (Right) to each attention score ($Q_iK^T), with scaling factor omitted (Left).  Image from <span id="id18">[<a class="reference internal" href="#id1543" title="Ofir Press, Noah A. Smith, and Mike Lewis. Train short, test long: attention with linear biases enables input length extrapolation. 2022. URL: https://arxiv.org/abs/2108.12409, arXiv:2108.12409.">PSL22</a>]</span>.</span><a class="headerlink" href="#chapter-llm-arch-fig-fundamentals-position-encoding-alibi" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 9.8 </span><span class="caption-text">When computing attention weights for each head, ALiBi adds a constant bias (Right) to each attention score ($Q_iK^T), with scaling factor omitted (Left).  Image from <span id="id20">[<a class="reference internal" href="#id1545" title="Ofir Press, Noah A. Smith, and Mike Lewis. Train short, test long: attention with linear biases enables input length extrapolation. 2022. URL: https://arxiv.org/abs/2108.12409, arXiv:2108.12409.">PSL22</a>]</span>.</span><a class="headerlink" href="#chapter-llm-arch-fig-fundamentals-position-encoding-alibi" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Compare with sinusoidal absolute position encoding baseline [<code class="xref std std-numref docutils literal notranslate"><span class="pre">chapter_LLM_arch_fig_fundamentals_position_encoding_Alibi_comparison</span></code>], there are several advantages of Alibi:</p>
@@ -835,7 +855,7 @@ Examples:
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 9.9 </span><span class="caption-text">Comparision between the ALiBi models trained and evaluated on varying sequence lengths on the WikiText-103
-validation set and the sinusoidal absolute position encoding baseline. Image from <span id="id19">[<a class="reference internal" href="#id1543" title="Ofir Press, Noah A. Smith, and Mike Lewis. Train short, test long: attention with linear biases enables input length extrapolation. 2022. URL: https://arxiv.org/abs/2108.12409, arXiv:2108.12409.">PSL22</a>]</span>.</span><a class="headerlink" href="#chapter-llm-arch-fig-fundamentals-position-encoding-alibi-comparison" title="Link to this image">#</a></p>
+validation set and the sinusoidal absolute position encoding baseline. Image from <span id="id21">[<a class="reference internal" href="#id1545" title="Ofir Press, Noah A. Smith, and Mike Lewis. Train short, test long: attention with linear biases enables input length extrapolation. 2022. URL: https://arxiv.org/abs/2108.12409, arXiv:2108.12409.">PSL22</a>]</span>.</span><a class="headerlink" href="#chapter-llm-arch-fig-fundamentals-position-encoding-alibi-comparison" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -843,7 +863,7 @@ validation set and the sinusoidal absolute position encoding baseline. Image fro
 <h3><span class="section-number">9.5.3. </span>Rotary Postion Embedding<a class="headerlink" href="#rotary-postion-embedding" title="Link to this heading">#</a></h3>
 <section id="the-mechanism">
 <h4><span class="section-number">9.5.3.1. </span>The mechanism<a class="headerlink" href="#the-mechanism" title="Link to this heading">#</a></h4>
-<p>Rotary Position Encoding (RoPE) <span id="id20">[<a class="reference internal" href="#id1544" title="Jianlin Su, Yu Lu, Shengfeng Pan, Ahmed Murtadha, Bo Wen, and Yunfeng Liu. Roformer: enhanced transformer with rotary position embedding. 2023. URL: https://arxiv.org/abs/2104.09864, arXiv:2104.09864.">SLP+23</a>]</span> is a widely adopted and proved-effective position encoding method in latest LLM (e.g., Llama, Qwen, etc.). RoPE has ideas similar to ALiBi and sinusoid position encoding:</p>
+<p>Rotary Position Encoding (RoPE) <span id="id22">[<a class="reference internal" href="#id1546" title="Jianlin Su, Yu Lu, Shengfeng Pan, Ahmed Murtadha, Bo Wen, and Yunfeng Liu. Roformer: enhanced transformer with rotary position embedding. 2023. URL: https://arxiv.org/abs/2104.09864, arXiv:2104.09864.">SLP+23</a>]</span> is a widely adopted and proved-effective position encoding method in latest LLM (e.g., Llama, Qwen, etc.). RoPE has ideas similar to ALiBi and sinusoid position encoding:</p>
 <ul class="simple">
 <li><p>Like ALiBi, relative positional information is directly used in attention score computation.</p></li>
 <li><p>Sinusoid functions are used in construction for their nice mathematical properties.</p></li>
@@ -913,16 +933,16 @@ Now we are showing that the rotated query-key inner product is a function of the
 <li><p>The matrix multiplication of rotational matrices satisfies: <span class="math notranslate nohighlight">\(R(\theta_x)\cdot R(\theta_y) = R(\theta_x + \theta_y)\)</span></p></li>
 </ol>
 <p>In other words, the inner product of two rotated vectors is equal to the inner product of one vector rotated by their angle difference and the other original vector.</p>
-<p><strong>Long-term decay</strong>: In <span id="id21">[<a class="reference internal" href="#id1544" title="Jianlin Su, Yu Lu, Shengfeng Pan, Ahmed Murtadha, Bo Wen, and Yunfeng Liu. Roformer: enhanced transformer with rotary position embedding. 2023. URL: https://arxiv.org/abs/2104.09864, arXiv:2104.09864.">SLP+23</a>]</span>, it is shown that the inner-product will decay when the relative position increase. This property aligns with desired property that a pair of tokens will have gradually descreasing semantic impact on each other when they are far apart.</p>
+<p><strong>Long-term decay</strong>: In <span id="id23">[<a class="reference internal" href="#id1546" title="Jianlin Su, Yu Lu, Shengfeng Pan, Ahmed Murtadha, Bo Wen, and Yunfeng Liu. Roformer: enhanced transformer with rotary position embedding. 2023. URL: https://arxiv.org/abs/2104.09864, arXiv:2104.09864.">SLP+23</a>]</span>, it is shown that the inner-product will decay when the relative position increase. This property aligns with desired property that a pair of tokens will have gradually descreasing semantic impact on each other when they are far apart.</p>
 </section>
 </section>
 <section id="understanding-rope-with-visualization">
 <h3><span class="section-number">9.5.4. </span>Understanding RoPE with Visualization<a class="headerlink" href="#understanding-rope-with-visualization" title="Link to this heading">#</a></h3>
-<figure class="align-default" id="id22">
+<figure class="align-default" id="id24">
 <a class="reference internal image-reference" href="../../_images/RoPE_visualization.png"><img alt="../../_images/RoPE_visualization.png" src="../../_images/RoPE_visualization.png" style="width: 3847.2px; height: 1035.3px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.10 </span><span class="caption-text">Visualization of 2D RoPE and its mechanism in encoding context. Image from <a class="reference external" href="https://mp.weixin.qq.com/s/dn8Pb80iRF9UkRn4vPOhHA">Blog</a>.</span><a class="headerlink" href="#id22" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 9.10 </span><span class="caption-text">Visualization of 2D RoPE and its mechanism in encoding context. Image from <a class="reference external" href="https://mp.weixin.qq.com/s/dn8Pb80iRF9UkRn4vPOhHA">Blog</a>.</span><a class="headerlink" href="#id24" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -985,7 +1005,7 @@ Now we are showing that the rotated query-key inner product is a function of the
 </div>
 </div>
 </div>
-<p>Currently, many mainstream large language models (such as the GPT series, Mistral<a class="footnote-reference brackets" href="#footnote1" id="id23" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, etc.) primarily use BBPE instead of BPE. The reasons for the widespread adoption of this method include:</p>
+<p>Currently, many mainstream large language models (such as the GPT series, Mistral<a class="footnote-reference brackets" href="#footnote1" id="id25" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, etc.) primarily use BBPE instead of BPE. The reasons for the widespread adoption of this method include:</p>
 <ul class="simple">
 <li><p>Ability to process multilingual text: Large models typically need to handle vast amounts of text in different languages. BBPE operates at the byte level, allowing it to process all Unicode characters, performing particularly well for languages with complex character sets (such as Chinese, Korean, Arabic).</p></li>
 <li><p>Unified tokenization: The BBPE method does not rely on language-specific character structures. Therefore, it can be uniformly applied to multilingual tasks without adding extra complexity, simplifying the tokenization process in both pre-training and downstream tasks.</p></li>
@@ -1037,8 +1057,8 @@ Now we are showing that the rotated query-key inner product is a function of the
 <li><p>how the total number of parameters scales when we scale up different components.</p></li>
 </ul>
 <p>Let <span class="math notranslate nohighlight">\(V\)</span> be the vocabulary size, <span class="math notranslate nohighlight">\(d\)</span> be the model hidden dimensions, <span class="math notranslate nohighlight">\(L\)</span> be the number of layer,</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1546">
-<caption><span class="caption-number">Table 9.2 </span><span class="caption-text">Parameters in a Transformer</span><a class="headerlink" href="#id1546" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1548">
+<caption><span class="caption-number">Table 9.2 </span><span class="caption-text">Parameters in a Transformer</span><a class="headerlink" href="#id1548" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Module</p></th>
 <th class="head text-left"><p>Computation</p></th>
@@ -1160,8 +1180,8 @@ Now we are showing that the rotated query-key inner product is a function of the
 <p>It is clear that for each <span class="math notranslate nohighlight">\(c_{ij}\)</span> there are <span class="math notranslate nohighlight">\(k\)</span> multiplications and <span class="math notranslate nohighlight">\(k\)</span> additions (technically <span class="math notranslate nohighlight">\(k-1\)</span> additions among <span class="math notranslate nohighlight">\(k\)</span> terms).</p>
 </section>
 </div><p>Let <span class="math notranslate nohighlight">\(V\)</span> be the vocabulary size, <span class="math notranslate nohighlight">\(b\)</span> be the batch size, <span class="math notranslate nohighlight">\(s\)</span> be sequence length, <span class="math notranslate nohighlight">\(d\)</span> be the model hidden dimensions, <span class="math notranslate nohighlight">\(L\)</span> be the number of layer, we have summarized the computation breakdown in the following.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1547">
-<caption><span class="caption-number">Table 9.3 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id1547" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1549">
+<caption><span class="caption-number">Table 9.3 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id1549" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Module</p></th>
 <th class="head text-left"><p>Computation</p></th>
@@ -1234,73 +1254,74 @@ Now we are showing that the rotated query-key inner product is a function of the
 </section>
 <section id="bibliography">
 <h2><span class="section-number">9.10. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<p>Good reviews <span id="id24">[<a class="reference internal" href="#id1528" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. 2024. URL: https://arxiv.org/abs/2303.18223, arXiv:2303.18223.">ZZL+24</a>]</span></p>
-<div class="docutils container" id="id25">
+<p>Good reviews <span id="id26">[<a class="reference internal" href="#id1530" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. 2024. URL: https://arxiv.org/abs/2303.18223, arXiv:2303.18223.">ZZL+24</a>]</span></p>
+<div class="docutils container" id="id27">
 <div role="list" class="citation-list">
-<div class="citation" id="id1533" role="doc-biblioentry">
+<div class="citation" id="id1535" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>ALTdJ+23<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id12">1</a>,<a role="doc-backlink" href="#id13">2</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id14">1</a>,<a role="doc-backlink" href="#id15">2</a>)</span>
 <p>Joshua Ainslie, James Lee-Thorp, Michiel de Jong, Yury Zemlyanskiy, Federico Lebrón, and Sumit Sanghai. Gqa: training generalized multi-query transformer models from multi-head checkpoints. 2023. URL: <a class="reference external" href="https://arxiv.org/abs/2305.13245">https://arxiv.org/abs/2305.13245</a>, <a class="reference external" href="https://arxiv.org/abs/2305.13245">arXiv:2305.13245</a>.</p>
 </div>
-<div class="citation" id="id404" role="doc-biblioentry">
+<div class="citation" id="id406" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">BMR+20</a><span class="fn-bracket">]</span></span>
 <p>Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. <em>Advances in Neural Information Processing Systems</em>, 33:1877–1901, 2020.</p>
 </div>
-<div class="citation" id="id1538" role="doc-biblioentry">
+<div class="citation" id="id1540" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">DAJ24</a><span class="fn-bracket">]</span></span>
 <p>Abhimanyu Dubey and et al Abhinav Jauhri. The llama 3 herd of models. 2024. URL: <a class="reference external" href="https://arxiv.org/abs/2407.21783">https://arxiv.org/abs/2407.21783</a>, <a class="reference external" href="https://arxiv.org/abs/2407.21783">arXiv:2407.21783</a>.</p>
 </div>
-<div class="citation" id="id1524" role="doc-biblioentry">
+<div class="citation" id="id1526" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">IS15</a><span class="fn-bracket">]</span></span>
 <p>Sergey Ioffe and Christian Szegedy. Batch normalization: accelerating deep network training by reducing internal covariate shift. 2015. URL: <a class="reference external" href="https://arxiv.org/abs/1502.03167">https://arxiv.org/abs/1502.03167</a>, <a class="reference external" href="https://arxiv.org/abs/1502.03167">arXiv:1502.03167</a>.</p>
 </div>
-<div class="citation" id="id1541" role="doc-biblioentry">
+<div class="citation" id="id1543" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>JSM+23<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id14">1</a>,<a role="doc-backlink" href="#id15">2</a>,<a role="doc-backlink" href="#id16">3</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id16">1</a>,<a role="doc-backlink" href="#id17">2</a>,<a role="doc-backlink" href="#id18">3</a>)</span>
 <p>Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed. Mistral 7b. 2023. URL: <a class="reference external" href="https://arxiv.org/abs/2310.06825">https://arxiv.org/abs/2310.06825</a>, <a class="reference external" href="https://arxiv.org/abs/2310.06825">arXiv:2310.06825</a>.</p>
 </div>
-<div class="citation" id="id1543" role="doc-biblioentry">
+<div class="citation" id="id1545" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>PSL22<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id17">1</a>,<a role="doc-backlink" href="#id18">2</a>,<a role="doc-backlink" href="#id19">3</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id19">1</a>,<a role="doc-backlink" href="#id20">2</a>,<a role="doc-backlink" href="#id21">3</a>)</span>
 <p>Ofir Press, Noah A. Smith, and Mike Lewis. Train short, test long: attention with linear biases enables input length extrapolation. 2022. URL: <a class="reference external" href="https://arxiv.org/abs/2108.12409">https://arxiv.org/abs/2108.12409</a>, <a class="reference external" href="https://arxiv.org/abs/2108.12409">arXiv:2108.12409</a>.</p>
 </div>
-<div class="citation" id="id1540" role="doc-biblioentry">
+<div class="citation" id="id1542" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>RZL17<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id9">1</a>,<a role="doc-backlink" href="#id10">2</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id11">1</a>,<a role="doc-backlink" href="#id12">2</a>)</span>
 <p>Prajit Ramachandran, Barret Zoph, and Quoc V. Le. Searching for activation functions. 2017. URL: <a class="reference external" href="https://arxiv.org/abs/1710.05941">https://arxiv.org/abs/1710.05941</a>, <a class="reference external" href="https://arxiv.org/abs/1710.05941">arXiv:1710.05941</a>.</p>
 </div>
-<div class="citation" id="id1534" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">Sha19</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1536" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">Sha19</a><span class="fn-bracket">]</span></span>
 <p>Noam Shazeer. Fast transformer decoding: one write-head is all you need. 2019. URL: <a class="reference external" href="https://arxiv.org/abs/1911.02150">https://arxiv.org/abs/1911.02150</a>, <a class="reference external" href="https://arxiv.org/abs/1911.02150">arXiv:1911.02150</a>.</p>
 </div>
-<div class="citation" id="id1539" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">Sha20</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1541" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">Sha20</a><span class="fn-bracket">]</span></span>
 <p>Noam Shazeer. Glu variants improve transformer. 2020. URL: <a class="reference external" href="https://arxiv.org/abs/2002.05202">https://arxiv.org/abs/2002.05202</a>, <a class="reference external" href="https://arxiv.org/abs/2002.05202">arXiv:2002.05202</a>.</p>
 </div>
-<div class="citation" id="id1544" role="doc-biblioentry">
+<div class="citation" id="id1546" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>SLP+23<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id20">1</a>,<a role="doc-backlink" href="#id21">2</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id22">1</a>,<a role="doc-backlink" href="#id23">2</a>)</span>
 <p>Jianlin Su, Yu Lu, Shengfeng Pan, Ahmed Murtadha, Bo Wen, and Yunfeng Liu. Roformer: enhanced transformer with rotary position embedding. 2023. URL: <a class="reference external" href="https://arxiv.org/abs/2104.09864">https://arxiv.org/abs/2104.09864</a>, <a class="reference external" href="https://arxiv.org/abs/2104.09864">arXiv:2104.09864</a>.</p>
 </div>
-<div class="citation" id="id406" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">XYH+20</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id408" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>XYH+20<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id7">1</a>,<a role="doc-backlink" href="#id8">2</a>)</span>
 <p>Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In <em>International Conference on Machine Learning</em>, 10524–10533. PMLR, 2020.</p>
 </div>
-<div class="citation" id="id1537" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id14">YYHBZ24</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1539" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id16">YYHBZ24</a><span class="fn-bracket">]</span></span>
 <p>An Yang, Baosong Yang, Binyuan Hui, and et al. Bo Zheng. Qwen2 technical report. 2024. URL: <a class="reference external" href="https://arxiv.org/abs/2407.10671">https://arxiv.org/abs/2407.10671</a>, <a class="reference external" href="https://arxiv.org/abs/2407.10671">arXiv:2407.10671</a>.</p>
 </div>
-<div class="citation" id="id1523" role="doc-biblioentry">
+<div class="citation" id="id1525" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>ZS19<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id5">1</a>,<a role="doc-backlink" href="#id6">2</a>)</span>
 <p>Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: <a class="reference external" href="https://arxiv.org/abs/1910.07467">https://arxiv.org/abs/1910.07467</a>, <a class="reference external" href="https://arxiv.org/abs/1910.07467">arXiv:1910.07467</a>.</p>
 </div>
-<div class="citation" id="id1514" role="doc-biblioentry">
+<div class="citation" id="id1516" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">ZZL+23</a><span class="fn-bracket">]</span></span>
 <p>Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. <em>arXiv preprint arXiv:2303.18223</em>, 2023.</p>
 </div>
-<div class="citation" id="id1528" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id24">ZZL+24</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1530" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id26">ZZL+24</a><span class="fn-bracket">]</span></span>
 <p>Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. 2024. URL: <a class="reference external" href="https://arxiv.org/abs/2303.18223">https://arxiv.org/abs/2303.18223</a>, <a class="reference external" href="https://arxiv.org/abs/2303.18223">arXiv:2303.18223</a>.</p>
 </div>
 </div>
@@ -1308,7 +1329,7 @@ Now we are showing that the rotated query-key inner product is a function of the
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="footnote1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id23">1</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id25">1</a><span class="fn-bracket">]</span></span>
 <p>See <a class="reference external" href="https://docs.mistral.ai/guides/tokenization/">https://docs.mistral.ai/guides/tokenization/</a> for details for tokenizer construction and usage in Mistral LLMs.</p>
 </aside>
 </aside>
@@ -1380,7 +1401,7 @@ Now we are showing that the rotated query-key inner product is a function of the
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">9.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization">9.2. Layer normalization</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization">9.2. Layer Normalization</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization-basics">9.2.1. Layer normalization basics</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-norm-root-mean-square-norm">9.2.2. RMS Norm (Root Mean Square Norm)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-normalization-position">9.2.3. Layer normalization position</a></li>
