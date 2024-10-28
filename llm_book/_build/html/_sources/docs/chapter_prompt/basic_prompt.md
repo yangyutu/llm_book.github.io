@@ -123,7 +123,7 @@ Less flexibility: It allows for quick adaptation to new tasks without the need f
 :::
 ::::
 
-
+(chapter_prompt_sec_CoT_prompting)=
 ## Chain-of-Thought (CoT) Prompting
 
 Chain of Thought (CoT) prompting {cite:p}`wei2022chain` is a technique used with Large Language Models (LLMs) to enhance their problem-solving capabilities, especially for complex tasks requiring multi-step reasoning. The motivation behind CoT prompting is to mimic human-like step-by-step thinking processes, addressing the limitation of LLMs in handling tasks that require intermediate logical steps. 
