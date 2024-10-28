@@ -202,23 +202,24 @@
 <li class="toctree-l1"><a class="reference internal" href="docs/chapter_training/training_fundamentals.html">11. LLM Training Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="docs/chapter_training/finetuning.html">12. LLM Finetuning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="docs/chapter_training/alignment.html">13. LLM Alignement and Preference Learning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_training/accelerated_training.html">14. LLM Training Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_training/reinforcement_learning.html">14. *Reinforcement Learning Essentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_training/accelerated_training.html">15. LLM Training Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_inference/inference_fundamentals.html">15. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_inference/inference_acceleration.html">16. Inference Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_inference/inference_fundamentals.html">16. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_inference/inference_acceleration.html">17. Inference Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_prompt/basic_prompt.html">17. Basic Prompting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_prompt/advanced_prompt.html">18. Advanced Prompting Techniques</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_rag/basic_rag.html">19. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_prompt/basic_prompt.html">18. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_prompt/advanced_prompt.html">19. Advanced Prompting Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_rag/basic_rag.html">20. RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_application_IR/information_retrieval_fundamentals.html">20. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docs/chapter_application_IR/application_LLM_in_IR.html">21. Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_application_IR/information_retrieval_fundamentals.html">21. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/chapter_application_IR/application_LLM_in_IR.html">22. Application of LLM in IR</a></li>
 </ul>
 
     </div>
@@ -330,11 +331,18 @@ document.write(`
    <a href="#cap-BPE-algorithm"><strong>BPE-algorithm</strong></a> | 
    <a href="#cap-Minibatch_stochastic_gradient_descent_algorithm"><strong>Minibatch_stochastic_gradient_descent_algorithm</strong></a> | 
    <a href="#cap-OBS_network_pruning_algorithm"><strong>OBS_network_pruning_algorithm</strong></a> | 
+   <a href="#cap-ch:reinforcement-learning:alg:policyIterationMDP"><strong>ch:reinforcement-learning:alg:policyIterationMDP</strong></a> | 
+   <a href="#cap-ch:reinforcement-learning:alg:valueIterationAlg"><strong>ch:reinforcement-learning:alg:valueIterationAlg</strong></a> | 
+   <a href="#cap-ch:reinforcement-learning:th:convergenceIterativePolicyEvaluation"><strong>ch:reinforcement-learning:th:convergenceIterativePolicyEvaluation</strong></a> | 
+   <a href="#cap-ch:reinforcement-learning:th:policyImprovementT"><strong>ch:reinforcement-learning:th:policyImprovementT</strong></a> | 
+   <a href="#cap-ch:reinforcement-learning:th:recursiveRelationshipValueFunctionMDP"><strong>ch:reinforcement-learning:th:recursiveRelationshipValueFunctionMDP</strong></a> | 
+   <a href="#cap-ch:reinforcement-learning:th:valueIterationConvergence"><strong>ch:reinforcement-learning:th:valueIterationConvergence</strong></a> | 
    <a href="#cap-chapter_foundation_def_pretrained_LM_transformer_bert_encoder_computation"><strong>chapter_foundation_def_pretrained_LM_transformer_bert_encoder_computation</strong></a> | 
    <a href="#cap-chapter_foundation_def_pretrained_LM_transformer_encoder_computation"><strong>chapter_foundation_def_pretrained_LM_transformer_encoder_computation</strong></a> | 
    <a href="#cap-chapter_foundation_def_pretrained_LM_transformer_encoder_layer"><strong>chapter_foundation_def_pretrained_LM_transformer_encoder_layer</strong></a> | 
    <a href="#cap-chapter_foundation_word_embedding_def_skipGramOptimization"><strong>chapter_foundation_word_embedding_def_skipGramOptimization</strong></a> | 
    <a href="#cap-definition-0"><strong>definition-0</strong></a> | 
+   <a href="#cap-definition-2"><strong>definition-2</strong></a> | 
    <a href="#cap-definition-4"><strong>definition-4</strong></a> | 
    <a href="#cap-example-0"><strong>example-0</strong></a> | 
    <a href="#cap-example-1"><strong>example-1</strong></a> | 
@@ -342,12 +350,15 @@ document.write(`
    <a href="#cap-example-3"><strong>example-3</strong></a> | 
    <a href="#cap-example-4"><strong>example-4</strong></a> | 
    <a href="#cap-example-5"><strong>example-5</strong></a> | 
+   <a href="#cap-lemma-5"><strong>lemma-5</strong></a> | 
    <a href="#cap-remark-0"><strong>remark-0</strong></a> | 
    <a href="#cap-remark-1"><strong>remark-1</strong></a> | 
+   <a href="#cap-remark-13"><strong>remark-13</strong></a> | 
    <a href="#cap-remark-2"><strong>remark-2</strong></a> | 
    <a href="#cap-remark-3"><strong>remark-3</strong></a> | 
    <a href="#cap-remark-4"><strong>remark-4</strong></a> | 
-   <a href="#cap-remark-6"><strong>remark-6</strong></a>
+   <a href="#cap-remark-6"><strong>remark-6</strong></a> | 
+   <a href="#cap-remark-8"><strong>remark-8</strong></a>
    </div>
 
    <table class="indextable modindextable">
@@ -392,6 +403,54 @@ document.write(`
        <a href="docs/chapter_inference/inference_acceleration.html#OBS_network_pruning_algorithm"><code class="xref">OBS_network_pruning_algorithm</code></a> <em>(docs/chapter_inference/inference_acceleration)</em></td><td>
        <em>algorithm</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-ch:reinforcement-learning:alg:policyIterationMDP"><td></td><td>
+       <strong>ch:reinforcement-learning:alg:policyIterationMDP</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="docs/chapter_training/reinforcement_learning.html#ch:reinforcement-learning:alg:policyIterationMDP"><code class="xref">ch:reinforcement-learning:alg:policyIterationMDP</code></a> <em>(docs/chapter_training/reinforcement_learning)</em></td><td>
+       <em>algorithm</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-ch:reinforcement-learning:alg:valueIterationAlg"><td></td><td>
+       <strong>ch:reinforcement-learning:alg:valueIterationAlg</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="docs/chapter_training/reinforcement_learning.html#ch:reinforcement-learning:alg:valueIterationAlg"><code class="xref">ch:reinforcement-learning:alg:valueIterationAlg</code></a> <em>(docs/chapter_training/reinforcement_learning)</em></td><td>
+       <em>algorithm</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-ch:reinforcement-learning:th:convergenceIterativePolicyEvaluation"><td></td><td>
+       <strong>ch:reinforcement-learning:th:convergenceIterativePolicyEvaluation</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="docs/chapter_training/reinforcement_learning.html#ch:reinforcement-learning:th:convergenceIterativePolicyEvaluation"><code class="xref">ch:reinforcement-learning:th:convergenceIterativePolicyEvaluation</code></a> <em>(docs/chapter_training/reinforcement_learning)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-ch:reinforcement-learning:th:policyImprovementT"><td></td><td>
+       <strong>ch:reinforcement-learning:th:policyImprovementT</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="docs/chapter_training/reinforcement_learning.html#ch:reinforcement-learning:th:policyImprovementT"><code class="xref">ch:reinforcement-learning:th:policyImprovementT</code></a> <em>(docs/chapter_training/reinforcement_learning)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-ch:reinforcement-learning:th:recursiveRelationshipValueFunctionMDP"><td></td><td>
+       <strong>ch:reinforcement-learning:th:recursiveRelationshipValueFunctionMDP</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="docs/chapter_training/reinforcement_learning.html#ch:reinforcement-learning:th:recursiveRelationshipValueFunctionMDP"><code class="xref">ch:reinforcement-learning:th:recursiveRelationshipValueFunctionMDP</code></a> <em>(docs/chapter_training/reinforcement_learning)</em></td><td>
+       <em>lemma</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-ch:reinforcement-learning:th:valueIterationConvergence"><td></td><td>
+       <strong>ch:reinforcement-learning:th:valueIterationConvergence</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="docs/chapter_training/reinforcement_learning.html#ch:reinforcement-learning:th:valueIterationConvergence"><code class="xref">ch:reinforcement-learning:th:valueIterationConvergence</code></a> <em>(docs/chapter_training/reinforcement_learning)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-chapter_foundation_def_pretrained_LM_transformer_bert_encoder_computation"><td></td><td>
        <strong>chapter_foundation_def_pretrained_LM_transformer_bert_encoder_computation</strong></td><td></td></tr>
      <tr>
@@ -432,6 +491,14 @@ document.write(`
        <a href="docs/chapter_foundation/bert.html#definition-0"><code class="xref">definition-0</code></a> <em>(docs/chapter_foundation/bert)</em></td><td>
        <em>definition</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-definition-2"><td></td><td>
+       <strong>definition-2</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="docs/chapter_training/reinforcement_learning.html#definition-2"><code class="xref">definition-2</code></a> <em>(docs/chapter_training/reinforcement_learning)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-definition-4"><td></td><td>
        <strong>definition-4</strong></td><td></td></tr>
      <tr>
@@ -445,7 +512,7 @@ document.write(`
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_training/finetuning.html#example-0"><code class="xref">example-0</code></a> <em>(docs/chapter_training/finetuning)</em></td><td>
+       <a href="docs/chapter_rag/basic_rag.html#example-0"><code class="xref">example-0</code></a> <em>(docs/chapter_rag/basic_rag)</em></td><td>
        <em>example</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-example-1"><td></td><td>
@@ -453,7 +520,7 @@ document.write(`
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_prompt/basic_prompt.html#example-1"><code class="xref">example-1</code></a> <em>(docs/chapter_prompt/basic_prompt)</em></td><td>
+       <a href="docs/chapter_rag/basic_rag.html#example-1"><code class="xref">example-1</code></a> <em>(docs/chapter_rag/basic_rag)</em></td><td>
        <em>example</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-example-2"><td></td><td>
@@ -461,7 +528,7 @@ document.write(`
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_prompt/basic_prompt.html#example-2"><code class="xref">example-2</code></a> <em>(docs/chapter_prompt/basic_prompt)</em></td><td>
+       <a href="docs/chapter_rag/basic_rag.html#example-2"><code class="xref">example-2</code></a> <em>(docs/chapter_rag/basic_rag)</em></td><td>
        <em>example</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-example-3"><td></td><td>
@@ -488,12 +555,20 @@ document.write(`
        <a href="docs/chapter_LLM_arch/LLM_dense_architectures.html#example-5"><code class="xref">example-5</code></a> <em>(docs/chapter_LLM_arch/LLM_dense_architectures)</em></td><td>
        <em>example</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-lemma-5"><td></td><td>
+       <strong>lemma-5</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="docs/chapter_training/reinforcement_learning.html#lemma-5"><code class="xref">lemma-5</code></a> <em>(docs/chapter_training/reinforcement_learning)</em></td><td>
+       <em>lemma</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-remark-0"><td></td><td>
        <strong>remark-0</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_training/alignment.html#remark-0"><code class="xref">remark-0</code></a> <em>(docs/chapter_training/alignment)</em></td><td>
+       <a href="docs/chapter_application_IR/information_retrieval_fundamentals.html#remark-0"><code class="xref">remark-0</code></a> <em>(docs/chapter_application_IR/information_retrieval_fundamentals)</em></td><td>
        <em>remark</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-remark-1"><td></td><td>
@@ -501,7 +576,15 @@ document.write(`
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_training/finetuning.html#remark-1"><code class="xref">remark-1</code></a> <em>(docs/chapter_training/finetuning)</em></td><td>
+       <a href="docs/chapter_training/training_fundamentals.html#remark-1"><code class="xref">remark-1</code></a> <em>(docs/chapter_training/training_fundamentals)</em></td><td>
+       <em>remark</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-remark-13"><td></td><td>
+       <strong>remark-13</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="docs/chapter_training/reinforcement_learning.html#remark-13"><code class="xref">remark-13</code></a> <em>(docs/chapter_training/reinforcement_learning)</em></td><td>
        <em>remark</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-remark-2"><td></td><td>
@@ -509,7 +592,7 @@ document.write(`
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_training/training_fundamentals.html#remark-2"><code class="xref">remark-2</code></a> <em>(docs/chapter_training/training_fundamentals)</em></td><td>
+       <a href="docs/chapter_application_IR/information_retrieval_fundamentals.html#remark-2"><code class="xref">remark-2</code></a> <em>(docs/chapter_application_IR/information_retrieval_fundamentals)</em></td><td>
        <em>remark</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-remark-3"><td></td><td>
@@ -517,7 +600,7 @@ document.write(`
      <tr>
        <td></td>
        <td>
-       <a href="docs/chapter_foundation/language_models.html#remark-3"><code class="xref">remark-3</code></a> <em>(docs/chapter_foundation/language_models)</em></td><td>
+       <a href="docs/chapter_application_IR/information_retrieval_fundamentals.html#remark-3"><code class="xref">remark-3</code></a> <em>(docs/chapter_application_IR/information_retrieval_fundamentals)</em></td><td>
        <em>remark</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-remark-4"><td></td><td>
@@ -534,6 +617,14 @@ document.write(`
        <td></td>
        <td>
        <a href="docs/chapter_LLM_arch/LLM_dense_architectures.html#remark-6"><code class="xref">remark-6</code></a> <em>(docs/chapter_LLM_arch/LLM_dense_architectures)</em></td><td>
+       <em>remark</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-remark-8"><td></td><td>
+       <strong>remark-8</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="docs/chapter_training/reinforcement_learning.html#remark-8"><code class="xref">remark-8</code></a> <em>(docs/chapter_training/reinforcement_learning)</em></td><td>
        <em>remark</em></td></tr>
    </table>
 

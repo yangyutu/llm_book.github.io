@@ -1167,10 +1167,11 @@ Each training sample consists of a query $q$, a set of $m$ feedback documents $D
 $$
 \operatorname{loss}\left(q, D_{q}, d^{+}, d^{-}\right)= \max \left(0,1-\operatorname{rel}\left(q, D_{q}, d^{+}\right)+\operatorname{rel}\left(q, D_{q}, d^{-}\right)\right)
 $$ -->
-<!-- 
-### Contextualized Term Importance
 
-#### Context-aware Term Importance: Deep-CT
+(ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_contextualized_term_importance)=
+## Contextualized Term Importance
+
+### Context-aware Term Importance: Deep-CT
 
 In ad-hoc search, queries are mainly short and keyword based without complex grammatical structures. To be able to fetch most relevant results, it is  important to take into account term importance. For example,  given the query *bitcoin news*, a relevant document is expected to be about *bitcoin* and *news*, where the term *bitcoin* is more important than *news* in the sense that a document describing other aspects of bitcoin would be more relevant than a document describing news of other things.
 
@@ -1207,7 +1208,7 @@ The ground truth term weight $y_{t, c}$ for every word in either the query or th
 :name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:deepcttermimportancedemo
 Illustration of calculating context-aware term importance for a query (left) and a document (right). Term importance in a query is estimated from relevant documents of the query; term importance in a document is estimated from relevant queries of the document.
 ```
-
+<!-- 
 #### Learnable Context-aware Term Importance: Deep-Impact
 
 DeepCT has an interesting “quirk”: in truth, it only learns the term frequency (tf) component of term weights, but still relies on the remaining parts of the BM25 scoring function via the gen- eration of pseudo-documents. This approach also has a weakness: it only assigns weights to terms that are already present in the document, which limits retrieval to exact match. This is an impor- tant limitation that is addressed by the use of dense representations, which are capable of capturing semantic matches.

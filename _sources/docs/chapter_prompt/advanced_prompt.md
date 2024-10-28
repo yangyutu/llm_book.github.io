@@ -61,6 +61,7 @@ Self-generated CoT demonstration. Comparison of expert-crafted and GPT-4-generat
 ```
 Note that a key challenge with the self-generated CoT rationales are they can be incorrect reasoning chains due to halluciation. This can be mitigated by asking LLM to produce both reasoning chain as well the likelihood answer (similar to two step zero-shot CoT {numref}`chapter_prompt_fig_basic_prompt_zero_shot_COT`). If this answer does not match the ground truth label, then the reasoning sample can be discarded. Note that there can still be cases that incorrect reasoning chain leading to correct answers.
 
+(chapter_prompt_sec_step_back_prompting)=
 ## Step Back Prompting
 
 Complex multi-step reasoning tasks, particularly domain specific reasoning such as Physics and Chemistry remain challenge to LLM. These questions are usually  knowledge-intensive question answering, involving many low-level details, thus requiring factual knowledge, multi-hop commonsense reasoning.
