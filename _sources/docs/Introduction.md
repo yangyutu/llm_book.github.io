@@ -41,9 +41,9 @@ Our journey through this book is structured into several key parts:
 
 6. **Retrieval-Augmented Generation (RAG)**: We examine how LLMs can be enhanced with external knowledge retrieval systems, significantly expanding their capabilities.
 
-7. **Vision LLM**: This section introduces multimodal models that can process both text and images, opening up new possibilities for AI applications.
+<!-- 7. **Vision LLM**: This section introduces multimodal models that can process both text and images, opening up new possibilities for AI applications. -->
 
-8. **Application in Information Retrieval**: Finally, we explore how LLMs are revolutionizing the field of information retrieval, enhancing search capabilities and transforming how we access and interact with information.
+7. **Application in Information Retrieval**: Finally, we explore how LLMs are revolutionizing the field of information retrieval, enhancing search capabilities and transforming how we access and interact with information.
 
 By the end of this book, you will have gained a deep understanding of Large Language Models, their underlying technologies, and their transformative potential across various domains. As we stand on the cusp of a new era in artificial intelligence, this knowledge will be invaluable in shaping the future of technology and human-AI interaction.
 
