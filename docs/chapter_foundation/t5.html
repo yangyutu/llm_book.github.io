@@ -215,7 +215,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">21. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">22. Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">22. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -361,15 +361,15 @@ document.write(`
 <div class="proof example admonition" id="example-0">
 <p class="admonition-title"><span class="caption-number">Example 7.1 </span></p>
 <section class="example-content" id="proof-content">
-<p>In order to train a single model on the diverse set of tasks described above, we need a consistent input and output format across all tasks. As recently noted by <span id="id2">[<a class="reference internal" href="transformers.html#id1139" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>, <a class="reference internal" href="#id1436" title="Bryan McCann, Nitish Shirish Keskar, Caiming Xiong, and Richard Socher. The natural language decathlon: multitask learning as question answering. arXiv preprint arXiv:1806.08730, 2018.">MKXS18</a>]</span>, it is possible to formulate most NLP tasks in a text-to-text format - that is, a task where the model is fed some text for context or conditioning and is then asked to produce some output text.</p>
+<p>In order to train a single model on the diverse set of tasks described above, we need a consistent input and output format across all tasks. As recently noted by <span id="id2">[<a class="reference internal" href="#id1132" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>, <a class="reference internal" href="#id1436" title="Bryan McCann, Nitish Shirish Keskar, Caiming Xiong, and Richard Socher. The natural language decathlon: multitask learning as question answering. arXiv preprint arXiv:1806.08730, 2018.">MKXS18</a>]</span>, it is possible to formulate most NLP tasks in a text-to-text format - that is, a task where the model is fed some text for context or conditioning and is then asked to produce some output text.</p>
 <p>To specify which task the model should perform, we add a task-specific (text) prefix to the original input sequence before feeding it to the model. As an example,</p>
 <ul class="simple">
-<li><p>to ask the model to translate the sentence “That is good.” from English to German, the model would be fed the sequence “translate English to German: That is good.” and would be trained to output “Das ist gut.”</p></li>
-<li><p>For text classification tasks, the model simply predicts a single word corresponding to the target label. For example, on the MNLI benchmark [Williams et al., 2017] the goal is to predict whether a premise implies (“entailment”), contradicts (“contradiction”), or neither (“neutral”) a hypothesis. With our preprocessing, the input sequence becomes “mnli premise: I hate pigeons. hypothesis: My feelings towards pigeons are filled with animosity.” with the corresponding target word “entailment”. Note that an issue arises if our model outputs text on a text classification task that does not correspond to any of the possible labels (for example if the model outputs “hamburger” when the only possible labels for a task were “entailment”, “neutral”, or “contradiction”). In this case, we always count the model’s output as wrong, though we never observed this behavior in any of our trained models.</p></li>
+<li><p>To ask the model to translate the sentence “That is good.” from English to German, the model would be fed the sequence “translate English to German: That is good.” and would be trained to output “Das ist gut.”</p></li>
+<li><p>For text classification tasks, the model simply predicts a single word corresponding to the target label. For example, on the MNLI benchmark the goal is to predict whether a premise implies <strong>entailment</strong>, <strong>contradicts</strong>, or neither <strong>neutral</strong>. With our preprocessing, the input sequence becomes “mnli premise: I hate pigeons. hypothesis: My feelings towards pigeons are filled with animosity.”</p></li>
+<li><p>For the English-German translation task, the “translate English to German: That is good.” input is going to produce “das is gut.”.</p></li>
 </ul>
 </section>
-</div><p>For the English-German translation task, the “translate English to German: That is good.” input is going to produce “das is gut.”.</p>
-<p>Based on the task-agnostic architecture proposed by T5, solving different NLP tasks becomes how to convert the task into suitable text input output. T5 apply the same model, objective, training procedure, and decoding process for every NLP task.</p>
+</div><p>Based on the task-agnostic architecture proposed by T5, solving different NLP tasks becomes how to convert the task into suitable text input output. T5 apply the same model, objective, training procedure, and decoding process for every NLP task.</p>
 </section>
 <section id="pretraining">
 <h3><span class="section-number">7.1.2. </span>Pretraining<a class="headerlink" href="#pretraining" title="Link to this heading">#</a></h3>
