@@ -206,16 +206,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">16. Decoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">17. Inference Acceleration</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
-<ul class="current nav bd-sidenav">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">18. Basic Prompting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">19. Advanced Prompting Techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">20. RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">21. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">22. Application of LLM in IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">22. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -320,6 +323,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-frameworks">20.2. RAG Frameworks</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-rag">20.2.1. Basic RAG</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-optimizations">20.2.2. RAG Optimizations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-challenges-in-practice">20.2.3. RAG Challenges in Practice</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-optimization-documents">20.3. RAG Optimization: Documents</a><ul class="nav section-nav flex-column">
@@ -420,7 +424,7 @@ Generation. The original question and the retrieved context are fed into LLM to 
 <h3><span class="section-number">20.2.2. </span>RAG Optimizations<a class="headerlink" href="#rag-optimizations" title="Link to this heading">#</a></h3>
 <p>Various optimizations can be applied to the basic RAG framework [<a class="reference internal" href="#chapter-rag-fig-rag-framework-demo"><span class="std std-numref">Fig. 20.2</span></a>] to improve the quality and reliability of the system’s outputs. These optimizations address common challenges in RAG systems, including query-document mismatch, retrieval accuracy, and output reliability.</p>
 <p>As shown in <a class="reference internal" href="#chapter-rag-fig-rag-framework-optimization-demo"><span class="std std-numref">Fig. 20.3</span></a>, we can divide optimizations into the following categories:</p>
-<p><strong>Document Augmentation</strong>:Instead of performing mechanism chunking to split the document, we can apply language understanding models to split documents into semnatically coherent units. Besides, we can enriches documents with additional context, metadata (e.g., stamptime), and alternative representations (queries related to document) before they enter the indexing phase. This enrichment makes documents more discoverable and helps maintain their semantic context even when split into chunks for processing.</p>
+<p><strong>Document Understanding &amp; Augmentation</strong>:Instead of performing mechanism chunking to split the document, we can apply language understanding models to split documents into semnatically coherent units. Besides, we can enriches documents with additional context, metadata (e.g., stamptime), and alternative representations (queries related to document) before they enter the indexing phase. This enrichment makes documents more discoverable and helps maintain their semantic context even when split into chunks for processing.</p>
 <p><strong>Query Understanding and Rewriting</strong>: This enhancement addresses one of the fundamental challenges in information retrieval: the vocabulary mismatch between query language and document language. The system can employ LLM to analyze and reformulate user queries, making them more effective for retrieval. It can help complex, multi-concept queries by decomposing the original query into multiple manageable subqueries.</p>
 <p><strong>Hybrid retrieval</strong>: Instead of using only sparse retrieval or dense retrieval, one can combine them together to form a hybrid retrieval system. For example, encoder models used in dense retriever can produce additional features for rankers in the sparse retriever side.</p>
 <p><strong>Re-ranking</strong>: After the initial retrieval, the Re-ranking step can significantly improves the quality and precision of retrieved content before it reaches the LLM. Documents are re-ranked using a much powerful model based on their contextual relevance to the user query, not just the vector semantic similarity. In addition, the re-ranking process often penalize similiar documents to promote a diverse set of relevant documents are sent to LLM.</p>
@@ -432,6 +436,50 @@ Generation. The original question and the retrieved context are fed into LLM to 
 <p><span class="caption-number">Fig. 20.3 </span><span class="caption-text">Optimization of the basic RAG framework in different components.</span><a class="headerlink" href="#chapter-rag-fig-rag-framework-optimization-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
+</section>
+<section id="rag-challenges-in-practice">
+<h3><span class="section-number">20.2.3. </span>RAG Challenges in Practice<a class="headerlink" href="#rag-challenges-in-practice" title="Link to this heading">#</a></h3>
+<p>The following key factors are essential to a successful application of RAG in real-world. These four keys are sequentially dependent and any issues on one-of-them will cause response of poor quality.</p>
+<figure class="align-default" id="chapter-rag-fig-rag-framework-key-success-factors">
+<a class="reference internal image-reference" href="../../_images/RAG_key_success_factors.png"><img alt="../../_images/RAG_key_success_factors.png" src="../../_images/RAG_key_success_factors.png" style="width: 767.55px; height: 74.55px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 20.4 </span><span class="caption-text">Key factors underlying a successful RAG product.</span><a class="headerlink" href="#chapter-rag-fig-rag-framework-key-success-factors" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Following table summarize practical challenges and possible causes when applying RAG into actual product.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Issue Type</p></th>
+<th class="head"><p>Document Understanding</p></th>
+<th class="head"><p>Query Understanding &amp; Ranking Service</p></th>
+<th class="head"><p>LLM</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Hallucination</p></td>
+<td><p>Chunking, truncation, text extraction errors</p></td>
+<td><p>Search results irrelevant</p></td>
+<td><p>Model generated hallucination</p></td>
+</tr>
+<tr class="row-odd"><td><p>Refusal to Answer</p></td>
+<td><p></p></td>
+<td><p>Search results irrelevant &amp; incomplete</p></td>
+<td><p>Model not understanding content</p></td>
+</tr>
+<tr class="row-even"><td><p>Incomplete Response</p></td>
+<td><p>Incomplete chunking</p></td>
+<td><p>Search results irrelevant &amp; incomplete</p></td>
+<td><p>Model summary incomplete</p></td>
+</tr>
+<tr class="row-odd"><td><p>Slow Response Time</p></td>
+<td><p></p></td>
+<td><p>Search too slow</p></td>
+<td><p>Large model parameters</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <!-- ## RAG paradigam overview
 
 
@@ -478,7 +526,7 @@ Generation. The original question and the retrieved context are fed into LLM to 
 <a class="reference internal image-reference" href="../../_images/RAG_knowledge_base.png"><img alt="../../_images/RAG_knowledge_base.png" src="../../_images/RAG_knowledge_base.png" style="width: 561.0px; height: 285.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 20.4 </span><span class="caption-text">Comparison between retrieval results from document corpus and knowledge bases. Retrieval from knowledge
+<p><span class="caption-number">Fig. 20.5 </span><span class="caption-text">Comparison between retrieval results from document corpus and knowledge bases. Retrieval from knowledge
 base (based on key phrases extracted by LLM) could avoid concept/entity missing issue. Image from <span id="id3">[]</span>.</span><a class="headerlink" href="#chapter-rag-fig-rag-knowledge-base-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
@@ -492,7 +540,7 @@ base (based on key phrases extracted by LLM) could avoid concept/entity missing 
 <a class="reference internal image-reference" href="../../_images/doc_2_query.png"><img alt="../../_images/doc_2_query.png" src="../../_images/doc_2_query.png" style="width: 508.2px; height: 374.4px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 20.5 </span><span class="caption-text">Use doc2query to enhance retrieval performance. Image from <span id="id5">[<a class="reference internal" href="#id1399" title="Rodrigo Nogueira, Wei Yang, Jimmy Lin, and Kyunghyun Cho. Document expansion by query prediction. arXiv preprint arXiv:1904.08375, 2019.">NYLC19</a>]</span>.</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 20.6 </span><span class="caption-text">Use doc2query to enhance retrieval performance. Image from <span id="id5">[<a class="reference internal" href="#id1399" title="Rodrigo Nogueira, Wei Yang, Jimmy Lin, and Kyunghyun Cho. Document expansion by query prediction. arXiv preprint arXiv:1904.08375, 2019.">NYLC19</a>]</span>.</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -662,7 +710,7 @@ Rewrite this query to help retrieve comprehensive results from search engine lik
 <li><p><strong>Enhance sparse retrieval ranker</strong>: Sparse retrieval in practice often use much more sophositcated rankers than BM25. These ranker can benefit from query-document semantic similarity feature besides query document exact matching features.</p></li>
 </ul>
 <p>We are usually face the training data scarcity issue when we adapt a generic retrieval models to a highly specialized domain (e.g., medical, law, scientific). <span id="id8">[]</span> introduces a LLM-based approach, PROMPTAGATOR,  to enhance task-specific retrievers.</p>
-<p>As shown in the <a class="reference internal" href="#chapter-rag-fig-promptagator-demo"><span class="std std-numref">Fig. 20.6</span></a>, PROMPTAGATOR consists of three components:</p>
+<p>As shown in the <a class="reference internal" href="#chapter-rag-fig-promptagator-demo"><span class="std std-numref">Fig. 20.7</span></a>, PROMPTAGATOR consists of three components:</p>
 <ul class="simple">
 <li><p>Prompt-based query generation, a task-specific prompt will be combined with a large language model to produce queries for all documents.</p></li>
 <li><p>Consistency filtering, which cleans the generated data based on round-trip consistency - query should be answered by the passage from which the query was generated.</p></li>
@@ -672,7 +720,7 @@ Rewrite this query to help retrieve comprehensive results from search engine lik
 <a class="reference internal image-reference" href="../../_images/promptagator_training.png"><img alt="../../_images/promptagator_training.png" src="../../_images/promptagator_training.png" style="width: 765.8px; height: 225.39999999999998px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 20.6 </span><span class="caption-text">Illustration of PROMPTAGATOR, which generates synthetic data using LLM. Synthetic data, after consistency filtering, is used to train a retriever in labeled data scarcity domain. Image from <span id="id9">[]</span>.</span><a class="headerlink" href="#chapter-rag-fig-promptagator-demo" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 20.7 </span><span class="caption-text">Illustration of PROMPTAGATOR, which generates synthetic data using LLM. Synthetic data, after consistency filtering, is used to train a retriever in labeled data scarcity domain. Image from <span id="id9">[]</span>.</span><a class="headerlink" href="#chapter-rag-fig-promptagator-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -727,13 +775,13 @@ omparison between two responses given by InstructGPT. The retrieved passages are
 <section id="rag-vs-prompting-and-fine-tuning">
 <h3><span class="section-number">20.6.1. </span>RAG vs Prompting and Fine Tuning<a class="headerlink" href="#rag-vs-prompting-and-fine-tuning" title="Link to this heading">#</a></h3>
 <p>When adapt an generalist LLM to different usage scenarios, there are different approaches, including direct prompting, fine-tuning, and RAG.</p>
-<p>Each method has distinct characteristics as illustrated in <a class="reference internal" href="#chapter-rag-fig-rag-vs-prompt-ft"><span class="std std-numref">Fig. 20.7</span></a>. We used a quadrant chart to illustrate the differences among three methods in two dimensions: external knowledge requirements and model adaption requirements. Prompt engineering leverages a model’s inherent capabilities with minimum necessity for external knowledge and model adaption. RAG can leverage external knowledge via information retrieval, making it excellet for knowledge intentsive tasks. In contrast, FT is suitable for customizing models to specific structures, styles, or formats.</p>
+<p>Each method has distinct characteristics as illustrated in <a class="reference internal" href="#chapter-rag-fig-rag-vs-prompt-ft"><span class="std std-numref">Fig. 20.8</span></a>. We used a quadrant chart to illustrate the differences among three methods in two dimensions: external knowledge requirements and model adaption requirements. Prompt engineering leverages a model’s inherent capabilities with minimum necessity for external knowledge and model adaption. RAG can leverage external knowledge via information retrieval, making it excellet for knowledge intentsive tasks. In contrast, FT is suitable for customizing models to specific structures, styles, or formats.</p>
 <p>Prompt Engineering requires low modifications to the model. It is suitable for relative simple tasks without intensive external knowledge. RAG is particularly suitable dealing with dynamic knowledge tasks. For these tasks, indexing stage in RAG often has auto-refresh ability, enabling RAG to provide realtime knowledge updates and effective utilization of external knowledge sources with high interpretability. However, it comes with low latency scenarios, RAG has to spend extra time (~200-500ms) to perform retrieval. On the other hand, FT is more static, requiring retraining for knowledge updates and instruction following. It often demands significant computational resources for dataset preparation and training.</p>
 <figure class="align-default" id="chapter-rag-fig-rag-vs-prompt-ft">
 <a class="reference internal image-reference" href="../../_images/RAG_vs_FT_vs_prompt.png"><img alt="../../_images/RAG_vs_FT_vs_prompt.png" src="../../_images/RAG_vs_FT_vs_prompt.png" style="width: 730.4000000000001px; height: 434.40000000000003px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 20.7 </span><span class="caption-text">RAG compared with other model optimization methods in the aspects of <strong>External Knowledge Required</strong> and <strong>Model Adaption Required</strong>.  Image from <span id="id10">[]</span>.</span><a class="headerlink" href="#chapter-rag-fig-rag-vs-prompt-ft" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 20.8 </span><span class="caption-text">RAG compared with other model optimization methods in the aspects of <strong>External Knowledge Required</strong> and <strong>Model Adaption Required</strong>.  Image from <span id="id10">[]</span>.</span><a class="headerlink" href="#chapter-rag-fig-rag-vs-prompt-ft" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>In the following, we also summarize different factors to consider when choosing among prompting, fine-tuning, and RAG.</p>
@@ -801,6 +849,10 @@ In fact, information retrieval plays an irreplaceable role. Providing LLMs with 
 </section>
 <section id="bibliography">
 <h2><span class="section-number">20.7. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<p>Important resources:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://acl2023-retrieval-lm.github.io/">Retrieval-based Language Models and Applications ACL2023 Tutorial</a></p></li>
+</ul>
 <div class="docutils container" id="id11">
 <div role="list" class="citation-list">
 <div class="citation" id="id1399" role="doc-biblioentry">
@@ -881,6 +933,7 @@ In fact, information retrieval plays an irreplaceable role. Providing LLMs with 
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-frameworks">20.2. RAG Frameworks</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-rag">20.2.1. Basic RAG</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-optimizations">20.2.2. RAG Optimizations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-challenges-in-practice">20.2.3. RAG Challenges in Practice</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-optimization-documents">20.3. RAG Optimization: Documents</a><ul class="nav section-nav flex-column">

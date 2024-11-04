@@ -203,10 +203,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">16. Decoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">17. Inference Acceleration</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">18. Basic Prompting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">19. Advanced Prompting Techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG) and Agents</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">20. RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
@@ -290,7 +293,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -306,6 +311,19 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-understanding-rewriting">22.1. Query Understanding &amp; Rewriting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-doc-ranking">22.2. Query-Doc Ranking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#document-understanding-and-rewriting">22.3. Document Understanding and Rewriting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-in-rag">22.4. Application in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-serp">22.5. Generative SERP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collections">22.6. Collections</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -317,6 +335,33 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="application-of-llm-in-ir-wip">
 <h1><span class="section-number">22. </span>Application of LLM in IR (WIP)<a class="headerlink" href="#application-of-llm-in-ir-wip" title="Link to this heading">#</a></h1>
+<section id="query-understanding-rewriting">
+<h2><span class="section-number">22.1. </span>Query Understanding &amp; Rewriting<a class="headerlink" href="#query-understanding-rewriting" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://arxiv.org/pdf/2305.14283">Query Rewriting for Retrieval-Augmented Large Language Models</a></p>
+<p><a class="reference external" href="https://arxiv.org/pdf/2402.11129">BlendFilter: Advancing Retrieval-Augmented Large Language Models via Query Generation Blending and Knowledge Filtering</a></p>
+</section>
+<section id="query-doc-ranking">
+<h2><span class="section-number">22.2. </span>Query-Doc Ranking<a class="headerlink" href="#query-doc-ranking" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://arxiv.org/abs/2310.09497">A Setwise Approach for Effective and Highly Efficient Zero-shot Ranking with Large Language Models</a></p>
+<p><a class="reference external" href="https://aclanthology.org/2024.findings-naacl.97/">Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting</a></p>
+<p><a class="reference external" href="https://arxiv.org/abs/2305.02156">Zero-Shot Listwise Document Reranking with a Large Language Model</a></p>
+</section>
+<section id="document-understanding-and-rewriting">
+<h2><span class="section-number">22.3. </span>Document Understanding and Rewriting<a class="headerlink" href="#document-understanding-and-rewriting" title="Link to this heading">#</a></h2>
+</section>
+<section id="application-in-rag">
+<h2><span class="section-number">22.4. </span>Application in RAG<a class="headerlink" href="#application-in-rag" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://aclanthology.org/2024.acl-long.242.pdf">Small Models, Big Insights: Leveraging Slim Proxy Models to Decide When
+and What to Retrieve for LLMs</a></p>
+</section>
+<section id="generative-serp">
+<h2><span class="section-number">22.5. </span>Generative SERP<a class="headerlink" href="#generative-serp" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://arxiv.org/abs/2402.14301">GenSERP: Large Language Models for Whole Page Presentation</a></p>
+</section>
+<section id="collections">
+<h2><span class="section-number">22.6. </span>Collections<a class="headerlink" href="#collections" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://github.com/IR-LLM/Awesome-Information-Retrieval-in-the-Age-of-Large-Language-Model">Awesome Information Retrieval in the Age of Large Language Model</a></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -364,6 +409,26 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-understanding-rewriting">22.1. Query Understanding &amp; Rewriting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-doc-ranking">22.2. Query-Doc Ranking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#document-understanding-and-rewriting">22.3. Document Understanding and Rewriting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-in-rag">22.4. Application in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-serp">22.5. Generative SERP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collections">22.6. Collections</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

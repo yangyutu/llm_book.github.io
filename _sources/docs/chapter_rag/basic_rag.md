@@ -68,11 +68,14 @@ Give the answer to the user query delimited by triple backticks ```{query}``` us
 
 ### RAG Optimizations
 
+
+
+
 Various optimizations can be applied to the basic RAG framework [{numref}`chapter_rag_fig_rag_framework_demo`] to improve the quality and reliability of the system's outputs. These optimizations address common challenges in RAG systems, including query-document mismatch, retrieval accuracy, and output reliability.
 
 As shown in {numref}`chapter_rag_fig_rag_framework_optimization_demo`, we can divide optimizations into the following categories:
 
-**Document Augmentation**:Instead of performing mechanism chunking to split the document, we can apply language understanding models to split documents into semnatically coherent units. Besides, we can enriches documents with additional context, metadata (e.g., stamptime), and alternative representations (queries related to document) before they enter the indexing phase. This enrichment makes documents more discoverable and helps maintain their semantic context even when split into chunks for processing.
+**Document Understanding & Augmentation**:Instead of performing mechanism chunking to split the document, we can apply language understanding models to split documents into semnatically coherent units. Besides, we can enriches documents with additional context, metadata (e.g., stamptime), and alternative representations (queries related to document) before they enter the indexing phase. This enrichment makes documents more discoverable and helps maintain their semantic context even when split into chunks for processing.
 
 **Query Understanding and Rewriting**: This enhancement addresses one of the fundamental challenges in information retrieval: the vocabulary mismatch between query language and document language. The system can employ LLM to analyze and reformulate user queries, making them more effective for retrieval. It can help complex, multi-concept queries by decomposing the original query into multiple manageable subqueries. 
 
@@ -89,6 +92,31 @@ name: chapter_rag_fig_rag_framework_optimization_demo
 ---
 Optimization of the basic RAG framework in different components. 
 ```
+
+
+### RAG Challenges in Practice
+
+The following key factors are essential to a successful application of RAG in real-world. These four keys are sequentially dependent and any issues on one-of-them will cause response of poor quality.
+
+```{figure} ../img/chapter_rag/RAG_key_success_factors.png
+---
+scale: 35%
+name: chapter_rag_fig_rag_framework_key_success_factors
+---
+Key factors underlying a successful RAG product. 
+```
+
+
+
+
+Following table summarize practical challenges and possible causes when applying RAG into actual product. 
+
+| Issue Type | Document Understanding | Query Understanding & Ranking Service | LLM |
+|------------|-------------------------|-----------------------------------|-----|
+| Hallucination | Chunking, truncation, text extraction errors | Search results irrelevant | Model generated hallucination |
+| Refusal to Answer | | Search results irrelevant & incomplete | Model not understanding content |
+| Incomplete Response | Incomplete chunking | Search results irrelevant & incomplete | Model summary incomplete |
+| Slow Response Time | | Search too slow  | Large model parameters |
 
 
 <!-- ## RAG paradigam overview
@@ -389,6 +417,10 @@ In fact, information retrieval plays an irreplaceable role. Providing LLMs with 
 * The process is not tracable or explanable. 
 
 ## Bibliography
+
+Important resources:
+- [Retrieval-based Language Models and Applications ACL2023 Tutorial](https://acl2023-retrieval-lm.github.io/)
+
 
 ```{bibliography} ../../_bibliography/references.bib
 :filter: docname in docnames

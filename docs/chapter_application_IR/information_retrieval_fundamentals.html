@@ -206,10 +206,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">16. Decoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">17. Inference Acceleration</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting and RAG</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">18. Basic Prompting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">19. Advanced Prompting Techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">20. RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
@@ -341,7 +344,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bm25">21.3.3. BM25</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-dense-retrieval-models">21.4. Semantic Dense Retrieval Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-dense-models">21.4. Semantic Dense Models</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">21.4.1. Motivation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-architecture-paradigms">21.4.2. Two Architecture Paradigms</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classic-representation-based-learning">21.4.3. Classic Representation-based Learning</a><ul class="nav section-nav flex-column">
@@ -351,14 +354,15 @@ document.write(`
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mono-bert-and-duo-bert">21.4.4. Mono-BERT And Duo-BERT</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#why-transformers">21.4.4.1. Why Transformers?</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mono-bert-for-point-wise-ranking">21.4.4.2. Mono-BERT For Point-wise Ranking</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mono-bert-cross-encoder-for-point-wise-ranking">21.4.4.2. Mono-BERT (Cross-Encoder) For Point-wise Ranking</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#duo-bert-for-pairwise-ranking">21.4.4.3. Duo-BERT For Pairwise Ranking</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#multistage-retrieval-and-ranking-pipeline">21.4.4.4. Multistage Retrieval And Ranking Pipeline</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dc-bert">21.4.5. DC-BERT</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#colbert">21.4.6. ColBERT</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model-architecture-and-training">21.4.6.1. Model Architecture And Training</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-architectures">21.4.5. Advanced Architectures</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dc-bert">21.4.5.1. DC-BERT</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#colbert">21.4.5.2. ColBERT</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-attribute-and-multi-task-modeling">21.4.5.3. Multi-Attribute and Multi-task Modeling</a></li>
 </ul>
 </li>
 </ul>
@@ -369,9 +373,10 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-training-objective-functions">21.5.3. Model Training Objective Functions</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pointwise-regression-objective">21.5.3.1. Pointwise Regression Objective</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pointwise-ranking-objective">21.5.3.2. Pointwise Ranking Objective</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pairwise-ranking-via-triplet-loss">21.5.3.3. Pairwise Ranking Via Triplet Loss</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pairwise-ranking-via-triplet-loss">21.5.3.3. Pairwise Ranking via Triplet Loss</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#n-pair-loss">21.5.3.4. N-pair Loss</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#n-pair-dual-loss">21.5.3.5. N-pair Dual Loss</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#doc-doc-n-pair-loss">21.5.3.6. Doc-Doc N-pair Loss</a></li>
 </ul>
 </li>
 </ul>
@@ -379,15 +384,16 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-data-sampling-strategies">21.6. Training Data Sampling Strategies</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#principles">21.6.1. Principles</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#negative-sampling-methods-i-heuristic-methods">21.6.2. Negative Sampling Methods I: Heuristic Methods</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">21.6.2.1. Overview</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#random-negatives-and-in-batch-negatives">21.6.2.2. Random Negatives And In-batch Negatives</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#popularity-based-negative-sampling">21.6.2.3. Popularity-based Negative Sampling</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-aware-negative-sampling">21.6.2.4. Topic-aware Negative Sampling</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#random-negatives-and-in-batch-negatives">21.6.2.1. Random Negatives and In-batch Negatives</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#popularity-based-negative-sampling">21.6.2.2. Popularity-based Negative Sampling</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-aware-negative-sampling">21.6.2.3. Topic-aware Negative Sampling</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#negative-sampling-methods-ii-model-based-methods">21.6.3. Negative Sampling Methods II: Model-based Methods</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#static-hard-negative-examples">21.6.3.1. Static Hard Negative Examples</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-hard-negative-examples">21.6.3.2. Dynamic Hard Negative Examples</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#large-scale-negatives">21.6.3.3. Large-Scale Negatives</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#hard-positives">21.6.3.4. Hard Positives</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#label-denoising">21.6.4. Label Denoising</a><ul class="nav section-nav flex-column">
@@ -397,33 +403,34 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-vector-representations">21.7. Multi-vector Representations</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-distillation">21.7. Knowledge Distillation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">21.7.1. Introduction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#token-level-multi-vector-representation">21.7.2. Token-level Multi-vector Representation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-clusters-as-pseudo-query-embeddings">21.7.3. Semantic Clusters As Pseudo Query Embeddings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-distillation-training-framework">21.7.2. Knowledge Distillation Training Framework</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-distillation-strategies">21.7.3. Example Distillation Strategies</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bi-encoder-teacher-distillation">21.7.3.1. Bi-encoder Teacher Distillation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-encoder-embedding-similarity-distillation">21.7.3.2. Cross-Encoder Embedding Similarity Distillation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-teacher-distillation">21.7.3.3. Ensemble Teacher Distillation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-and-document-expansion">21.8. Query and Document Expansion</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">21.8.1. Overview</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#document-expansion-via-query-prediction">21.8.2. Document Expansion Via Query Prediction</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contextualized-term-importance">21.9. Contextualized Term Importance</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-aware-term-importance-deep-ct">21.9.1. Context-aware Term Importance: Deep-CT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-vector-representations">21.8. Multi-vector Representations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id53">21.8.1. Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#token-level-multi-vector-representation">21.8.2. Token-level Multi-vector Representation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-clusters-as-pseudo-query-embeddings">21.8.3. Semantic Clusters As Pseudo Query Embeddings</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-distillation">21.10. Knowledge Distillation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id56">21.10.1. Introduction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-distillation-training-framework">21.10.2. Knowledge Distillation Training Framework</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-distillation-strategies">21.10.3. Example Distillation Strategies</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#single-bi-encoder-teacher-distillation">21.10.3.1. Single Bi-encoder Teacher Distillation</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-teacher-distillation">21.10.3.2. Ensemble Teacher Distillation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-and-document-expansion">21.9. Query and Document Expansion</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id56">21.9.1. Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#document-expansion-via-query-prediction">21.9.2. Document Expansion Via Query Prediction</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contextualized-term-importance">21.10. Contextualized Term Importance</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-aware-term-importance-deep-ct">21.10.1. Context-aware Term Importance: Deep-CT</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approximate-nearest-neighbor-search">21.11. Approximate Nearest Neighbor Search</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id63">21.11.1. Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id64">21.11.1. Overview</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-quantization">21.11.2. Vector Quantization</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#approximate-representation-and-storage">21.11.2.1. Approximate Representation And Storage</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#approximating-distances-using-quantized-codes">21.11.2.2. Approximating Distances Using Quantized Codes</a></li>
@@ -431,7 +438,7 @@ document.write(`
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#product-quantization">21.11.3. Product Quantization</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-vector-quantization-to-product-quantization">21.11.3.1. From Vector Quantization To Product Quantization</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id65">21.11.3.2. Approximating Distances Using Quantized Codes</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id66">21.11.3.2. Approximating Distances Using Quantized Codes</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#approximate-non-exhaustive-nearest-neighbor-search">21.11.4. Approximate Non-exhaustive Nearest Neighbor Search</a><ul class="nav section-nav flex-column">
@@ -594,8 +601,8 @@ This subcomponent aims to figure out the main intent behind the query, e.g., the
 <p>The first reason is due to the polysemy of words. That is, a word can mean different things depending on context. The meaning of <em>book</em> is different in <em>text book</em> and <em>book a hotel room</em>. Short queries particularly suffer from Polysemy because they are often devoid of context.</p>
 <p>The second reason is due to the fact that a concept is often expressed using different vocabularies and language styles in documents and queries. As a result, such a model would have difficulty in retrieving documents that have none of the query terms but turn out to be relevant.</p>
 <p>Modern neural-based IR model enable semantic retrieval by learning latent representations of text from data and enable document retrieval based on semantic similarity.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id73">
-<caption><span class="caption-number">Table 21.1 </span><span class="caption-text">Retrieval results based on exact matching methods and semantic matching methods.</span><a class="headerlink" href="#id73" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id74">
+<caption><span class="caption-number">Table 21.1 </span><span class="caption-text">Retrieval results based on exact matching methods and semantic matching methods.</span><a class="headerlink" href="#id74" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Query</strong></p></th>
 <th class="head"><p>“Weather Related Fatalities”</p></th>
@@ -791,8 +798,8 @@ BM25(q, d)=\sum_{t_q \in q\cap d} idf(t_q) \cdot \frac{\left(k_{1}+1\right) tf(t
 <p>with <span class="math notranslate nohighlight">\(tf(t_q, q)\)</span> being the frequency of term <span class="math notranslate nohighlight">\(t\)</span> in the query <span class="math notranslate nohighlight">\(q\)</span>, and <span class="math notranslate nohighlight">\(k_{2}\)</span> being another positive tuning parameter that this time calibrates term frequency scaling of the query.</p>
 </section>
 </section>
-<section id="semantic-dense-retrieval-models">
-<h2><span class="section-number">21.4. </span>Semantic Dense Retrieval Models<a class="headerlink" href="#semantic-dense-retrieval-models" title="Link to this heading">#</a></h2>
+<section id="semantic-dense-models">
+<h2><span class="section-number">21.4. </span>Semantic Dense Models<a class="headerlink" href="#semantic-dense-models" title="Link to this heading">#</a></h2>
 <section id="motivation">
 <h3><span class="section-number">21.4.1. </span>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h3>
 <p>For ad-hoc search, traditional exact-term matching models (e.g., BM25) are playing critical roles in both traditional IR systems [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-traditionalirengine"><span class="std std-numref">Fig. 21.5</span></a>] and modern multi-stage pipelines [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-retrieverankingarch"><span class="std std-numref">Fig. 21.6</span></a>]. Unfortunately, exact-term matching inherently suffers from the vocabulary mismatch problem due to the fact that a concept is often expressed using different vocabularies and language styles in documents and queries.</p>
@@ -816,7 +823,7 @@ BM25(q, d)=\sum_{t_q \in q\cap d} idf(t_q) \cdot \frac{\left(k_{1}+1\right) tf(t
 </figcaption>
 </figure>
 <p>These two architectures have different strengths in modeling relevance and final model serving. For example, a representation-based model architecture makes it possible to pre-compute and cache document representations offline, greatly reducing the online computational load per query. However, the pre-computation of query-independent document representations often miss term-level matching features that are critical to construct high-quality retrieval results. On the other hand, interaction-based architectures are often good at capturing the fine-grained matching feature between the query and the document.</p>
-<p>Since interaction-based models can model interactions between word pairs in queries and document, they are effective for re-ranking, but are cost-prohibitive for first-stage retrieval as the expensive document-query interactions must be computed online for all ranked documents.</p>
+<p>Since interaction-based models can model interactions between word pairs in queries and document, they are effective for <strong>re-ranking</strong>, but are cost-prohibitive for first-stage retrieval as the expensive document-query interactions must be computed online for all ranked documents.</p>
 <p>Representation-based models enable low-latency, full-collection retrieval with a dense index. By representing queries and documents with dense vectors, retrieval is reduced to nearest neighbor search, or a maximum inner product search (MIPS) <span id="id12">[]</span> problem if similarity is represented by an inner product.</p>
 <p>In recent years, there has been increasing effort on accelerating maximum inner product and nearest neighbor search, which led to high-quality implementations of libraries for nearest neighbor search such as hnsw <span id="id13">[]</span>, FAISS <span id="id14">[]</span>, and SCaNN <span id="id15">[]</span>.</p>
 </section>
@@ -841,8 +848,8 @@ BM25(q, d)=\sum_{t_q \in q\cap d} idf(t_q) \cdot \frac{\left(k_{1}+1\right) tf(t
 </ul>
 <p>One problem of this method is collision, i.e., two different
 words could have the same letter n-gram vector representation because this is a bag-of-words representation that does not take into account orders. But the collision probability is rather low.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id74">
-<caption><span class="caption-number">Table 21.2 </span><span class="caption-text">Word hashing token size and collision numbers as a function of the vocabulary size and the type of letter ngrams.</span><a class="headerlink" href="#id74" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id75">
+<caption><span class="caption-number">Table 21.2 </span><span class="caption-text">Word hashing token size and collision numbers as a function of the vocabulary size and the type of letter ngrams.</span><a class="headerlink" href="#id75" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Word Size</p></th>
 <th class="head"><p>Letter-Bigram</p></th>
@@ -950,8 +957,8 @@ l_{t}=\left[f_{t-d}^{T}, \ldots, f_{t}^{T}, \ldots, f_{t+d}^{T}\right]^{T}, \qua
 <h4><span class="section-number">21.4.4.1. </span>Why Transformers?<a class="headerlink" href="#why-transformers" title="Link to this heading">#</a></h4>
 <p>BERT (Bidirectional Encoder Representations from Transformers) <span id="id18">[<a class="reference internal" href="../chapter_foundation/transformers.html#id1137" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.">DCLT18</a>]</span> and its transformer variants <span id="id19">[]</span> represent the state-of-the-art modeling strategies in a broad range of natural language processing tasks. The application of BERT in information retrieval and ranking was pioneered by <span id="id20">[]</span>. The fundamental characteristics of BERT architecture is self-attention. By pretraining BERT on large scale text data, BERT encoder can produce contextualized embeddings can better capture semantics of different linguistic units. By adding additional prediction head to the BERT backbone, such BERT encoders can be fine-tuned to retrieval related tasks. In this section, we will go over the application of different BERT-based models in neural information retrieval and ranking tasks.</p>
 </section>
-<section id="mono-bert-for-point-wise-ranking">
-<span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-monobert"></span><h4><span class="section-number">21.4.4.2. </span>Mono-BERT For Point-wise Ranking<a class="headerlink" href="#mono-bert-for-point-wise-ranking" title="Link to this heading">#</a></h4>
+<section id="mono-bert-cross-encoder-for-point-wise-ranking">
+<span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-monobert"></span><h4><span class="section-number">21.4.4.2. </span>Mono-BERT (Cross-Encoder) For Point-wise Ranking<a class="headerlink" href="#mono-bert-cross-encoder-for-point-wise-ranking" title="Link to this heading">#</a></h4>
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-monobertarch">
 <a class="reference internal image-reference" href="../../_images/mono_bert_arch.png"><img alt="../../_images/mono_bert_arch.png" src="../../_images/mono_bert_arch.png" style="width: 440.09999999999997px; height: 331.2px;" />
 </a>
@@ -968,6 +975,7 @@ l_{t}=\left[f_{t-d}^{T}, \ldots, f_{t}^{T}, \ldots, f_{t+d}^{T}\right]^{T}, \qua
 \[
 L_{\text {mono-BERT}}=-\sum_{q\in Q}( \sum_{j \in J_{P}^q} \log \left(s_{j}\right)-\sum_{j \in J_{N}^q} \log \left(1-s_{j}\right) ).
 \]</div>
+<p>During training, each batch can consist of a query and its candidate documents (include both positive and negative) produced by previous retrieval layers.</p>
 </section>
 <section id="duo-bert-for-pairwise-ranking">
 <h4><span class="section-number">21.4.4.3. </span>Duo-BERT For Pairwise Ranking<a class="headerlink" href="#duo-bert-for-pairwise-ranking" title="Link to this heading">#</a></h4>
@@ -1058,9 +1066,11 @@ L_{\text {duo }}=&amp;-\sum_{i \in J_{P}, j \in J_{N}} \log \left(p_{i, j}\right
 </div>
 </section>
 </section>
+<section id="advanced-architectures">
+<h3><span class="section-number">21.4.5. </span>Advanced Architectures<a class="headerlink" href="#advanced-architectures" title="Link to this heading">#</a></h3>
 <section id="dc-bert">
-<h3><span class="section-number">21.4.5. </span>DC-BERT<a class="headerlink" href="#dc-bert" title="Link to this heading">#</a></h3>
-<p>One way to improve the computational efficiency is to employ dual BERT encoders for partial separate encoding and then employ an additional shallow module for cross encoding. One example is the architecture shown in <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-dcbert"><span class="std std-numref">Fig. 21.14</span></a>, which is called <strong>DC-BERT</strong> and proposed in <span id="id25">[]</span>. The overall architecture of DC-BERT  consists of a dual-BERT component for decoupled encoding, a Transformer component for question-document interactions, and a binary classifier component for document relevance scoring.</p>
+<h4><span class="section-number">21.4.5.1. </span>DC-BERT<a class="headerlink" href="#dc-bert" title="Link to this heading">#</a></h4>
+<p>One way to improve the computational efficiency of cross-encoder is to employ bi-encoders for partial separate encoding and then employ an additional shallow module for cross encoding. One example is the architecture shown in <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-dcbert"><span class="std std-numref">Fig. 21.14</span></a>, which is called <strong>DC-BERT</strong> and proposed in <span id="id25">[]</span>. The overall architecture of DC-BERT  consists of a dual-BERT component for decoupled encoding, a Transformer component for question-document interactions, and a binary classifier component for document relevance scoring.</p>
 <p>The document encoder can be run offline to pre-encodes all documents and caches all term representations. During online inference, we only need to run the BERT query encodes online. Then the obtained contextual term representations are fed into high-layer Transformer interaction layer.</p>
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-dcbert">
 <a class="reference internal image-reference" href="../../_images/DC_bert.png"><img alt="../../_images/DC_bert.png" src="../../_images/DC_bert.png" style="width: 590.4px; height: 501.29999999999995px;" />
@@ -1078,7 +1088,7 @@ p\left(q_{i}, d_{j}\right)=\sigma\left(\operatorname{Linear}\left(\left[o_{[C L 
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\left(q_{i}, d_{j}\right)\)</span> is a pair of question and retrieved document, and <span class="math notranslate nohighlight">\(o_{[C L S]}\)</span> and <span class="math notranslate nohighlight">\(o_{[C L S]}^{\prime}\)</span> are the Transformer output encodings of the [CLS] token of the question and the document, respectively. The MLP parameters are updated by minimizing the cross-entropy loss.</p>
 <p>DC-BERT uses one Transformer layer for question-document interactions. Quantized BERT is a 8bit-Integer model. DistilBERT is a compact BERT model with 2 Transformer layers.</p>
-<p>We first compare the retriever speed. DC-BERT achieves over 10x speedup over the BERT-base retriever, which demonstrates the efficiency of our method. Quantized BERT has the same model architecture as BERT-base, leading to the minimal speedup. DistilBERT achieves about 6x speedup with only 2 Transformer layers, while BERT-base uses 12 Transformer layers.</p>
+<p>We first compare the retriever speed. DC-BERT achieves over 10x speedup over the BERT-base retriever, which demonstrates the efficiency of this method. Quantized BERT has the same model architecture as BERT-base, leading to the minimal speedup. DistilBERT achieves about 6x speedup with only 2 Transformer layers, while BERT-base uses 12 Transformer layers.</p>
 <p>With a 10x speedup, DC-BERT still achieves similar retrieval performance compared to BERT- base on both datasets. At the cost of little speedup, Quantized BERT also works well in ranking documents. DistilBERT performs significantly worse than BERT-base, which shows the limitation of the distilled BERT model.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -1149,9 +1159,7 @@ p\left(q_{i}, d_{j}\right)=\sigma\left(\operatorname{Linear}\left(\left[o_{[C L 
 </div>
 </section>
 <section id="colbert">
-<span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-colbert"></span><h3><span class="section-number">21.4.6. </span>ColBERT<a class="headerlink" href="#colbert" title="Link to this heading">#</a></h3>
-<section id="model-architecture-and-training">
-<h4><span class="section-number">21.4.6.1. </span>Model Architecture And Training<a class="headerlink" href="#model-architecture-and-training" title="Link to this heading">#</a></h4>
+<span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-colbert"></span><h4><span class="section-number">21.4.5.2. </span>ColBERT<a class="headerlink" href="#colbert" title="Link to this heading">#</a></h4>
 <p>ColBERT <span id="id26">[]</span> is another example architecture that consists of an early separate encoding phase and a late interaction phase, as shown in <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-colbert"><span class="std std-numref">Fig. 21.15</span></a>. ColBERT employs a single BERT model for both query and document encoders but distinguish input sequences that correspond to queries and documents by prepending a special token [Q] to queries and another token [D] to documents.</p>
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-colbert">
 <a class="reference internal image-reference" href="../../_images/Col_bert.png"><img alt="../../_images/Col_bert.png" src="../../_images/Col_bert.png" style="width: 581.4px; height: 325.8px;" />
@@ -1283,6 +1291,31 @@ ColBERT is differentiable end-to-end and we can fine-tune the BERT encoders and 
 </table>
 </div>
 </section>
+<section id="multi-attribute-and-multi-task-modeling">
+<h4><span class="section-number">21.4.5.3. </span>Multi-Attribute and Multi-task Modeling<a class="headerlink" href="#multi-attribute-and-multi-task-modeling" title="Link to this heading">#</a></h4>
+<p>We can extend cross-encoder to take into multiple-attributes from query side and document side, as well as generating multiple predictive outputs for different tasks [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-multitask-multiattribute"><span class="std std-numref">Fig. 21.16</span></a>].</p>
+<p>For example, query side attributes could include</p>
+<ul class="simple">
+<li><p>Query text</p></li>
+<li><p>Query’s language (produced by a cheapter language detection model)</p></li>
+<li><p>User’s location and region</p></li>
+<li><p>Other query side signals (e.g., key concept groups in the query, document signals from historical queries)
+Document side attributes could include</p></li>
+<li><p>Organic contents with semantic markers (e.g., [T] for Title)</p></li>
+<li><p>Other derived signals from documents (e.g., puesedo queries, historical queries, etc.)
+Other high level signals suitable late stage fusion</p></li>
+<li><p>Document refreshness attribute (for intent to search latest news)</p></li>
+<li><p>Document spamness attributes</p></li>
+</ul>
+<p>After feature fusion (e.g., via concatination), we can separate MLP head for different tasks</p>
+<figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-multitask-multiattribute">
+<a class="reference internal image-reference" href="../../_images/multitask_multiattribute_arch.png"><img alt="../../_images/multitask_multiattribute_arch.png" src="../../_images/multitask_multiattribute_arch.png" style="width: 747.9px; height: 389.7px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 21.16 </span><span class="caption-text">An representative cross-encoder that is extended to take into account multiple-attributes from query side and document side. There are multiple outputs for <strong>multi-tasking</strong>.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-multitask-multiattribute" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
 </section>
 </section>
 <section id="ranker-training">
@@ -1337,11 +1370,11 @@ L=-\sum_{i} \sum_{j} y_{i, j} \log \left(p\left(q_{i}, d_{i, j}\right)\right)+\l
 <p>In general, however, pointwise ranking objectives are considered to be less effective in ranking tasks. Because pointwise loss functions consider no document preference or order information, they do not guarantee to produce the best ranking list when the model loss reaches the global minimum. Therefore, better ranking paradigms that directly optimize document ranking based on pairwise loss functions and even listwise loss functions.</p>
 </section>
 <section id="pairwise-ranking-via-triplet-loss">
-<span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-triplet-loss"></span><h4><span class="section-number">21.5.3.3. </span>Pairwise Ranking Via Triplet Loss<a class="headerlink" href="#pairwise-ranking-via-triplet-loss" title="Link to this heading">#</a></h4>
+<span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-triplet-loss"></span><h4><span class="section-number">21.5.3.3. </span>Pairwise Ranking via Triplet Loss<a class="headerlink" href="#pairwise-ranking-via-triplet-loss" title="Link to this heading">#</a></h4>
 <p>Pointwise ranking loss aims to optimize the model to directly predict relevance between query and documents on absolute score. From embedding optimization perspective, it train the neural query/document encoders to produce similar embedding vectors for a query and its relevant document and dissimilar embedding vectors for a query and its irrelevant documents.</p>
 <p>On the other hand, pairwise ranking objectives focus on <strong>optimizing the relative preferences between documents rather than predicting their relevance labels.</strong> In contrast to pointwise methods where the final ranking loss is the sum of loss on each document, pairwise loss functions are computed based on the different combination of document pairs.</p>
 <p>One of the most common pairwise ranking loss function is the <strong>triplet loss</strong>. Let <span class="math notranslate nohighlight">\(\mathcal{D}=\left\{\left\langle q_{i}, d_{i}^{+}, d_{i}^{-}\right\rangle\right\}_{i=1}^{m}\)</span> be the training data organized into <span class="math notranslate nohighlight">\(m\)</span> triplets. Each triplet contains one query <span class="math notranslate nohighlight">\(q_{i}\)</span> and one relevant document <span class="math notranslate nohighlight">\(d_{i}^{+}\)</span>, along with one irrelevant (negative) documents <span class="math notranslate nohighlight">\(d_{i}^{-}\)</span>. Negative documents are typically randomly sampled from a large corpus or are strategically constructed [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-negativesamplingstrategies"><span class="std std-numref">Section 21.6</span></a>].
-Visualization of the learning process in the embedding space is shown in <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-triplet"><span class="std std-numref">Fig. 21.16</span></a>. Triplet loss helps guide the encoder networks to pull relevant query and document closer and push irrelevant query and document away.</p>
+Visualization of the learning process in the embedding space is shown in <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-triplet"><span class="std std-numref">Fig. 21.17</span></a>. Triplet loss helps guide the encoder networks to pull relevant query and document closer and push irrelevant query and document away.</p>
 <p>The loss function is given by</p>
 <div class="math notranslate nohighlight">
 \[L =- \sum_{\left\langle q_{i}, d_{i}^{+}, d_{i}^{-}\right\rangle}\max(0, m - \operatorname{Sim}(q_i, d_i^+) + \operatorname{Sim}(q_i, d^-_i))\]</div>
@@ -1349,13 +1382,14 @@ Visualization of the learning process in the embedding space is shown in <a clas
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-triplet">
 <img alt="../../_images/triplet.png" src="../../_images/triplet.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 21.16 </span><span class="caption-text">The illustration of the learning process (in the embedding space) using triplet loss.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-triplet" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.17 </span><span class="caption-text">The illustration of the learning process (in the embedding space) using triplet loss.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-triplet" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Triplet loss can also operating in the angular space
-$<span class="math notranslate nohighlight">\(
+<p>Triplet loss can also operating in the angular space</p>
+<div class="math notranslate nohighlight">
+\[
 \operatorname{sim}(q, d)=1-\arccos \left(\frac{\psi_{\beta}(q) \cdot \psi_{\alpha}(d)}{\left\|\psi_{\beta}(q)\right\|\left\|\psi_{\alpha}(d)\right\|}\right) / \pi
-\)</span>$</p>
+\]</div>
 <p>As illustrated in Figure 1, the training objective is to score the positive example <span class="math notranslate nohighlight">\(d^{+}\)</span>by at least the margin <span class="math notranslate nohighlight">\(\mu\)</span> higher than the negative one <span class="math notranslate nohighlight">\(d^{-}\)</span>. As part of our loss function, we use the triplet margin objective:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1366,7 +1400,7 @@ l\left(q, d^{+}, d^{-}\right):=\max \left(0, \operatorname{sim}\left(q, d^{-}\ri
 <span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-n-pair-loss"></span><h4><span class="section-number">21.5.3.4. </span>N-pair Loss<a class="headerlink" href="#n-pair-loss" title="Link to this heading">#</a></h4>
 <p>Triplet loss optimize the neural by encouraging positive pair <span class="math notranslate nohighlight">\((q_i, d^+_i)\)</span> to be more similar than its negative pair <span class="math notranslate nohighlight">\((q_i, d^+_i)\)</span>. One improvement is to encourage <span class="math notranslate nohighlight">\(q_i\)</span> to be more similar <span class="math notranslate nohighlight">\(d^+_i\)</span> compared to <span class="math notranslate nohighlight">\(n\)</span> negative examples <span class="math notranslate nohighlight">\( d_{i, 1}^{-}, \cdots, d_{i, n}^{-}\)</span>, instead of just one negative example. This is known as N-pair loss <span id="id32">[]</span>, and it is typically more robust than triplet loss.</p>
 <p>Let <span class="math notranslate nohighlight">\(\mathcal{D}=\left\{\left\langle q_{i}, d_{i}^{+}, D_i^-\right\rangle\right\}_{i=1}^{m}\)</span>, where <span class="math notranslate nohighlight">\(D_i^- = \{d_{i, 1}^{-}, \cdots, d_{i, n}^{-}\}\)</span> are a set of negative examples (i.e., irrelevant document) with respect to query <span class="math notranslate nohighlight">\(q_i\)</span>,  be the training data that consists of <span class="math notranslate nohighlight">\(m\)</span> examples. Each example contains one query <span class="math notranslate nohighlight">\(q_{i}\)</span> and one relevant document <span class="math notranslate nohighlight">\(d_{i}^{+}\)</span>, along with <span class="math notranslate nohighlight">\(n\)</span> irrelevant (negative) documents <span class="math notranslate nohighlight">\(d_{i, j}^{-}\)</span>. The <span class="math notranslate nohighlight">\(n\)</span> negative documents are typically randomly sampled from a large corpus or are strategically constructed [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-negativesamplingstrategies"><span class="std std-numref">Section 21.6</span></a>].</p>
-<p>Visualization of the learning process in the embedding space is shown in <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-npairloss"><span class="std std-numref">Fig. 21.17</span></a>. Like triplet loss, N-pair loss helps guide the encoder networks to pull relevant query and document closer and push irrelevant query and document away. Besides that, when there are are negatives are involved in the N-pair loss, their repelling to each other appears to help the learning of generating more uniform embeddings<span id="id33">[]</span>.</p>
+<p>Visualization of the learning process in the embedding space is shown in <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-npairloss"><span class="std std-numref">Fig. 21.18</span></a>. Like triplet loss, N-pair loss helps guide the encoder networks to pull relevant query and document closer and push irrelevant query and document away. Besides that, when there are are negatives are involved in the N-pair loss, their repelling to each other appears to help the learning of generating more uniform embeddings<span id="id33">[]</span>.</p>
 <p>The loss function is given by</p>
 <div class="math notranslate nohighlight">
 \[L =-\sum_{\left\langle q_{i}, d_{i}^{+}, D_{i}^{-}\right\rangle}\log \frac{\exp(\operatorname{Sim}\left(e_{q_{i}}, e_{d_{i}^{+}}\right))}{\exp(\operatorname{Sim}\left(e_{q_{i}}, e_{d_{i}^{+}}\right))+\sum_{d^-_i\in D^-} \exp(\operatorname{Sim}\left(e_{q_{i}}, e_{d_{i}^{-}}\right))}\]</div>
@@ -1374,7 +1408,7 @@ l\left(q, d^{+}, d^{-}\right):=\max \left(0, \operatorname{sim}\left(q, d^{-}\ri
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-npairloss">
 <img alt="../../_images/N_pair_loss.png" src="../../_images/N_pair_loss.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 21.17 </span><span class="caption-text">The illustration of the learning process (in the embedding space) using N-pair loss.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-npairloss" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.18 </span><span class="caption-text">The illustration of the learning process (in the embedding space) using N-pair loss.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-npairloss" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -1383,7 +1417,7 @@ l\left(q, d^{+}, d^{-}\right):=\max \left(0, \operatorname{sim}\left(q, d^{-}\ri
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-npairlossdual">
 <img alt="../../_images/N_pair_loss_dual.png" src="../../_images/N_pair_loss_dual.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 21.18 </span><span class="caption-text">The illustration of the learning process (in the embedding space) using N-pair dual loss.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-npairlossdual" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.19 </span><span class="caption-text">The illustration of the learning process (in the embedding space) using N-pair dual loss.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-npairlossdual" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The N-pair loss uses query as the anchor to adjust the distribution of document vectors in the embedding space. Authors in <span id="id34">[]</span> proposed that document can also be as the anchor to adjust the distribution of query vectors in the embedding space. This leads to loss functions consisting of two parts</p>
@@ -1396,6 +1430,24 @@ L &amp;= L_{prime} + L_{dual} \\
 <p>where <span class="math notranslate nohighlight">\(\operatorname{Sim}(e_q, e_d)\)</span> is a <strong>symmetric</strong> similarity score function for the query and the document embedding vectors, <span class="math notranslate nohighlight">\(L_{prime}\)</span> is the N-pair loss, and <span class="math notranslate nohighlight">\(L_{dual}\)</span> is the N-pair dual loss.</p>
 <p>To compute dual loss, we need to prepare training data <span class="math notranslate nohighlight">\(\mathcal{D}_{dual}=\left\{\left\langle d_{i}, q_{i}^{+}, Q_i^-\right\rangle\right\}_{i=1}^{m}\)</span>, where <span class="math notranslate nohighlight">\(Q_i^- = \{q_{i, 1}^{-}, \cdots, q_{i, n}^{-}\}\)</span> are a set of negative queries examples (i.e., irrelevant query) with respect to document <span class="math notranslate nohighlight">\(d_i\)</span>. Each example contains one document <span class="math notranslate nohighlight">\(d_{i}\)</span> and one relevant query <span class="math notranslate nohighlight">\(d_{i}^{+}\)</span>, along with <span class="math notranslate nohighlight">\(n\)</span> irrelevant (negative) queries <span class="math notranslate nohighlight">\(q_{i, j}^{-}\)</span>.</p>
 </section>
+<section id="doc-doc-n-pair-loss">
+<h4><span class="section-number">21.5.3.6. </span>Doc-Doc N-pair Loss<a class="headerlink" href="#doc-doc-n-pair-loss" title="Link to this heading">#</a></h4>
+<figure class="align-default" id="id35">
+<img alt="../../_images/N_pair_doc_doc.png" src="../../_images/N_pair_doc_doc.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 21.20 </span><span class="caption-text">The illustration of the learning process (in the embedding space) using Doc-Doc N-pair loss.</span><a class="headerlink" href="#id35" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Besiding use above prime and dual loss to capture robust query doc relationship, we can also improve robustness of document representation by considering doc-doc relations. Particularly,</p>
+<ul class="simple">
+<li><p>When there are multiple positive documents associated with the same query, we use loss function encourage their representation embedding to stay close.</p></li>
+<li><p>For positive and negative documents associated with the same query, we use loss function encourage their representation embedding to stay far apart.</p></li>
+</ul>
+<p>The loss function is given by</p>
+<div class="math notranslate nohighlight">
+\[L =-\sum_{\left\langle q_{i}, d_{i}^{+}, d_{i'}^{+} \in D_{i}^{+}, D_{i}^{-}\right\rangle}\log \frac{\exp(\operatorname{Sim}\left(e_{d_{i}}, e_{d_{i'}}\right))}{\exp(\operatorname{Sim}\left(e_{d_{i}^+}, e_{d_{i}^{+}}\right))+\sum_{d^-_i\in D^-} \exp(\operatorname{Sim}\left(e_{d_{i}^+}, e_{d_{i}^{-}}\right))}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\operatorname{Sim}(e_{d_1}, e_{d_2})\)</span> is the similarity score function taking document embeddings <span class="math notranslate nohighlight">\(e_{d_1}\)</span> and <span class="math notranslate nohighlight">\(e_{d_2}\)</span> as the input.</p>
+</section>
 </section>
 </section>
 <section id="training-data-sampling-strategies">
@@ -1404,7 +1456,7 @@ L &amp;= L_{prime} + L_{dual} \\
 <h3><span class="section-number">21.6.1. </span>Principles<a class="headerlink" href="#principles" title="Link to this heading">#</a></h3>
 <p>From the ranking perspective, both retrieval and re-ranking requires the generation of some order on the input samples. For example, given a query <span class="math notranslate nohighlight">\(q\)</span> and a set of candidate documents <span class="math notranslate nohighlight">\((d_1,...,d_N)\)</span>. We need the model to produce an order list <span class="math notranslate nohighlight">\(d_2 \succ d_3 ... \succ d_k\)</span> according to their relevance to the query.</p>
 <p>To train a model to produce the expected results during inference, we should ensure the training data distribution to matched with the inference time data distribution.
-Particularly, the inference time the candidate document distribution and ranking granularity  differ vastly for retrieval tasks and re-ranking tasks [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-retrievalrerankingtask"><span class="std std-numref">Fig. 21.19</span></a>]. Specifically,</p>
+Particularly, the inference time the candidate document distribution and ranking granularity  differ vastly for retrieval tasks and re-ranking tasks [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-retrievalrerankingtask"><span class="std std-numref">Fig. 21.21</span></a>]. Specifically,</p>
 <ul class="simple">
 <li><p>For the retrieval task, we typically need to identify top <span class="math notranslate nohighlight">\(k (k=1000-10000)\)</span> relevant documents from the entire document corpus. This is achieved by ranking all documents in the corpus with respect to the relevance of the query.</p></li>
 <li><p>For the re-ranking task, we need to identify the top <span class="math notranslate nohighlight">\(k (k=10)\)</span> most relevant documents from the relevant documents generated by the retrieval task.</p></li>
@@ -1413,7 +1465,7 @@ Particularly, the inference time the candidate document distribution and ranking
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-retrievalrerankingtask">
 <img alt="../../_images/retrieval_reranking_task.png" src="../../_images/retrieval_reranking_task.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 21.19 </span><span class="caption-text">Retrieval tasks and re-ranking tasks are faced with different the candidate document distribution and ranking granularity.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-retrievalrerankingtask" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.21 </span><span class="caption-text">Retrieval tasks and re-ranking tasks are faced with different the candidate document distribution and ranking granularity.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-retrievalrerankingtask" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Constructing the proper training data distribution is more challenging to retrieval stage than the re-ranking stage. In re-ranking stage, data in the training and inference phases are both the documents from previous retrieval stages. In the retrieval stage, we need to construct training examples in a mini-batch fashion in a way that each batch approximates the distribution in the inference phase as close as possible.</p>
@@ -1421,22 +1473,25 @@ Particularly, the inference time the candidate document distribution and ranking
 </section>
 <section id="negative-sampling-methods-i-heuristic-methods">
 <h3><span class="section-number">21.6.2. </span>Negative Sampling Methods I: Heuristic Methods<a class="headerlink" href="#negative-sampling-methods-i-heuristic-methods" title="Link to this heading">#</a></h3>
-<section id="id35">
-<h4><span class="section-number">21.6.2.1. </span>Overview<a class="headerlink" href="#id35" title="Link to this heading">#</a></h4>
-<p>The essence of the negative sampling algorithm is to set or adjust the sampling distribution during negative sampling based on certain methods. According to the way the negative sampling algorithm sets the sampling distribution, we can divide the current negative sampling algorithms into two categories: Heuristic Negative Sampling Algorithms and Model-based Negative Sampling Algorithms.</p>
-<p>In <span id="id36">[]</span>, there are three different types of negatives: (1) Random: any random passage from the corpus; (2) BM25: top passages returned by BM25 which don’t contain the answer but match most question tokens; (3) Gold: positive passages paired with other questions which appear in the training set.</p>
-<p>One approach to improving the effectiveness of single-vector bi-encoders is hard negative mining, by training with carefully selected negative examples that emphasize discrimination between relevant and non-relevant texts.</p>
-<p>both large in-batch negative sampling and asynchronous ANN index updates are computationally demanding.</p>
-<p>Compared with the two heuristic algorithms mentioned above, the model-based negative sampling algorithm is easier to pick high-quality negative examples, and it is also the more cutting-edge sampling algorithm at present. Here are several model-based negative sampling algorithms:</p>
-</section>
+<!-- #### Overview
+
+The essence of the negative sampling algorithm is to set or adjust the sampling distribution during negative sampling based on certain methods. According to the way the negative sampling algorithm sets the sampling distribution, we can divide the current negative sampling algorithms into two categories: Heuristic Negative Sampling Algorithms and Model-based Negative Sampling Algorithms.
+
+In {cite}`karpukhin2020dense`, there are three different types of negatives: (1) Random: any random passage from the corpus; (2) BM25: top passages returned by BM25 which don’t contain the answer but match most question tokens; (3) Gold: positive passages paired with other questions which appear in the training set.
+
+One approach to improving the effectiveness of single-vector bi-encoders is hard negative mining, by training with carefully selected negative examples that emphasize discrimination between relevant and non-relevant texts.
+
+both large in-batch negative sampling and asynchronous ANN index updates are computationally demanding.
+
+Compared with the two heuristic algorithms mentioned above, the model-based negative sampling algorithm is easier to pick high-quality negative examples, and it is also the more cutting-edge sampling algorithm at present. Here are several model-based negative sampling algorithms: -->
 <section id="random-negatives-and-in-batch-negatives">
-<span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-in-batch-negatives"></span><h4><span class="section-number">21.6.2.2. </span>Random Negatives And In-batch Negatives<a class="headerlink" href="#random-negatives-and-in-batch-negatives" title="Link to this heading">#</a></h4>
-<p>Random negative sampling is the most basic negative sampling algorithm. The algorithm uniformly sample documents from the corpus and treat it as a negative. Clearly, random negatives can generate negatives that are too easy for the model. For example, a negative document that is topically different from the query. These easy negatives lower the learning efficiency, that is, each batch produces limited information gain to update the model. Still, random negatives are widely used because of its simplicity.</p>
-<p>In practice, random negatives are implemented as in-batch negatives.  In the contrastive learning framework with N-pair loss [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-n-pair-loss"><span class="std std-numref">Section 21.5.3.4</span></a>], we construct a mini-batch of query-doc examples like <span class="math notranslate nohighlight">\(\{(q_1, d_1^+, d_{1,1}^-, d_{1,M}^-), ..., (q_N, d_N^+, d_{N,1}^-, d_{N,M}^M)\}\)</span>, Naively implementing N-pair loss would increase computational cost from constructing sufficient negative documents corresponding to each query. In-batch negatives<span id="id37">[]</span> is trick to reuse positive documents associated with other queries as extra negatives [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-inbatchnegatives"><span class="std std-numref">Fig. 21.20</span></a>]. The critical assumption here is that queries in a mini-batch are vastly different semantically, and positive documents from other queries would be confidently used as negatives. The assumption is largely true since each mini-batch is randomly sampled from the set of all training queries, in-batch negative document are usually true negative although they might not be hard negatives.</p>
+<span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-in-batch-negatives"></span><h4><span class="section-number">21.6.2.1. </span>Random Negatives and In-batch Negatives<a class="headerlink" href="#random-negatives-and-in-batch-negatives" title="Link to this heading">#</a></h4>
+<p><strong>Random negative sampling</strong> is the most basic negative sampling algorithm. The algorithm uniformly sample documents from the corpus and treat it as a negative. Clearly, random negatives can generate negatives that are <strong>too easy</strong> for the model. For example, a negative document that is topically different from the query. These easy negatives lower the learning efficiency, that is, each batch produces limited information gain to update the model. Still, random negatives are widely used because of its simplicity.</p>
+<p>In practice, random negatives are implemented as in-batch negatives.  In the contrastive learning framework with N-pair loss [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-n-pair-loss"><span class="std std-numref">Section 21.5.3.4</span></a>], we construct a mini-batch of query-doc examples like <span class="math notranslate nohighlight">\(\{(q_1, d_1^+, d_{1,1}^-, d_{1,M}^-), ..., (q_N, d_N^+, d_{N,1}^-, d_{N,M}^M)\}\)</span>, Naively implementing N-pair loss would increase computational cost from constructing sufficient negative documents corresponding to each query. In-batch negatives<span id="id36">[]</span> is trick to reuse positive documents associated with other queries as extra negatives [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-inbatchnegatives"><span class="std std-numref">Fig. 21.22</span></a>]. The critical assumption here is that queries in a mini-batch are vastly different semantically, and positive documents from other queries would be confidently used as negatives. The assumption is largely true since each mini-batch is randomly sampled from the set of all training queries, in-batch negative document are usually true negative although they might not be hard negatives.</p>
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-inbatchnegatives">
 <img alt="../../_images/in_batch_negatives.png" src="../../_images/in_batch_negatives.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 21.20 </span><span class="caption-text">The illustration of using in-batch negatives in contrastive learning.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-inbatchnegatives" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.22 </span><span class="caption-text">The illustration of using in-batch negatives in contrastive learning.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-inbatchnegatives" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Specifically, assume that we have <span class="math notranslate nohighlight">\(N\)</span> queries in a mini-batch and each one is associated with a relevant  positive document. By using positive document of other queries, each query will have an additional <span class="math notranslate nohighlight">\(N - 1\)</span> negatives.</p>
@@ -1446,13 +1501,13 @@ Particularly, the inference time the candidate document distribution and ranking
 \mathcal{L}:=\sum_{1 \leq i \leq N}\left(\sum_{1 \leq j \leq N} l\left(q_{i}, d_{i}^{+}, d_{j}^{-}\right)+\sum_{1 \leq k \leq N, k \neq i} l\left(q_{i}, d_{i}^{+}, d_{k}^{+}\right)\right)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(l\left(q_{i}, d_{i}^{+}, d_{j}^{-}\right)\)</span> is the loss function for a triplet.</p>
-<p>In-batch negative offers an efficient implementation for random negatives. Another way to mitigate the inefficient learning issue is simply use large batch size (&gt;4,000) <span id="id38">[]</span>. This can be implemented using distributed multi-GPU training.</p>
+<p>In-batch negative offers an efficient implementation for random negatives. Another way to mitigate the inefficient learning issue is simply use large batch size (&gt;4,000) [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-large-scale-negatives"><span class="std std-ref">Large-Scale Negatives</span></a>].</p>
 </section>
 <section id="popularity-based-negative-sampling">
-<h4><span class="section-number">21.6.2.3. </span>Popularity-based Negative Sampling<a class="headerlink" href="#popularity-based-negative-sampling" title="Link to this heading">#</a></h4>
-<p>Popularity-based negative sampling use document popularity as the sampling weight to sample negative documents. The popularity of a document can be defined as some combination of click, dwell time, quality, etc. Compared to random negative sampling, this algorithm replaces the uniform distribution with a popularity-based sampling distribution, which can be pre-computed offline.</p>
-<p>The major rationale of using popularity-based negative examples is to improve representation learning. Popular negative documents represent a harder negative compared to a unpopular negative since they tend to have to a higher chance of being more relevant; that is, lying closer to query in the embedding space. If the model is trained to distinguish these harder cases, the over learned representations will be likely improved.</p>
-<p>Popularity-based negative sampling is also used in word2vec training <span id="id39">[<a class="reference internal" href="../chapter_foundation/word_embeddings.html#id1087" title="Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg S Corrado, and Jeff Dean. Distributed representations of words and phrases and their compositionality. In Advances in neural information processing systems, 3111–3119. 2013.">MSC+13</a>]</span>. For example, the probability to sample a word <span class="math notranslate nohighlight">\(w_i\)</span> is given by:</p>
+<h4><span class="section-number">21.6.2.2. </span>Popularity-based Negative Sampling<a class="headerlink" href="#popularity-based-negative-sampling" title="Link to this heading">#</a></h4>
+<p><strong>Popularity-based negative sampling</strong> use document popularity as the sampling weight to sample negative documents. The popularity of a document can be defined as some combination of click, dwell time, quality, etc. Compared to random negative sampling, this algorithm replaces the uniform distribution with a popularity-based sampling distribution, which can be pre-computed offline.</p>
+<p>The major rationale of using popularity-based negative examples is to improve representation learning. <strong>Popular negative documents represent a harder negative compared to a unpopular negative since they tend to have to a higher chance of being more relevant</strong>; that is, lying closer to query in the embedding space. If the model is trained to distinguish these harder cases, the over learned representations will be likely improved.</p>
+<p>Popularity-based negative sampling is also used in word2vec training <span id="id37">[<a class="reference internal" href="../chapter_foundation/word_embeddings.html#id1087" title="Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg S Corrado, and Jeff Dean. Distributed representations of words and phrases and their compositionality. In Advances in neural information processing systems, 3111–3119. 2013.">MSC+13</a>]</span>. For example, the probability to sample a word <span class="math notranslate nohighlight">\(w_i\)</span> is given by:</p>
 <div class="math notranslate nohighlight">
 \[
 P\left(w_i\right)=\frac{f\left(w_i\right)^{3 / 4}}{\sum_{j=0}^n\left(f\left(w_j\right)^{3 / 4}\right)},
@@ -1460,8 +1515,8 @@ P\left(w_i\right)=\frac{f\left(w_i\right)^{3 / 4}}{\sum_{j=0}^n\left(f\left(w_j\
 <p>where <span class="math notranslate nohighlight">\(f(w)\)</span> is the frequency of word <span class="math notranslate nohighlight">\(w\)</span>. This equation, compared to linear popularity, has the tendency to increase the probability for less frequent words and decrease the probability for more frequent words.</p>
 </section>
 <section id="topic-aware-negative-sampling">
-<h4><span class="section-number">21.6.2.4. </span>Topic-aware Negative Sampling<a class="headerlink" href="#topic-aware-negative-sampling" title="Link to this heading">#</a></h4>
-<p>In-batch random negatives would often consist of  topically-different documents, leaving little information gain for the training. To improve the information gain from a single random batch, we can constrain the queries and their relevant document are drawn from a similar topic<span id="id40">[]</span>.</p>
+<h4><span class="section-number">21.6.2.3. </span>Topic-aware Negative Sampling<a class="headerlink" href="#topic-aware-negative-sampling" title="Link to this heading">#</a></h4>
+<p>In-batch random negatives would often consist of  topically-different documents, leaving little information gain for the training. To improve the information gain from a single random batch, we can constrain the queries and their relevant document are drawn from a similar topic<span id="id38">[]</span>.</p>
 <p>The procedures are</p>
 <ul class="simple">
 <li><p>Cluster queries using query embeddings produced by basic query encoder.</p></li>
@@ -1476,17 +1531,17 @@ P\left(w_i\right)=\frac{f\left(w_i\right)^{3 / 4}}{\sum_{j=0}^n\left(f\left(w_j\
 <section id="static-hard-negative-examples">
 <h4><span class="section-number">21.6.3.1. </span>Static Hard Negative Examples<a class="headerlink" href="#static-hard-negative-examples" title="Link to this heading">#</a></h4>
 <p>Deep model improves the encoded representation of queries and documents by contrastive learning, in which the model learns to distinguish positive examples and negative examples. A simple random sampling strategy tend to produce a large quantity of easy negative examples since easy negative examples make up the majority of negative examples. Here by easy negative examples, we mean a document that can be easily judged to be irrelevant to the query. For example, the document and the query are in completely different topics.</p>
-<p>The model learning from easy negative example can quickly plateau since easy negative examples produces vanishing gradients to update the model. An improvement strategy is to supply additional hard negatives with randomly sampled negatives. In the simplest case, hard negatives can be selected based on a traditional BM25model <span id="id41">[]</span> or other efficient dense retriever: hard negatives are those have a high relevant score to the query but they are not relevant.</p>
-<p>As illustrated in <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-impacthardnegativeonretrieval"><span class="std std-numref">Fig. 21.21</span></a>, a model trained only with easy negatives can fail to distinguish fairly relevant documents from irrelevant examples; on the other hand, a model trained with some hard negatives can learn better representations:</p>
+<p>The model learning from easy negative example can quickly plateau since easy negative examples produces vanishing gradients to update the model. An improvement strategy is to supply additional hard negatives with randomly sampled negatives. In the simplest case, hard negatives can be selected based on a traditional BM25model <span id="id39">[]</span> or other efficient dense retriever: hard negatives are those have a high relevant score to the query but they are not relevant.</p>
+<p>As illustrated in <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-impacthardnegativeonretrieval"><span class="std std-numref">Fig. 21.23</span></a>, a model trained only with easy negatives can fail to distinguish fairly relevant documents from irrelevant examples; on the other hand, a model trained with some hard negatives can learn better representations:</p>
 <ul class="simple">
-<li><p>Positive document embeddings are more aligned <span id="id42">[]</span>; that is, they are lying closer with respect to each other.</p></li>
+<li><p>Positive document embeddings are more aligned <span id="id40">[]</span>; that is, they are lying closer with respect to each other.</p></li>
 <li><p>Fairly relevant and irrelevant documents are more separated in the embedding space and thus a better decision boundary for relevant and irrelevant documents.</p></li>
 </ul>
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-impacthardnegativeonretrieval">
 <a class="reference internal image-reference" href="../../_images/Impact_hard_negative_on_retrieval.png"><img alt="../../_images/Impact_hard_negative_on_retrieval.png" src="../../_images/Impact_hard_negative_on_retrieval.png" style="width: 701.1px; height: 353.7px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 21.21 </span><span class="caption-text">Illustration of importance of negative hard examples, which helps learning better representations to distinguish irrelevant and fairly relevant documents.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-impacthardnegativeonretrieval" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.23 </span><span class="caption-text">Illustration of importance of negative hard examples, which helps learning better representations to distinguish irrelevant and fairly relevant documents.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-impacthardnegativeonretrieval" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>In generating these negative examples, the negative-generation model (e.g., BM25) and the model under training are de-coupled; that is the negative-generation model is not updated during training and the hard examples are static. Despite this simplicity, static hard negative examples introduces two shortcomings:</p>
@@ -1497,12 +1552,12 @@ P\left(w_i\right)=\frac{f\left(w_i\right)^{3 / 4}}{\sum_{j=0}^n\left(f\left(w_j\
 </section>
 <section id="dynamic-hard-negative-examples">
 <h4><span class="section-number">21.6.3.2. </span>Dynamic Hard Negative Examples<a class="headerlink" href="#dynamic-hard-negative-examples" title="Link to this heading">#</a></h4>
-<p>Dynamic hard negative mining is a scheme proposed in ANCE<span id="id43">[]</span>. The core idea is to use the target model at previous checkpoint as the negative-generation model [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-ancenegativesamplingdemo"><span class="std std-numref">Fig. 21.22</span></a>]. However, this negative mining approach is rather computationally demanding since corpus index need updates at every checkpoint.</p>
+<p>Dynamic hard negative mining is a scheme proposed in ANCE<span id="id41">[]</span>. The core idea is to use the target model at previous checkpoint as the negative-generation model [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-ancenegativesamplingdemo"><span class="std std-numref">Fig. 21.24</span></a>]. However, this negative mining approach is rather computationally demanding since corpus index need updates at every checkpoint.</p>
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-ancenegativesamplingdemo">
-<a class="reference internal image-reference" href="../../_images/ANCE_negative_sampling_demo.png"><img alt="../../_images/ANCE_negative_sampling_demo.png" src="../../_images/ANCE_negative_sampling_demo.png" style="width: 441.9px; height: 178.79999999999998px;" />
+<a class="reference internal image-reference" href="../../_images/ANCE_negative_sampling_demo.png"><img alt="../../_images/ANCE_negative_sampling_demo.png" src="../../_images/ANCE_negative_sampling_demo.png" style="width: 662.85px; height: 268.2px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 21.22 </span><span class="caption-text">Dynamic hard negative sampling from ANCE asynchronous training framework. Negatives are drawn from index produced using models at the previous checkpoint. Image from <span id="id44">[]</span>.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-ancenegativesamplingdemo" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.24 </span><span class="caption-text">Dynamic hard negative sampling from ANCE asynchronous training framework. Negatives are drawn from index produced using models at the previous checkpoint. Image from <span id="id42">[]</span>.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-ancenegativesamplingdemo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <!-- \begin{remark rom ANCE]
@@ -1513,12 +1568,33 @@ P\left(w_i\right)=\frac{f\left(w_i\right)^{3 / 4}}{\sum_{j=0}^n\left(f\left(w_j\
 	stochastic gradient estimation, and lead to faster learning convergence.
 \end{remark} -->
 </section>
+<section id="large-scale-negatives">
+<span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-large-scale-negatives"></span><h4><span class="section-number">21.6.3.3. </span>Large-Scale Negatives<a class="headerlink" href="#large-scale-negatives" title="Link to this heading">#</a></h4>
+<p>In-batch negatives offers an efficient way to construct many negatives during training. During multiple GPU training [examplified by <strong>RocketQA</strong><span id="id43">[]</span>], in-batch negatives can be generalized to cross-batch negatives.</p>
+<p>Specifically,</p>
+<ul class="simple">
+<li><p>We first compute the document embeddings within each single GPU, and then share these documents embeddings among all the GPUs.</p></li>
+<li><p>Beside in-batch negatives, all documents representations from other GPUs are used as the additional negatives for each query.</p></li>
+</ul>
+<figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-crossnegative-demo">
+<a class="reference internal image-reference" href="../../_images/cross_batch_negatives.png"><img alt="../../_images/cross_batch_negatives.png" src="../../_images/cross_batch_negatives.png" style="width: 496.79999999999995px; height: 322.8px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 21.25 </span><span class="caption-text">The comparison of in-batch negative and cross-batch negative during multi-gpu training. Image from <span id="id44">[]</span>.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-crossnegative-demo" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Even in the single-GPU training setting, we can leverage queue to construct large-scale negatives [<strong>MoCo</strong> <span id="id45">[]</span>]. The key idea is that instead of discarding embeddings from previous batches, we can use a rolling queue to store them and use them as additional negatives for current batch.</p>
+</section>
+<section id="hard-positives">
+<h4><span class="section-number">21.6.3.4. </span>Hard Positives<a class="headerlink" href="#hard-positives" title="Link to this heading">#</a></h4>
+<p>In the retrieval model query-doc training data, it is usually filled with <strong>easy positives</strong>, that is query and relevant documents have all query term exact matched. During hybrid retrieval system, as the goal of dense retrieval is to complement sparse retrieval (which relies on exact term matching), it is beneficial to enrich training samples with <strong>hard positives</strong>, that is query and relevant document does not have all query term exact matched, particularly important query terms. With easy and hard positives, we can design currilumn learning to help model improve its semantic retrieval ability.</p>
+</section>
 </section>
 <section id="label-denoising">
 <h3><span class="section-number">21.6.4. </span>Label Denoising<a class="headerlink" href="#label-denoising" title="Link to this heading">#</a></h3>
 <section id="false-negatives">
 <h4><span class="section-number">21.6.4.1. </span>False Negatives<a class="headerlink" href="#false-negatives" title="Link to this heading">#</a></h4>
-<p>Hard negative examples produced from static or dynamic negative mining methods are effective to improve the encoder’s performance. However, when selecting hard negatives with a less powerful model (e.g., BM25), we are also running the risk of introduce more false negatives (i.e., negative examples are actually positive) than a random sampling approach. Authors in <span id="id45">[]</span> proposed to utilize a well-trained, complex  model (e.g., a cross-encoder) to determine if an initially retrieved hard-negative is a false negative. Such models are more powerful for capturing semantic similarity among query and documents. Although they are less ideal for deployment and inference purpose due to high computational cost, they are suitable for filtering. From the initially retrieved hard-negative documents, we can filter out documents that are actually relevant to the query. The resulting documents can be used as denoised hard negatives.</p>
+<p>Hard negative examples produced from static or dynamic negative mining methods are effective to improve the encoder’s performance. However, when selecting hard negatives with a less powerful model (e.g., BM25), we are also running the risk of introduce more false negatives (i.e., negative examples are actually positive) than a random sampling approach. Authors in <span id="id46">[]</span> proposed to utilize a well-trained, complex  model (e.g., a cross-encoder) to determine if an initially retrieved hard-negative is a false negative. Such models are more powerful for capturing semantic similarity among query and documents. Although they are less ideal for deployment and inference purpose due to high computational cost, they are suitable for filtering. From the initially retrieved hard-negative documents, we can filter out documents that are actually relevant to the query. The resulting documents can be used as denoised hard negatives.</p>
 </section>
 <section id="false-positives">
 <h4><span class="section-number">21.6.4.2. </span>False Positives<a class="headerlink" href="#false-positives" title="Link to this heading">#</a></h4>
@@ -1526,18 +1602,141 @@ P\left(w_i\right)=\frac{f\left(w_i\right)^{3 / 4}}{\sum_{j=0}^n\left(f\left(w_j\
 </section>
 </section>
 </section>
-<section id="multi-vector-representations">
-<h2><span class="section-number">21.7. </span>Multi-vector Representations<a class="headerlink" href="#multi-vector-representations" title="Link to this heading">#</a></h2>
+<section id="knowledge-distillation">
+<h2><span class="section-number">21.7. </span>Knowledge Distillation<a class="headerlink" href="#knowledge-distillation" title="Link to this heading">#</a></h2>
 <section id="introduction">
 <h3><span class="section-number">21.7.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h3>
+<p>Knowledge distillation aims to transfer knowledge from a well-trained, high-performing yet cumbersome teacher model to a lightweight student model with significant performance loss. Knowledge distillation has been a widely adopted method to achieve efficient neural network architecture, thus reducing overall inference costs, including memory requirements as well as inference latency. Typically, the teacher model can be an ensemble of separately trained models or a single very large model trained with a very strong regularizer such as dropout. The student model uses the distilled knowledge from the teacher network as additional learning cues. The resulting student model is computationally inexpensive and has accuracy better than directly training it from scratch.</p>
+<p>As such, tor retrieval and ranking systems, knowledge distillation is a desirable approach to develop efficient models to meet the high requirement on both accuracy and latency.</p>
+<p>For example, one can distill knowledge from a more powerful cross-encoder (e.g., BERT cross-encoder in <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-monobert"><span class="std std-numref">Section 21.4.4.2</span></a>) to a computational efficient bi-encoders. Empirically, this two-step procedure might be more effective than directly training a bi-encoder from scratch.</p>
+<p>In this section, we first review the principle of knowledge distillation. Then we go over a couple examples to demonstrate the application of knowledge distillation in developing retrieval and ranking models.</p>
+</section>
+<section id="knowledge-distillation-training-framework">
+<h3><span class="section-number">21.7.2. </span>Knowledge Distillation Training Framework<a class="headerlink" href="#knowledge-distillation-training-framework" title="Link to this heading">#</a></h3>
+<p>In the classic knowledge distillation framework <span id="id47">[<a class="reference internal" href="../chapter_foundation/bert.html#id1223" title="Geoffrey Hinton, Oriol Vinyals, and Jeff Dean. Distilling the knowledge in a neural network. arXiv preprint arXiv:1503.02531, 2015.">HVD15</a>]</span>[<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-teacherstudentdistillationscheme"><span class="std std-numref">Fig. 21.26</span></a>], the fundamental principle is that the teacher model produces soft label <span class="math notranslate nohighlight">\(q\)</span> for each input feature <span class="math notranslate nohighlight">\(x\)</span>. Soft label <span class="math notranslate nohighlight">\(q\)</span> can be viewed as a softened probability vector distributed over class labels of interest.
+Soft targets contain valuable information on the rich similarity structure over the data. Use MNIST classification as an example, a reasonable soft target will tell that 2 looks more like 3 than 9. These soft targets can be viewed as a strategy to mitigate the over-confidence issue and reduce gradient variance when we train neural networks using one-hot hard labels. Similar mechanism is leveraged in smooth label to improves model generalization.</p>
+<p>Allows the smaller Student model to be trained on much smaller data than the original cumbersome model and with a much higher learning rate</p>
+<p>Specifically, the logits <span class="math notranslate nohighlight">\(z\)</span> from the techer model are outputted to generate soft labels via</p>
+<div class="math notranslate nohighlight">
+\[
+q_{i}^T=\frac{\exp \left(z_{i} / T\right)}{\sum_{j} \exp \left(z_{j} / T\right)},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(T\)</span> is the temperature parameter controlling softness of the probability vector, and the sum is over the entire label space. When <span class="math notranslate nohighlight">\(T=1\)</span>, it is equivalent to standard Softmax function. As <span class="math notranslate nohighlight">\(T\)</span> grows, <span class="math notranslate nohighlight">\(q\)</span> become softer and approaches uniform distribution <span class="math notranslate nohighlight">\(T=\infty\)</span>. On the other hand, as <span class="math notranslate nohighlight">\(T\to 0\)</span>, the <span class="math notranslate nohighlight">\(q\)</span> approaches a one-hot hard label.</p>
+<figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-teacherstudentdistillationscheme">
+<a class="reference internal image-reference" href="../../_images/teacher_student_distillation_scheme.png"><img alt="../../_images/teacher_student_distillation_scheme.png" src="../../_images/teacher_student_distillation_scheme.png" style="width: 377.09999999999997px; height: 378.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 21.26 </span><span class="caption-text">The classic teacher-student knowledge distillation framework.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-teacherstudentdistillationscheme" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The loss function for the student network training is a weighted sum of the hard label based cross entropy loss and soft label based KL divergence. The rationale of KL (Kullback-Leibler) divergence is to use the softened probability vector from the teacher model to guide the learning of the student network. Minimizing the KL divergence constrains the student model’s probabilistic outputs to match soft targets of the teacher model.</p>
+<p>The loss function is formally given by</p>
+<div class="math notranslate nohighlight">
+\[L =(1-\alpha) L_{C E}\left(p, y\right)+\alpha T^{2} {L}_{K L}\left(p^T, q^T\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(L_{CE}\)</span> is the regular cross entropy loss between predicted probability vector <span class="math notranslate nohighlight">\(p\)</span> and the one-hot label vector</p>
+<div class="math notranslate nohighlight">
+\[{L}_{CE}\left(p, y\right) =-\sum_{j}{y}_{j} \log {p}_{j};\]</div>
+<p><span class="math notranslate nohighlight">\(L_{KL}\)</span> is the KL divergence loss between the softened predictions at temperature <span class="math notranslate nohighlight">\(T\)</span> from the student and the teacher networks, respectively:</p>
+<div class="math notranslate nohighlight">
+\[{L}_{KL}\left({p}^T, q^{T}\right) = -\sum_{j} {q}_{j}^{T} \log \frac{p_{j}^T}{{q}_{j}^{T}}.\]</div>
+<p>Note that the same high temperature is used to produce distributions from the student model.</p>
+<p>Note that <span class="math notranslate nohighlight">\(L_{KL}(p^T, q^T) = L_{CE}(p^T, q^T) + H(q^T, q^T)\)</span>, with <span class="math notranslate nohighlight">\(H(q^T, q^T)\)</span> being the entropy of probability vector <span class="math notranslate nohighlight">\(q^T\)</span> and remaining as a constant during the training. As a result, we also often reduce the total loss to</p>
+<div class="math notranslate nohighlight">
+\[L =(1-\alpha) L_{C E}\left(p, y\right)+\alpha T^{2} {L}_{CE}\left(p^T, q^T\right).\]</div>
+<p>Finally, the multiplier <span class="math notranslate nohighlight">\(T^2\)</span> is used to re-scale the gradient of KL loss and <span class="math notranslate nohighlight">\(\alpha\)</span> is a scalar controlling the weight contribution to each loss.</p>
+<p>Besides using softened probability vector and KL divergence loss to guide the student learning process, we can also use MSE loss between the logits from the teacher and the student networks. Specifically,
+$<span class="math notranslate nohighlight">\(L_{MSE} = ||z^{(T)} - z^{(S)}||^2\)</span>$</p>
+<p>where <span class="math notranslate nohighlight">\(z^{(T)}\)</span> and <span class="math notranslate nohighlight">\(z^{(S)}\)</span> are logits from the teacher and the student network, respectively.</p>
+<div class="proof remark admonition" id="remark-2">
+<p class="admonition-title"><span class="caption-number">Remark 21.2 </span> (connections between MSE loss and KL loss)</p>
+<section class="remark-content" id="proof-content">
+<p>In <span id="id48">[<a class="reference internal" href="../chapter_foundation/bert.html#id1223" title="Geoffrey Hinton, Oriol Vinyals, and Jeff Dean. Distilling the knowledge in a neural network. arXiv preprint arXiv:1503.02531, 2015.">HVD15</a>]</span>, given a single sample input feature <span class="math notranslate nohighlight">\(x\)</span>, the gradient of <span class="math notranslate nohighlight">\({L}_{KL}\)</span> with respect to <span class="math notranslate nohighlight">\(z_{k}^{(S)}\)</span> is as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial {L}_{KL}}{\partial {z}_{k}^{s}}=T\left(p_{k}^{T}-{q}_{k}^{T}\right).
+\]</div>
+<p>When <span class="math notranslate nohighlight">\(T\)</span> goes to <span class="math notranslate nohighlight">\(\infty\)</span>, using the approximation <span class="math notranslate nohighlight">\(\exp \left({z}_{k}/ T\right) \approx 1+{z}_{k} / T\)</span>, the gradient is simplified to:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial {L}_{KL}}{\partial {z}_{k}^{(S)}} \approx T\left(\frac{1+z_{k}^{(S)} / T}{K+\sum_{j} {z}_{j}^{(S)} / T}-\frac{1+{z}_{k}^{(T)} / T}{K+\sum_{j} {z}_{j}^{(T)} / T}\right)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(K\)</span> is the number of classes.</p>
+<p>Here, by assuming the zero-mean teacher and student logit, i.e., <span class="math notranslate nohighlight">\(\sum_{j} {z}_{j}^{(T)}=0\)</span> and <span class="math notranslate nohighlight">\(\sum_{j} {z}_{j}^{(S)}=0\)</span>, and hence <span class="math notranslate nohighlight">\(\frac{\partial {L}_{K L}}{\partial {z}_{k}^{(S)}} \approx \frac{1}{K}\left({z}_{k}^{(S)}-{z}_{k}^{(T)}\right)\)</span>. This indicates that minimizing <span class="math notranslate nohighlight">\({L}_{KL}\)</span> is equivalent to minimizing the mean squared error <span class="math notranslate nohighlight">\({L}_{MSE}\)</span>, under a sufficiently large temperature <span class="math notranslate nohighlight">\(T\)</span> and the zero-mean logit assumption for both the teacher and the student.</p>
+</section>
+</div></section>
+<section id="example-distillation-strategies">
+<h3><span class="section-number">21.7.3. </span>Example Distillation Strategies<a class="headerlink" href="#example-distillation-strategies" title="Link to this heading">#</a></h3>
+<!-- #### Single Cross-encoder Teacher Distillation
+
+```{figure} ../img/chapter_application_IR/ApplicationIRSearch/KnowledgeDistllation/cross_encoder_distillation.png
+:scale: 30%
+:name: fig:crossencoderdistillation
+
+``` -->
+<section id="bi-encoder-teacher-distillation">
+<h4><span class="section-number">21.7.3.1. </span>Bi-encoder Teacher Distillation<a class="headerlink" href="#bi-encoder-teacher-distillation" title="Link to this heading">#</a></h4>
+<p>Authors in <span id="id49">[]</span> pioneered the strategy of distilling powerful BERT cross-encoder into BERT bi-encoder to retain the benefits of the two model architectures: the accuracy of cross-encoder and the efficiency of bi-encoder.</p>
+<p>Knowledge distillation follows the classic soft label framework. Bi-encoder student model training can use pointwise ranking loss, which is equivalent to binary relevance classification problem given a query and a candidate document. More formally, given training examples <span class="math notranslate nohighlight">\((q_i, d_i)\)</span> and their labels <span class="math notranslate nohighlight">\(y_i\in \{0, 1\}\)</span>. The BERT cross-encoder as teacher model to produce soft targets for irrelevance label and relevance label.</p>
+<p>Although cross-encoder teacher can offer accurate soft labels, it cannot directly extend to the <strong>in-batch negatives</strong> technique and <strong>N-pair loss</strong> [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-n-pair-loss"><span class="std std-numref">Section 21.5.3.4</span></a>] when training the student model. The reason is that query and document embedding cannot be computed separately from a cross-encoder. <strong>Implementing in-batch negatives using cross-encoder requires exhaustive computation</strong> on all combinations between a query and possible documents, which amount to <span class="math notranslate nohighlight">\(|B|^2\)</span> (<span class="math notranslate nohighlight">\(|B|\)</span> is the batch size) query-document pairs.</p>
+<p>Authors in <span id="id50">[]</span> proposed to leverage bi-encoder variant such as Col-BERT [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-colbert"><span class="std std-numref">Section 21.4.5.2</span></a>] as a teacher model, which is more feasible to perform exhaustive comparisons between queries and passages since they are passed through the encoder independently [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-inbatchdistillation"><span class="std std-numref">Fig. 21.27</span></a>].</p>
+<figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-inbatchdistillation">
+<a class="reference internal image-reference" href="../../_images/in_batch_distillation.png"><img alt="../../_images/in_batch_distillation.png" src="../../_images/in_batch_distillation.png" style="width: 693.6px; height: 341.6px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 21.27 </span><span class="caption-text">Compared to cross-encoder teacher, bi-encoder teacher computes query and document embeddings independents, which enables the application of the in-batch negative trick. Image from <span id="id51">[]</span>.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-inbatchdistillation" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="cross-encoder-embedding-similarity-distillation">
+<h4><span class="section-number">21.7.3.2. </span>Cross-Encoder Embedding Similarity Distillation<a class="headerlink" href="#cross-encoder-embedding-similarity-distillation" title="Link to this heading">#</a></h4>
+<p>While bi-encoder teacher can offer efficiency in producing on-the-fly teacher scores, it sacrifaces the interaction modeling abiity from cross-encoders. On the other hand, directly using cross-encoder to produce binary classficiation logics as the distillation target does not fully leverage other useful information in the teacher model.</p>
+<p>To mitigate this, one can</p>
+<ul class="simple">
+<li><p>Having a spealized cross-encoder teacher to produce query and document embeddings</p></li>
+<li><p>Enforce closeness between student and teacher on query/doc embedding vectors (e.g., via cosine similarity distance)</p></li>
+<li><p>Enforce closeness between student and teacher on query-doc embedding similarity scores (e.g., via MSE)</p></li>
+</ul>
+<figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-crossencoderdistillation">
+<a class="reference internal image-reference" href="../../_images/cross_encoder_distillation.png"><img alt="../../_images/cross_encoder_distillation.png" src="../../_images/cross_encoder_distillation.png" style="width: 711.9px; height: 209.7px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 21.28 </span><span class="caption-text">Illustration of leveraging rich information from a cross-encoder teacher for knowledge distillation.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-crossencoderdistillation" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+ <!-- One can see that such cross-encoder teacher is designed for retrieval purpose, which can be train -->
+</section>
+<section id="ensemble-teacher-distillation">
+<h4><span class="section-number">21.7.3.3. </span>Ensemble Teacher Distillation<a class="headerlink" href="#ensemble-teacher-distillation" title="Link to this heading">#</a></h4>
+<p>As we have seen in previous sections, large Transformer based models such as BERT cross-encoders or bi-encoders are popular choices of teacher models when we perform knowledge distillation. These fine-tuned BERT models often show high performance variances across different runs. From ensemble learning perspective, using an ensemble of models as a teacher model could potentially not only achieves better distillation results, but also reduces the performance variances.</p>
+<p>The critical challenge arising from distilling an ensemble teacher model vs a single teacher model is how to reconcile soft target labels generated by different teacher models.</p>
+<p>Authors in <span id="id52">[]</span> propose following method to fuse scores and labels. Formally, consider query <span class="math notranslate nohighlight">\(q_{i}\)</span>, its <span class="math notranslate nohighlight">\(j\)</span>-th candidate document <span class="math notranslate nohighlight">\(d_{i j}\)</span>, and <span class="math notranslate nohighlight">\(K\)</span> teacher models. Let the predicted ranking score by the <span class="math notranslate nohighlight">\(k\)</span>-th teacher be represented as <span class="math notranslate nohighlight">\(\hat{s}_{i j}^{(k)}\)</span>.</p>
+<p>The simplest aggregated teacher label is to directly use the mean score, namely</p>
+<div class="math notranslate nohighlight">
+\[
+s_{i j}=\frac{1}{K}\hat{s}_{i j}^{(k)}.
+\]</div>
+<p>The simple average scheme would work poorly when teacher models can have outputs with very different scales. A more robust way to fuse scores is to reciprocal rank, given by</p>
+<div class="math notranslate nohighlight">
+\[
+s_{i j}^{(k)}=\frac{1}{K} \sum_{k=1}^{K}\frac{1}{C+\hat{r}_{i j}^{(k)}}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{r}_{i j}^{(k)}\)</span> is the predicted rank of the <span class="math notranslate nohighlight">\(j\)</span>-th candidate text by the <span class="math notranslate nohighlight">\(k\)</span>-th teacher, and <span class="math notranslate nohighlight">\(C\)</span> is the constant as model hyperparameters.</p>
+<p>With the fused score, softened probability vector can be obtained by taking Softmax with temperature as the scaling factor.</p>
+</section>
+</section>
+</section>
+<section id="multi-vector-representations">
+<h2><span class="section-number">21.8. </span>Multi-vector Representations<a class="headerlink" href="#multi-vector-representations" title="Link to this heading">#</a></h2>
+<section id="id53">
+<h3><span class="section-number">21.8.1. </span>Introduction<a class="headerlink" href="#id53" title="Link to this heading">#</a></h3>
 <p>In classic representation-based learning for semantic retrieval [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-classicrepresentationlearning"><span class="std std-numref">Section 21.4.3</span></a>], we use two encoders (i.e., bi-encoders) to separately encoder a query and a candidate document into two dense vectors in the embedding space, and then a score function, such as cosine similarity, to produce the final relevance score. In this paradigm, there is a single global, static representation for each query and each document. Specifically, the document’s embedding remain the same regardless of the document length, the content structure of document (e.g., multiple topics) and the variation of queries that are relevant to the document. It is very common that a document with hundreds of tokens might contain several distinct subtopics, some important semantic information might be easily missed or biased by each other when compressing a document into a dense vector.  As such, this simple bi-encoder structure may cause serious information loss when used to encode documents. <sup>[^2]</sup></p>
 <p>On the other hand,  cross-encoders based on BERT variants [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-classicrepresentationlearning"><span class="std std-numref">Section 21.4.3</span></a>] utilize multiple self-attention layers not only to extract contextualized features from queries and documents but also capture the interactions between them. Cross-encoders only produce intermediate representations that take a pair of query and document as the joint input. While BERT-based cross-encoders brought significant performance gain,  they are computationally prohibitive and impractical for online inference.</p>
-<p>In this section, we focus on different strategies <span id="id46">[]</span> to encode documents by multi-vector representations, which enriches the single vector representation produced by a bi-encoder. With additional computational overhead, these strategies can gain much improvement of the encoding quality while retaining the fast retrieval strengths of Bi-encoder.</p>
+<p>In this section, we focus on different strategies <span id="id54">[]</span> to encode documents by multi-vector representations, which enriches the single vector representation produced by a bi-encoder. With additional computational overhead, these strategies can gain much improvement of the encoding quality while retaining the fast retrieval strengths of Bi-encoder.</p>
 </section>
 <section id="token-level-multi-vector-representation">
-<h3><span class="section-number">21.7.2. </span>Token-level Multi-vector Representation<a class="headerlink" href="#token-level-multi-vector-representation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">21.8.2. </span>Token-level Multi-vector Representation<a class="headerlink" href="#token-level-multi-vector-representation" title="Link to this heading">#</a></h3>
 <p>To enrich the representations of the documents produced by Bi-encoder, some researchers extend the original Bi-encoder by employing more delicate structures like later- interaction</p>
-<p>ColBERT [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-colbert"><span class="std std-numref">Section 21.4.6</span></a>] can be viewed a token-level multi-vector representation encoder for both queries and documents. Token-level representations for documents can be pre-computed offline. During online inference, late interactions of the query’s multi-vectors representation and the document’s  multi-vectors representation are used to  improve the robustness of dense retrieval, as compared to inner products of single-vector representations. Specifically,</p>
+<p>ColBERT [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-colbert"><span class="std std-numref">Section 21.4.5.2</span></a>] can be viewed a token-level multi-vector representation encoder for both queries and documents. Token-level representations for documents can be pre-computed offline. During online inference, late interactions of the query’s multi-vectors representation and the document’s  multi-vectors representation are used to  improve the robustness of dense retrieval, as compared to inner products of single-vector representations. Specifically,</p>
 <p>Formally, given <span class="math notranslate nohighlight">\(q= q_{1} \ldots q_{l}\)</span> and <span class="math notranslate nohighlight">\(d=d_{1} \ldots d_{n}\)</span> and their token level embeddings <span class="math notranslate nohighlight">\(\{E_{q_1},\ldots E_{q_l}\}\)</span> and <span class="math notranslate nohighlight">\(\{E_{d_1},...,E_{d_n}\}\)</span> and the final similarity score between the <span class="math notranslate nohighlight">\(q\)</span> and <span class="math notranslate nohighlight">\(d\)</span> is given by</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1547,13 +1746,13 @@ S_{q, d} =\sum_{i \in I_q} \max _{j \in I_d} E_{q_{i}} \cdot E_{d_{j}}^{T},
 <p>While this method has shown signficant improvement over bi-encoder methods, it has a main disadvantage of high storage requirements. For example, ColBERT requires storing all the WordPiece token vectors of each text in the corpus.</p>
 </section>
 <section id="semantic-clusters-as-pseudo-query-embeddings">
-<h3><span class="section-number">21.7.3. </span>Semantic Clusters As Pseudo Query Embeddings<a class="headerlink" href="#semantic-clusters-as-pseudo-query-embeddings" title="Link to this heading">#</a></h3>
-<p>The primary limitation of Bi-encoder is information loss when we condense the document into a query agnostic dense vector representation. Authors in <span id="id47">[]</span> proposed the idea of representing a document by its semantic salient fragments [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-pseudoqueryembeddings"><span class="std std-numref">Fig. 21.23</span></a>]. These semantic fragments can be modeled by token embedding vector clusters in the embedding space. By performing clustering algorithms (e.g., k-means) on token embeddings, the generated centroids can be used as a document’s multi-vector presentation. Another interpretation is that these centroids can be viewed as multiple potential queries corresponding to the input document; as such, we can call them <em>pseudo query embeddings</em>.</p>
+<h3><span class="section-number">21.8.3. </span>Semantic Clusters As Pseudo Query Embeddings<a class="headerlink" href="#semantic-clusters-as-pseudo-query-embeddings" title="Link to this heading">#</a></h3>
+<p>The primary limitation of Bi-encoder is information loss when we condense the document into a query agnostic dense vector representation. Authors in <span id="id55">[]</span> proposed the idea of representing a document by its semantic salient fragments [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-pseudoqueryembeddings"><span class="std std-numref">Fig. 21.29</span></a>]. These semantic fragments can be modeled by token embedding vector clusters in the embedding space. By performing clustering algorithms (e.g., k-means) on token embeddings, the generated centroids can be used as a document’s multi-vector presentation. Another interpretation is that these centroids can be viewed as multiple potential queries corresponding to the input document; as such, we can call them <em>pseudo query embeddings</em>.</p>
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-pseudoqueryembeddings">
 <a class="reference internal image-reference" href="../../_images/pseudo_query_embeddings.png"><img alt="../../_images/pseudo_query_embeddings.png" src="../../_images/pseudo_query_embeddings.png" style="width: 580.5px; height: 469.79999999999995px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 21.23 </span><span class="caption-text">Deriving semantic clusters by clustering token-level embedding vectors. Semantic cluster centroids are used as multi-vector document representation, or as pseudo query embeddings. The final relevance score between a query and a document is computed using attententive pooling of centroid cluster and doc product.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-pseudoqueryembeddings" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.29 </span><span class="caption-text">Deriving semantic clusters by clustering token-level embedding vectors. Semantic cluster centroids are used as multi-vector document representation, or as pseudo query embeddings. The final relevance score between a query and a document is computed using attententive pooling of centroid cluster and doc product.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-pseudoqueryembeddings" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>There are a couple of steps to calculate the final relevance score between a query and a document. First, we encode the query <span class="math notranslate nohighlight">\(q\)</span> into a dense vector <span class="math notranslate nohighlight">\(e_q\)</span> (via the CLS token embedding) and the document <span class="math notranslate nohighlight">\(d\)</span> into multiple vectors via token level encoding and clustering <span class="math notranslate nohighlight">\(c_1,...,c_K\)</span>. Second, the query-conditional document representation <span class="math notranslate nohighlight">\(e_d\)</span> is obtained by attending to the centroids using <span class="math notranslate nohighlight">\(e_q\)</span> as the key. Finally, we can compute the similarity score via dot product between <span class="math notranslate nohighlight">\(e_q\)</span> and <span class="math notranslate nohighlight">\(e_d\)</span>.</p>
@@ -1568,9 +1767,9 @@ a_{j}&amp;=\operatorname{Softmax}\left(e_{q} \cdot c_{j}\right) \\
 </section>
 </section>
 <section id="query-and-document-expansion">
-<h2><span class="section-number">21.8. </span>Query and Document Expansion<a class="headerlink" href="#query-and-document-expansion" title="Link to this heading">#</a></h2>
-<section id="id48">
-<h3><span class="section-number">21.8.1. </span>Overview<a class="headerlink" href="#id48" title="Link to this heading">#</a></h3>
+<h2><span class="section-number">21.9. </span>Query and Document Expansion<a class="headerlink" href="#query-and-document-expansion" title="Link to this heading">#</a></h2>
+<section id="id56">
+<h3><span class="section-number">21.9.1. </span>Overview<a class="headerlink" href="#id56" title="Link to this heading">#</a></h3>
 <p>Query expansion and document expansion techniques provide two potential solutions to the inherent vocabulary mismatch problem in traditional IR systems. The core idea is to add extra relevant terms to queries and documents respectively to aid relevance matching.</p>
 <p>Consider an ad-hoc search example of <em>automobile sales per year in the US</em>.</p>
 <ul class="simple">
@@ -1582,35 +1781,35 @@ a_{j}&amp;=\operatorname{Softmax}\left(e_{q} \cdot c_{j}\right) \\
 <a class="reference internal image-reference" href="../../_images/query_expansion_arch.png"><img alt="../../_images/query_expansion_arch.png" src="../../_images/query_expansion_arch.png" style="width: 414.9px; height: 189.9px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 21.24 </span><span class="caption-text">Query expansion module in an IR system.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-queryexpansionarch" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.30 </span><span class="caption-text">Query expansion module in an IR system.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-queryexpansionarch" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Both query and document expansion can be fit into typical IR architectures through an de-coupled module. A query expansion module takes an input query and output a (richer) expanded query [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-queryexpansionarch"><span class="std std-numref">Fig. 21.24</span></a>]. They are also known as query rewriters or expanders. The module might remove terms deemed unnecessary in the user’s query, for example stop words and add extra terms facilitate the engine to retrieve documents with a high recall.</p>
+<p>Both query and document expansion can be fit into typical IR architectures through an de-coupled module. A query expansion module takes an input query and output a (richer) expanded query [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-queryexpansionarch"><span class="std std-numref">Fig. 21.30</span></a>]. They are also known as query rewriters or expanders. The module might remove terms deemed unnecessary in the user’s query, for example stop words and add extra terms facilitate the engine to retrieve documents with a high recall.</p>
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-docexpansionarch">
 <a class="reference internal image-reference" href="../../_images/doc_expansion_arch.png"><img alt="../../_images/doc_expansion_arch.png" src="../../_images/doc_expansion_arch.png" style="width: 504.9px; height: 225.9px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 21.25 </span><span class="caption-text">Document expansion module in an IR system.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-docexpansionarch" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.31 </span><span class="caption-text">Document expansion module in an IR system.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-docexpansionarch" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Similarly, document expansion naturally fits into the retrieval and ranking pipeline [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-docexpansionarch"><span class="std std-numref">Fig. 21.25</span></a>]. The index will be simply built upon the expanded corpus to provide a richer set of candidate documents for retrieval. The extra computation for document expansion can be all carried out offline. Therefore, it presents the same level of effectiveness like query expansion but at lower latency costs (for example, using less computationally intensive rerankers).</p>
+<p>Similarly, document expansion naturally fits into the retrieval and ranking pipeline [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-docexpansionarch"><span class="std std-numref">Fig. 21.31</span></a>]. The index will be simply built upon the expanded corpus to provide a richer set of candidate documents for retrieval. The extra computation for document expansion can be all carried out offline. Therefore, it presents the same level of effectiveness like query expansion but at lower latency costs (for example, using less computationally intensive rerankers).</p>
 <p>Query expansion and document expansion have different pros and cons. Main advantages of query expansions include</p>
 <ul class="simple">
 <li><p>Compare to document expansion, query expansion techniques can be quickly implemented and experimented without modifying the entire indexing. On the other hand, experimenting document expansion techniques can be costly and time-consuming, since the entire indexing is affected.</p></li>
 <li><p>Query expansion techniques are generally more flexible. For example, it is easy to switch on or off different features at query time (for example, selectively apply expansion only to certain intents or certain query types).
 The flexibility of query expansion also allow us insert an expansion module in different stages of the retrieval-ranking pipeline.</p></li>
 </ul>
-<p>On the other hand, one unique advantage for document expansion is that: documents are typically much longer than queries, and thus offer more context for a model to choose appropriate expansion terms. Neural based natural language generation models, like Transformers <span id="id49">[<a class="reference internal" href="../chapter_foundation/transformers.html#id1136" title="Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Advances in neural information processing systems, 5998–6008. 2017.">VSP+17</a>]</span>, can benefit from richer contexts and generate cohesive natural language terms to expand original documents.</p>
+<p>On the other hand, one unique advantage for document expansion is that: documents are typically much longer than queries, and thus offer more context for a model to choose appropriate expansion terms. Neural based natural language generation models, like Transformers <span id="id57">[<a class="reference internal" href="../chapter_foundation/transformers.html#id1136" title="Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Advances in neural information processing systems, 5998–6008. 2017.">VSP+17</a>]</span>, can benefit from richer contexts and generate cohesive natural language terms to expand original documents.</p>
 </section>
 <section id="document-expansion-via-query-prediction">
-<h3><span class="section-number">21.8.2. </span>Document Expansion Via Query Prediction<a class="headerlink" href="#document-expansion-via-query-prediction" title="Link to this heading">#</a></h3>
-<p>Authors in <span id="id50">[<a class="reference internal" href="../chapter_rag/basic_rag.html#id1399" title="Rodrigo Nogueira, Wei Yang, Jimmy Lin, and Kyunghyun Cho. Document expansion by query prediction. arXiv preprint arXiv:1904.08375, 2019.">NYLC19</a>]</span> proposed DocT5Query, a document expansion strategy based on a seq-to-seq natural language generation model to enrich each document.</p>
+<h3><span class="section-number">21.9.2. </span>Document Expansion Via Query Prediction<a class="headerlink" href="#document-expansion-via-query-prediction" title="Link to this heading">#</a></h3>
+<p>Authors in <span id="id58">[<a class="reference internal" href="../chapter_rag/basic_rag.html#id1399" title="Rodrigo Nogueira, Wei Yang, Jimmy Lin, and Kyunghyun Cho. Document expansion by query prediction. arXiv preprint arXiv:1904.08375, 2019.">NYLC19</a>]</span> proposed DocT5Query, a document expansion strategy based on a seq-to-seq natural language generation model to enrich each document.</p>
 <p>For each document, the transformer generation model predicts a set of queries that are likely to be relevant to the document. Given a dataset of (query, relevant document) pairs, we use a transformer model is trained to takes the document as input and then to produce the target query<sup>[^3]</sup>.</p>
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-doc2queryarch">
 <a class="reference internal image-reference" href="../../_images/Doc2query_arch.png"><img alt="../../_images/Doc2query_arch.png" src="../../_images/Doc2query_arch.png" style="width: 493.2px; height: 369.59999999999997px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 21.26 </span><span class="caption-text">Given a document, our Doc2query model predicts a query, which is appended to the document. Expansion is applied to all documents in the corpus, which are then indexed and searched as before. Image from <span id="id51">[<a class="reference internal" href="../chapter_rag/basic_rag.html#id1399" title="Rodrigo Nogueira, Wei Yang, Jimmy Lin, and Kyunghyun Cho. Document expansion by query prediction. arXiv preprint arXiv:1904.08375, 2019.">NYLC19</a>]</span>.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-doc2queryarch" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.32 </span><span class="caption-text">Given a document, our Doc2query model predicts a query, which is appended to the document. Expansion is applied to all documents in the corpus, which are then indexed and searched as before. Image from <span id="id59">[<a class="reference internal" href="../chapter_rag/basic_rag.html#id1399" title="Rodrigo Nogueira, Wei Yang, Jimmy Lin, and Kyunghyun Cho. Document expansion by query prediction. arXiv preprint arXiv:1904.08375, 2019.">NYLC19</a>]</span>.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-doc2queryarch" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Once the model is trained, we can use the model to predict top-<span class="math notranslate nohighlight">\(k\)</span> queries using beam search and append them to each document in the corpus.</p>
@@ -1631,14 +1830,14 @@ The flexibility of query expansion also allow us insert an expansion module in d
 <li><p>Predicted queries tend to copy some words from the input document (e.g., Washington DC, chromosome), which is sort of equivalent to performing term re-weighting (i.e., increasing the importance of key terms).</p></li>
 <li><p>Predicted queries might also contain words not present in the input document (e.g., weather), which can be characterized as expansion by synonyms and other related terms.</p></li>
 </ul>
-<p>A widely used relevance feedback algorithm was developed by Rocchio <span id="id52">[]</span> for vector space models.
+<p>A widely used relevance feedback algorithm was developed by Rocchio <span id="id60">[]</span> for vector space models.
 Let <span class="math notranslate nohighlight">\(\left\{d_{1}, d_{2}, \cdots, d_{k}\right\}\)</span> be the vectors top <span class="math notranslate nohighlight">\(k\)</span> documents retrieved by SNRM in response to the query vector <span class="math notranslate nohighlight">\(q\)</span>. The updated query vector is computed as:</p>
 <div class="math notranslate nohighlight">
 \[
 \vec{q}^{*}=\vec{q}+\alpha \frac{1}{k} \sum_{i=1}^{k} \vec{d}_{i}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\alpha\)</span> controls the weight of the feedback vector. In practice we only keep the top <span class="math notranslate nohighlight">\(t\)</span> (e.g., <span class="math notranslate nohighlight">\(t=10 -20\)</span>) terms with the highest values in the updated query vector <span class="math notranslate nohighlight">\(\vec{q}^{*}\)</span>.</p>
-<p>A continued study in this line shows that replacing the transformer with more powerful seq-to-seq transformer model T5 <span id="id53">[]</span>  can bring further performance gain.</p>
+<p>A continued study in this line shows that replacing the transformer with more powerful seq-to-seq transformer model T5 <span id="id61">[]</span>  can bring further performance gain.</p>
 <!-- 
 ### Pseudo Relevance Feedback
 
@@ -1692,17 +1891,17 @@ $$ -->
 </section>
 </section>
 <section id="contextualized-term-importance">
-<span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-contextualized-term-importance"></span><h2><span class="section-number">21.9. </span>Contextualized Term Importance<a class="headerlink" href="#contextualized-term-importance" title="Link to this heading">#</a></h2>
+<span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-contextualized-term-importance"></span><h2><span class="section-number">21.10. </span>Contextualized Term Importance<a class="headerlink" href="#contextualized-term-importance" title="Link to this heading">#</a></h2>
 <section id="context-aware-term-importance-deep-ct">
-<h3><span class="section-number">21.9.1. </span>Context-aware Term Importance: Deep-CT<a class="headerlink" href="#context-aware-term-importance-deep-ct" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">21.10.1. </span>Context-aware Term Importance: Deep-CT<a class="headerlink" href="#context-aware-term-importance-deep-ct" title="Link to this heading">#</a></h3>
 <p>In ad-hoc search, queries are mainly short and keyword based without complex grammatical structures. To be able to fetch most relevant results, it is  important to take into account term importance. For example,  given the query <em>bitcoin news</em>, a relevant document is expected to be about <em>bitcoin</em> and <em>news</em>, where the term <em>bitcoin</em> is more important than <em>news</em> in the sense that a document describing other aspects of bitcoin would be more relevant than a document describing news of other things.</p>
-<p>In the traditional IR framework, term importance is calculated using inverse document frequency. A term is less important if it is a common term appearing in a large number of documents. These frequency-based term weights have been a huge success in traditional IR systems due to its simplicity and scalability. The problematic aspect is that Tf-idf determines the term importance solely based on word counts rather than the semantics. High-frequency words  does not necessarily indicate their central role to the meaning of the text, especially for short texts where the word frequency distribution is quite flat. Considering the following two passages returned for the query stomach <span id="id54">[]</span>, one is relevant and one is not:</p>
+<p>In the traditional IR framework, term importance is calculated using inverse document frequency. A term is less important if it is a common term appearing in a large number of documents. These frequency-based term weights have been a huge success in traditional IR systems due to its simplicity and scalability. The problematic aspect is that Tf-idf determines the term importance solely based on word counts rather than the semantics. High-frequency words  does not necessarily indicate their central role to the meaning of the text, especially for short texts where the word frequency distribution is quite flat. Considering the following two passages returned for the query stomach <span id="id62">[]</span>, one is relevant and one is not:</p>
 <ul class="simple">
 <li><p>Relevant: In some cases, an upset stomach is the result of an allergic reaction to a certain type of food. It also may be caused by an irritation. Sometimes this happens from consuming too much alcohol or caffeine. Eating too many fatty foods or too much food in general may also cause an upset stomach.</p></li>
 <li><p>Less relevant: All parts ofthe body (muscles , brain, heart, and liver) need energy to work. This energy comes from the food we eat. Our bodies digest the food we eat by mixing it with fluids( acids and enzymes) in the stomach. When the stomach digests food, the carbohydrate (sugars and starches) in the food breaks down into another type of sugar, called glucose.</p></li>
 </ul>
 <p>In both passages, the word <em>stomach</em> appear twice; but the second passage is actually off-topic. This example also suggests that the importance of a term depends on its context, which helps understand the role of the word playing in the text.</p>
-<p>Authors in <span id="id55">[]</span> proposed DeepCT, which uses the contextual word representations from BERT to estimate term importance to improve the traditional IR approach. Specifically, given a word in a specific text, its contextualized word embedding (e.g., BERT) is used a feature vector that characterizes the word’s syntactic and semantic role in the text. Then DeepCT estimates the word’s importance score via a weighted summation:
+<p>Authors in <span id="id63">[]</span> proposed DeepCT, which uses the contextual word representations from BERT to estimate term importance to improve the traditional IR approach. Specifically, given a word in a specific text, its contextualized word embedding (e.g., BERT) is used a feature vector that characterizes the word’s syntactic and semantic role in the text. Then DeepCT estimates the word’s importance score via a weighted summation:
 $<span class="math notranslate nohighlight">\(
 \hat{y}_{t, c}= {w} T_{t, c}+b
 \)</span><span class="math notranslate nohighlight">\(
@@ -1713,12 +1912,12 @@ L_{MSE}=\sum_{c} \sum_{t}\left(y_{t, c}-\hat{y}_{t, c}\right)^{2}.
 \)</span>$</p>
 <p>The ground truth term weight <span class="math notranslate nohighlight">\(y_{t, c}\)</span> for every word in either the query or the document are estimated in the following manner.</p>
 <ul class="simple">
-<li><p>The importance of a term in a document <span class="math notranslate nohighlight">\(d\)</span> is estimated by the occurrence of the term in relevant queries [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-deepcttermimportancedemo"><span class="std std-numref">Fig. 21.27</span></a>]. More formally, it is given by
+<li><p>The importance of a term in a document <span class="math notranslate nohighlight">\(d\)</span> is estimated by the occurrence of the term in relevant queries [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-deepcttermimportancedemo"><span class="std std-numref">Fig. 21.33</span></a>]. More formally, it is given by
 $<span class="math notranslate nohighlight">\(
   QTR(t, d)=\frac{\left|Q_{d, t}\right|}{\left|Q_{d}\right|}
   \)</span><span class="math notranslate nohighlight">\(
   \)</span>Q_{d}<span class="math notranslate nohighlight">\( is the set of queries that are relevant to document \)</span>d<span class="math notranslate nohighlight">\(. \)</span>Q_{d, t}<span class="math notranslate nohighlight">\( is the subset of \)</span>Q_{d}<span class="math notranslate nohighlight">\( that contains term \)</span>t$. The intuition is that words that appear in relevant queries are more important than other words in the document.</p></li>
-<li><p>The importance of a term in a document <span class="math notranslate nohighlight">\(d\)</span> is estimated by the occurrence of the term in relevant queries [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-deepcttermimportancedemo"><span class="std std-numref">Fig. 21.27</span></a>]. More formally, it is given by
+<li><p>The importance of a term in a document <span class="math notranslate nohighlight">\(d\)</span> is estimated by the occurrence of the term in relevant queries [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-deepcttermimportancedemo"><span class="std std-numref">Fig. 21.33</span></a>]. More formally, it is given by
 $<span class="math notranslate nohighlight">\(
   TR(t, q)=\frac{\left|D_{q, t}\right|}{\left|D_{q}\right|}
   \)</span><span class="math notranslate nohighlight">\(
@@ -1727,7 +1926,7 @@ $<span class="math notranslate nohighlight">\(
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-deepcttermimportancedemo">
 <img alt="docs/img/chapter_application_IR/ApplicationIRSearch/termImportance/deepCT/deepCT_term_importance_demo" src="docs/img/chapter_application_IR/ApplicationIRSearch/termImportance/deepCT/deepCT_term_importance_demo" />
 <figcaption>
-<p><span class="caption-number">Fig. 21.27 </span><span class="caption-text">Illustration of calculating context-aware term importance for a query (left) and a document (right). Term importance in a query is estimated from relevant documents of the query; term importance in a document is estimated from relevant queries of the document.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-deepcttermimportancedemo" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.33 </span><span class="caption-text">Illustration of calculating context-aware term importance for a query (left) and a document (right). Term importance in a query is estimated from relevant documents of the query; term importance in a document is estimated from relevant queries of the document.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-deepcttermimportancedemo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <!-- 
@@ -1778,121 +1977,16 @@ The recently proposed COIL architecture (Gao et al., 2021a) presents an interest
 In another interesting extension, if we reduce the token dimension of COIL to one, the model degenerates into producing scalar weights, which then becomes directly comparable to DeepCT, row (2a) and the "no-expansion" variant of DeepImpact, row (2c). These comparisons isolate the effects of different term weighting models. We dub this variant of COIL "uniCOIL", on top of which we can also add doc2query-T5, which produces a fair comparison to DeepImpact, row ( $2 \mathrm{&nbsp;d})$. The original formulation of COIL, even with a token dimension of one, is not directly amenable to retrieval using inverted indexes because weights can be negative. To address this issue, we added a ReLU operation on the output term weights of the base COIL model to force the model to generate non-negative weights. -->
 </section>
 </section>
-<section id="knowledge-distillation">
-<h2><span class="section-number">21.10. </span>Knowledge Distillation<a class="headerlink" href="#knowledge-distillation" title="Link to this heading">#</a></h2>
-<section id="id56">
-<h3><span class="section-number">21.10.1. </span>Introduction<a class="headerlink" href="#id56" title="Link to this heading">#</a></h3>
-<p>Knowledge distillation aims to transfer knowledge from a well-trained, high-performing yet cumbersome teacher model to a lightweight student model with significant performance loss. Knowledge distillation has been a widely adopted method to achieve efficient neural network architecture, thus reducing overall inference costs, including memory requirements as well as inference latency. Typically, the teacher model can be an ensemble of separately trained models or a single very large model trained with a very strong regularizer such as dropout. The student model uses the distilled knowledge from the teacher network as additional learning cues. The resulting student model is computationally inexpensive and has accuracy better than directly training it from scratch.</p>
-<p>As such, tor retrieval and ranking systems, knowledge distillation is a desirable approach to develop efficient models to meet the high requirement on both accuracy and latency.</p>
-<p>For example, one can distill knowledge from a more powerful cross-encoder (e.g., BERT cross-encoder in <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-monobert"><span class="std std-numref">Section 21.4.4.2</span></a>) to a computational efficient bi-encoders. Empirically, this two-step procedure might be more effective than directly training a bi-encoder from scratch.</p>
-<p>In this section, we first review the principle of knowledge distillation. Then we go over a couple examples to demonstrate the application of knowledge distillation in developing retrieval and ranking models.</p>
-</section>
-<section id="knowledge-distillation-training-framework">
-<h3><span class="section-number">21.10.2. </span>Knowledge Distillation Training Framework<a class="headerlink" href="#knowledge-distillation-training-framework" title="Link to this heading">#</a></h3>
-<p>In the classic knowledge distillation framework <span id="id57">[<a class="reference internal" href="../chapter_foundation/bert.html#id1223" title="Geoffrey Hinton, Oriol Vinyals, and Jeff Dean. Distilling the knowledge in a neural network. arXiv preprint arXiv:1503.02531, 2015.">HVD15</a>]</span>[<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-teacherstudentdistillationscheme"><span class="std std-numref">Fig. 21.28</span></a>], the fundamental principle is that the teacher model produces soft label <span class="math notranslate nohighlight">\(q\)</span> for each input feature <span class="math notranslate nohighlight">\(x\)</span>. Soft label <span class="math notranslate nohighlight">\(q\)</span> can be viewed as a softened probability vector distributed over class labels of interest.
-Soft targets contain valuable information on the rich similarity structure over the data. Use MNIST classification as an example, a reasonable soft target will tell that 2 looks more like 3 than 9. These soft targets can be viewed as a strategy to mitigate the over-confidence issue and reduce gradient variance when we train neural networks using one-hot hard labels. Similar mechanism is leveraged in smooth label to improves model generalization.</p>
-<p>Allows the smaller Student model to be trained on much smaller data than the original cumbersome model and with a much higher learning rate</p>
-<p>Specifically, the logits <span class="math notranslate nohighlight">\(z\)</span> from the techer model are outputted to generate soft labels via</p>
-<div class="math notranslate nohighlight">
-\[
-q_{i}^T=\frac{\exp \left(z_{i} / T\right)}{\sum_{j} \exp \left(z_{j} / T\right)},
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(T\)</span> is the temperature parameter controlling softness of the probability vector, and the sum is over the entire label space. When <span class="math notranslate nohighlight">\(T=1\)</span>, it is equivalent to standard Softmax function. As <span class="math notranslate nohighlight">\(T\)</span> grows, <span class="math notranslate nohighlight">\(q\)</span> become softer and approaches uniform distribution <span class="math notranslate nohighlight">\(T=\infty\)</span>. On the other hand, as <span class="math notranslate nohighlight">\(T\to 0\)</span>, the <span class="math notranslate nohighlight">\(q\)</span> approaches a one-hot hard label.</p>
-<figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-teacherstudentdistillationscheme">
-<a class="reference internal image-reference" href="../../_images/teacher_student_distillation_scheme.png"><img alt="../../_images/teacher_student_distillation_scheme.png" src="../../_images/teacher_student_distillation_scheme.png" style="width: 377.09999999999997px; height: 378.0px;" />
-</a>
-<figcaption>
-<p><span class="caption-number">Fig. 21.28 </span><span class="caption-text">The classic teacher-student knowledge distillation framework.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-teacherstudentdistillationscheme" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-<p>The loss function for the student network training is a weighted sum of the hard label based cross entropy loss and soft label based KL divergence. The rationale of KL (Kullback-Leibler) divergence is to use the softened probability vector from the teacher model to guide the learning of the student network. Minimizing the KL divergence constrains the student model’s probabilistic outputs to match soft targets of the teacher model.</p>
-<p>The loss function is formally given by</p>
-<div class="math notranslate nohighlight">
-\[L =(1-\alpha) L_{C E}\left(p, y\right)+\alpha T^{2} {L}_{K L}\left(p^T, q^T\right)\]</div>
-<p>where <span class="math notranslate nohighlight">\(L_{CE}\)</span> is the regular cross entropy loss between predicted probability vector <span class="math notranslate nohighlight">\(p\)</span> and the one-hot label vector</p>
-<div class="math notranslate nohighlight">
-\[{L}_{CE}\left(p, y\right) =-\sum_{j}{y}_{j} \log {p}_{j};\]</div>
-<p><span class="math notranslate nohighlight">\(L_{KL}\)</span> is the KL divergence loss between the softened predictions at temperature <span class="math notranslate nohighlight">\(T\)</span> from the student and the teacher networks, respectively:</p>
-<div class="math notranslate nohighlight">
-\[{L}_{KL}\left({p}^T, q^{T}\right) = -\sum_{j} {q}_{j}^{T} \log \frac{p_{j}^T}{{q}_{j}^{T}}.\]</div>
-<p>Note that the same high temperature is used to produce distributions from the student model.</p>
-<p>Note that <span class="math notranslate nohighlight">\(L_{KL}(p^T, q^T) = L_{CE}(p^T, q^T) + H(q^T, q^T)\)</span>, with <span class="math notranslate nohighlight">\(H(q^T, q^T)\)</span> being the entropy of probability vector <span class="math notranslate nohighlight">\(q^T\)</span> and remaining as a constant during the training. As a result, we also often reduce the total loss to</p>
-<div class="math notranslate nohighlight">
-\[L =(1-\alpha) L_{C E}\left(p, y\right)+\alpha T^{2} {L}_{CE}\left(p^T, q^T\right).\]</div>
-<p>Finally, the multiplier <span class="math notranslate nohighlight">\(T^2\)</span> is used to re-scale the gradient of KL loss and <span class="math notranslate nohighlight">\(\alpha\)</span> is a scalar controlling the weight contribution to each loss.</p>
-<p>Besides using softened probability vector and KL divergence loss to guide the student learning process, we can also use MSE loss between the logits from the teacher and the student networks. Specifically,
-$<span class="math notranslate nohighlight">\(L_{MSE} = ||z^{(T)} - z^{(S)}||^2\)</span>$</p>
-<p>where <span class="math notranslate nohighlight">\(z^{(T)}\)</span> and <span class="math notranslate nohighlight">\(z^{(S)}\)</span> are logits from the teacher and the student network, respectively.</p>
-<div class="proof remark admonition" id="remark-2">
-<p class="admonition-title"><span class="caption-number">Remark 21.2 </span> (connections between MSE loss and KL loss)</p>
-<section class="remark-content" id="proof-content">
-<p>In <span id="id58">[<a class="reference internal" href="../chapter_foundation/bert.html#id1223" title="Geoffrey Hinton, Oriol Vinyals, and Jeff Dean. Distilling the knowledge in a neural network. arXiv preprint arXiv:1503.02531, 2015.">HVD15</a>]</span>, given a single sample input feature <span class="math notranslate nohighlight">\(x\)</span>, the gradient of <span class="math notranslate nohighlight">\({L}_{KL}\)</span> with respect to <span class="math notranslate nohighlight">\(z_{k}^{(S)}\)</span> is as follows:</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{\partial {L}_{KL}}{\partial {z}_{k}^{s}}=T\left(p_{k}^{T}-{q}_{k}^{T}\right).
-\]</div>
-<p>When <span class="math notranslate nohighlight">\(T\)</span> goes to <span class="math notranslate nohighlight">\(\infty\)</span>, using the approximation <span class="math notranslate nohighlight">\(\exp \left({z}_{k}/ T\right) \approx 1+{z}_{k} / T\)</span>, the gradient is simplified to:</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{\partial {L}_{KL}}{\partial {z}_{k}^{(S)}} \approx T\left(\frac{1+z_{k}^{(S)} / T}{K+\sum_{j} {z}_{j}^{(S)} / T}-\frac{1+{z}_{k}^{(T)} / T}{K+\sum_{j} {z}_{j}^{(T)} / T}\right)
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(K\)</span> is the number of classes.</p>
-<p>Here, by assuming the zero-mean teacher and student logit, i.e., <span class="math notranslate nohighlight">\(\sum_{j} {z}_{j}^{(T)}=0\)</span> and <span class="math notranslate nohighlight">\(\sum_{j} {z}_{j}^{(S)}=0\)</span>, and hence <span class="math notranslate nohighlight">\(\frac{\partial {L}_{K L}}{\partial {z}_{k}^{(S)}} \approx \frac{1}{K}\left({z}_{k}^{(S)}-{z}_{k}^{(T)}\right)\)</span>. This indicates that minimizing <span class="math notranslate nohighlight">\({L}_{KL}\)</span> is equivalent to minimizing the mean squared error <span class="math notranslate nohighlight">\({L}_{MSE}\)</span>, under a sufficiently large temperature <span class="math notranslate nohighlight">\(T\)</span> and the zero-mean logit assumption for both the teacher and the student.</p>
-</section>
-</div></section>
-<section id="example-distillation-strategies">
-<h3><span class="section-number">21.10.3. </span>Example Distillation Strategies<a class="headerlink" href="#example-distillation-strategies" title="Link to this heading">#</a></h3>
-<!-- #### Single Cross-encoder Teacher Distillation
-
-```{figure} ../img/chapter_application_IR/ApplicationIRSearch/KnowledgeDistllation/cross_encoder_distillation.png
-:scale: 30%
-:name: fig:crossencoderdistillation
-
-``` -->
-<section id="single-bi-encoder-teacher-distillation">
-<h4><span class="section-number">21.10.3.1. </span>Single Bi-encoder Teacher Distillation<a class="headerlink" href="#single-bi-encoder-teacher-distillation" title="Link to this heading">#</a></h4>
-<p>Authors in <span id="id59">[]</span> pioneered the strategy of distilling powerful BERT cross-encoder into BERT bi-encoder to retain the benefits of the two model architectures: the accuracy of cross-encoder and the efficiency of bi-encoder.</p>
-<p>Knowledge distillation follows the classic soft label framework. Bi-encoder student model training can use pointwise ranking loss, which is equivalent to binary relevance classification problem given a query and a candidate document. More formally, given training examples <span class="math notranslate nohighlight">\((q_i, d_i)\)</span> and their labels <span class="math notranslate nohighlight">\(y_i\in \{0, 1\}\)</span>. The BERT cross-encoder as teacher model to produce soft targets for irrelevance label and relevance label.</p>
-<p>Although cross-encoder teacher can offer accurate soft labels, it cannot directly extend to the <strong>in-batch negatives</strong> technique and <strong>N-pair loss</strong> [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-n-pair-loss"><span class="std std-numref">Section 21.5.3.4</span></a>] when training the student model. The reason is that query and document embedding cannot be computed separately from a cross-encoder. Implementing in-batch negatives using cross-encoder requires exhaustive computation on all combinations between a query and possible documents, which amount to <span class="math notranslate nohighlight">\(|B|^2\)</span> (<span class="math notranslate nohighlight">\(|B|\)</span> is the batch size) query-document pairs.</p>
-<p>Authors in <span id="id60">[]</span> proposed to leverage bi-encoder variant such as Col-BERT [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-colbert"><span class="std std-numref">Section 21.4.6</span></a>] can also be leveraged as a teacher model, which has the advantage that it is more feasible to perform exhaustive comparisons between queries and passages since they are passed through the encoder independently [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-inbatchdistillation"><span class="std std-numref">Fig. 21.29</span></a>].</p>
-<figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-inbatchdistillation">
-<a class="reference internal image-reference" href="../../_images/in_batch_distillation.png"><img alt="../../_images/in_batch_distillation.png" src="../../_images/in_batch_distillation.png" style="width: 693.6px; height: 341.6px;" />
-</a>
-<figcaption>
-<p><span class="caption-number">Fig. 21.29 </span><span class="caption-text">Compared to cross-encoder teacher, bi-encoder teacher computes query and document embeddings independents, which enables the application of the in-batch negative trick. Image from <span id="id61">[]</span>.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-inbatchdistillation" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="ensemble-teacher-distillation">
-<h4><span class="section-number">21.10.3.2. </span>Ensemble Teacher Distillation<a class="headerlink" href="#ensemble-teacher-distillation" title="Link to this heading">#</a></h4>
-<p>As we have seen in previous sections, large Transformer based models such as BERT cross-encoders or bi-encoders are popular choices of teacher models when we perform knowledge distillation. These fine-tuned BERT models often show high performance variances across different runs. From ensemble learning perspective, using an ensemble of models as a teacher model could potentially not only achieves better distillation results, but also reduces the performance variances.</p>
-<p>The critical challenge arising from distilling an ensemble teacher model vs a single teacher model is how to reconcile soft target labels generated by different teacher models.</p>
-<p>Authors in <span id="id62">[]</span> propose following method to fuse scores and labels. Formally, consider query <span class="math notranslate nohighlight">\(q_{i}\)</span>, its <span class="math notranslate nohighlight">\(j\)</span>-th candidate document <span class="math notranslate nohighlight">\(d_{i j}\)</span>, and <span class="math notranslate nohighlight">\(K\)</span> teacher models. Let the predicted ranking score by the <span class="math notranslate nohighlight">\(k\)</span>-th teacher be represented as <span class="math notranslate nohighlight">\(\hat{s}_{i j}^{(k)}\)</span>.</p>
-<p>The simplest aggregated teacher label is to directly use the mean score, namely</p>
-<div class="math notranslate nohighlight">
-\[
-s_{i j}=\frac{1}{K}\hat{s}_{i j}^{(k)}.
-\]</div>
-<p>The simple average scheme would work poorly when teacher models can have outputs with very different scales. A more robust way to fuse scores is to reciprocal rank, given by</p>
-<div class="math notranslate nohighlight">
-\[
-s_{i j}^{(k)}=\frac{1}{K} \sum_{k=1}^{K}\frac{1}{C+\hat{r}_{i j}^{(k)}}
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\hat{r}_{i j}^{(k)}\)</span> is the predicted rank of the <span class="math notranslate nohighlight">\(j\)</span>-th candidate text by the <span class="math notranslate nohighlight">\(k\)</span>-th teacher, and <span class="math notranslate nohighlight">\(C\)</span> is the constant as model hyperparameters.</p>
-<p>With the fused score, softened probability vector can be obtained by taking Softmax with temperature as the scaling factor.</p>
-</section>
-</section>
-</section>
 <section id="approximate-nearest-neighbor-search">
 <h2><span class="section-number">21.11. </span>Approximate Nearest Neighbor Search<a class="headerlink" href="#approximate-nearest-neighbor-search" title="Link to this heading">#</a></h2>
-<section id="id63">
-<h3><span class="section-number">21.11.1. </span>Overview<a class="headerlink" href="#id63" title="Link to this heading">#</a></h3>
+<section id="id64">
+<h3><span class="section-number">21.11.1. </span>Overview<a class="headerlink" href="#id64" title="Link to this heading">#</a></h3>
 <p>Applying dense retrieval in the first-stage of the ad-hoc retrieval system involves performing nearest neighbor search among web-scale documents in the high-dimensional embedding space. Exact nearest neighbor search is inherently expensive due to the curse of dimensionality and the large number of documents. Consider a <span class="math notranslate nohighlight">\(D\)</span>-dimensional Euclidean space <span class="math notranslate nohighlight">\(\mathbb{R}^{D}\)</span>, the problem is to find the nearest element <span class="math notranslate nohighlight">\(\mathrm{NN}(x)\)</span>, in a finite set <span class="math notranslate nohighlight">\(\mathcal{Y} \subset \mathbb{R}^{D}\)</span> of <span class="math notranslate nohighlight">\(n\)</span> vectors, minimizing the distance to the query vector <span class="math notranslate nohighlight">\(x \in \mathbb{R}^{D}\)</span> is given by:</p>
 <div class="math notranslate nohighlight">
 \[
 \mathrm{NN}(x)=\arg \min _{y \in \mathcal{Y}} d(x, y).
 \]</div>
-<p>A brute force exhaustive distance calculation has the complexity of <span class="math notranslate nohighlight">\(\mathcal{O}(n D)\)</span>. Several multi-dimensional indexing methods, such as the popular KD-tree <span id="id64">[]</span> or other branch and bound techniques, have been proposed to reduce the search time. However, nowadays the dominating approaches are approximate nearest neighbor search via vector quantization, which is the primary focus of this section.</p>
+<p>A brute force exhaustive distance calculation has the complexity of <span class="math notranslate nohighlight">\(\mathcal{O}(n D)\)</span>. Several multi-dimensional indexing methods, such as the popular KD-tree <span id="id65">[]</span> or other branch and bound techniques, have been proposed to reduce the search time. However, nowadays the dominating approaches are approximate nearest neighbor search via vector quantization, which is the primary focus of this section.</p>
 </section>
 <section id="vector-quantization">
 <h3><span class="section-number">21.11.2. </span>Vector Quantization<a class="headerlink" href="#vector-quantization" title="Link to this heading">#</a></h3>
@@ -1927,30 +2021,30 @@ c_{i}=\mathbb{E}_{X}[x \mid i]=\int_{V_{i}} p(x) x d x .
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-codebookconstruction">
 <img alt="../../_images/codebook_construction.png" src="../../_images/codebook_construction.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 21.30 </span><span class="caption-text">Codecook construction can be achieved using k-means algorithm to compute <span class="math notranslate nohighlight">\(K\)</span> centroids from database vectors.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-codebookconstruction" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.34 </span><span class="caption-text">Codecook construction can be achieved using k-means algorithm to compute <span class="math notranslate nohighlight">\(K\)</span> centroids from database vectors.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-codebookconstruction" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The <strong>storage</strong> for <span class="math notranslate nohighlight">\(N\)</span> vectors now reduce to storage of their index values plus the centroids in the codebook. Each index value requires <span class="math notranslate nohighlight">\(\log_{2} K\)</span> bits. On the other hand, storing the original vectors typically take more than <span class="math notranslate nohighlight">\(\log_2(k)\)</span> bits.</p>
 <p>Two important benefits to compressing the dataset are that (1) memory access times are generally the limiting factor on processing speed, and (2) sheer memory capacity can be a problem for big datasets.</p>
-<p>In <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-codebookmemorysavingdemo"><span class="std std-numref">Fig. 21.31</span></a>, we illustrate the storage saving by representing a <span class="math notranslate nohighlight">\(D\)</span> dimensional vector by a codebook of 256 centroids. We only need 8-bits (<span class="math notranslate nohighlight">\(2^8 = 256\)</span>) to store a centroid id. Each vector is now replace by a 8-bit integers.</p>
+<p>In <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-codebookmemorysavingdemo"><span class="std std-numref">Fig. 21.35</span></a>, we illustrate the storage saving by representing a <span class="math notranslate nohighlight">\(D\)</span> dimensional vector by a codebook of 256 centroids. We only need 8-bits (<span class="math notranslate nohighlight">\(2^8 = 256\)</span>) to store a centroid id. Each vector is now replace by a 8-bit integers.</p>
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-codebookmemorysavingdemo">
 <a class="reference internal image-reference" href="../../_images/codebook_memory_saving_demo.png"><img alt="../../_images/codebook_memory_saving_demo.png" src="../../_images/codebook_memory_saving_demo.png" style="width: 333.9px; height: 136.79999999999998px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 21.31 </span><span class="caption-text">Illustration of memory saving benefits of vector quantization. A <span class="math notranslate nohighlight">\(D\)</span>-dimensional float vector is stored as its nearest centroid integer id, which only occupies <span class="math notranslate nohighlight">\(\log_2 K\)</span> bit.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-codebookmemorysavingdemo" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.35 </span><span class="caption-text">Illustration of memory saving benefits of vector quantization. A <span class="math notranslate nohighlight">\(D\)</span>-dimensional float vector is stored as its nearest centroid integer id, which only occupies <span class="math notranslate nohighlight">\(\log_2 K\)</span> bit.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-codebookmemorysavingdemo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="approximating-distances-using-quantized-codes">
 <h4><span class="section-number">21.11.2.2. </span>Approximating Distances Using Quantized Codes<a class="headerlink" href="#approximating-distances-using-quantized-codes" title="Link to this heading">#</a></h4>
-<p>Given the representation choices for the query vector <span class="math notranslate nohighlight">\(x\)</span> and the database vector <span class="math notranslate nohighlight">\(y\)</span>, we define two options in approximating the distance <span class="math notranslate nohighlight">\(d(x, y)\)</span> [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-distance-compute"><span class="std std-numref">Fig. 21.32</span></a>].</p>
+<p>Given the representation choices for the query vector <span class="math notranslate nohighlight">\(x\)</span> and the database vector <span class="math notranslate nohighlight">\(y\)</span>, we define two options in approximating the distance <span class="math notranslate nohighlight">\(d(x, y)\)</span> [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-distance-compute"><span class="std std-numref">Fig. 21.36</span></a>].</p>
 <p><strong>Symmetric distance computation (SDC)</strong>: both the vectors <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> are represented by their respective centroids <span class="math notranslate nohighlight">\(q(x)\)</span> and <span class="math notranslate nohighlight">\(q(y)\)</span>. The distance <span class="math notranslate nohighlight">\(d(x, y)\)</span> is approximated by the distance <span class="math notranslate nohighlight">\(\hat{d}(x, y) \triangleq d(q(x), q(y))\)</span>.</p>
 <p><strong>Asymmetric distance computation (ADC)</strong>: the database vector <span class="math notranslate nohighlight">\(y\)</span> is represented by <span class="math notranslate nohighlight">\(q(y)\)</span>, but the query <span class="math notranslate nohighlight">\(x\)</span> is not encoded. The distance <span class="math notranslate nohighlight">\(d(x, y)\)</span> is approximated by the distance <span class="math notranslate nohighlight">\(\tilde{d}(x, y) \triangleq d(x, q(y))\)</span></p>
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-distance-compute">
 <a class="reference internal image-reference" href="../../_images/distance_compute.png"><img alt="../../_images/distance_compute.png" src="../../_images/distance_compute.png" style="width: 577.8px; height: 260.09999999999997px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 21.32 </span><span class="caption-text">Illustration of the symmetric (left) and asymmetric distance (right) computation. The distance <span class="math notranslate nohighlight">\(d(x, y)\)</span> is estimated with either the distance <span class="math notranslate nohighlight">\(d(q(x), q(y))\)</span> (left) or the distance <span class="math notranslate nohighlight">\(d(x, q(y))\)</span> (right).</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-distance-compute" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.36 </span><span class="caption-text">Illustration of the symmetric (left) and asymmetric distance (right) computation. The distance <span class="math notranslate nohighlight">\(d(x, y)\)</span> is estimated with either the distance <span class="math notranslate nohighlight">\(d(q(x), q(y))\)</span> (left) or the distance <span class="math notranslate nohighlight">\(d(x, q(y))\)</span> (right).</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-distance-compute" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Suppose now we have a query vector <span class="math notranslate nohighlight">\(x\)</span> and we want to find its nearest neighbors among all the <span class="math notranslate nohighlight">\(y\)</span> in the database <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span>.</p>
@@ -1963,7 +2057,7 @@ On the other hand, to perform asymmetric distance computation between <span clas
 <section id="from-vector-quantization-to-product-quantization">
 <h4><span class="section-number">21.11.3.1. </span>From Vector Quantization To Product Quantization<a class="headerlink" href="#from-vector-quantization-to-product-quantization" title="Link to this heading">#</a></h4>
 <p>Let us consider a quantizer producing 64 bits codes, i.e., which can contain <span class="math notranslate nohighlight">\(k=2^{64} \approx 1.8\times 10^{19} \)</span> centroids. It is prohibitive run the k-means algorithm and practically impossible to store the <span class="math notranslate nohighlight">\(D \times k\)</span> floating point values representing the <span class="math notranslate nohighlight">\(k\)</span> centroids.</p>
-<p>Product quantization serves as an efficient solution to address these computation and memory consumption issues in vector quantization. The key idea of product quantization is <strong>grouping and splitting</strong>[ <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-codebookmemorysavingdemoproductquantization"><span class="std std-numref">Fig. 21.33</span></a>]. The input vector <span class="math notranslate nohighlight">\(x\)</span> is split into <span class="math notranslate nohighlight">\(m\)</span> distinct subvectors <span class="math notranslate nohighlight">\(u_{j}, 1 \leq\)</span> <span class="math notranslate nohighlight">\(j \leq m\)</span> of dimension <span class="math notranslate nohighlight">\(D^{*}=D / m\)</span>, where <span class="math notranslate nohighlight">\(D\)</span> is a multiple of <span class="math notranslate nohighlight">\(m\)</span>. The subvectors are then quantized separately using <span class="math notranslate nohighlight">\(m\)</span> distinct quantizers. A given vector <span class="math notranslate nohighlight">\(x\)</span> is therefore quantized as follows:</p>
+<p>Product quantization serves as an efficient solution to address these computation and memory consumption issues in vector quantization. The key idea of product quantization is <strong>grouping and splitting</strong>[ <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-codebookmemorysavingdemoproductquantization"><span class="std std-numref">Fig. 21.37</span></a>]. The input vector <span class="math notranslate nohighlight">\(x\)</span> is split into <span class="math notranslate nohighlight">\(m\)</span> distinct subvectors <span class="math notranslate nohighlight">\(u_{j}, 1 \leq\)</span> <span class="math notranslate nohighlight">\(j \leq m\)</span> of dimension <span class="math notranslate nohighlight">\(D^{*}=D / m\)</span>, where <span class="math notranslate nohighlight">\(D\)</span> is a multiple of <span class="math notranslate nohighlight">\(m\)</span>. The subvectors are then quantized separately using <span class="math notranslate nohighlight">\(m\)</span> distinct quantizers. A given vector <span class="math notranslate nohighlight">\(x\)</span> is therefore quantized as follows:</p>
 <div class="math notranslate nohighlight">
 \[\underbrace{x_{1}, \ldots, x_{D^{*}}}_{u_{1}(x)}, \ldots, \underbrace{x_{D-D^{*}+1}, \ldots, x_{D}}_{u_{m}(x)} \rightarrow q_{1}\left(u_{1}(x)\right), \ldots, q_{m}\left(u_{m}(x)\right),\]</div>
 <p>where <span class="math notranslate nohighlight">\(q_{j}\)</span> is a quantizer used to quantize the <span class="math notranslate nohighlight">\(j^{\text {th }}\)</span> subvector using the codebook <span class="math notranslate nohighlight">\(\mathcal{C}_{j} = \{c_{j,1},...,c_{j,k^*}\}\)</span>. Here we assume that
@@ -1971,7 +2065,7 @@ all subquantizers have the same finite number <span class="math notranslate nohi
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-codebookmemorysavingdemoproductquantization">
 <img alt="../../_images/codebook_memory_saving_demo_product_quantization.png" src="../../_images/codebook_memory_saving_demo_product_quantization.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 21.33 </span><span class="caption-text">Illustration of memory saving benefits of vector product quantization. A <span class="math notranslate nohighlight">\(D\)</span>-dimensional float vector is first split into <span class="math notranslate nohighlight">\(m\)</span> subvectors, and each subvector is stored as its nearest centroid integer id, which only occupies <span class="math notranslate nohighlight">\(\log_2 K^*\)</span> bit.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-codebookmemorysavingdemoproductquantization" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.37 </span><span class="caption-text">Illustration of memory saving benefits of vector product quantization. A <span class="math notranslate nohighlight">\(D\)</span>-dimensional float vector is first split into <span class="math notranslate nohighlight">\(m\)</span> subvectors, and each subvector is stored as its nearest centroid integer id, which only occupies <span class="math notranslate nohighlight">\(\log_2 K^*\)</span> bit.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-codebookmemorysavingdemoproductquantization" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>In this case, a reproduction value of the product quantizer is identified by an element of the product index set <span class="math notranslate nohighlight">\(\mathcal{I}=\)</span> <span class="math notranslate nohighlight">\(\mathcal{I}_{1} \times \ldots \times \mathcal{I}_{m}\)</span>. The codebook is therefore defined as the Cartesian product</p>
@@ -2008,8 +2102,8 @@ High values of $K^{*}$ increase the computational cost of the quantizer, as show
 
 \fi -->
 </section>
-<section id="id65">
-<h4><span class="section-number">21.11.3.2. </span>Approximating Distances Using Quantized Codes<a class="headerlink" href="#id65" title="Link to this heading">#</a></h4>
+<section id="id66">
+<h4><span class="section-number">21.11.3.2. </span>Approximating Distances Using Quantized Codes<a class="headerlink" href="#id66" title="Link to this heading">#</a></h4>
 <p>Like vector quantization, we also have different options in approximating distance calculation between query vector <span class="math notranslate nohighlight">\(x\)</span> and database vector <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <p><strong>Symmetric distance computation (SDC)</strong>:</p>
 <div class="math notranslate nohighlight">
@@ -2060,7 +2154,7 @@ r(y)=y-q_{\mathrm{c}}(y)
 <h2><span class="section-number">21.12. </span>Benchmark Datasets<a class="headerlink" href="#benchmark-datasets" title="Link to this heading">#</a></h2>
 <section id="ms-marco">
 <h3><span class="section-number">21.12.1. </span>MS MARCO<a class="headerlink" href="#ms-marco" title="Link to this heading">#</a></h3>
-<p><a class="reference external" href="https://microsoft.github.io/msmarco/Datasets">MS MARCO</a> (Microsoft MAchine Reading Comprehension) <span id="id66">[]</span> is a large scale dataset widely used to train and evaluate models for the document retrieval and ranking tasks as well as tasks like key phrase extraction for question
+<p><a class="reference external" href="https://microsoft.github.io/msmarco/Datasets">MS MARCO</a> (Microsoft MAchine Reading Comprehension) <span id="id67">[]</span> is a large scale dataset widely used to train and evaluate models for the document retrieval and ranking tasks as well as tasks like key phrase extraction for question
 answering. MS MARCO dataset is sampled from Bing search engine user logs, with Bing retrieved passages given queries and human annotated relevance labels. There are more than 530,000 questions in the “train” data partition, and the evaluation is usually performed on around 6,800 questions in the “dev” and “eval” data partition. The ground-truth labels for the “eval” partition are not published. The original data set contains more than <span class="math notranslate nohighlight">\(8.8\)</span> million passages.</p>
 <p>There are two tasks: Passage ranking and document ranking; and two subtasks in each case: full ranking and re-ranking.</p>
 <p>Each task uses a large human-generated set of training labels. The two tasks have different sets of test queries. Both tasks use similar form of training data with usually one positive training document/passage per training query. In the case of passage ranking, there is a direct human label that says the passage can be used to answer the query, whereas for training the document ranking task we transfer the same passage-level labels to document-level labels. Participants can also use external corpora for large scale language model pretraining, or adapt algorithms built for one task (e.g. passage ranking) to the other task (e.g. document ranking). This allows participants to study a variety of transfer learning strategies.</p>
@@ -2148,25 +2242,25 @@ Documents
 <h3><span class="section-number">21.12.2. </span>TERC<a class="headerlink" href="#terc" title="Link to this heading">#</a></h3>
 <section id="trec-deep-learning-track">
 <h4><span class="section-number">21.12.2.1. </span>TREC-deep Learning Track<a class="headerlink" href="#trec-deep-learning-track" title="Link to this heading">#</a></h4>
-<p>Deep Learning Track at the Text REtrieval Conferences (TRECs) deep learning track<sup>[^7]</sup><span id="id67">[]</span> is another large scale dataset used to evaluate retrieval and ranking model through two tasks: Document retrieval and passage retrieval.</p>
+<p>Deep Learning Track at the Text REtrieval Conferences (TRECs) deep learning track<sup>[^7]</sup><span id="id68">[]</span> is another large scale dataset used to evaluate retrieval and ranking model through two tasks: Document retrieval and passage retrieval.</p>
 <p>Both tasks use a large human-generated set of training labels, from the MS-MARCO dataset. The document retrieval task has a corpus of 3.2 million documents with 367 thousand training queries, and there are a test set of 43 queries. The passage retrieval task has a corpus of 8.8 million passages with 503 thousand training queries, and there are a test set of 43 queries.</p>
 </section>
 <section id="trec-car">
 <h4><span class="section-number">21.12.2.2. </span>TREC-CAR<a class="headerlink" href="#trec-car" title="Link to this heading">#</a></h4>
-<p>TREC-CAR (Complex Answer Retrieval) <span id="id68">[]</span> is a dataset where the input query is the concatenation of a Wikipedia article title with the title of one of its sections. The ground-truth documents are the paragraphs within that section. The corpus consists of all English Wikipedia paragraphs except the abstracts. The released dataset has five predefined folds, and we use the first four as a training set (approx. 3M queries), and the remaining as a validation set (approx. 700k queries). The test set has approx. 2,250 queries.</p>
+<p>TREC-CAR (Complex Answer Retrieval) <span id="id69">[]</span> is a dataset where the input query is the concatenation of a Wikipedia article title with the title of one of its sections. The ground-truth documents are the paragraphs within that section. The corpus consists of all English Wikipedia paragraphs except the abstracts. The released dataset has five predefined folds, and we use the first four as a training set (approx. 3M queries), and the remaining as a validation set (approx. 700k queries). The test set has approx. 2,250 queries.</p>
 </section>
 </section>
 <section id="natural-question-nq">
 <h3><span class="section-number">21.12.3. </span>Natural Question (NQ)<a class="headerlink" href="#natural-question-nq" title="Link to this heading">#</a></h3>
-<p>Natural Question (NQ) <span id="id69">[]</span> introduces a large dataset for open-domain QA. The original dataset contains more than 300,000 questions collected from Google search logs. In <span id="id70">[]</span>, around 62,000 factoid questions are selected, and all the Wikipedia articles are processed as the collection of passages. There are more than 21 million passages in the corpus.</p>
+<p>Natural Question (NQ) <span id="id70">[]</span> introduces a large dataset for open-domain QA. The original dataset contains more than 300,000 questions collected from Google search logs. In <span id="id71">[]</span>, around 62,000 factoid questions are selected, and all the Wikipedia articles are processed as the collection of passages. There are more than 21 million passages in the corpus.</p>
 </section>
 </section>
 <section id="note-on-bibliography-and-software">
 <h2><span class="section-number">21.13. </span>Note On Bibliography And Software<a class="headerlink" href="#note-on-bibliography-and-software" title="Link to this heading">#</a></h2>
 <section id="bibliography">
 <h3><span class="section-number">21.13.1. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h3>
-<p>For excellent reviews in neural information retrieval, see <span id="id71">[]</span></p>
-<p>For traditional information retrieval, see <span id="id72">[]</span></p>
+<p>For excellent reviews in neural information retrieval, see <span id="id72">[]</span></p>
+<p>For traditional information retrieval, see <span id="id73">[]</span></p>
 </section>
 <section id="software">
 <h3><span class="section-number">21.13.2. </span>Software<a class="headerlink" href="#software" title="Link to this heading">#</a></h3>
@@ -2286,7 +2380,7 @@ Documents
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bm25">21.3.3. BM25</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-dense-retrieval-models">21.4. Semantic Dense Retrieval Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-dense-models">21.4. Semantic Dense Models</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">21.4.1. Motivation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-architecture-paradigms">21.4.2. Two Architecture Paradigms</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classic-representation-based-learning">21.4.3. Classic Representation-based Learning</a><ul class="nav section-nav flex-column">
@@ -2296,14 +2390,15 @@ Documents
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mono-bert-and-duo-bert">21.4.4. Mono-BERT And Duo-BERT</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#why-transformers">21.4.4.1. Why Transformers?</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mono-bert-for-point-wise-ranking">21.4.4.2. Mono-BERT For Point-wise Ranking</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mono-bert-cross-encoder-for-point-wise-ranking">21.4.4.2. Mono-BERT (Cross-Encoder) For Point-wise Ranking</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#duo-bert-for-pairwise-ranking">21.4.4.3. Duo-BERT For Pairwise Ranking</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#multistage-retrieval-and-ranking-pipeline">21.4.4.4. Multistage Retrieval And Ranking Pipeline</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dc-bert">21.4.5. DC-BERT</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#colbert">21.4.6. ColBERT</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model-architecture-and-training">21.4.6.1. Model Architecture And Training</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-architectures">21.4.5. Advanced Architectures</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dc-bert">21.4.5.1. DC-BERT</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#colbert">21.4.5.2. ColBERT</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-attribute-and-multi-task-modeling">21.4.5.3. Multi-Attribute and Multi-task Modeling</a></li>
 </ul>
 </li>
 </ul>
@@ -2314,9 +2409,10 @@ Documents
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-training-objective-functions">21.5.3. Model Training Objective Functions</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pointwise-regression-objective">21.5.3.1. Pointwise Regression Objective</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pointwise-ranking-objective">21.5.3.2. Pointwise Ranking Objective</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pairwise-ranking-via-triplet-loss">21.5.3.3. Pairwise Ranking Via Triplet Loss</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pairwise-ranking-via-triplet-loss">21.5.3.3. Pairwise Ranking via Triplet Loss</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#n-pair-loss">21.5.3.4. N-pair Loss</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#n-pair-dual-loss">21.5.3.5. N-pair Dual Loss</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#doc-doc-n-pair-loss">21.5.3.6. Doc-Doc N-pair Loss</a></li>
 </ul>
 </li>
 </ul>
@@ -2324,15 +2420,16 @@ Documents
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-data-sampling-strategies">21.6. Training Data Sampling Strategies</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#principles">21.6.1. Principles</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#negative-sampling-methods-i-heuristic-methods">21.6.2. Negative Sampling Methods I: Heuristic Methods</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">21.6.2.1. Overview</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#random-negatives-and-in-batch-negatives">21.6.2.2. Random Negatives And In-batch Negatives</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#popularity-based-negative-sampling">21.6.2.3. Popularity-based Negative Sampling</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-aware-negative-sampling">21.6.2.4. Topic-aware Negative Sampling</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#random-negatives-and-in-batch-negatives">21.6.2.1. Random Negatives and In-batch Negatives</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#popularity-based-negative-sampling">21.6.2.2. Popularity-based Negative Sampling</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-aware-negative-sampling">21.6.2.3. Topic-aware Negative Sampling</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#negative-sampling-methods-ii-model-based-methods">21.6.3. Negative Sampling Methods II: Model-based Methods</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#static-hard-negative-examples">21.6.3.1. Static Hard Negative Examples</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-hard-negative-examples">21.6.3.2. Dynamic Hard Negative Examples</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#large-scale-negatives">21.6.3.3. Large-Scale Negatives</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#hard-positives">21.6.3.4. Hard Positives</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#label-denoising">21.6.4. Label Denoising</a><ul class="nav section-nav flex-column">
@@ -2342,33 +2439,34 @@ Documents
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-vector-representations">21.7. Multi-vector Representations</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-distillation">21.7. Knowledge Distillation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">21.7.1. Introduction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#token-level-multi-vector-representation">21.7.2. Token-level Multi-vector Representation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-clusters-as-pseudo-query-embeddings">21.7.3. Semantic Clusters As Pseudo Query Embeddings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-distillation-training-framework">21.7.2. Knowledge Distillation Training Framework</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-distillation-strategies">21.7.3. Example Distillation Strategies</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bi-encoder-teacher-distillation">21.7.3.1. Bi-encoder Teacher Distillation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-encoder-embedding-similarity-distillation">21.7.3.2. Cross-Encoder Embedding Similarity Distillation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-teacher-distillation">21.7.3.3. Ensemble Teacher Distillation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-and-document-expansion">21.8. Query and Document Expansion</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">21.8.1. Overview</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#document-expansion-via-query-prediction">21.8.2. Document Expansion Via Query Prediction</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contextualized-term-importance">21.9. Contextualized Term Importance</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-aware-term-importance-deep-ct">21.9.1. Context-aware Term Importance: Deep-CT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-vector-representations">21.8. Multi-vector Representations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id53">21.8.1. Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#token-level-multi-vector-representation">21.8.2. Token-level Multi-vector Representation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-clusters-as-pseudo-query-embeddings">21.8.3. Semantic Clusters As Pseudo Query Embeddings</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-distillation">21.10. Knowledge Distillation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id56">21.10.1. Introduction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-distillation-training-framework">21.10.2. Knowledge Distillation Training Framework</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-distillation-strategies">21.10.3. Example Distillation Strategies</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#single-bi-encoder-teacher-distillation">21.10.3.1. Single Bi-encoder Teacher Distillation</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-teacher-distillation">21.10.3.2. Ensemble Teacher Distillation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-and-document-expansion">21.9. Query and Document Expansion</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id56">21.9.1. Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#document-expansion-via-query-prediction">21.9.2. Document Expansion Via Query Prediction</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contextualized-term-importance">21.10. Contextualized Term Importance</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-aware-term-importance-deep-ct">21.10.1. Context-aware Term Importance: Deep-CT</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approximate-nearest-neighbor-search">21.11. Approximate Nearest Neighbor Search</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id63">21.11.1. Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id64">21.11.1. Overview</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-quantization">21.11.2. Vector Quantization</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#approximate-representation-and-storage">21.11.2.1. Approximate Representation And Storage</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#approximating-distances-using-quantized-codes">21.11.2.2. Approximating Distances Using Quantized Codes</a></li>
@@ -2376,7 +2474,7 @@ Documents
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#product-quantization">21.11.3. Product Quantization</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-vector-quantization-to-product-quantization">21.11.3.1. From Vector Quantization To Product Quantization</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id65">21.11.3.2. Approximating Distances Using Quantized Codes</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id66">21.11.3.2. Approximating Distances Using Quantized Codes</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#approximate-non-exhaustive-nearest-neighbor-search">21.11.4. Approximate Non-exhaustive Nearest Neighbor Search</a><ul class="nav section-nav flex-column">
