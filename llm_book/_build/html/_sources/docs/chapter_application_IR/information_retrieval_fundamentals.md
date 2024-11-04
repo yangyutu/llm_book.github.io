@@ -373,7 +373,7 @@ $$
 
 with $tf(t_q, q)$ being the frequency of term $t$ in the query $q$, and $k_{2}$ being another positive tuning parameter that this time calibrates term frequency scaling of the query. 
 
-## Semantic Dense Retrieval Models
+## Semantic Dense Models
 
 ### Motivation
 
@@ -402,7 +402,7 @@ Two common architectural paradigms in semantic retrieval learning: representatio
 
 These two architectures have different strengths in modeling relevance and final model serving. For example, a representation-based model architecture makes it possible to pre-compute and cache document representations offline, greatly reducing the online computational load per query. However, the pre-computation of query-independent document representations often miss term-level matching features that are critical to construct high-quality retrieval results. On the other hand, interaction-based architectures are often good at capturing the fine-grained matching feature between the query and the document. 
 
-Since interaction-based models can model interactions between word pairs in queries and document, they are effective for re-ranking, but are cost-prohibitive for first-stage retrieval as the expensive document-query interactions must be computed online for all ranked documents.
+Since interaction-based models can model interactions between word pairs in queries and document, they are effective for **re-ranking**, but are cost-prohibitive for first-stage retrieval as the expensive document-query interactions must be computed online for all ranked documents.
 
 Representation-based models enable low-latency, full-collection retrieval with a dense index. By representing queries and documents with dense vectors, retrieval is reduced to nearest neighbor search, or a maximum inner product search (MIPS) {cite}`shrivastava2014asymmetric` problem if similarity is represented by an inner product.
 
@@ -503,7 +503,7 @@ The architecture of CNN-DSSM. Each term together with its left and right context
 BERT (Bidirectional Encoder Representations from Transformers) {cite}`devlin2018bert` and its transformer variants {cite}`lin2021survey` represent the state-of-the-art modeling strategies in a broad range of natural language processing tasks. The application of BERT in information retrieval and ranking was pioneered by {cite}`nogueira2019passage, nogueira2019multi`. The fundamental characteristics of BERT architecture is self-attention. By pretraining BERT on large scale text data, BERT encoder can produce contextualized embeddings can better capture semantics of different linguistic units. By adding additional prediction head to the BERT backbone, such BERT encoders can be fine-tuned to retrieval related tasks. In this section, we will go over the application of different BERT-based models in neural information retrieval and ranking tasks. 
 
 (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:monoBERT)=
-#### Mono-BERT For Point-wise Ranking
+#### Mono-BERT (Cross-Encoder) For Point-wise Ranking
 
 ```{figure} ../img/chapter_application_IR/ApplicationIRSearch/DeepRetrievalModels/Berts/BERT/mono_bert_arch.png
 :scale: 30%
@@ -524,6 +524,8 @@ The encoder can be fine-tuned using cross-entropy loss:
 $$
 L_{\text {mono-BERT}}=-\sum_{q\in Q}( \sum_{j \in J_{P}^q} \log \left(s_{j}\right)-\sum_{j \in J_{N}^q} \log \left(1-s_{j}\right) ).
 $$
+
+During training, each batch can consist of a query and its candidate documents (include both positive and negative) produced by previous retrieval layers.
 
 #### Duo-BERT For Pairwise Ranking
 
@@ -596,12 +598,12 @@ Further, the author found that	employing the technique of Target Corpus Pre-trai
 
 
 
+### Advanced Architectures
+#### DC-BERT
 
-### DC-BERT
 
 
-
-One way to improve the computational efficiency is to employ dual BERT encoders for partial separate encoding and then employ an additional shallow module for cross encoding. One example is the architecture shown in {numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:dcbert`, which is called **DC-BERT** and proposed in {cite}`nie2020dc`. The overall architecture of DC-BERT  consists of a dual-BERT component for decoupled encoding, a Transformer component for question-document interactions, and a binary classifier component for document relevance scoring.
+One way to improve the computational efficiency of cross-encoder is to employ bi-encoders for partial separate encoding and then employ an additional shallow module for cross encoding. One example is the architecture shown in {numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:dcbert`, which is called **DC-BERT** and proposed in {cite}`nie2020dc`. The overall architecture of DC-BERT  consists of a dual-BERT component for decoupled encoding, a Transformer component for question-document interactions, and a binary classifier component for document relevance scoring.
 
 The document encoder can be run offline to pre-encodes all documents and caches all term representations. During online inference, we only need to run the BERT query encodes online. Then the obtained contextual term representations are fed into high-layer Transformer interaction layer. 
 
@@ -625,7 +627,7 @@ where $\left(q_{i}, d_{j}\right)$ is a pair of question and retrieved document, 
 
 DC-BERT uses one Transformer layer for question-document interactions. Quantized BERT is a 8bit-Integer model. DistilBERT is a compact BERT model with 2 Transformer layers.
 
-We first compare the retriever speed. DC-BERT achieves over 10x speedup over the BERT-base retriever, which demonstrates the efficiency of our method. Quantized BERT has the same model architecture as BERT-base, leading to the minimal speedup. DistilBERT achieves about 6x speedup with only 2 Transformer layers, while BERT-base uses 12 Transformer layers.
+We first compare the retriever speed. DC-BERT achieves over 10x speedup over the BERT-base retriever, which demonstrates the efficiency of this method. Quantized BERT has the same model architecture as BERT-base, leading to the minimal speedup. DistilBERT achieves about 6x speedup with only 2 Transformer layers, while BERT-base uses 12 Transformer layers.
 
 With a 10x speedup, DC-BERT still achieves similar retrieval performance compared to BERT- base on both datasets. At the cost of little speedup, Quantized BERT also works well in ranking documents. DistilBERT performs significantly worse than BERT-base, which shows the limitation of the distilled BERT model. 
 
@@ -650,9 +652,7 @@ To further investigate the impact of our model architecture design, we compare t
 ```
 
 (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:colBERT)=
-### ColBERT
-
-#### Model Architecture And Training
+#### ColBERT
 
 ColBERT {cite}`khattab2020colbert` is another example architecture that consists of an early separate encoding phase and a late interaction phase, as shown in {numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:colbert`. ColBERT employs a single BERT model for both query and document encoders but distinguish input sequences that correspond to queries and documents by prepending a special token [Q] to queries and another token [D] to documents.
 
@@ -716,6 +716,34 @@ Similarly, we can evaluate ColBERT's re-ranking performance against some strong 
 | BERT large | 36.5 | 35.9 | 32,900 |
 | ColBERT (over BERT base) | 34.9 | 34.9 | 61 |
 ```
+
+#### Multi-Attribute and Multi-task Modeling
+
+We can extend cross-encoder to take into multiple-attributes from query side and document side, as well as generating multiple predictive outputs for different tasks [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:multitask_multiattribute`].
+
+For example, query side attributes could include
+* Query text
+* Query's language (produced by a cheapter language detection model)
+* User's location and region
+* Other query side signals (e.g., key concept groups in the query, document signals from historical queries)
+Document side attributes could include
+* Organic contents with semantic markers (e.g., [T] for Title)
+* Other derived signals from documents (e.g., puesedo queries, historical queries, etc.)
+Other high level signals suitable late stage fusion
+* Document refreshness attribute (for intent to search latest news)
+* Document spamness attributes 
+
+After feature fusion (e.g., via concatination), we can separate MLP head for different tasks 
+
+
+```{figure} ../img/chapter_application_IR/ApplicationIRSearch/MultiTaskMultiAttribute/multitask_multiattribute_arch.png
+:scale: 30%
+:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:multitask_multiattribute
+An representative cross-encoder that is extended to take into account multiple-attributes from query side and document side. There are multiple outputs for **multi-tasking**.
+```
+
+
+
 
 ## Ranker Training
 
@@ -787,7 +815,7 @@ The advantages of pointwise ranking objectives are two-fold. First, pointwise ra
 In general, however, pointwise ranking objectives are considered to be less effective in ranking tasks. Because pointwise loss functions consider no document preference or order information, they do not guarantee to produce the best ranking list when the model loss reaches the global minimum. Therefore, better ranking paradigms that directly optimize document ranking based on pairwise loss functions and even listwise loss functions.
 
 (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:triplet_loss)=
-#### Pairwise Ranking Via Triplet Loss
+#### Pairwise Ranking via Triplet Loss
 
 Pointwise ranking loss aims to optimize the model to directly predict relevance between query and documents on absolute score. From embedding optimization perspective, it train the neural query/document encoders to produce similar embedding vectors for a query and its relevant document and dissimilar embedding vectors for a query and its irrelevant documents. 
 
@@ -808,6 +836,7 @@ The illustration of the learning process (in the embedding space) using triplet 
 ```
 
 Triplet loss can also operating in the angular space
+
 $$
 \operatorname{sim}(q, d)=1-\arccos \left(\frac{\psi_{\beta}(q) \cdot \psi_{\alpha}(d)}{\left\|\psi_{\beta}(q)\right\|\left\|\psi_{\alpha}(d)\right\|}\right) / \pi
 $$
@@ -857,6 +886,26 @@ where $\operatorname{Sim}(e_q, e_d)$ is a **symmetric** similarity score functio
 
 To compute dual loss, we need to prepare training data $\mathcal{D}_{dual}=\left\{\left\langle d_{i}, q_{i}^{+}, Q_i^-\right\rangle\right\}_{i=1}^{m}$, where $Q_i^- = \{q_{i, 1}^{-}, \cdots, q_{i, n}^{-}\}$ are a set of negative queries examples (i.e., irrelevant query) with respect to document $d_i$. Each example contains one document $d_{i}$ and one relevant query $d_{i}^{+}$, along with $n$ irrelevant (negative) queries $q_{i, j}^{-}$. 
 
+#### Doc-Doc N-pair Loss
+
+```{figure} ../img/chapter_application_IR/ApplicationIRSearch/TrainingLoss/N_pair_doc_doc.png
+:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:npairlossdual
+The illustration of the learning process (in the embedding space) using Doc-Doc N-pair loss.
+```
+
+
+Besiding use above prime and dual loss to capture robust query doc relationship, we can also improve robustness of document representation by considering doc-doc relations. Particularly, 
+* When there are multiple positive documents associated with the same query, we use loss function encourage their representation embedding to stay close.
+* For positive and negative documents associated with the same query, we use loss function encourage their representation embedding to stay far apart.
+
+The loss function is given by
+
+$$L =-\sum_{\left\langle q_{i}, d_{i}^{+}, d_{i'}^{+} \in D_{i}^{+}, D_{i}^{-}\right\rangle}\log \frac{\exp(\operatorname{Sim}\left(e_{d_{i}}, e_{d_{i'}}\right))}{\exp(\operatorname{Sim}\left(e_{d_{i}^+}, e_{d_{i}^{+}}\right))+\sum_{d^-_i\in D^-} \exp(\operatorname{Sim}\left(e_{d_{i}^+}, e_{d_{i}^{-}}\right))}$$
+
+where $\operatorname{Sim}(e_{d_1}, e_{d_2})$ is the similarity score function taking document embeddings $e_{d_1}$ and $e_{d_2}$ as the input. 
+
+
+
 (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:negativeSamplingStrategies)=
 ## Training Data Sampling Strategies
 
@@ -882,7 +931,7 @@ This section will mainly focus on constructing training examples for retrieval m
 
 ### Negative Sampling Methods I: Heuristic Methods
 
-#### Overview
+<!-- #### Overview
 
 The essence of the negative sampling algorithm is to set or adjust the sampling distribution during negative sampling based on certain methods. According to the way the negative sampling algorithm sets the sampling distribution, we can divide the current negative sampling algorithms into two categories: Heuristic Negative Sampling Algorithms and Model-based Negative Sampling Algorithms.
 
@@ -892,12 +941,12 @@ One approach to improving the effectiveness of single-vector bi-encoders is hard
 
 both large in-batch negative sampling and asynchronous ANN index updates are computationally demanding.
 
-Compared with the two heuristic algorithms mentioned above, the model-based negative sampling algorithm is easier to pick high-quality negative examples, and it is also the more cutting-edge sampling algorithm at present. Here are several model-based negative sampling algorithms:
+Compared with the two heuristic algorithms mentioned above, the model-based negative sampling algorithm is easier to pick high-quality negative examples, and it is also the more cutting-edge sampling algorithm at present. Here are several model-based negative sampling algorithms: -->
 
 (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:in-batch-negatives)=
-#### Random Negatives And In-batch Negatives
+#### Random Negatives and In-batch Negatives
 
-Random negative sampling is the most basic negative sampling algorithm. The algorithm uniformly sample documents from the corpus and treat it as a negative. Clearly, random negatives can generate negatives that are too easy for the model. For example, a negative document that is topically different from the query. These easy negatives lower the learning efficiency, that is, each batch produces limited information gain to update the model. Still, random negatives are widely used because of its simplicity.
+**Random negative sampling** is the most basic negative sampling algorithm. The algorithm uniformly sample documents from the corpus and treat it as a negative. Clearly, random negatives can generate negatives that are **too easy** for the model. For example, a negative document that is topically different from the query. These easy negatives lower the learning efficiency, that is, each batch produces limited information gain to update the model. Still, random negatives are widely used because of its simplicity.
 
 In practice, random negatives are implemented as in-batch negatives.  In the contrastive learning framework with N-pair loss [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:N_pair_loss`], we construct a mini-batch of query-doc examples like $\{(q_1, d_1^+, d_{1,1}^-, d_{1,M}^-), ..., (q_N, d_N^+, d_{N,1}^-, d_{N,M}^M)\}$, Naively implementing N-pair loss would increase computational cost from constructing sufficient negative documents corresponding to each query. In-batch negatives{cite:p}`karpukhin2020dense` is trick to reuse positive documents associated with other queries as extra negatives [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:inbatchnegatives`]. The critical assumption here is that queries in a mini-batch are vastly different semantically, and positive documents from other queries would be confidently used as negatives. The assumption is largely true since each mini-batch is randomly sampled from the set of all training queries, in-batch negative document are usually true negative although they might not be hard negatives.
 
@@ -916,13 +965,13 @@ $$
 
 where $l\left(q_{i}, d_{i}^{+}, d_{j}^{-}\right)$ is the loss function for a triplet.
 
-In-batch negative offers an efficient implementation for random negatives. Another way to mitigate the inefficient learning issue is simply use large batch size (>4,000) {cite}`qu2020rocketqa`. This can be implemented using distributed multi-GPU training.
+In-batch negative offers an efficient implementation for random negatives. Another way to mitigate the inefficient learning issue is simply use large batch size (>4,000) [{ref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:large-scale-negatives`].
 
 #### Popularity-based Negative Sampling
 
-Popularity-based negative sampling use document popularity as the sampling weight to sample negative documents. The popularity of a document can be defined as some combination of click, dwell time, quality, etc. Compared to random negative sampling, this algorithm replaces the uniform distribution with a popularity-based sampling distribution, which can be pre-computed offline. 
+**Popularity-based negative sampling** use document popularity as the sampling weight to sample negative documents. The popularity of a document can be defined as some combination of click, dwell time, quality, etc. Compared to random negative sampling, this algorithm replaces the uniform distribution with a popularity-based sampling distribution, which can be pre-computed offline. 
 
-The major rationale of using popularity-based negative examples is to improve representation learning. Popular negative documents represent a harder negative compared to a unpopular negative since they tend to have to a higher chance of being more relevant; that is, lying closer to query in the embedding space. If the model is trained to distinguish these harder cases, the over learned representations will be likely improved. 
+The major rationale of using popularity-based negative examples is to improve representation learning. **Popular negative documents represent a harder negative compared to a unpopular negative since they tend to have to a higher chance of being more relevant**; that is, lying closer to query in the embedding space. If the model is trained to distinguish these harder cases, the over learned representations will be likely improved. 
 
 Popularity-based negative sampling is also used in word2vec training {cite}`mikolov2013distributed`. For example, the probability to sample a word $w_i$ is given by:
 
@@ -967,12 +1016,10 @@ In generating these negative examples, the negative-generation model (e.g., BM25
 
 #### Dynamic Hard Negative Examples
 
-
-
 Dynamic hard negative mining is a scheme proposed in ANCE{cite:p}`xiong2020approximate`. The core idea is to use the target model at previous checkpoint as the negative-generation model [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:ancenegativesamplingdemo`]. However, this negative mining approach is rather computationally demanding since corpus index need updates at every checkpoint. 
 
 ```{figure} ../img/chapter_application_IR/ApplicationIRSearch/TrainingDataSampling/NegativeSampling/ANCE_negative_sampling_demo.png
-:scale: 30%
+:scale: 45%
 :name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:ancenegativesamplingdemo
 Dynamic hard negative sampling from ANCE asynchronous training framework. Negatives are drawn from index produced using models at the previous checkpoint. Image from {cite}`xiong2020approximate`.
 ```
@@ -983,6 +1030,27 @@ Dynamic hard negative sampling from ANCE asynchronous training framework. Negati
 	This fundamentally aligns the distribution of negative samples in training and of irrelevant documents to separate in testing. From the variance reduction perspective, these ANCE negatives lift the upper bound of per instance gradient norm, reduce the variance of the
 	stochastic gradient estimation, and lead to faster learning convergence.
 \end{remark} -->
+(ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:large-scale-negatives)=
+#### Large-Scale Negatives
+
+In-batch negatives offers an efficient way to construct many negatives during training. During multiple GPU training [examplified by **RocketQA**{cite}`qu2020rocketqa`], in-batch negatives can be generalized to cross-batch negatives. 
+
+Specifically,
+* We first compute the document embeddings within each single GPU, and then share these documents embeddings among all the GPUs.
+* Beside in-batch negatives, all documents representations from other GPUs are used as the additional negatives for each query.
+
+```{figure} ../img/chapter_application_IR/ApplicationIRSearch/TrainingDataSampling/NegativeSampling/cross_batch_negatives.png
+:scale: 60%
+:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:crossnegative_demo
+The comparison of in-batch negative and cross-batch negative during multi-gpu training. Image from {cite}`qu2020rocketqa`.
+```
+
+Even in the single-GPU training setting, we can leverage queue to construct large-scale negatives [**MoCo** {cite}`chen2020improvedbaselinesmomentumcontrastive`]. The key idea is that instead of discarding embeddings from previous batches, we can use a rolling queue to store them and use them as additional negatives for current batch.
+
+
+#### Hard Positives
+
+In the retrieval model query-doc training data, it is usually filled with **easy positives**, that is query and relevant documents have all query term exact matched. During hybrid retrieval system, as the goal of dense retrieval is to complement sparse retrieval (which relies on exact term matching), it is beneficial to enrich training samples with **hard positives**, that is query and relevant document does not have all query term exact matched, particularly important query terms. With easy and hard positives, we can design currilumn learning to help model improve its semantic retrieval ability.
 
 ### Label Denoising
 #### False Negatives
@@ -993,6 +1061,153 @@ Hard negative examples produced from static or dynamic negative mining methods a
 
 Because of the noise in the labeling process (e.g., based on click data), it is also possible that a positive labeled document turns out to be irrelevant. To reduce false positive examples, one can develop more robust labeling process and merge labels from multiple sources of signals. 
 
+
+## Knowledge Distillation
+
+### Introduction
+
+Knowledge distillation aims to transfer knowledge from a well-trained, high-performing yet cumbersome teacher model to a lightweight student model with significant performance loss. Knowledge distillation has been a widely adopted method to achieve efficient neural network architecture, thus reducing overall inference costs, including memory requirements as well as inference latency. Typically, the teacher model can be an ensemble of separately trained models or a single very large model trained with a very strong regularizer such as dropout. The student model uses the distilled knowledge from the teacher network as additional learning cues. The resulting student model is computationally inexpensive and has accuracy better than directly training it from scratch.
+
+As such, tor retrieval and ranking systems, knowledge distillation is a desirable approach to develop efficient models to meet the high requirement on both accuracy and latency. 
+
+For example, one can distill knowledge from a more powerful cross-encoder (e.g., BERT cross-encoder in {numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:monoBERT`) to a computational efficient bi-encoders. Empirically, this two-step procedure might be more effective than directly training a bi-encoder from scratch.
+
+In this section, we first review the principle of knowledge distillation. Then we go over a couple examples to demonstrate the application of knowledge distillation in developing retrieval and ranking models.
+
+
+### Knowledge Distillation Training Framework
+
+In the classic knowledge distillation framework {cite}`hinton2015distilling, tang2019distilling`[{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:teacherstudentdistillationscheme`], the fundamental principle is that the teacher model produces soft label $q$ for each input feature $x$. Soft label $q$ can be viewed as a softened probability vector distributed over class labels of interest. 
+Soft targets contain valuable information on the rich similarity structure over the data. Use MNIST classification as an example, a reasonable soft target will tell that 2 looks more like 3 than 9. These soft targets can be viewed as a strategy to mitigate the over-confidence issue and reduce gradient variance when we train neural networks using one-hot hard labels. Similar mechanism is leveraged in smooth label to improves model generalization. 
+
+Allows the smaller Student model to be trained on much smaller data than the original cumbersome model and with a much higher learning rate
+
+Specifically, the logits $z$ from the techer model are outputted to generate soft labels via
+
+$$
+q_{i}^T=\frac{\exp \left(z_{i} / T\right)}{\sum_{j} \exp \left(z_{j} / T\right)},
+$$
+
+where $T$ is the temperature parameter controlling softness of the probability vector, and the sum is over the entire label space. When $T=1$, it is equivalent to standard Softmax function. As $T$ grows, $q$ become softer and approaches uniform distribution $T=\infty$. On the other hand, as $T\to 0$, the $q$ approaches a one-hot hard label. 
+
+```{figure} ../img/chapter_application_IR/ApplicationIRSearch/KnowledgeDistllation/teacher_student_distillation_scheme.png
+:scale: 30%
+:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:teacherstudentdistillationscheme
+The classic teacher-student knowledge distillation framework.
+```
+
+The loss function for the student network training is a weighted sum of the hard label based cross entropy loss and soft label based KL divergence. The rationale of KL (Kullback-Leibler) divergence is to use the softened probability vector from the teacher model to guide the learning of the student network. Minimizing the KL divergence constrains the student model's probabilistic outputs to match soft targets of the teacher model.
+
+The loss function is formally given by
+
+$$L =(1-\alpha) L_{C E}\left(p, y\right)+\alpha T^{2} {L}_{K L}\left(p^T, q^T\right)$$
+
+where $L_{CE}$ is the regular cross entropy loss between predicted probability vector $p$ and the one-hot label vector
+
+$${L}_{CE}\left(p, y\right) =-\sum_{j}{y}_{j} \log {p}_{j};$$
+
+$L_{KL}$ is the KL divergence loss between the softened predictions at temperature $T$ from the student and the teacher networks, respectively:
+
+$${L}_{KL}\left({p}^T, q^{T}\right) = -\sum_{j} {q}_{j}^{T} \log \frac{p_{j}^T}{{q}_{j}^{T}}.$$
+
+Note that the same high temperature is used to produce distributions from the student model. 
+
+Note that $L_{KL}(p^T, q^T) = L_{CE}(p^T, q^T) + H(q^T, q^T)$, with $H(q^T, q^T)$ being the entropy of probability vector $q^T$ and remaining as a constant during the training. As a result, we also often reduce the total loss to
+
+$$L =(1-\alpha) L_{C E}\left(p, y\right)+\alpha T^{2} {L}_{CE}\left(p^T, q^T\right).$$
+
+Finally, the multiplier $T^2$ is used to re-scale the gradient of KL loss and $\alpha$ is a scalar controlling the weight contribution to each loss. 
+
+Besides using softened probability vector and KL divergence loss to guide the student learning process, we can also use MSE loss between the logits from the teacher and the student networks. Specifically, 
+$$L_{MSE} = ||z^{(T)} - z^{(S)}||^2$$
+
+where $z^{(T)}$ and $z^{(S)}$ are logits from the teacher and the student network, respectively. 
+
+````{prf:remark} connections between MSE loss and KL loss
+
+In {cite}`hinton2015distilling`, given a single sample input feature $x$, the gradient of ${L}_{KL}$ with respect to $z_{k}^{(S)}$ is as follows:
+
+$$
+\frac{\partial {L}_{KL}}{\partial {z}_{k}^{s}}=T\left(p_{k}^{T}-{q}_{k}^{T}\right).
+$$
+
+When $T$ goes to $\infty$, using the approximation $\exp \left({z}_{k}/ T\right) \approx 1+{z}_{k} / T$, the gradient is simplified to:
+
+$$
+\frac{\partial {L}_{KL}}{\partial {z}_{k}^{(S)}} \approx T\left(\frac{1+z_{k}^{(S)} / T}{K+\sum_{j} {z}_{j}^{(S)} / T}-\frac{1+{z}_{k}^{(T)} / T}{K+\sum_{j} {z}_{j}^{(T)} / T}\right)
+$$
+
+where $K$ is the number of classes.
+
+Here, by assuming the zero-mean teacher and student logit, i.e., $\sum_{j} {z}_{j}^{(T)}=0$ and $\sum_{j} {z}_{j}^{(S)}=0$, and hence $\frac{\partial {L}_{K L}}{\partial {z}_{k}^{(S)}} \approx \frac{1}{K}\left({z}_{k}^{(S)}-{z}_{k}^{(T)}\right)$. This indicates that minimizing ${L}_{KL}$ is equivalent to minimizing the mean squared error ${L}_{MSE}$, under a sufficiently large temperature $T$ and the zero-mean logit assumption for both the teacher and the student.
+````
+
+### Example Distillation Strategies
+
+<!-- #### Single Cross-encoder Teacher Distillation
+
+```{figure} ../img/chapter_application_IR/ApplicationIRSearch/KnowledgeDistllation/cross_encoder_distillation.png
+:scale: 30%
+:name: fig:crossencoderdistillation
+
+``` -->
+
+#### Bi-encoder Teacher Distillation
+
+Authors in {cite}`vakili2020distilling, lu2020twinbert` pioneered the strategy of distilling powerful BERT cross-encoder into BERT bi-encoder to retain the benefits of the two model architectures: the accuracy of cross-encoder and the efficiency of bi-encoder.  
+
+Knowledge distillation follows the classic soft label framework. Bi-encoder student model training can use pointwise ranking loss, which is equivalent to binary relevance classification problem given a query and a candidate document. More formally, given training examples $(q_i, d_i)$ and their labels $y_i\in \{0, 1\}$. The BERT cross-encoder as teacher model to produce soft targets for irrelevance label and relevance label.
+
+Although cross-encoder teacher can offer accurate soft labels, it cannot directly extend to the **in-batch negatives** technique and **N-pair loss** [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:N_pair_loss`] when training the student model. The reason is that query and document embedding cannot be computed separately from a cross-encoder. **Implementing in-batch negatives using cross-encoder requires exhaustive computation** on all combinations between a query and possible documents, which amount to $|B|^2$ ($|B|$ is the batch size) query-document pairs.
+
+Authors in {cite}`lin2021batch` proposed to leverage bi-encoder variant such as Col-BERT [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:colBERT`] as a teacher model, which is more feasible to perform exhaustive comparisons between queries and passages since they are passed through the encoder independently [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch::fig:inbatchdistillation`]. 
+
+```{figure} ../img/chapter_application_IR/ApplicationIRSearch/KnowledgeDistllation/in_batch_distillation.png
+:scale: 80%
+:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch::fig:inbatchdistillation
+Compared to cross-encoder teacher, bi-encoder teacher computes query and document embeddings independents, which enables the application of the in-batch negative trick. Image from {cite}`lin2021batch`.
+```
+
+#### Cross-Encoder Embedding Similarity Distillation
+
+While bi-encoder teacher can offer efficiency in producing on-the-fly teacher scores, it sacrifaces the interaction modeling abiity from cross-encoders. On the other hand, directly using cross-encoder to produce binary classficiation logics as the distillation target does not fully leverage other useful information in the teacher model.
+
+To mitigate this, one can
+* Having a spealized cross-encoder teacher to produce query and document embeddings
+* Enforce closeness between student and teacher on query/doc embedding vectors (e.g., via cosine similarity distance)
+* Enforce closeness between student and teacher on query-doc embedding similarity scores (e.g., via MSE)
+
+```{figure} ../img/chapter_application_IR/ApplicationIRSearch/KnowledgeDistllation/cross_encoder_distillation.png
+:scale: 30%
+:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch::fig:crossencoderdistillation
+Illustration of leveraging rich information from a cross-encoder teacher for knowledge distillation.
+```
+
+ <!-- One can see that such cross-encoder teacher is designed for retrieval purpose, which can be train -->
+
+#### Ensemble Teacher Distillation
+
+As we have seen in previous sections, large Transformer based models such as BERT cross-encoders or bi-encoders are popular choices of teacher models when we perform knowledge distillation. These fine-tuned BERT models often show high performance variances across different runs. From ensemble learning perspective, using an ensemble of models as a teacher model could potentially not only achieves better distillation results, but also reduces the performance variances. 
+
+The critical challenge arising from distilling an ensemble teacher model vs a single teacher model is how to reconcile soft target labels generated by different teacher models. 
+
+Authors in {cite}`zhuang2021ensemble` propose following method to fuse scores and labels. Formally, consider query $q_{i}$, its $j$-th candidate document $d_{i j}$, and $K$ teacher models. Let the predicted ranking score by the $k$-th teacher be represented as $\hat{s}_{i j}^{(k)}$. 
+
+The simplest aggregated teacher label is to directly use the mean score, namely
+
+$$
+s_{i j}=\frac{1}{K}\hat{s}_{i j}^{(k)}.
+$$
+
+The simple average scheme would work poorly when teacher models can have outputs with very different scales. A more robust way to fuse scores is to reciprocal rank, given by
+
+$$
+s_{i j}^{(k)}=\frac{1}{K} \sum_{k=1}^{K}\frac{1}{C+\hat{r}_{i j}^{(k)}}
+$$
+
+where $\hat{r}_{i j}^{(k)}$ is the predicted rank of the $j$-th candidate text by the $k$-th teacher, and $C$ is the constant as model hyperparameters.
+
+With the fused score, softened probability vector can be obtained by taking Softmax with temperature as the scaling factor.
 
 
 ## Multi-vector Representations
@@ -1255,136 +1470,6 @@ The recently proposed COIL architecture (Gao et al., 2021a) presents an interest
 
 In another interesting extension, if we reduce the token dimension of COIL to one, the model degenerates into producing scalar weights, which then becomes directly comparable to DeepCT, row (2a) and the "no-expansion" variant of DeepImpact, row (2c). These comparisons isolate the effects of different term weighting models. We dub this variant of COIL "uniCOIL", on top of which we can also add doc2query-T5, which produces a fair comparison to DeepImpact, row ( $2 \mathrm{&nbsp;d})$. The original formulation of COIL, even with a token dimension of one, is not directly amenable to retrieval using inverted indexes because weights can be negative. To address this issue, we added a ReLU operation on the output term weights of the base COIL model to force the model to generate non-negative weights. -->
 
-
-## Knowledge Distillation
-
-### Introduction
-
-Knowledge distillation aims to transfer knowledge from a well-trained, high-performing yet cumbersome teacher model to a lightweight student model with significant performance loss. Knowledge distillation has been a widely adopted method to achieve efficient neural network architecture, thus reducing overall inference costs, including memory requirements as well as inference latency. Typically, the teacher model can be an ensemble of separately trained models or a single very large model trained with a very strong regularizer such as dropout. The student model uses the distilled knowledge from the teacher network as additional learning cues. The resulting student model is computationally inexpensive and has accuracy better than directly training it from scratch.
-
-As such, tor retrieval and ranking systems, knowledge distillation is a desirable approach to develop efficient models to meet the high requirement on both accuracy and latency. 
-
-For example, one can distill knowledge from a more powerful cross-encoder (e.g., BERT cross-encoder in {numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:monoBERT`) to a computational efficient bi-encoders. Empirically, this two-step procedure might be more effective than directly training a bi-encoder from scratch.
-
-In this section, we first review the principle of knowledge distillation. Then we go over a couple examples to demonstrate the application of knowledge distillation in developing retrieval and ranking models.
-
-
-### Knowledge Distillation Training Framework
-
-In the classic knowledge distillation framework {cite}`hinton2015distilling, tang2019distilling`[{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:teacherstudentdistillationscheme`], the fundamental principle is that the teacher model produces soft label $q$ for each input feature $x$. Soft label $q$ can be viewed as a softened probability vector distributed over class labels of interest. 
-Soft targets contain valuable information on the rich similarity structure over the data. Use MNIST classification as an example, a reasonable soft target will tell that 2 looks more like 3 than 9. These soft targets can be viewed as a strategy to mitigate the over-confidence issue and reduce gradient variance when we train neural networks using one-hot hard labels. Similar mechanism is leveraged in smooth label to improves model generalization. 
-
-Allows the smaller Student model to be trained on much smaller data than the original cumbersome model and with a much higher learning rate
-
-Specifically, the logits $z$ from the techer model are outputted to generate soft labels via
-
-$$
-q_{i}^T=\frac{\exp \left(z_{i} / T\right)}{\sum_{j} \exp \left(z_{j} / T\right)},
-$$
-
-where $T$ is the temperature parameter controlling softness of the probability vector, and the sum is over the entire label space. When $T=1$, it is equivalent to standard Softmax function. As $T$ grows, $q$ become softer and approaches uniform distribution $T=\infty$. On the other hand, as $T\to 0$, the $q$ approaches a one-hot hard label. 
-
-```{figure} ../img/chapter_application_IR/ApplicationIRSearch/KnowledgeDistllation/teacher_student_distillation_scheme.png
-:scale: 30%
-:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:teacherstudentdistillationscheme
-The classic teacher-student knowledge distillation framework.
-```
-
-The loss function for the student network training is a weighted sum of the hard label based cross entropy loss and soft label based KL divergence. The rationale of KL (Kullback-Leibler) divergence is to use the softened probability vector from the teacher model to guide the learning of the student network. Minimizing the KL divergence constrains the student model's probabilistic outputs to match soft targets of the teacher model.
-
-The loss function is formally given by
-
-$$L =(1-\alpha) L_{C E}\left(p, y\right)+\alpha T^{2} {L}_{K L}\left(p^T, q^T\right)$$
-
-where $L_{CE}$ is the regular cross entropy loss between predicted probability vector $p$ and the one-hot label vector
-
-$${L}_{CE}\left(p, y\right) =-\sum_{j}{y}_{j} \log {p}_{j};$$
-
-$L_{KL}$ is the KL divergence loss between the softened predictions at temperature $T$ from the student and the teacher networks, respectively:
-
-$${L}_{KL}\left({p}^T, q^{T}\right) = -\sum_{j} {q}_{j}^{T} \log \frac{p_{j}^T}{{q}_{j}^{T}}.$$
-
-Note that the same high temperature is used to produce distributions from the student model. 
-
-Note that $L_{KL}(p^T, q^T) = L_{CE}(p^T, q^T) + H(q^T, q^T)$, with $H(q^T, q^T)$ being the entropy of probability vector $q^T$ and remaining as a constant during the training. As a result, we also often reduce the total loss to
-
-$$L =(1-\alpha) L_{C E}\left(p, y\right)+\alpha T^{2} {L}_{CE}\left(p^T, q^T\right).$$
-
-Finally, the multiplier $T^2$ is used to re-scale the gradient of KL loss and $\alpha$ is a scalar controlling the weight contribution to each loss. 
-
-Besides using softened probability vector and KL divergence loss to guide the student learning process, we can also use MSE loss between the logits from the teacher and the student networks. Specifically, 
-$$L_{MSE} = ||z^{(T)} - z^{(S)}||^2$$
-
-where $z^{(T)}$ and $z^{(S)}$ are logits from the teacher and the student network, respectively. 
-
-````{prf:remark} connections between MSE loss and KL loss
-
-In {cite}`hinton2015distilling`, given a single sample input feature $x$, the gradient of ${L}_{KL}$ with respect to $z_{k}^{(S)}$ is as follows:
-
-$$
-\frac{\partial {L}_{KL}}{\partial {z}_{k}^{s}}=T\left(p_{k}^{T}-{q}_{k}^{T}\right).
-$$
-
-When $T$ goes to $\infty$, using the approximation $\exp \left({z}_{k}/ T\right) \approx 1+{z}_{k} / T$, the gradient is simplified to:
-
-$$
-\frac{\partial {L}_{KL}}{\partial {z}_{k}^{(S)}} \approx T\left(\frac{1+z_{k}^{(S)} / T}{K+\sum_{j} {z}_{j}^{(S)} / T}-\frac{1+{z}_{k}^{(T)} / T}{K+\sum_{j} {z}_{j}^{(T)} / T}\right)
-$$
-
-where $K$ is the number of classes.
-
-Here, by assuming the zero-mean teacher and student logit, i.e., $\sum_{j} {z}_{j}^{(T)}=0$ and $\sum_{j} {z}_{j}^{(S)}=0$, and hence $\frac{\partial {L}_{K L}}{\partial {z}_{k}^{(S)}} \approx \frac{1}{K}\left({z}_{k}^{(S)}-{z}_{k}^{(T)}\right)$. This indicates that minimizing ${L}_{KL}$ is equivalent to minimizing the mean squared error ${L}_{MSE}$, under a sufficiently large temperature $T$ and the zero-mean logit assumption for both the teacher and the student.
-````
-
-### Example Distillation Strategies
-
-<!-- #### Single Cross-encoder Teacher Distillation
-
-```{figure} ../img/chapter_application_IR/ApplicationIRSearch/KnowledgeDistllation/cross_encoder_distillation.png
-:scale: 30%
-:name: fig:crossencoderdistillation
-
-``` -->
-
-#### Single Bi-encoder Teacher Distillation
-
-Authors in {cite}`vakili2020distilling, lu2020twinbert` pioneered the strategy of distilling powerful BERT cross-encoder into BERT bi-encoder to retain the benefits of the two model architectures: the accuracy of cross-encoder and the efficiency of bi-encoder.  
-
-Knowledge distillation follows the classic soft label framework. Bi-encoder student model training can use pointwise ranking loss, which is equivalent to binary relevance classification problem given a query and a candidate document. More formally, given training examples $(q_i, d_i)$ and their labels $y_i\in \{0, 1\}$. The BERT cross-encoder as teacher model to produce soft targets for irrelevance label and relevance label.
-
-Although cross-encoder teacher can offer accurate soft labels, it cannot directly extend to the **in-batch negatives** technique and **N-pair loss** [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:N_pair_loss`] when training the student model. The reason is that query and document embedding cannot be computed separately from a cross-encoder. Implementing in-batch negatives using cross-encoder requires exhaustive computation on all combinations between a query and possible documents, which amount to $|B|^2$ ($|B|$ is the batch size) query-document pairs.
-
-Authors in {cite}`lin2021batch` proposed to leverage bi-encoder variant such as Col-BERT [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:colBERT`] can also be leveraged as a teacher model, which has the advantage that it is more feasible to perform exhaustive comparisons between queries and passages since they are passed through the encoder independently [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch::fig:inbatchdistillation`]. 
-
-```{figure} ../img/chapter_application_IR/ApplicationIRSearch/KnowledgeDistllation/in_batch_distillation.png
-:scale: 80%
-:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch::fig:inbatchdistillation
-Compared to cross-encoder teacher, bi-encoder teacher computes query and document embeddings independents, which enables the application of the in-batch negative trick. Image from {cite}`lin2021batch`.
-```
-
-#### Ensemble Teacher Distillation
-
-As we have seen in previous sections, large Transformer based models such as BERT cross-encoders or bi-encoders are popular choices of teacher models when we perform knowledge distillation. These fine-tuned BERT models often show high performance variances across different runs. From ensemble learning perspective, using an ensemble of models as a teacher model could potentially not only achieves better distillation results, but also reduces the performance variances. 
-
-The critical challenge arising from distilling an ensemble teacher model vs a single teacher model is how to reconcile soft target labels generated by different teacher models. 
-
-Authors in {cite}`zhuang2021ensemble` propose following method to fuse scores and labels. Formally, consider query $q_{i}$, its $j$-th candidate document $d_{i j}$, and $K$ teacher models. Let the predicted ranking score by the $k$-th teacher be represented as $\hat{s}_{i j}^{(k)}$. 
-
-The simplest aggregated teacher label is to directly use the mean score, namely
-
-$$
-s_{i j}=\frac{1}{K}\hat{s}_{i j}^{(k)}.
-$$
-
-The simple average scheme would work poorly when teacher models can have outputs with very different scales. A more robust way to fuse scores is to reciprocal rank, given by
-
-$$
-s_{i j}^{(k)}=\frac{1}{K} \sum_{k=1}^{K}\frac{1}{C+\hat{r}_{i j}^{(k)}}
-$$
-
-where $\hat{r}_{i j}^{(k)}$ is the predicted rank of the $j$-th candidate text by the $k$-th teacher, and $C$ is the constant as model hyperparameters.
-
-With the fused score, softened probability vector can be obtained by taking Softmax with temperature as the scaling factor.
 
 
 ## Approximate Nearest Neighbor Search
