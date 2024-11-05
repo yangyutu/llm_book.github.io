@@ -196,7 +196,7 @@ Another improve of BERT over EMLO is the tokenization strategy. BERT tokenizes w
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/BERT_contextualizedEmbedding/BERT/BERTPretrainFineTune.png
 ---
-scale: 45%
+scale: 60%
 name: chapter_foundation_fig_bert_bertpretrainfinetune
 ---
 BERT pre-training and downstream task fine tuning framework. Image from {cite:p}`devlin2018bert`.
@@ -288,7 +288,7 @@ A pretrained BERT model can be fine-tuned to a wide range of downstream tasks, a
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/BERT_contextualizedEmbedding/BERT/BERT_tasks.png
 ---
-scale: 20%
+scale: 25%
 name: chapter_foundation_fig_bert_berttasks
 ---
 BERT architecture configuration for different downstream tasks.
@@ -470,7 +470,7 @@ Additional model compression strategy includes ***embedding factorization***. Th
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/BERT_contextualizedEmbedding/modelDistillation/MINILM_deep_attention_demo.png
 ---
-scale: 30%
+scale: 40%
 name: chapter_foundation_fig_bert_minilmdeepattentiondemo
 ---
 Overview of self-attention knowledge transfer in MiniLM. The student is trained by mimicking the self-attention behavior of the last
@@ -527,6 +527,7 @@ Both generator $G$ and discriminator $D$ can use the transformer encoder archite
 $$
 p_{G}\left(x_{t} \mid \boldsymbol{x}\right)=\exp \left(e\left(x_{t}\right)^{T} h_{G}(\boldsymbol{x})_{t}\right) / \sum_{x^{\prime}} \exp \left(e\left(x^{\prime}\right)^{T} h_{G}(\boldsymbol{x})_{t}\right)
 $$
+
 where $e$ denotes token embeddings. The replaced token is then sampled from this distribution. 
 
 Given an input sequence with sampled replaced token, the discriminator predicts whether each token $x_{t}$ is replaced or is original via:
@@ -542,7 +543,9 @@ $$
 $$
 
 The loss function for the discriminator is 
+
 $$\mathcal{L}_{Disc}\left(\boldsymbol{x}, \theta_{D}\right)=\mathbb{E}\left(\sum_{t=1}^{n}-y_t \log D\left(\boldsymbol{x}^{\text {replaced }}, t\right)-\left(1 - y_t\right) \log \left(1-D\left(\boldsymbol{x}^{\text {replaced }}, t\right)\right)\right).$$
+
 where $y_t$ is a binary label with 1 indicating $x_t$ is a replaced token and 0 otherwise.
 As the generator is trained, the replaced tokens is harder and harder to distinguish, which further improves the learning of the discriminator. 
 

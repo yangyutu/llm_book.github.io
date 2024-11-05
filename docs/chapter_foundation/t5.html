@@ -211,7 +211,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">18. Basic Prompting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">19. Advanced Prompting Techniques</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Retrieval-Augmented Generation (RAG) and Agents</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">20. RAG</a></li>
 </ul>
@@ -327,8 +327,10 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bart">7.2. BART</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">7.2.1. Overview</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-training">7.2.2. Pre-training</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining-performance-analysis">7.2.3. Pretraining performance analysis</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#text-generation-tasks">7.2.3.1. Text Generation Tasks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining-performance-analysis">7.2.3. Pretraining performance analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-fine-tuning">7.2.4. Model Fine Tuning</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#language-understanding-tasks">7.2.4.1. Language Understanding Tasks</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#text-generation-tasks">7.2.4.2. Text Generation Tasks</a></li>
 </ul>
 </li>
 </ul>
@@ -351,7 +353,7 @@ document.write(`
 <h2><span class="section-number">7.1. </span>T5<a class="headerlink" href="#t5" title="Link to this heading">#</a></h2>
 <section id="overview">
 <h3><span class="section-number">7.1.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
-<p>Pretrained language models and transfer learning enable a diverse range of NLP tasks to be solved by a generic and unified architecture paradigm consisting of an representation encoder from the pretrained language model plus a task-dependent prediction head. T5 (Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer) <span id="id1">[<a class="reference internal" href="#id387" title="Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter J Liu. Exploring the limits of transfer learning with a unified text-to-text transformer. Journal of Machine Learning Research, 21(140):1–67, 2020.">RSR+20</a>]</span> push this limits further. Based on encoder-decoder Transformer model, T5 proposed a unifying framework to solve many tasks by casting them to a text-to-text problem, where  input and output, as well as the task description, are a list of text tokens.</p>
+<p>Pretrained language models and transfer learning enable a diverse range of NLP tasks to be solved by a generic and unified architecture paradigm consisting of an representation encoder from the pretrained language model plus a task-dependent prediction head. T5 (Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer) <span id="id1">[<a class="reference internal" href="#id388" title="Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter J Liu. Exploring the limits of transfer learning with a unified text-to-text transformer. Journal of Machine Learning Research, 21(140):1–67, 2020.">RSR+20</a>]</span> push this limits further. Based on encoder-decoder Transformer model, T5 proposed a unifying framework to solve many tasks by casting them to a text-to-text problem, where  input and output, as well as the task description, are a list of text tokens.</p>
 <p>The following diagram <a class="reference internal" href="#chapter-foundation-fig-seq2seq-t5arch"><span class="std std-numref">Fig. 7.1</span></a> illustrates how T5 solves four different NLP problems within a unified framework, including machine learning, linguistic acceptability, semantic similarity, and text summarization.</p>
 <figure class="align-default" id="chapter-foundation-fig-seq2seq-t5arch">
 <a class="reference internal image-reference" href="../../_images/T5_arch.png"><img alt="../../_images/T5_arch.png" src="../../_images/T5_arch.png" style="width: 657.6px; height: 284.0px;" />
@@ -364,7 +366,7 @@ document.write(`
 <div class="proof example admonition" id="example-0">
 <p class="admonition-title"><span class="caption-number">Example 7.1 </span></p>
 <section class="example-content" id="proof-content">
-<p>In order to train a single model on the diverse set of tasks described above, we need a consistent input and output format across all tasks. As recently noted by <span id="id2">[<a class="reference internal" href="transformers.html#id1139" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>, <a class="reference internal" href="#id1436" title="Bryan McCann, Nitish Shirish Keskar, Caiming Xiong, and Richard Socher. The natural language decathlon: multitask learning as question answering. arXiv preprint arXiv:1806.08730, 2018.">MKXS18</a>]</span>, it is possible to formulate most NLP tasks in a text-to-text format - that is, a task where the model is fed some text for context or conditioning and is then asked to produce some output text.</p>
+<p>In order to train a single model on the diverse set of tasks described above, we need a consistent input and output format across all tasks. As recently noted by <span id="id2">[<a class="reference internal" href="#id1133" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>, <a class="reference internal" href="#id1437" title="Bryan McCann, Nitish Shirish Keskar, Caiming Xiong, and Richard Socher. The natural language decathlon: multitask learning as question answering. arXiv preprint arXiv:1806.08730, 2018.">MKXS18</a>]</span>, it is possible to formulate most NLP tasks in a text-to-text format - that is, a task where the model is fed some text for context or conditioning and is then asked to produce some output text.</p>
 <p>To specify which task the model should perform, we add a task-specific (text) prefix to the original input sequence before feeding it to the model. As an example,</p>
 <ul class="simple">
 <li><p>To ask the model to translate the sentence “That is good.” from English to German, the model would be fed the sequence “translate English to German: That is good.” and would be trained to output “Das ist gut.”</p></li>
@@ -400,7 +402,7 @@ document.write(`
 <h2><span class="section-number">7.2. </span>BART<a class="headerlink" href="#bart" title="Link to this heading">#</a></h2>
 <section id="id3">
 <h3><span class="section-number">7.2.1. </span>Overview<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
-<p>The key contribution of BART (Bidirectional and Auto-Regressive Transformers) <span id="id4">[<a class="reference internal" href="#id392" title="Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed, Omer Levy, Ves Stoyanov, and Luke Zettlemoyer. BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. ArXiv:1910.13461, 2019.">LLG+19</a>]</span> is using Seq2Seq Transformer architecture to combine the advantage of bidirectional auto-encoder scheme (like BERT) and Auto-regressive scheme (like GPT).</p>
+<p>The key contribution of BART (Bidirectional and Auto-Regressive Transformers) <span id="id4">[<a class="reference internal" href="#id393" title="Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed, Omer Levy, Ves Stoyanov, and Luke Zettlemoyer. BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. ArXiv:1910.13461, 2019.">LLG+19</a>]</span> is using Seq2Seq Transformer architecture to combine the advantage of bidirectional auto-encoder scheme (like BERT) and Auto-regressive scheme (like GPT).</p>
 <p>With well-design pretraining tasks, BART, when fine tuned, is particularly effective for both text generation and for language comprehension tasks. BART has achieved state-of-the-art performance in generative tasks, such extractive summarization, dialogue, and abstractive QA.</p>
 </section>
 <section id="pre-training">
@@ -456,8 +458,9 @@ document.write(`
 </section>
 <section id="pretraining-performance-analysis">
 <h3><span class="section-number">7.2.3. </span>Pretraining performance analysis<a class="headerlink" href="#pretraining-performance-analysis" title="Link to this heading">#</a></h3>
-<p>```{table} Comparison of pre-training objectives. Performance varies considerably across tasks, but the BART models with text infilling demonstrate the most consistently strong performance. Table from <span id="id5">[<a class="reference internal" href="#id392" title="Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed, Omer Levy, Ves Stoyanov, and Luke Zettlemoyer. BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. ArXiv:1910.13461, 2019.">LLG+19</a>]</span>.</p>
-<div class="pst-scrollable-table-container"><table class="table">
+<p>The followings shows the performance on pretraining objectives. (Table from <span id="id5">[<a class="reference internal" href="#id393" title="Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed, Omer Levy, Ves Stoyanov, and Luke Zettlemoyer. BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. ArXiv:1910.13461, 2019.">LLG+19</a>]</span>).</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id1528">
+<caption><span class="caption-number">Table 7.1 </span><span class="caption-text">Comparison of pre-training objectives. Performance varies considerably across tasks, but the BART models with text infilling demonstrate the most consistently strong performance. .</span><a class="headerlink" href="#id1528" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Model</p></th>
 <th class="head text-center"><p>SQuAD 1.1</p></th>
@@ -552,30 +555,26 @@ document.write(`
 </tbody>
 </table>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
-
-### Model Fine Tuning
-
-The pre-trained BART model has both text representation and generation capabilities, so it is applicable for both language understanding and text generation downstream tasks.
-
-#### Language Understanding Tasks
-
-**Sequence classification** For sequence or token classification tasks, the encoder and decoder of BART use the same input, and the state of the hidden layer at the final moment of the decoder is used as the vector representation of the input text. The vector representation is fed into the multi-class linear classifier. Similar to the [CLS] token of the BERT model, the BART model adds an additional special token at the last position of the decoder input, and uses the hidden layer state of this token as the representation of the text. 
-
-**Token classification.** For sequence or token classification tasks, the encoder and decoder of BART use the same input, the top hidden state of the decoder as a representation for each
-word. The vector representation is fed into the multi-class linear classifier. 
-
-```{figure} ../img/chapter_foundation/pretrainedLM/seq2seq/BART/BART_fine_tuning_classification.png
----
-scale: 40%
-name: chapter_foundation_fig_seq2seq_bart_finetuning_classification
----
-To use BART for classification problems, the same
-		input is fed into the encoder and decoder, and the representation from the final output is used.  Image from {cite:p}`lewis2019bart`.
-</pre></div>
-</div>
+</section>
+<section id="model-fine-tuning">
+<h3><span class="section-number">7.2.4. </span>Model Fine Tuning<a class="headerlink" href="#model-fine-tuning" title="Link to this heading">#</a></h3>
+<p>The pre-trained BART model has both text representation and generation capabilities, so it is applicable for both language understanding and text generation downstream tasks.</p>
+<section id="language-understanding-tasks">
+<h4><span class="section-number">7.2.4.1. </span>Language Understanding Tasks<a class="headerlink" href="#language-understanding-tasks" title="Link to this heading">#</a></h4>
+<p><strong>Sequence classification</strong> For sequence or token classification tasks, the encoder and decoder of BART use the same input, and the state of the hidden layer at the final moment of the decoder is used as the vector representation of the input text. The vector representation is fed into the multi-class linear classifier. Similar to the [CLS] token of the BERT model, the BART model adds an additional special token at the last position of the decoder input, and uses the hidden layer state of this token as the representation of the text.</p>
+<p><strong>Token classification.</strong> For sequence or token classification tasks, the encoder and decoder of BART use the same input, the top hidden state of the decoder as a representation for each
+word. The vector representation is fed into the multi-class linear classifier.</p>
+<figure class="align-default" id="chapter-foundation-fig-seq2seq-bart-finetuning-classification">
+<a class="reference internal image-reference" href="../../_images/BART_fine_tuning_classification.png"><img alt="../../_images/BART_fine_tuning_classification.png" src="../../_images/BART_fine_tuning_classification.png" style="width: 595.2px; height: 221.20000000000002px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 7.4 </span><span class="caption-text">To use BART for classification problems, the same
+input is fed into the encoder and decoder, and the representation from the final output is used.  Image from <span id="id6">[<a class="reference internal" href="#id393" title="Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed, Omer Levy, Ves Stoyanov, and Luke Zettlemoyer. BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. ArXiv:1910.13461, 2019.">LLG+19</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-seq2seq-bart-finetuning-classification" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
 <section id="text-generation-tasks">
-<h4><span class="section-number">7.2.3.1. </span>Text Generation Tasks<a class="headerlink" href="#text-generation-tasks" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">7.2.4.2. </span>Text Generation Tasks<a class="headerlink" href="#text-generation-tasks" title="Link to this heading">#</a></h4>
 <p><strong>Text generation.</strong> BART models can be used directly for conditional text generation tasks such as text summarization. Take text summarization as an example, the input of the encoder is the text to be summarized, and the decoder generates the corresponding target text in an auto-regressive manner.</p>
 <p><strong>Machine translation.</strong> When used for machine translation tasks, the BART model cannot be directly fine-tuned because the source and target languages use different vocabulary sets. Therefore, the researchers propose to replace the input embedding layer of the BART model encoder with a small Transformer encoder, <strong>which is used to align the vocabulary in the source language to the input representation space of the target language</strong>. During the fine-tuning phase, the parameters of this newly introduced source language encoder are randomly initialized, and most of the other parameters of the BART model are pre-trained.</p>
 <p>There are two stages in the fine-tuning phase.</p>
@@ -587,9 +586,9 @@ To use BART for classification problems, the same
 <a class="reference internal image-reference" href="../../_images/BART_fine_tuning_translation.png"><img alt="../../_images/BART_fine_tuning_translation.png" src="../../_images/BART_fine_tuning_translation.png" style="width: 380.40000000000003px; height: 236.4px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 7.4 </span><span class="caption-text">For machine translation, we learn a small additional
+<p><span class="caption-number">Fig. 7.5 </span><span class="caption-text">For machine translation, we learn a small additional
 encoder that replaces the word embeddings in BART. The
-new encoder can use a disjoint vocabulary. Image from <span id="id6">[<a class="reference internal" href="#id392" title="Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed, Omer Levy, Ves Stoyanov, and Luke Zettlemoyer. BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. ArXiv:1910.13461, 2019.">LLG+19</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-seq2seq-bart-finetuning-translation" title="Link to this image">#</a></p>
+new encoder can use a disjoint vocabulary. Image from <span id="id7">[<a class="reference internal" href="#id393" title="Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed, Omer Levy, Ves Stoyanov, and Luke Zettlemoyer. BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. ArXiv:1910.13461, 2019.">LLG+19</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-seq2seq-bart-finetuning-translation" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -597,22 +596,22 @@ new encoder can use a disjoint vocabulary. Image from <span id="id6">[<a class="
 </section>
 <section id="bibliography">
 <h2><span class="section-number">7.3. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id7">
+<div class="docutils container" id="id8">
 <div role="list" class="citation-list">
-<div class="citation" id="id392" role="doc-biblioentry">
+<div class="citation" id="id393" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>LLG+19<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id4">1</a>,<a role="doc-backlink" href="#id5">2</a>,<a role="doc-backlink" href="#id6">3</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id4">1</a>,<a role="doc-backlink" href="#id5">2</a>,<a role="doc-backlink" href="#id6">3</a>,<a role="doc-backlink" href="#id7">4</a>)</span>
 <p>Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed, Omer Levy, Ves Stoyanov, and Luke Zettlemoyer. BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. <em>ArXiv:1910.13461</em>, 2019.</p>
 </div>
-<div class="citation" id="id1436" role="doc-biblioentry">
+<div class="citation" id="id1437" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">MKXS18</a><span class="fn-bracket">]</span></span>
 <p>Bryan McCann, Nitish Shirish Keskar, Caiming Xiong, and Richard Socher. The natural language decathlon: multitask learning as question answering. <em>arXiv preprint arXiv:1806.08730</em>, 2018.</p>
 </div>
-<div class="citation" id="id1132" role="doc-biblioentry">
+<div class="citation" id="id1133" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">RWC+19</a><span class="fn-bracket">]</span></span>
 <p>Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. <em>OpenAI Blog</em>, 1(8):9, 2019.</p>
 </div>
-<div class="citation" id="id387" role="doc-biblioentry">
+<div class="citation" id="id388" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">RSR+20</a><span class="fn-bracket">]</span></span>
 <p>Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter J Liu. Exploring the limits of transfer learning with a unified text-to-text transformer. <em>Journal of Machine Learning Research</em>, 21(140):1–67, 2020.</p>
 </div>
@@ -693,8 +692,10 @@ new encoder can use a disjoint vocabulary. Image from <span id="id6">[<a class="
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bart">7.2. BART</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">7.2.1. Overview</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-training">7.2.2. Pre-training</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining-performance-analysis">7.2.3. Pretraining performance analysis</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#text-generation-tasks">7.2.3.1. Text Generation Tasks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining-performance-analysis">7.2.3. Pretraining performance analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-fine-tuning">7.2.4. Model Fine Tuning</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#language-understanding-tasks">7.2.4.1. Language Understanding Tasks</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#text-generation-tasks">7.2.4.2. Text Generation Tasks</a></li>
 </ul>
 </li>
 </ul>
