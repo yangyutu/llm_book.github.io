@@ -2,7 +2,7 @@
 
 ## Motivation 
 
-Natural languages emerge from formal or casual communications between human beings and only have a limited set of formal rules to follow. Linguists have been directing decades' efforts to modeling languages via grammars, rules, and structure of natural language. In NLP, language modeling \cite{goldberg2017neural} tasks involve the the use of various statistical and probabilistic techniques to determine the probability of a given sequence of words forming a sentence that make sense [{numref}`chapter_foundation_fig_languagemodelingtaskdemo`]. 
+Natural languages emerge from formal or casual communications between human beings and only have a limited set of formal rules to follow. Linguists have been directing decades' efforts to modeling languages via grammars, rules, and structure of natural language. In NLP, language modeling {cite:p}`goldberg2017neural` tasks involve the the use of various statistical and probabilistic techniques to determine the probability of a given sequence of words forming a sentence that make sense [{numref}`chapter_foundation_fig_languagemodelingtaskdemo`]. 
 
 ```{figure} ../img/chapter_foundation/languageModeling/languageModelingTask_demo.png
 ---
@@ -25,8 +25,6 @@ Language modeling is an indispensable components in real-world applications. A l
 A closed related language modeling task is predict the next word following a sequence of words.
 
 Predicting the next word in a language system can be much more challenging than predicting the next observation in the many physical system. One perspective is that the evolution of many physical systems can governed by physical laws that are well established; on the other hand, the generation of next word, sentence, and even logically coherent paragraph is closely related to human reasoning and intelligence, which remain poorly understood. In fact, it is widely believed that being able to write up logical and coherent paragraphs is an indication of human-level intelligence {cite:p}`radford2019language`.
-
-
 
 
 In this section, we first consider a classical $n$-gram statistical language approach {cite:p}`manning1999foundations`, where we count the co-occurrence of words and model the language generation using probabilistic models (e.g., Markov chains). $n$-gram models focus on predicting next word based on the superficial co-occurrence counts instead of high-level semantic links between the context and the unknown next word,  It further suffers from the curse of dimensionality since sentences are normally long and language vocabulary size is huge (e.g., $10^6$). Over the past two decades, the neural network based language models have attracted considerable attention because these models are able to reveal deep connections between words as well as to alleviate the dimensionality challenge. Our focus in this section is on early development of neural language models; recent developments of pre-trained language models (e.g., GPT 1-3 {cite:p}`radford2018improving, radford2019language, brown2020language`) will be covered in next section.
@@ -130,42 +128,44 @@ $$\theta_{ij} = \frac{\operatorname{count}(i, j)}{\operatorname{count}(i)}.$$
 
 
 
-\subsubsection{Special case: unigram language model}
+#### Special case: unigram language model
 
 In the unigram language model, we assume 
+
 $$P(w_1, w_2,...,w_N) = \prod_{i=1}^N P(w_i).$$
 
 We can empirically estimate 
+
 $$P(w_i) = \frac{\operatorname{count}(w_i)}{\sum_{j=1}^{|V|}\operatorname{count}(w_j)} = \frac{\operatorname{count}(w_i)}{N_{|V|}},$$
 
 where $\operatorname{count}(w_i)$ is the number of $w_i$ in the corpus, $|V|$ is the vocabulary size, and $N_{|V|}$ is the total number of words in the corpus.
 
 A unigram language model does not capture any transitional relationship between words. When we use a unigram language model to generate sentences, the resulted sentences would mostly consist of high-frequent words and thus hardly make sense. 
 
-### Choices Of $n$ And Bias-variance Trade-off
+### Choices Of $n$ and Bias-variance Trade-off
 
 
 
-For a $n$-gram model, when $n$ is too small, say a bigram model, the model can capture synactic structure in the language but can hardly capture the sequential, long distance relationship among words. For example, the syntatic structure like the fact that a noun or an adjective comes after \textit{enjoy} and the fact that a verb in its original form typically comes after \textit{to}. For long-range dependency, consider the following sentences:
-* Gorillas always like to groom their friends.
-* The computer that's on the 3rd floor of our office building crashed.
+For a $n$-gram model, when $n$ is too small, say a bigram model, the model can capture synactic structure in the language but can hardly capture the sequential, long distance relationship among words. For example, the syntatic structure like the fact that a noun or an adjective comes after *enjoy* and the fact that a verb in its original form typically comes after *to*. For long-range dependency, consider the following sentences:
+* Gorillas always like to groom **their** friends.
+* The computer that's on the 3rd floor of our office building **crashed**.
 
-In each example, the words written in bold depend on each other: the likelihood of their depends on knowing that gorillas is plural, and the likelihood of crashed depends on knowing that the subject is a computer. If the $n$-grams are not big enough to capture this context, then the resulting language model would offer probabilities that are too low for these sentences, and too high for sentences that fail basic linguistic tests like number agreement.
+In each example, the words written in bold depend on each other: the likelihood of *their* depends on knowing that gorillas is plural, and the likelihood of *crashed* depends on knowing that the subject is a computer. If the $n$-grams are not big enough to capture this context, then the resulting language model would offer probabilities that are too low for these sentences, and too high for sentences that fail basic linguistic tests like number agreement.
 
 Typically, the longer the context we condition on in predicting the next word, the more coherent the sentences. But a language model with a large $n$ can overfit to small-sized training corpus as it tends to memorize specific long sequence patterns in the training corpus and to give zero probabilities to those unseen. Specifically, a $n$-gram model has model parameter scales like $O(V^n)$, where $V$ is the vocabulary size. 
 
-The choice of appropriate $n$ is related to bias-variance trade-off. A small $n$-gram size introduces high bias, and a large $n$-gram size introduces high variance. Since human language is full of long-range dependencies, in practice, we tend to keep $n$ large and at the same time use smoothing tricks, as some sort of bias, to achieve low-variance estimates of the model parameters. 
+The choice of appropriate $n$ is related to **bias-variance trade-off**. A small $n$-gram size introduces high bias, and a large $n$-gram size introduces high variance. Since human language is full of long-range dependencies, in practice, we tend to keep $n$ large and at the same time use smoothing tricks, as some sort of bias, to achieve low-variance estimates of the model parameters. 
 
-### Out Of Vocabulary (OOV) Words And Rare Words
+### Out Of Vocabulary (OOV) Words and Rare Words
 
-Some early speech and language applications might just involve a closed vocabulary, in which the vocabulary is known in advance and the runtime test set will contain words from the vocabulary. Modern natural language application typically involves an open vocabulary in which out of vocabulary words can occur. For those cases, which can simply add a pseudo-word <UNK>, and treat all the OOV words as the <UNK>. 
+Some early speech and language applications might just involve a closed vocabulary, in which the vocabulary is known in advance and the runtime test set will contain words from the vocabulary. Modern natural language application typically involves an open vocabulary in which out of vocabulary words can occur. For those cases, which can simply add a pseudo-word UNK, and treat all the OOV words as the UNK. 
 
-In applications where we don't have a prior vocabulary in advance and need to create one from corpus, we can limit the size of vocabulary by replacing low-frequency rare words by <UNK> or some other more fine-grained special symbols (i.e., replacing rare organization names by <ORG> and replacing rare people names by <PEOPLE>).
+In applications where we don't have a prior vocabulary in advance and need to create one from corpus, we can limit the size of vocabulary by replacing low-frequency rare words by <UNK> or some other more fine-grained special symbols (i.e., replacing rare organization names by ORG and replacing rare people names by PEOPLE).
 
-Note that how the vocabulary is constructed and how we map rare words to <UNK> affects how we evaluate the quality of language model using likelihood based metrics (e.g., perplexity). For example, a language model can achieve artificially low perplexity by choosing a small vocabulary and assigning many words to the unknown word.
+Note that how the vocabulary is constructed and how we map rare words to UNK affects how we evaluate the quality of language model using likelihood based metrics (e.g., perplexity). For example, a language model can achieve artificially low perplexity by choosing a small vocabulary and assigning many words to the unknown word.
 
-## Smoothing And Discounting Techniques
-### Add $\alpha$ Smoothing And Discounting
+## Smoothing and Discounting Techniques
+### Add $\alpha$ Smoothing and Discounting
 One fundamental limit of the baseline counting method is the zero probability assigned to $n$-grams that do not appear in the training corpus. This has a significant impact when we use the model to score a sentence. For example,  one zero probability of any unseen bigram $w_{i-1},w_i$ will cause the probability of the sequence $w_1,...,w_i,...,w_n$ to be zero. 
 
 ````{prf:example}
@@ -174,9 +174,9 @@ phrase *denied the offer*. Our model will incorrectly estimate that <span style=
 
 ````
 
-A simply remedy is to add $\alpha$ **imaginary** counts to all the n-gram that can be constructed from the vocabulary, on top of the actual counts observed in the corpus.[^myref1]
+A simply remedy is to add $\alpha$ **imaginary** counts to all the n-gram that can be constructed from the vocabulary, on top of the actual counts observed in the corpus.
 
-[^myref1]: When $\alpha=1$, this is called \textbf{Laplace smoothing}; when $\alpha=0.5$, this is called Jeffreys-Perks law. 
+When $\alpha=1$, this is called **Laplace smoothin**g; when $\alpha=0.5$, this is called Jeffreys-Perks law. 
 
 Take bigram language model as an example, the resulting estimation is given by
 
@@ -202,13 +202,14 @@ Note that the effective counts defined this way ensures that total count $M$ sat
 
 In general, if $c_i > 0$, then $c_i* < c_i$; if $c_i = 0$, then $c_i^* > c_i = 0$. Therefore, when we are adding imaginary counts to all the events, the effective counts of all observed events are decreased and the effective counts for all unobserved events are increased. From the probability mass perspective, add-$\alpha$ smoothing is equivalent to remove some probability mass from observed events and re-distribute the collected probability mass to all unobserved events. 
 
-We can also use the concept of discounting\footnote{A related definition is absolute discounting, which is given by $d_i = c_i - c_i^*$. } to reflect the change between $c^*_i$ and $c_i$, which is given by
+We can also use the concept of discounting  to reflect the change between $c^*_i$ and $c_i$.
 The discount for each $\mathrm{n}$-gram is then computed as,
 
 $$
 d_i=\frac{c_i^*}{c_i}=\frac{\left(c_i+\alpha\right)}{c_i} \frac{M}{(M+E \alpha)}.
 $$
 
+A related definition is absolute discounting, which is given by $d_i = c_i - c_i^*$. 
  
 The bias we add to the n-gram model is reflected on the value of $d_i$. When $\alpha = 0, d_i = 1.0$, there is no bias in the n-gram model estimation. For non-zero $\alpha$, $d_i < 1$. The smaller the $d_i$, the large the bias we introduce. For example, when the vocabulary size $|V|$ is large, but the total number of tokens $M$ is small, $d_i$ approaches zero and the bias is thus large.
 
@@ -236,7 +237,7 @@ Consider following 7 events with a total count of 20. The following table demons
 
 The smoothing method discussed above borrows probability mass from observed $n$-grams and redistributes it to all $n-$grams, including both observed ones and unobserved ones. The borrowed amount is controlled by the parameter $\alpha$. A variation of such re-distribution is to just redistribute the borrowed probablity mass to those unobserved one. A key characteristic of these redistribution methods is that redistribution is carried out **equally**. 
 
-Another popular smoothing approach is \textbf{back-off}. The key idea is that the redistribution of the probability mass to an unobserved $n$-gram is dependent on the statistics of its constituent $n-1$ gram. The latest development of $n$-gram language modeling is to use modified Kneser Ney smoothing\cite{chen1999empirical}. 
+Another popular smoothing approach is **back-off**. The key idea is that the redistribution of the probability mass to an unobserved $n$-gram is dependent on the statistics of its constituent $n-1$ gram. The latest development of $n$-gram language modeling is to use modified Kneser Ney smoothing {cite:p}`chen1999empirical`. 
 
 In the $n$-gram Katz's backoff model, 
 
@@ -282,7 +283,7 @@ So far we have discussed the back-off idea of redistributing probability mass to
 Given a training corpus, we can build different language models with different $n$-gram settings as well as other model smoothing hyperparameter. There model training hyperparameters give different bias and variance trade-off and we need an evaluation method to gauge which hyperparameter is better for intended applications.
 
 One principled way is to evaluate the model predicted likelihood on an unseen test set, which consist of natural language sentences, from the intended applications. with unseen sentences and then compare the probability or its variant computed from different candidate models on the test set. A language model that assigns a higher probability to the test set is considered a better one.
-We define \textbf{perplexity} of a language model on a test set as the inverse probability of the test set, normalized by the number of words. For a test set $W = (w_{1} w_{2} \ldots w_{N})$ ($N$ can be millions), 
+We define **perplexity** of a language model on a test set as the inverse probability of the test set, normalized by the number of words. For a test set $W = (w_{1} w_{2} \ldots w_{N})$ ($N$ can be millions), 
 
 $$\operatorname{perplexity}(W) =\exp\left(-\frac{1}{N}\sum_{i=1}^N \ln P\left(w_{1} w_{2} \ldots w_{N}\right)\right), $$
 
@@ -292,7 +293,7 @@ $$
 P\left(w_{1:n}\right) \approx \prod_{i=1}^{N} P\left(w_{i} | w_{i-n+1:n-1}\right).
 $$
 
-Intuitively, perplexity is roughly the \textbf{inverse probability} of the test set. Therefore, a good larnguage model will assign high probability to the test set and produce a low perplexity value. Since $\ln P(w_{1:N}) \le 0$, the perplexity is always greater than or equal to 1.0.  Since the longer the sentence, the more negative $\ln P$ tends to be, the normalization by sentence length $N$ reduces such impact.
+Intuitively, perplexity is roughly the **inverse probability** of the test set. Therefore, a good larnguage model will assign high probability to the test set and produce a low perplexity value. Since $\ln P(w_{1:N}) \le 0$, the perplexity is always greater than or equal to 1.0.  Since the longer the sentence, the more negative $\ln P$ tends to be, the normalization by sentence length $N$ reduces such impact.
 
 ````{prf:remark} Caveats
 To compare the performance of two different language models, it is necessary to **keep the vocabulary and the actual word to special token mapping the same. **
