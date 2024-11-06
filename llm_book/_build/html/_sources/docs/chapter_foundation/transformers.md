@@ -75,7 +75,7 @@ $$
 \end{array}\right.
 $$
 
-where $j = \{1,...,d_{model}\}$. Note that the position encodings have the same dimension $d_{model}$ as the word embeddings such that they can be summed.
+where $j = \{0,...,d_{model} - 1\}$. Note that the position encodings have the same dimension $d_{model}$ as the word embeddings such that they can be summed.
 Intuitively, each dimension of the positional encoding corresponds to a sine/cosine wave of different wavelengths ranging from $2 \pi$ (when $j=1$) to approx $10000 \cdot 2 \pi$(when $j=d_{model}$). An example position encodings of dimensionality 256 for position index from 1 to 256 is shown in {numref}`chapter_foundation_fig_pretrained_LM_transformer_positionencoding`.
 
 
@@ -118,8 +118,8 @@ Multi-head attention mechanism with masks plays a central role in both encoder a
 
 Multi-head attentions are used in three places: 
 * In the encoder module, multi-head attention without using masks are used to construct intermediate contextualized embedding for each token that depends of its context. The query, key, and values are all the same input sequence.
-* In the decoder module, multi-head attention with masks are used to construct contextualized embedding for each token by attending to only its \textit{preceding} or \textit{seen} tokens. The query, key, and values are all the same input sequence.
-* From the encoder module to the decoder module, multi-head attention without using masks is used to construct embedding for each output token that depends of its \textit{input} context (i.e., attention between input and output sequences).
+* In the decoder module, multi-head attention with masks are used to construct contextualized embedding for each token by attending to only its *preceding* or *seen* tokens. The query, key, and values are all the same input sequence.
+* From the encoder module to the decoder module, multi-head attention without using masks is used to construct embedding for each output token that depends of its *input* context (i.e., attention between input and output sequences).
 
 
 Given a query matrix $Q\in \mathbb{R}^{n\times d_{model}}$ representing $n$ queries, a key matrix $K\in \mathbb{R}^{m\times d_{model}}$ representing $m$ keys, and a value matrix $V\in \mathbb{R}^{m\times d_{model}}$ representing $m$ values, the multi-head ($h$ heads) attention associated with $(Q, K, V)$ is given by
@@ -387,10 +387,10 @@ The Transformer architecture was originally intended to tackle challenges in Seq
 
 In the process of adapting Transformer for different applications, there have been efforts that continue the improvement on the original encoder-decoder architecture as well as efforts that use only the encoder part or the decoder part separately. 
 
-
+<!-- 
 The objective, also known as **denoising objective**, is to fully recover the original input from the corrupted one in a bidirectional fashion, as shown on the left side of Figure 4.1, which you will see shortly. As seen in the **Bidirectional Encoder Representations from Transformers (BERT)** architecture, which is a notable example of AE models, they can incorporate the context of both sides of a word. However, the first issue is that the corrupting [MASK] symbols that are used during the pre-training phase are absent from the data during the fine-tuning phase, leading to a pre-training-fine-tuning discrepancy. Secondly, the BERT model arguably assumes that the masked tokens are independent of each other.
 
-On the other hand, AR models keep away from such assumptions regarding independence and do not naturally suffer from the pre-train-fine-tuning discrepancy because they rely on the objective predicting the next token conditioned on the previous tokens without masking them. They merely utilize the decoder part of the transformer with masked selfattention. They prevent the model from accessing words to the right of the current word in a forward direction (or to the left of the current word in a backward direction), which is called **unidirectionality**. They are also called **Causal Language Models (CLMs)** due to their unidirectionality.
+On the other hand, AR models keep away from such assumptions regarding independence and do not naturally suffer from the pre-train-fine-tuning discrepancy because they rely on the objective predicting the next token conditioned on the previous tokens without masking them. They merely utilize the decoder part of the transformer with masked selfattention. They prevent the model from accessing words to the right of the current word in a forward direction (or to the left of the current word in a backward direction), which is called **unidirectionality**. They are also called **Causal Language Models (CLMs)** due to their unidirectionality. -->
 
 For different branches of models, we employ different training strategies:
 * Generative pretrained models like the GPT family are trained using a Causal Language Modeling objective.
@@ -403,6 +403,7 @@ For different branches of models, we employ different training strategies:
 The most influential encoder-based model is **BERT** {cite:p}`devlin2018bert`, which stands for Bidirectional Encoder Representations from Transformers.  BERT is pretrained with the two objectives:
 * Predicting masked tokens in texts, known as masked language modeling (MLM)
 * Determining if two text passages follow each other, which is known as next-sentence-prediction (NSP). 
+
 The MLM helps learning of contextualized word-level representation, and the NSP objective aims to improve the tasks like question answering and natural language inference, which require reasoning over sentence pairs. BERT used the BookCorpus and English Wikipedia for pretraining and the model can then be fine-tuned with supervised data on downstream natural language understanding (NLU) tasks such as text classification, named entity recognition, and question-answering. At the time it was published, it achieved all state-of-the-art results on the popular GLUE benchmark. The success of BERT drew significant attention and up to date BERT like Encoder-only models dominate research and industry on natural language understanding (NLU) tasks {cite:p}`xia2020bert`. We will discuss BERT in the following chapter. 
 
 **RoBERTa** (Robustly Optimized BERT) {cite:p}`liu2019roberta` is a follow-up study of BERT, which reveals that the performance of BERT can be further improved by modifying the pretraining scheme. RoBERTa uses larger batches with more training data and dropped the NSP task to significantly improve the performance over the original BERT model.
@@ -412,7 +413,7 @@ Although BERT model delivers great results, it can be expensive and difficult to
 By using model compression techniques like knowledge distillation, we can preserve most of the BERT performance with much smaller model size and memory footprint. Representative models include **DistilBERT** and **TinyBERT**.
 
 
-## The Decoder Branch
+### The Decoder Branch
 
 The decoder component in the Transformer model can be used for auto-regressive language modeling. GPT series are among the most successful auto-regressive pretrained language models, and they form the foundation of LLM.
 
@@ -422,7 +423,7 @@ The decoder component in the Transformer model can be used for auto-regressive l
 
 **GPT-3** {cite:p}`brown2020language`: GPT-3 is up-scaled from GPT-2 by a factor of 100. It demonstrated that lead to significant improvements in performance and capabilities, which also marked the beginning of LLM era. Besides being able to generate impressively realistic text passages, the model also exhibits few-shot learning capabilities: with a few examples of a novel task such as text-to-code examples the model is able to accomplish the task on new examples. 
 
-## The Encoder-decoder Branch
+### The Encoder-decoder Branch
 
 Although it has become common to build models using a single encoder or decoder stack, there are several encoder-decoder variants of the Transformer that have novel applications across both NLU and NLG domains:
 
