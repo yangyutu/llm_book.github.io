@@ -346,7 +346,8 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-optimization-llm-understanding-generation">20.6. RAG Optimization: LLM Understanding &amp; Generation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation-and-objective">20.6.1. Motivation and Objective</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-finetuning">20.6.2. Model Finetuning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompting">20.6.2. Prompting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-finetuning">20.6.3. Model Finetuning</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-rag">20.7. Advanced RAG</a><ul class="nav section-nav flex-column">
@@ -748,54 +749,62 @@ Rewrite this query to help retrieve comprehensive results from search engine lik
 <h2><span class="section-number">20.6. </span>RAG Optimization: LLM Understanding &amp; Generation<a class="headerlink" href="#rag-optimization-llm-understanding-generation" title="Link to this heading">#</a></h2>
 <section id="motivation-and-objective">
 <h3><span class="section-number">20.6.1. </span>Motivation and Objective<a class="headerlink" href="#motivation-and-objective" title="Link to this heading">#</a></h3>
-<p>Recent developments in RAG systems have shown that while base LLMs are powerful, they often struggle with specific challenges in retrieval-augmented tasks. These challenges include hallucination, poor grounding in retrieved contexts, and inconsistent handling of edge cases. Traditional RAG systems rely heavily on prompt engineering and architectural improvements, but these approaches may not fully address the fundamental need for LLMs to better understand and utilize retrieved information. Furthermore, base LLMs often lack robust mechanisms for identifying and rejecting responses when context is insufficient or when faced with harmful queries.</p>
-<p>The primary objective is to develop a specialized finetuning methodology that enhances an LLM’s ability to:</p>
-<ol class="arabic simple">
+<p>With retrieved context, LLM needs to utilize the context and generate desired responses to the user query. A performing RAG system requires the LLM to have the following abilities:</p>
+<ul class="simple">
 <li><p>Generate faithful and reliable responses that are strictly grounded in the provided context</p></li>
+<li><p>Produce robust responses when provided context has noises (e.g., some irrelevant paragraphs)</p></li>
 <li><p>Recognize and explicitly reject queries when context is insufficient</p></li>
 <li><p>Identify and appropriately handle harmful or inappropriate requests</p></li>
 <li><p>Maintain consistent response quality across diverse query types</p></li>
-<li><p>Produce helpful responses while adhering to safety guidelines</p></li>
-</ol>
+</ul>
+<p>The simplest approach to tailor LLM to above needs is through prompting with desired guideline. However, often times prompting off-the-shelf LLM usually does not fully address these fundamental needs; therefore we need additional model finetuning steps to improve the LLM to better understand and utilize retrieved information, which is discussed in the following.</p>
 </section>
+<section id="prompting">
+<h3><span class="section-number">20.6.2. </span>Prompting<a class="headerlink" href="#prompting" title="Link to this heading">#</a></h3>
+<p>If we have a capable instructed LLM, prompting is a cost-effective technique to instruct LLM to behave in certain way.</p>
+<p>Following is an example prompt that ask LLM to provide tracable answers and to reject the question if it cannot be answered.</p>
+<div class="proof example admonition" id="example-3">
+<p class="admonition-title"><span class="caption-number">Example 20.4 </span></p>
+<section class="example-content" id="proof-content">
+<p>You are an AI assistant that helps users learn from the information found in the source material.
+Answer the query using only the sources provided below.
+Use bullets if the answer has multiple points.
+Answer ONLY with the facts listed in the list of sources below. Cite your source when you answer the question
+If there isn’t enough information below, say you don’t know.
+Do not generate answers that don’t use the sources below.
+Query: {query}
+Sources_1:{source_1}
+Sources_2:{source_2}
+Sources_3:{source_3}</p>
+</section>
+</div></section>
 <section id="model-finetuning">
-<h3><span class="section-number">20.6.2. </span>Model Finetuning<a class="headerlink" href="#model-finetuning" title="Link to this heading">#</a></h3>
-<p>Our approach follows a systematic pipeline consisting of five key stages:</p>
-<p>Data Sources
-The foundation begins with two primary data sources:</p>
+<h3><span class="section-number">20.6.3. </span>Model Finetuning<a class="headerlink" href="#model-finetuning" title="Link to this heading">#</a></h3>
+<p>Model finetuning consists of two key steps (summarized in the ):</p>
 <ul class="simple">
-<li><p>Public datasets that cover diverse domains and query types</p></li>
-<li><p>Synthetic question-context pairs generated by combining queries with relevant search results, ensuring comprehensive coverage of both standard and edge cases</p></li>
+<li><p>Training data preparation, which is a crucial step to shape the model behavior by specifying desired output and undesired output via (prompt, completion) paired data.</p></li>
+<li><p>Training method, which invovles using SFT, DPO, PEFT, etc. See <a class="reference internal" href="../chapter_training/finetuning.html#chapter-training-sec-llm-finetuning"><span class="std std-ref">LLM Finetuning</span></a> and <a class="reference internal" href="../chapter_training/alignment.html#chapter-training-sec-llm-alignment"><span class="std std-ref">LLM Alignement and Preference Learning</span></a>.</p></li>
 </ul>
-<p>Data Structure
-The training data is carefully structured to include:</p>
+<p>The data preparation consists of the four key steps [<code class="xref std std-numref docutils literal notranslate"><span class="pre">chapter_rag_fig_rag_LLM_FT_data_source</span></code>]:</p>
 <ul class="simple">
-<li><p>Rejection samples where the LLM should learn to identify and reject inappropriate queries</p></li>
+<li><p>Data collection, in which we collect public dataset, priviate data, and use synthetic approach to generate question-context-answer.</p></li>
+<li><p>Data selection, in which we include</p>
+<ul>
+<li><p>Rejection samples where the LLM should learn to identify and reject queries given the context</p></li>
 <li><p>Domain-diverse examples to ensure broad applicability</p></li>
-<li><p>Multi-turn dialogue scenarios to handle complex information needs</p></li>
+<li><p>Domain-example aligning with downstream applications</p></li>
 </ul>
-<p>Instruction Structure
-The instruction design incorporates:</p>
-<ul class="simple">
-<li><p>Explicit hallucination control mechanisms to ensure responses remain grounded in provided context</p></li>
-<li><p>Source attribution patterns to maintain traceability</p></li>
-<li><p>Rich text generation guidelines for comprehensive yet concise responses</p></li>
-<li><p>Custom style definitions to maintain consistent output format</p></li>
+</li>
+<li><p>Data construction and enrichment, in which</p>
+<ul>
+<li><p>Responses with hallucination are filtered out</p></li>
+<li><p>Source citation patterns are added</p></li>
+<li><p>Output style and formats are adjusted to maintain consistence.</p></li>
 </ul>
-<p>Sample Selection
-The training process emphasizes:</p>
-<ul class="simple">
-<li><p>Balanced mixing of positive and negative examples</p></li>
-<li><p>Model evaluation criteria focused on faithfulness and safety</p></li>
-<li><p>Rule-based filtering to ensure quality and relevance</p></li>
+</li>
+<li><p>Data selection and refinement - additional data filtering and refinement steps, including balanced mixing of training data of different characteristics, quality control via LLM and heuristic rules.</p></li>
 </ul>
-<p>Model Training
-The final stage employs:</p>
-<ul class="simple">
-<li><p>SFT (Supervised Fine-Tuning) to teach basic response generation and context utilization</p></li>
-<li><p>DPO (Direct Preference Optimization) to refine model behavior based on human preferences</p></li>
-</ul>
-<p>This methodology ensures that the resulting model not only generates high-quality responses but also knows when and how to reject queries appropriately. The iterative nature of the training process, combined with careful sample selection and evaluation, produces an LLM that is both more reliable and more responsible in its response generation.</p>
+<p>Training data prepared this way ensures that the resulting model will learn to not only generates high-quality responses but also knows when and how to reject queries appropriately.</p>
 <!-- ### Self-Aware LLM
 However, we find that the retrieved knowledge does not always help and even has a
 negative impact on original responses occasionally.
@@ -826,8 +835,8 @@ question, which makes it impractical. Second, incontext learning could also be u
 | Can you answer this question based on what you  know? |
 | Can you solve this question now? |
 
-
-```{figure} ../img/chapter_rag/data_source/self_knowledge_LLM_demo.png
+llm_book_jupyterbook\llm_book\docs\img\chapter_rag\generator_model
+```{figure} ../img/chapter_rag/generator_model/LLM_FT_data_source.png
 ---
 scale: 60%
 name: chapter_rag_fig_rag_demo
@@ -1108,7 +1117,8 @@ In fact, information retrieval plays an irreplaceable role. Providing LLMs with 
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-optimization-llm-understanding-generation">20.6. RAG Optimization: LLM Understanding &amp; Generation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation-and-objective">20.6.1. Motivation and Objective</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-finetuning">20.6.2. Model Finetuning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompting">20.6.2. Prompting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-finetuning">20.6.3. Model Finetuning</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-rag">20.7. Advanced RAG</a><ul class="nav section-nav flex-column">

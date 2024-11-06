@@ -61,7 +61,7 @@ sequence of token representations. The representation of each token is a dense v
 * ***Token embedding*** of dimensionality $d_{model}$, which is the ordinary dense word embedding. Specifically, a sub-word type of embedding, called wordPiece embedding {cite:p}`wu2016google`, with a 30,000 token vocabulary is used. Note that A [CLS] token is added to the input word tokens at the beginning of the first sentence and a [SEP] token is inserted at the end of each sentence.
 * ***Segment embedding*** of dimensionality $d_{model}$, which is a marker 0 or 1 indicating if sentence A precedes sentence B. Segment embedding is typically learned from the training.
 * ***Positional embedding***  of dimensionality $d_{model}$, which encodes information of
-	position in the sentence. Positions matters in word and sentence level meanings. For example, *I love you* and *you love me* are different. Position embedding is a vector depending on where the token is located in the segment. It is a constant vector throughout the training.
+	position in the sentence. Positions matters in word and sentence level meanings. For example, *I love you* and *you love me* are different. Position embedding is a vector depending on where the token is located in the segment. It is a constant vector throughout the training. See {ref}`chapter_foundation_sec_pretrained_LM_transformer_arch_absolute_PE` on how typical absolute position encoding is constructed.
 
 The token, segment, and position embeddings are implemented through a look-up matrix. The token embedding look-up matrix has a size of $(vocab~size, d_{model})$; the position embedding look-up matrix has a size of $(max~len, d_{model})$; the segment embedding look-up matrix has a size of $(2, d_{model})$.
 
@@ -142,7 +142,7 @@ $$
 
 where $e_i \in \mathbb{R}^{n\times d_{model}}$, $\operatorname{EncoderLalyer}: \mathbb{R}^{n\times d_{model}}\to \mathbb{R}^{n\times d_{model}}$ is an encoder sub-unit, $N$ is the number of encoder layers. Specifically, this encoder layer is given by {ref}`chapter_foundation_fig_bert_transformerencoder`. Note that Dropout operations are not shown above. Dropouts are applied after initial embeddings $e_0$, every self-attention output, and every point-wise feed-forward network output. 	
 ````
-Note that Dropout operations are not shown above. Dropouts are applied after initial embeddings $e_0$, every self-attention output, and every point-wise feed-forward network output. 
+Note that Dropout operations are not shown above. **Dropouts are applied after initial embeddings $e_0$, every self-attention output, and every point-wise feed-forward network output**. 
 
 Commonly used BERT models take the following configurations:
 * BERT-BASE, $L=12, d_{model}=768, H=12$, total Parameters 110M.
@@ -161,7 +161,7 @@ Commonly used BERT models take the following configurations:
 | Large | 24 | 1024 | 16 | 340 M |
 ```
 
-### Compared With ELMO
+### Compared with ELMO
 
 An influential contextualized word embedding model via deep learning is ELMO (Embeddings from Language
 Models) {cite:p}`peters2018deep`, in which word vectors are learned functions of the internal states of a deep bidirectional LSTM language model [{numref}`chapter_foundation_fig_bert_bert_elmo`]. 
@@ -202,33 +202,35 @@ name: chapter_foundation_fig_bert_bertpretrainfinetune
 BERT pre-training and downstream task fine tuning framework. Image from {cite:p}`devlin2018bert`.
 ```
 
-There are two tasks to pretrain the network: ***masked language modeling (Masked LM)*** and ***next sentence prediction (NSP)***.
+There are two tasks to pretrain the network: **masked language modeling (Masked LM)** and **next sentence prediction (NSP)**. 
+
 In the Masked LM, some percentage of randomly sampled words in a sequence are masked, i.e., being replaced by a [MASK] token. The task is to predict (via Softmax) only the masked words, based on the context provided by the other non-masked words in the sequence. 
 
-Masked LM task has this drawback of introducing mismatch between the pre-training task and fine-tuning tasks: in the fine-tuning stage, training sentences do not contain masked tokens. To reduce the mismatch between pre-training and fine-tuning, different masking strategies are explored. It is found one effective strategy is to select 15\% of tokens for the following possible replacement. For each token, 
+Masked LM task has this drawback of introducing mismatch between the pre-training task and fine-tuning tasks: in the fine-tuning stage, training sentences do not contain masked tokens. To reduce the mismatch between pre-training and fine-tuning, different masking strategies are explored. It is found one effective strategy is to select 15\% of tokens for the following possible replacement. For each token among the 15\% selected tokens, 
 * 80\% probability is replaced by [MASK].
 * 10\% probability is replaced by a random token.
 * 10\% probability is left unchanged.
 
 The rationale for this masking strategy is that this forces the model to predict a word without relying on the word at the current position, since the word at the current position only has 10\% probability of being correct. As such, the model adapts to make predictions based on contextual information, which helps the model to build up some error correction capability. 
 
-Formally, let $\mathbf{x}=(x_1,...,x_T)$ be the original input and $\hat{\mathbf{x}}$ be the masked noise input. The masked LM task aims to minimize the following negative log loss given by
+Formally, let $\mathbf{x}=(x_1,...,x_T)$ be the original input and $\hat{\mathbf{x}}$ be the masked noise input. The **masked LM task aims to minimize the following negative log loss on masked tokens**, which is given by
 
 $$\min_{\theta} - \sum_{t=1}^{T} m_{t} \log p\left(x_{t} \mid \hat{\mathbf{x}}\right)=\sum_{t=1}^{T} m_{t} \log \frac{\exp \left(h_{t}^{T} e\left(x_{t}\right)\right)}{\sum_{x_{t'}} \exp \left(h_{t'}^{T} e\left(x_{t'}\right)\right)}$$
 
 where $m_t \in \{0, 1\}$ indicates if $x_t$ is a mask token, $(h_1,...,h_T)$ are contextualized encodings produced by the encoder, $e(x_t)$ is the weight vector (corresponding to token $x_t$ in the vocabulary) in the prediction head, which consists of a linear layer and Softmax function. 
 
 
-````{prf:remark}
-There are several imperfections of the masking strategy.
+````{prf:remark} Imperfections of the masking strategy.
 * This masked LM task suffers from training inefficiency and slow convergence since each batch only 15\% of masked tokens are predicted.
-* The masked LM task is making ***conditional independence assumption***. When we predict the masked tokens, we are assuming that masked tokens are independent conditioning on masked input sequence. For example, suppose the original sentence *New York is a city* and we mask the *New* and *York* two tokens. In our prediction, we assume these two masked tokens are independent, but actually *New York* is an entity that co-occur frequently. However, it should be noted that this conditional-independence assumption problem has not been a big in practice since the model is often trained on huge corpus to learn the inter-dependencies of these words.
-* Another drawback is that the mask can be applied to a word piece due to fine-grained WordPieces tokenizer. For example, the word *probability* is tokenized into three parts: *pro*, *\#babi*, and *\#lity*. One might randomly mask *\#babi* alone. In this case, the model can leverage the word spelling itself for prediction rather than the semantic context.
+* The masked LM task is making ***conditional independence assumption***. When we predict the masked tokens, we are assuming that **different masked tokens are independent conditioning on masked input sequence**. 
+	* For example, suppose the original sentence *New York is a city* and we mask the *New* and *York* two tokens. In our prediction, we assume these two masked tokens are independent, but actually *New York* is an entity that co-occur frequently. However, it should be noted that this conditional-independence assumption problem has not been a big in practice since the model is often trained on huge corpus to learn the inter-dependencies of these words.
+	* This conditional independence assumption also make mask LM task not aligned with language generation tasks, in which predicted tokens are dependent on preceding tokens.
+* Another drawback is that the mask can be applied to a sub-word piece due to fine-grained WordPieces tokenizer. For example, the word *probability* is tokenized into three parts: *pro*, *\#babi*, and *\#lity*. One might randomly mask *\#babi* alone. In this case, the model can leverage the word spelling itself for prediction rather than the semantic context.
 ````
 
 #### Next Sentence Prediction (NSP)
 
-In the NSP, the network is trained to understand relationship between two sentences. A pre-trained model with this kind of understanding is relevant for tasks like question answering and natural language Inference. This task is also reminiscent of human language study exercise, where the learner needs to restore the correct order of sentences in a paragraph consisting of randomly displaced sentences.
+In the NSP, **the network is trained to understand relationship between two sentences**. A pre-trained model with this kind of understanding is relevant for tasks like question answering and natural language Inference. This task is also reminiscent of human language study exercise, where the learner needs to restore the correct order of sentences in a paragraph consisting of randomly displaced sentences.
 
 
 The input for NSP is a pair of segments, which can each contain multiple natural sentences, but the total combined length must be less than 512 tokens. Notably, it is found that using individual natural sentence pairs hurts performance on downstream tasks{cite:p}`liu2019roberta`.
@@ -276,14 +278,14 @@ Pre-training data include the BooksCorpus ( $800 \mathrm{M}$ words) and English 
 
 
 
-### Fine-tuning And Evaluation
+### Fine-tuning and Evaluation
 
 
 A pretrained BERT model can be fine-tuned to a wide range of downstream tasks, as we introduced above. Depending on the task type, different architecture configurations will be adopted [{ref}`chapter_foundation_fig_bert_berttasks`]:
 * For single-sentence tasks, such as sentiment analysis, tokens of a single sentence will be fed into BERT. The embedding output corresponding to the [CLS] token will be used in a linear classifier to predict the class label.
 * For sequence-labeling tasks, where named-entity-recognition, tokens of a single sentence will be fed into BERT. The token embedding outputs will be used in a linear classifier to predict the class label of a token.
 * For sentence-pair tasks, where the relationship between two sentences will be predicted, tokens from two sentences will be fed into BERT. The embedding output corresponding to the [CLS] token will be used in a linear classifier to predict the class label.
-* For questioning-answering tasks, where the start and end span needs to be determined in the context paragraph,  question sentence and context paragraph sentence will be fed into BERT. The token embedding outputs on paragraph side  will be used in a linear classifier to predict the start and end span.
+* For questioning-answering tasks, where the start and end span of the anaswer needs to be determined in the context paragraph, question sentence and context paragraph sentence will be fed into BERT. The token embedding outputs on paragraph side will be used in a linear classifier to predict the start and end span.
 
 
 ```{figure} ../img/chapter_foundation/pretrainedLM/BERT_contextualizedEmbedding/BERT/BERT_tasks.png

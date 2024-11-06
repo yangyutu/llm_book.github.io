@@ -323,14 +323,14 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-architecture-componenents">6.2. BERT Architecture Componenents</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-embeddings">6.2.1. Input Embeddings</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-encoder-anatomy">6.2.2. The Encoder Anatomy</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compared-with-elmo">6.2.3. Compared With ELMO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compared-with-elmo">6.2.3. Compared with ELMO</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-training-tasks">6.2.4. Pre-training Tasks</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#masked-language-modeling-masked-lm">6.2.4.1. Masked Language Modeling (Masked LM)</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#next-sentence-prediction-nsp">6.2.4.2. Next Sentence Prediction (NSP)</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#put-it-together">6.2.4.3. Put It Together</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fine-tuning-and-evaluation">6.2.5. Fine-tuning And Evaluation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fine-tuning-and-evaluation">6.2.5. Fine-tuning and Evaluation</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-bert-models">6.3. Efficient BERT Models</a><ul class="nav section-nav flex-column">
@@ -413,7 +413,7 @@ sequence of token representations. The representation of each token is a dense v
 <li><p><em><strong>Token embedding</strong></em> of dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span>, which is the ordinary dense word embedding. Specifically, a sub-word type of embedding, called wordPiece embedding <span id="id4">[<a class="reference internal" href="#id1221" title="Yonghui Wu, Mike Schuster, Zhifeng Chen, Quoc V Le, Mohammad Norouzi, Wolfgang Macherey, Maxim Krikun, Yuan Cao, Qin Gao, Klaus Macherey, and others. Google's neural machine translation system: bridging the gap between human and machine translation. arXiv preprint arXiv:1609.08144, 2016.">WSC+16</a>]</span>, with a 30,000 token vocabulary is used. Note that A [CLS] token is added to the input word tokens at the beginning of the first sentence and a [SEP] token is inserted at the end of each sentence.</p></li>
 <li><p><em><strong>Segment embedding</strong></em> of dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span>, which is a marker 0 or 1 indicating if sentence A precedes sentence B. Segment embedding is typically learned from the training.</p></li>
 <li><p><em><strong>Positional embedding</strong></em>  of dimensionality <span class="math notranslate nohighlight">\(d_{model}\)</span>, which encodes information of
-position in the sentence. Positions matters in word and sentence level meanings. For example, <em>I love you</em> and <em>you love me</em> are different. Position embedding is a vector depending on where the token is located in the segment. It is a constant vector throughout the training.</p></li>
+position in the sentence. Positions matters in word and sentence level meanings. For example, <em>I love you</em> and <em>you love me</em> are different. Position embedding is a vector depending on where the token is located in the segment. It is a constant vector throughout the training. See <a class="reference internal" href="transformers.html#chapter-foundation-sec-pretrained-lm-transformer-arch-absolute-pe"><span class="std std-ref">Position Encodings</span></a> on how typical absolute position encoding is constructed.</p></li>
 </ul>
 <p>The token, segment, and position embeddings are implemented through a look-up matrix. The token embedding look-up matrix has a size of <span class="math notranslate nohighlight">\((vocab~size, d_{model})\)</span>; the position embedding look-up matrix has a size of <span class="math notranslate nohighlight">\((max~len, d_{model})\)</span>; the segment embedding look-up matrix has a size of <span class="math notranslate nohighlight">\((2, d_{model})\)</span>.</p>
 <figure class="align-default" id="chapter-foundation-fig-bert-bert-input">
@@ -479,7 +479,7 @@ E_{\text {word }}=\left[\begin{array}{lll}
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(e_i \in \mathbb{R}^{n\times d_{model}}\)</span>, <span class="math notranslate nohighlight">\(\operatorname{EncoderLalyer}: \mathbb{R}^{n\times d_{model}}\to \mathbb{R}^{n\times d_{model}}\)</span> is an encoder sub-unit, <span class="math notranslate nohighlight">\(N\)</span> is the number of encoder layers. Specifically, this encoder layer is given by <a class="reference internal" href="#chapter-foundation-fig-bert-transformerencoder"><span class="std std-ref">BERT model architecture.</span></a>. Note that Dropout operations are not shown above. Dropouts are applied after initial embeddings <span class="math notranslate nohighlight">\(e_0\)</span>, every self-attention output, and every point-wise feed-forward network output.</p>
 </section>
-</div><p>Note that Dropout operations are not shown above. Dropouts are applied after initial embeddings <span class="math notranslate nohighlight">\(e_0\)</span>, every self-attention output, and every point-wise feed-forward network output.</p>
+</div><p>Note that Dropout operations are not shown above. <strong>Dropouts are applied after initial embeddings <span class="math notranslate nohighlight">\(e_0\)</span>, every self-attention output, and every point-wise feed-forward network output</strong>.</p>
 <p>Commonly used BERT models take the following configurations:</p>
 <ul class="simple">
 <li><p>BERT-BASE, <span class="math notranslate nohighlight">\(L=12, d_{model}=768, H=12\)</span>, total Parameters 110M.</p></li>
@@ -537,7 +537,7 @@ E_{\text {word }}=\left[\begin{array}{lll}
 </div>
 </section>
 <section id="compared-with-elmo">
-<h3><span class="section-number">6.2.3. </span>Compared With ELMO<a class="headerlink" href="#compared-with-elmo" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">6.2.3. </span>Compared with ELMO<a class="headerlink" href="#compared-with-elmo" title="Link to this heading">#</a></h3>
 <p>An influential contextualized word embedding model via deep learning is ELMO (Embeddings from Language
 Models) <span id="id5">[<a class="reference internal" href="#id1217" title="Matthew E Peters, Mark Neumann, Mohit Iyyer, Matt Gardner, Christopher Clark, Kenton Lee, and Luke Zettlemoyer. Deep contextualized word representations. arXiv preprint arXiv:1802.05365, 2018.">PNI+18</a>]</span>, in which word vectors are learned functions of the internal states of a deep bidirectional LSTM language model [<a class="reference internal" href="#chapter-foundation-fig-bert-bert-elmo"><span class="std std-numref">Fig. 6.6</span></a>].
 Given a sequence of <span class="math notranslate nohighlight">\(N\)</span> tokens (character-based), <span class="math notranslate nohighlight">\(\left(t_{1}, t_{2}, \ldots, t_{N}\right)\)</span>. Their static word embeddings <span class="math notranslate nohighlight">\((e_1,...,e_N)\)</span> are contextualized by stacked bidirectional LSTM as <span class="math notranslate nohighlight">\((h_1,...,h_N)\)</span>.</p>
@@ -566,33 +566,37 @@ Given a sequence of <span class="math notranslate nohighlight">\(N\)</span> toke
 <p><span class="caption-number">Fig. 6.7 </span><span class="caption-text">BERT pre-training and downstream task fine tuning framework. Image from <span id="id6">[<a class="reference internal" href="#id1151" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.">DCLT18</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-bert-bertpretrainfinetune" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>There are two tasks to pretrain the network: <em><strong>masked language modeling (Masked LM)</strong></em> and <em><strong>next sentence prediction (NSP)</strong></em>.
-In the Masked LM, some percentage of randomly sampled words in a sequence are masked, i.e., being replaced by a [MASK] token. The task is to predict (via Softmax) only the masked words, based on the context provided by the other non-masked words in the sequence.</p>
-<p>Masked LM task has this drawback of introducing mismatch between the pre-training task and fine-tuning tasks: in the fine-tuning stage, training sentences do not contain masked tokens. To reduce the mismatch between pre-training and fine-tuning, different masking strategies are explored. It is found one effective strategy is to select 15% of tokens for the following possible replacement. For each token,</p>
+<p>There are two tasks to pretrain the network: <strong>masked language modeling (Masked LM)</strong> and <strong>next sentence prediction (NSP)</strong>.</p>
+<p>In the Masked LM, some percentage of randomly sampled words in a sequence are masked, i.e., being replaced by a [MASK] token. The task is to predict (via Softmax) only the masked words, based on the context provided by the other non-masked words in the sequence.</p>
+<p>Masked LM task has this drawback of introducing mismatch between the pre-training task and fine-tuning tasks: in the fine-tuning stage, training sentences do not contain masked tokens. To reduce the mismatch between pre-training and fine-tuning, different masking strategies are explored. It is found one effective strategy is to select 15% of tokens for the following possible replacement. For each token among the 15% selected tokens,</p>
 <ul class="simple">
 <li><p>80% probability is replaced by [MASK].</p></li>
 <li><p>10% probability is replaced by a random token.</p></li>
 <li><p>10% probability is left unchanged.</p></li>
 </ul>
 <p>The rationale for this masking strategy is that this forces the model to predict a word without relying on the word at the current position, since the word at the current position only has 10% probability of being correct. As such, the model adapts to make predictions based on contextual information, which helps the model to build up some error correction capability.</p>
-<p>Formally, let <span class="math notranslate nohighlight">\(\mathbf{x}=(x_1,...,x_T)\)</span> be the original input and <span class="math notranslate nohighlight">\(\hat{\mathbf{x}}\)</span> be the masked noise input. The masked LM task aims to minimize the following negative log loss given by</p>
+<p>Formally, let <span class="math notranslate nohighlight">\(\mathbf{x}=(x_1,...,x_T)\)</span> be the original input and <span class="math notranslate nohighlight">\(\hat{\mathbf{x}}\)</span> be the masked noise input. The <strong>masked LM task aims to minimize the following negative log loss on masked tokens</strong>, which is given by</p>
 <div class="math notranslate nohighlight">
 \[\min_{\theta} - \sum_{t=1}^{T} m_{t} \log p\left(x_{t} \mid \hat{\mathbf{x}}\right)=\sum_{t=1}^{T} m_{t} \log \frac{\exp \left(h_{t}^{T} e\left(x_{t}\right)\right)}{\sum_{x_{t'}} \exp \left(h_{t'}^{T} e\left(x_{t'}\right)\right)}\]</div>
 <p>where <span class="math notranslate nohighlight">\(m_t \in \{0, 1\}\)</span> indicates if <span class="math notranslate nohighlight">\(x_t\)</span> is a mask token, <span class="math notranslate nohighlight">\((h_1,...,h_T)\)</span> are contextualized encodings produced by the encoder, <span class="math notranslate nohighlight">\(e(x_t)\)</span> is the weight vector (corresponding to token <span class="math notranslate nohighlight">\(x_t\)</span> in the vocabulary) in the prediction head, which consists of a linear layer and Softmax function.</p>
 <div class="proof remark admonition" id="remark-2">
-<p class="admonition-title"><span class="caption-number">Remark 6.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Remark 6.1 </span> (Imperfections of the masking strategy.)</p>
 <section class="remark-content" id="proof-content">
-<p>There are several imperfections of the masking strategy.</p>
 <ul class="simple">
 <li><p>This masked LM task suffers from training inefficiency and slow convergence since each batch only 15% of masked tokens are predicted.</p></li>
-<li><p>The masked LM task is making <em><strong>conditional independence assumption</strong></em>. When we predict the masked tokens, we are assuming that masked tokens are independent conditioning on masked input sequence. For example, suppose the original sentence <em>New York is a city</em> and we mask the <em>New</em> and <em>York</em> two tokens. In our prediction, we assume these two masked tokens are independent, but actually <em>New York</em> is an entity that co-occur frequently. However, it should be noted that this conditional-independence assumption problem has not been a big in practice since the model is often trained on huge corpus to learn the inter-dependencies of these words.</p></li>
-<li><p>Another drawback is that the mask can be applied to a word piece due to fine-grained WordPieces tokenizer. For example, the word <em>probability</em> is tokenized into three parts: <em>pro</em>, <em>#babi</em>, and <em>#lity</em>. One might randomly mask <em>#babi</em> alone. In this case, the model can leverage the word spelling itself for prediction rather than the semantic context.</p></li>
+<li><p>The masked LM task is making <em><strong>conditional independence assumption</strong></em>. When we predict the masked tokens, we are assuming that <strong>different masked tokens are independent conditioning on masked input sequence</strong>.</p>
+<ul>
+<li><p>For example, suppose the original sentence <em>New York is a city</em> and we mask the <em>New</em> and <em>York</em> two tokens. In our prediction, we assume these two masked tokens are independent, but actually <em>New York</em> is an entity that co-occur frequently. However, it should be noted that this conditional-independence assumption problem has not been a big in practice since the model is often trained on huge corpus to learn the inter-dependencies of these words.</p></li>
+<li><p>This conditional independence assumption also make mask LM task not aligned with language generation tasks, in which predicted tokens are dependent on preceding tokens.</p></li>
+</ul>
+</li>
+<li><p>Another drawback is that the mask can be applied to a sub-word piece due to fine-grained WordPieces tokenizer. For example, the word <em>probability</em> is tokenized into three parts: <em>pro</em>, <em>#babi</em>, and <em>#lity</em>. One might randomly mask <em>#babi</em> alone. In this case, the model can leverage the word spelling itself for prediction rather than the semantic context.</p></li>
 </ul>
 </section>
 </div></section>
 <section id="next-sentence-prediction-nsp">
 <h4><span class="section-number">6.2.4.2. </span>Next Sentence Prediction (NSP)<a class="headerlink" href="#next-sentence-prediction-nsp" title="Link to this heading">#</a></h4>
-<p>In the NSP, the network is trained to understand relationship between two sentences. A pre-trained model with this kind of understanding is relevant for tasks like question answering and natural language Inference. This task is also reminiscent of human language study exercise, where the learner needs to restore the correct order of sentences in a paragraph consisting of randomly displaced sentences.</p>
+<p>In the NSP, <strong>the network is trained to understand relationship between two sentences</strong>. A pre-trained model with this kind of understanding is relevant for tasks like question answering and natural language Inference. This task is also reminiscent of human language study exercise, where the learner needs to restore the correct order of sentences in a paragraph consisting of randomly displaced sentences.</p>
 <p>The input for NSP is a pair of segments, which can each contain multiple natural sentences, but the total combined length must be less than 512 tokens. Notably, it is found that using individual natural sentence pairs hurts performance on downstream tasks<span id="id7">[<a class="reference internal" href="#id1213" title="Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. Roberta: a robustly optimized bert pretraining approach. arXiv preprint arXiv:1907.11692, 2019.">LOG+19</a>]</span>.</p>
 <p>The model is trained to predict if the second sentence is the next sentence in the original text. In choosing the sentences pair for each pretraining example, <span class="math notranslate nohighlight">\(50 \%\)</span> of the time, the second sentence is the actual next sentence of the first one, and <span class="math notranslate nohighlight">\(50 \%\)</span> of the time, it is a random sentence from the corpus.</p>
 <p>The next sentence prediction task can be illustrated in the following examples.<br />
@@ -629,13 +633,13 @@ L\left(\theta, \theta_{1}, \theta_{2}\right)=-\sum_{i=1}^{M} \log p\left(m=m_{i}
 </section>
 </section>
 <section id="fine-tuning-and-evaluation">
-<h3><span class="section-number">6.2.5. </span>Fine-tuning And Evaluation<a class="headerlink" href="#fine-tuning-and-evaluation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">6.2.5. </span>Fine-tuning and Evaluation<a class="headerlink" href="#fine-tuning-and-evaluation" title="Link to this heading">#</a></h3>
 <p>A pretrained BERT model can be fine-tuned to a wide range of downstream tasks, as we introduced above. Depending on the task type, different architecture configurations will be adopted [<a class="reference internal" href="#chapter-foundation-fig-bert-berttasks"><span class="std std-ref">BERT architecture configuration for different downstream tasks.</span></a>]:</p>
 <ul class="simple">
 <li><p>For single-sentence tasks, such as sentiment analysis, tokens of a single sentence will be fed into BERT. The embedding output corresponding to the [CLS] token will be used in a linear classifier to predict the class label.</p></li>
 <li><p>For sequence-labeling tasks, where named-entity-recognition, tokens of a single sentence will be fed into BERT. The token embedding outputs will be used in a linear classifier to predict the class label of a token.</p></li>
 <li><p>For sentence-pair tasks, where the relationship between two sentences will be predicted, tokens from two sentences will be fed into BERT. The embedding output corresponding to the [CLS] token will be used in a linear classifier to predict the class label.</p></li>
-<li><p>For questioning-answering tasks, where the start and end span needs to be determined in the context paragraph,  question sentence and context paragraph sentence will be fed into BERT. The token embedding outputs on paragraph side  will be used in a linear classifier to predict the start and end span.</p></li>
+<li><p>For questioning-answering tasks, where the start and end span of the anaswer needs to be determined in the context paragraph, question sentence and context paragraph sentence will be fed into BERT. The token embedding outputs on paragraph side will be used in a linear classifier to predict the start and end span.</p></li>
 </ul>
 <figure class="align-default" id="chapter-foundation-fig-bert-berttasks">
 <a class="reference internal image-reference" href="../../_images/BERT_tasks.png"><img alt="../../_images/BERT_tasks.png" src="../../_images/BERT_tasks.png" style="width: 844.5px; height: 677.25px;" />
@@ -1081,14 +1085,14 @@ As the generator is trained, the replaced tokens is harder and harder to disting
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-architecture-componenents">6.2. BERT Architecture Componenents</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-embeddings">6.2.1. Input Embeddings</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-encoder-anatomy">6.2.2. The Encoder Anatomy</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compared-with-elmo">6.2.3. Compared With ELMO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compared-with-elmo">6.2.3. Compared with ELMO</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-training-tasks">6.2.4. Pre-training Tasks</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#masked-language-modeling-masked-lm">6.2.4.1. Masked Language Modeling (Masked LM)</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#next-sentence-prediction-nsp">6.2.4.2. Next Sentence Prediction (NSP)</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#put-it-together">6.2.4.3. Put It Together</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fine-tuning-and-evaluation">6.2.5. Fine-tuning And Evaluation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fine-tuning-and-evaluation">6.2.5. Fine-tuning and Evaluation</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-bert-models">6.3. Efficient BERT Models</a><ul class="nav section-nav flex-column">
