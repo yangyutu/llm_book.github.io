@@ -232,11 +232,13 @@ name: chapter_foundation_fig_pretrained_LLM_activation_swish
 ```
 
 If we use Swish function in the GLU, we can obtain the following variations:
+
 $$
-SwiGLU=\text{Swish}_1(xW) \otimes xV
-\operatorname{FFN}_{SwiGLU} = (Swish_1{xW_1}\otimes xV) W_2
+SwiGLU=\text{Swish}_1(xW) \otimes xV \\
+\operatorname{FFN}_{SwiGLU} = (\underbrace{\text{Swish}_1(xW_1)}_{\text{Gate Projection}}\otimes \underbrace{xV}_{\text{Up Projection}} ) \underbrace{W_2}_{\text{Down Projection}}
 $$(chapter_LLM_arch_eq_FFN_SwiGLU)
 
+with $\operatorname{Swish}_1(x)=x \cdot \sigma(x)$.
 
 Example activation in recent LLMs:
 

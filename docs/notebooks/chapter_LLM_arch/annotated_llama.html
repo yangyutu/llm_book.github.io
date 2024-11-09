@@ -1,0 +1,1069 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>10. Annotated LLama &#8212; LLM Foundations</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/notebooks/chapter_LLM_arch/annotated_llama';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="11. MOE Sparse Architectures (WIP)" href="../../chapter_LLM_arch/LLM_moe_sparse_architectures.html" />
+    <link rel="prev" title="9. LLM Architectures Fundamentals" href="../../chapter_LLM_arch/LLM_dense_architectures.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/qe-logo-large.png" class="logo__image only-light" alt="LLM Foundations - Home"/>
+    <script>document.write(`<img src="../../../_static/qe-logo-large.png" class="logo__image only-dark" alt="LLM Foundations - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Introduction.html">1. Introduction: LLM in the Age of AI</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_foundation/language_models.html">2. Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_foundation/neural_language_models.html">3. Early Neural Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_foundation/word_embeddings.html">4. Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_foundation/transformers.html">5. Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_foundation/bert.html">6. BERT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_foundation/t5.html">7. Seq2Seq: T5 and BART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_foundation/GPT_series.html">8. GPT Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">10. Annotated LLama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_moe_sparse_architectures.html">11. MOE Sparse Architectures (WIP)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_training/training_fundamentals.html">12. LLM Training Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_training/finetuning.html">13. LLM Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_training/alignment.html">14. LLM Alignement and Preference Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_training/accelerated_training.html">16. LLM Training Acceleration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_inference/inference_fundamentals.html">17. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_inference/inference_acceleration.html">18. Inference Acceleration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/basic_prompt.html">19. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/advanced_prompt.html">20. Advanced Prompting Techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/basic_rag.html">21. RAG</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/information_retrieval_fundamentals.html">22. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/application_LLM_in_IR.html">23. Application of LLM in IR (WIP)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Annotated LLama</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-norm">10.1. RMS Norm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotory-embedding">10.2. Rotory Embedding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-layer">10.3. Attention Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ffn-layer">10.4. FFN Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-decoder-layer">10.5. LLama Decoder Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stacked-decoder-layers">10.6. Stacked Decoder layers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoder-for-language-modeling">10.7. Decoder for language modeling</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="annotated-llama">
+<h1><span class="section-number">10. </span>Annotated LLama<a class="headerlink" href="#annotated-llama" title="Link to this heading">#</a></h1>
+<p>Here we present a simplified llama implementation based <a class="reference external" href="https://github.com/huggingface/transformers/blob/main/src/transformers/models/llama/modeling_llama.py#L731">Huggingface implementation</a> to illustrate different components on the Llama decoder model.</p>
+<p>The key components are</p>
+<ul class="simple">
+<li><p>RMS Norm</p></li>
+<li><p>Rotary Position Embedding</p></li>
+<li><p>Grouped Query Attention</p></li>
+<li><p>Feedfoward network (FFN)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">import</span> <span class="nn">torch.utils.checkpoint</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="rms-norm">
+<h2><span class="section-number">10.1. </span>RMS Norm<a class="headerlink" href="#rms-norm" title="Link to this heading">#</a></h2>
+<p>RMSNorm  is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. RMSNorm hypothesizes that only the re-scaling component is necessary and proposes the following simplified normalization formula</p>
+<div class="math notranslate nohighlight" id="equation-chapter-llm-arch-rms-nomalization-formula">
+<span class="eqno">(10.1)<a class="headerlink" href="#equation-chapter-llm-arch-rms-nomalization-formula" title="Link to this equation">#</a></span>\[
+\operatorname{RMSNorm}(x)=\frac{x}{\sqrt{\frac{1}{H} \sum_{i=1}^H x_i^2}} \cdot \gamma
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\gamma\)</span> is learnable parameter. Experiments show that RMSNorm can achieve on-par performance with LayerNorm with much reduced training cost.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LlamaRMSNorm</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        LlamaRMSNorm is equivalent to T5LayerNorm</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variance_epsilon</span> <span class="o">=</span> <span class="n">eps</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_states</span><span class="p">):</span>
+        <span class="n">input_dtype</span> <span class="o">=</span> <span class="n">hidden_states</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="c1"># float32 is needed for numeric stability. float16 is not enough.</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="n">hidden_states</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="c1"># The variance of the hidden_states is computed along the last dimension using the pow(2).</span>
+        <span class="c1"># mean(-1, keepdim=True) operations, which square the values, compute the mean, and </span>
+        <span class="c1"># retain the dimensions for broadcasting.</span>
+        <span class="n">variance</span> <span class="o">=</span> <span class="n">hidden_states</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="n">hidden_states</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">rsqrt</span><span class="p">(</span><span class="n">variance</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">variance_epsilon</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">hidden_states</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">input_dtype</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="rotory-embedding">
+<h2><span class="section-number">10.2. </span>Rotory Embedding<a class="headerlink" href="#rotory-embedding" title="Link to this heading">#</a></h2>
+<p>Rotary position embedding consists of pre-computing cosine, sine at different frequences (from 0 to 1/(10000)) and different position ids (from 0 to max_seq_len - 1)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LlamaRotaryEmbedding</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_position_embeddings</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span>
+        <span class="n">base</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+        <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_seq_len_cached</span> <span class="o">=</span> <span class="n">max_position_embeddings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_max_seq_len</span> <span class="o">=</span> <span class="n">max_position_embeddings</span>
+
+
+        <span class="c1">#inv_freq, self.attention_scaling = self.rope_init_fn(self.config, device, **self.rope_kwargs)</span>
+        
+        <span class="c1"># inv freq is a tensor of shape (dim // 2)</span>
+        <span class="c1"># (0, 1/10000^(2/dim),..., 1/10000^((dim-2)/dim))</span>
+        <span class="n">inv_freq</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">base</span> <span class="o">**</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="o">/</span> <span class="n">dim</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;inv_freq&quot;</span><span class="p">,</span> <span class="n">inv_freq</span><span class="p">,</span> <span class="n">persistent</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_inv_freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_freq</span>
+
+    <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">position_ids</span><span class="p">):</span>
+        <span class="c1"># Core RoPE block</span>
+        <span class="c1"># Use None to add two new dimensions to the inv_freq</span>
+        <span class="c1"># use expand to repeat the inv_freq along the batch dimension</span>
+        <span class="c1"># inv_freq_expanded has shape (batch_size, dim // 2, 1), dim // 2 is the number of frequencies</span>
+        <span class="c1"># position_ids_expanded has shape (batch_size, 1, seq_len)</span>
+        <span class="n">inv_freq_expanded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_freq</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">position_ids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">position_ids_expanded</span> <span class="o">=</span> <span class="n">position_ids</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+
+        <span class="c1"># inv_freq_expanded.float() @ position_ids_expanded.float() gives shape (batch_size, dim // 2, seq_len)</span>
+        <span class="c1"># after transpose, we get (batch_size, seq_len, dim // 2)</span>
+        <span class="n">freqs</span> <span class="o">=</span> <span class="p">(</span><span class="n">inv_freq_expanded</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> <span class="o">@</span> <span class="n">position_ids_expanded</span><span class="o">.</span><span class="n">float</span><span class="p">())</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># emb has shape (batch_size, seq_len, dim), the concat is on the frequency dimension</span>
+        <span class="n">emb</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">freqs</span><span class="p">,</span> <span class="n">freqs</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">cos</span> <span class="o">=</span> <span class="n">emb</span><span class="o">.</span><span class="n">cos</span><span class="p">()</span>
+        <span class="n">sin</span> <span class="o">=</span> <span class="n">emb</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">cos</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span> <span class="n">sin</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rotate_half</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rotates half the hidden dims of the input.&quot;&quot;&quot;</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span> <span class="c1"># x1 is the first half of the hidden dims</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span> <span class="p">:]</span> <span class="c1"># x2 is the second half of the hidden dims</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="o">-</span><span class="n">x2</span><span class="p">,</span> <span class="n">x1</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># q (`torch.Tensor`): The query tensor, which has shape [batch_size, heads, seq_len, head_dim].</span>
+<span class="k">def</span> <span class="nf">apply_rotary_pos_emb</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">unsqueeze_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+
+    <span class="c1"># add a dimension to the cos and sin tensors to account for the number of heads</span>
+    <span class="n">cos</span> <span class="o">=</span> <span class="n">cos</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">unsqueeze_dim</span><span class="p">)</span>
+    <span class="n">sin</span> <span class="o">=</span> <span class="n">sin</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">unsqueeze_dim</span><span class="p">)</span>
+    <span class="c1"># Here has a different order in the frequency dimension, as described in the paper https://arxiv.org/pdf/2104.09864 page 7</span>
+    <span class="c1"># in the paper, the order is </span>
+    <span class="c1"># [cos m theta 1, cos m theta 1, ..., cos m theta (d//2), cos m theta (d//2)]</span>
+    <span class="c1"># and [sin m theta 1, sin m theta 1, ..., sin m theta (d//2), sin m theta (d//2)]</span>
+    <span class="c1"># here the order is</span>
+    <span class="c1"># [cos m theta 1, cos m theta 2, ...cos m theta (d//2), cos m theta 1, cos m theta 2, ...cos m theta (d//2)]</span>
+    <span class="c1"># and [sin m theta 1, sin m theta 2, ...sin m theta (d//2), sin m theta 1, sin m theta 2, ...sin m theta (d//2)]</span>
+    <span class="c1"># that is, the frequency order is permuted</span>
+    <span class="n">q_embed</span> <span class="o">=</span> <span class="p">(</span><span class="n">q</span> <span class="o">*</span> <span class="n">cos</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">rotate_half</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="n">sin</span><span class="p">)</span>
+    <span class="n">k_embed</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">cos</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">rotate_half</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">sin</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">q_embed</span><span class="p">,</span> <span class="n">k_embed</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="attention-layer">
+<h2><span class="section-number">10.3. </span>Attention Layer<a class="headerlink" href="#attention-layer" title="Link to this heading">#</a></h2>
+<p>Attention layer implement the grouped query attention; Note that the rotary position encoding are implemented by rotating the query encoding and key encoding.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># utility function for Group query attention</span>
+<span class="k">def</span> <span class="nf">repeat_kv</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">n_rep</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is the equivalent of torch.repeat_interleave(x, dim=1, repeats=n_rep). The hidden states go from (batch,</span>
+<span class="sd">    num_key_value_heads, seqlen, head_dim) to (batch, num_attention_heads, seqlen, head_dim)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">batch</span><span class="p">,</span> <span class="n">num_key_value_heads</span><span class="p">,</span> <span class="n">seqlen</span><span class="p">,</span> <span class="n">head_dim</span> <span class="o">=</span> <span class="n">hidden_states</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">if</span> <span class="n">n_rep</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">hidden_states</span>
+    <span class="n">hidden_states</span> <span class="o">=</span> <span class="n">hidden_states</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">num_key_value_heads</span><span class="p">,</span> <span class="n">n_rep</span><span class="p">,</span> <span class="n">seqlen</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">hidden_states</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">num_key_value_heads</span> <span class="o">*</span> <span class="n">n_rep</span><span class="p">,</span> <span class="n">seqlen</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">LlamaAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Multi-headed attention from &#39;Attention Is All You Need&#39; paper&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">LlamaConfig</span><span class="p">,</span> <span class="n">layer_idx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer_idx</span> <span class="o">=</span> <span class="n">layer_idx</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">attention_dropout</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">attention_dropout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_key_value_heads</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">num_key_value_heads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_key_value_groups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_key_value_heads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_position_embeddings</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">max_position_embeddings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rope_theta</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">rope_theta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_causal</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Here supports GQA, which specifies the number of key value heads &lt;&lt; num_heads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">attention_bias</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_key_value_heads</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">attention_bias</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_key_value_heads</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">attention_bias</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">o_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">attention_bias</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">hidden_states</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">past_key_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Cache</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">position_embeddings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]]:</span>
+        <span class="n">bsz</span><span class="p">,</span> <span class="n">q_len</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">hidden_states</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+
+
+        <span class="c1"># projetion of the hidden states into query, key and value</span>
+        <span class="n">query_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_proj</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">key_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_proj</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">value_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_proj</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+
+        <span class="n">query_states</span> <span class="o">=</span> <span class="n">query_states</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="n">q_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">key_states</span> <span class="o">=</span> <span class="n">key_states</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="n">q_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_key_value_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">value_states</span> <span class="o">=</span> <span class="n">value_states</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="n">q_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_key_value_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># Get the rotary embeddings cosines and sines functions</span>
+        <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span> <span class="o">=</span> <span class="n">position_embeddings</span>
+
+        <span class="c1"># apply the rotary embeddings to the query and key states</span>
+        <span class="n">query_states</span><span class="p">,</span> <span class="n">key_states</span> <span class="o">=</span> <span class="n">apply_rotary_pos_emb</span><span class="p">(</span><span class="n">query_states</span><span class="p">,</span> <span class="n">key_states</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">)</span>
+
+        <span class="c1"># Copy kv for matching the number of heads</span>
+        <span class="n">key_states</span> <span class="o">=</span> <span class="n">repeat_kv</span><span class="p">(</span><span class="n">key_states</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_key_value_groups</span><span class="p">)</span>
+        <span class="n">value_states</span> <span class="o">=</span> <span class="n">repeat_kv</span><span class="p">(</span><span class="n">value_states</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_key_value_groups</span><span class="p">)</span>
+        <span class="c1"># applied scaled dot product attention</span>
+        <span class="c1"># attn_weights has shape (batch_size, num_heads, seq_len, seq_len)</span>
+        <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">query_states</span><span class="p">,</span> <span class="n">key_states</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">attention_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># no matter the length, we just slice it</span>
+            <span class="c1"># he slicing operation [attention_mask[:, :, :, : key_states.shape[-2]]](http://vscodecontentref/5) ensures that the mask is aligned</span>
+            <span class="c1"># with the dimensions of the key_states tensor. Specifically, it slices the attention_mask along the </span>
+            <span class="c1"># last dimension to match the second-to-last dimension of the key_states tensor. </span>
+            <span class="c1"># This alignment is crucial for correctly applying the mask to the attention weights.</span>
+            <span class="n">causal_mask</span> <span class="o">=</span> <span class="n">attention_mask</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:</span> <span class="n">key_states</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]]</span>
+            <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">attn_weights</span> <span class="o">+</span> <span class="n">causal_mask</span>
+
+        <span class="c1"># upcast attention to fp32</span>
+        <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">attn_weights</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">query_states</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">attn_weights</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">attention_dropout</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">)</span>
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">attn_weights</span><span class="p">,</span> <span class="n">value_states</span><span class="p">)</span>
+
+
+        <span class="c1"># attn_output has shape (batch_size,  seq_len, num_heads, head_dim) after transpose</span>
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="n">attn_output</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+        <span class="c1"># attn_output output has shape (batch_size, seq_len, num_heads * head_dim</span>
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="n">attn_output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="n">q_len</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># apply the output projection</span>
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">o_proj</span><span class="p">(</span><span class="n">attn_output</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">output_attentions</span><span class="p">:</span>
+            <span class="n">attn_weights</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">attn_output</span><span class="p">,</span> <span class="n">attn_weights</span><span class="p">,</span> <span class="n">past_key_value</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="ffn-layer">
+<h2><span class="section-number">10.4. </span>FFN Layer<a class="headerlink" href="#ffn-layer" title="Link to this heading">#</a></h2>
+<p>Llama uses Swish function in the GLU, we can obtain the following variations:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+SwiGLU=\text{Swish}_1(xW) \otimes xV \\
+\operatorname{FFN}_{SwiGLU} = (\text{Swish}_1(\underbrace{xW_1}_{\text{Gate Projection}})\otimes \underbrace{xV}_{\text{Up Projection}} ) \underbrace{W_2}_{\text{Down Projection}}
+\end{split}\]</div>
+<p>with <span class="math notranslate nohighlight">\(\operatorname{Swish}_1(x)=x \cdot \sigma(x)\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LlamaMLP</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gate_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">mlp_bias</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">up_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">mlp_bias</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">down_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">mlp_bias</span><span class="p">)</span>
+        <span class="c1"># silu is the same as swish</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">silu</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">SiLU</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">down_proj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">down_proj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">silu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gate_proj</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">up_proj</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">down_proj</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="llama-decoder-layer">
+<h2><span class="section-number">10.5. </span>LLama Decoder Layer<a class="headerlink" href="#llama-decoder-layer" title="Link to this heading">#</a></h2>
+<p>Each decoder layer has</p>
+<ul class="simple">
+<li><p>Two Pre-RMSNorm layers, one before the self-attention sublayer and one before the FFN layer</p></li>
+<li><p>GQA attention layer</p></li>
+<li><p>FFN layer</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LlamaDecoderLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">LlamaConfig</span><span class="p">,</span> <span class="n">layer_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">self_attn</span> <span class="o">=</span> <span class="n">LlamaAttention</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">layer_idx</span><span class="o">=</span><span class="n">layer_idx</span><span class="p">)</span>
+        <span class="c1"># FFN layer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span> <span class="o">=</span> <span class="n">LlamaMLP</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_layernorm</span> <span class="o">=</span> <span class="n">LlamaRMSNorm</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">rms_norm_eps</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post_attention_layernorm</span> <span class="o">=</span> <span class="n">LlamaRMSNorm</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">rms_norm_eps</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">hidden_states</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">position_embeddings</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            hidden_states (`torch.FloatTensor`): input to the layer of shape `(batch, seq_len, embed_dim)`</span>
+<span class="sd">            attention_mask (`torch.FloatTensor`, *optional*):</span>
+<span class="sd">                attention mask of size `(batch_size, sequence_length)` if flash attention is used or `(batch_size, 1,</span>
+<span class="sd">                query_sequence_length, key_sequence_length)` if default attention is used.</span>
+<span class="sd">            output_attentions (`bool`, *optional*):</span>
+<span class="sd">                Whether or not to return the attentions tensors of all attention layers. See `attentions` under</span>
+<span class="sd">                returned tensors for more detail.</span>
+<span class="sd">            use_cache (`bool`, *optional*):</span>
+<span class="sd">                If set to `True`, `past_key_values` key value states are returned and can be used to speed up decoding</span>
+<span class="sd">                (see `past_key_values`).</span>
+<span class="sd">            past_key_value (`Tuple(torch.FloatTensor)`, *optional*): cached past key and value projection states</span>
+<span class="sd">            cache_position (`torch.LongTensor` of shape `(sequence_length)`, *optional*):</span>
+<span class="sd">                Indices depicting the position of the input sequence tokens in the sequence</span>
+<span class="sd">            position_embeddings (`Tuple[torch.FloatTensor, torch.FloatTensor]`, *optional*):</span>
+<span class="sd">                Tuple containing the cosine and sine positional embeddings of shape `(batch_size, seq_len, head_dim)`,</span>
+<span class="sd">                with `head_dim` being the embedding dimension of each attention head.</span>
+<span class="sd">            kwargs (`dict`, *optional*):</span>
+<span class="sd">                Arbitrary kwargs to be ignored, used for FSDP and other methods that injects code</span>
+<span class="sd">                into the model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">hidden_states</span>
+        <span class="c1"># pre layer norm</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_layernorm</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+
+        <span class="c1"># Self Attention</span>
+        <span class="n">hidden_states</span><span class="p">,</span> <span class="n">self_attn_weights</span><span class="p">,</span> <span class="n">present_key_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">self_attn</span><span class="p">(</span>
+            <span class="n">hidden_states</span><span class="o">=</span><span class="n">hidden_states</span><span class="p">,</span>
+            <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">position_embeddings</span><span class="o">=</span><span class="n">position_embeddings</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="n">residual</span> <span class="o">+</span> <span class="n">hidden_states</span>
+
+        <span class="c1"># Fully Connected</span>
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">hidden_states</span>
+        <span class="c1"># pre layer norm before FFN layer</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_attention_layernorm</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="n">residual</span> <span class="o">+</span> <span class="n">hidden_states</span>
+
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">(</span><span class="n">hidden_states</span><span class="p">,)</span>
+
+        <span class="k">return</span> <span class="n">outputs</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="stacked-decoder-layers">
+<h2><span class="section-number">10.6. </span>Stacked Decoder layers<a class="headerlink" href="#stacked-decoder-layers" title="Link to this heading">#</a></h2>
+<p>In the stacked decoder layer,</p>
+<ul class="simple">
+<li><p>There are L decoder layers</p></li>
+<li><p>Rotary embeddings (i.e., elements in the rotation matrices) are shared across layers</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LlamaModel</span><span class="p">(</span><span class="n">LlamaPreTrainedModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transformer decoder consisting of *config.num_hidden_layers* layers. Each layer is a [`LlamaDecoderLayer`]</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config: LlamaConfig</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">LlamaConfig</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">padding_idx</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">pad_token_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">embed_tokens</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding_idx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">LlamaDecoderLayer</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">layer_idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">layer_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">)]</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># apply to last layer hidden state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm</span> <span class="o">=</span> <span class="n">LlamaRMSNorm</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">rms_norm_eps</span><span class="p">)</span>
+        <span class="c1"># rotary embedding matrices are shared across the decoder layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotary_emb</span> <span class="o">=</span> <span class="n">LlamaRotaryEmbedding</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+
+        <span class="c1"># Initialize weights and apply final processing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post_init</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">position_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cache_position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">,</span> <span class="n">BaseModelOutputWithPast</span><span class="p">]:</span>
+
+        <span class="n">inputs_embeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_tokens</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="n">inputs_embeds</span>
+
+        <span class="c1"># create position embeddings to be shared across the decoder layers</span>
+        <span class="n">position_embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotary_emb</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">,</span> <span class="n">position_ids</span><span class="p">)</span>
+
+        <span class="n">causal_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_causal_mask</span><span class="p">(</span>
+            <span class="n">attention_mask</span><span class="p">,</span> <span class="n">inputs_embeds</span><span class="p">,</span> <span class="n">cache_position</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">decoder_layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+
+            <span class="n">layer_outputs</span> <span class="o">=</span> <span class="n">decoder_layer</span><span class="p">(</span>
+                <span class="n">hidden_states</span><span class="p">,</span>
+                <span class="n">attention_mask</span><span class="o">=</span><span class="n">causal_mask</span><span class="p">,</span>
+                <span class="n">position_ids</span><span class="o">=</span><span class="n">position_ids</span><span class="p">,</span>
+                <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+                <span class="n">position_embeddings</span><span class="o">=</span><span class="n">position_embeddings</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">hidden_states</span> <span class="o">=</span> <span class="n">layer_outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">BaseModelOutputWithPast</span><span class="p">(</span>
+            <span class="n">last_hidden_state</span><span class="o">=</span><span class="n">hidden_states</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_update_causal_mask</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">input_tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">cache_position</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="p">):</span>
+
+
+        <span class="n">dtype</span><span class="p">,</span> <span class="n">device</span> <span class="o">=</span> <span class="n">input_tensor</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">input_tensor</span><span class="o">.</span><span class="n">device</span>
+        <span class="n">sequence_length</span> <span class="o">=</span> <span class="n">input_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">target_length</span> <span class="o">=</span> <span class="n">sequence_length</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c1"># In case the provided `attention` mask is 2D, we generate a causal mask here (4D).</span>
+        <span class="n">causal_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_4d_causal_attention_mask_with_cache_position</span><span class="p">(</span>
+            <span class="n">attention_mask</span><span class="p">,</span>
+            <span class="n">sequence_length</span><span class="o">=</span><span class="n">sequence_length</span><span class="p">,</span>
+            <span class="n">target_length</span><span class="o">=</span><span class="n">target_length</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+            <span class="n">cache_position</span><span class="o">=</span><span class="n">cache_position</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">input_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">causal_mask</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_prepare_4d_causal_attention_mask_with_cache_position</span><span class="p">(</span>
+        <span class="n">attention_mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">sequence_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">target_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+        <span class="n">cache_position</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a causal 4D mask of shape `(batch_size, 1, query_length, key_value_length)` from a 2D mask of shape</span>
+<span class="sd">        `(batch_size, key_value_length)`, or if the input `attention_mask` is already 4D, do nothing.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            attention_mask (`torch.Tensor`):</span>
+<span class="sd">                A 2D attention mask of shape `(batch_size, key_value_length)` or a 4D attention mask of shape</span>
+<span class="sd">                `(batch_size, 1, query_length, key_value_length)`.</span>
+<span class="sd">            sequence_length (`int`):</span>
+<span class="sd">                The sequence length being processed.</span>
+<span class="sd">            target_length (`int`):</span>
+<span class="sd">                The target length: when generating with static cache, the mask should be as long as the static cache,</span>
+<span class="sd">                to account for the 0 padding, the part of the cache that is not filled yet.</span>
+<span class="sd">            dtype (`torch.dtype`):</span>
+<span class="sd">                The dtype to use for the 4D attention mask.</span>
+<span class="sd">            device (`torch.device`):</span>
+<span class="sd">                The device to plcae the 4D attention mask on.</span>
+<span class="sd">            cache_position (`torch.Tensor`):</span>
+<span class="sd">                Indices depicting the position of the input sequence tokens in the sequence.</span>
+<span class="sd">            batch_size (`torch.Tensor`):</span>
+<span class="sd">                Batch size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">attention_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">attention_mask</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="c1"># In this case we assume that the mask comes already in inverted form and requires no inversion or slicing.</span>
+            <span class="n">causal_mask</span> <span class="o">=</span> <span class="n">attention_mask</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">min_dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">min</span>
+            <span class="n">causal_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">sequence_length</span><span class="p">,</span> <span class="n">target_length</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">min_dtype</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span>
+            <span class="p">)</span>
+        <span class="c1"># The torch.triu function returns the upper triangular part of the matrix, setting all elements below the specified diagonal to zero. </span>
+        <span class="c1"># By setting the diagonal parameter to 1, the function ensures that the diagonal and all elements above it are retained, </span>
+        <span class="c1"># effectively creating a mask that prevents each position from attending to future positions.</span>
+            <span class="k">if</span> <span class="n">sequence_length</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">causal_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">causal_mask</span><span class="p">,</span> <span class="n">diagonal</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">causal_mask</span> <span class="o">*=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">target_length</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">cache_position</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">causal_mask</span> <span class="o">=</span> <span class="n">causal_mask</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">attention_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">causal_mask</span> <span class="o">=</span> <span class="n">causal_mask</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>  <span class="c1"># copy to contiguous memory for in-place edit</span>
+                <span class="n">mask_length</span> <span class="o">=</span> <span class="n">attention_mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">padding_mask</span> <span class="o">=</span> <span class="n">causal_mask</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:</span><span class="n">mask_length</span><span class="p">]</span> <span class="o">+</span> <span class="n">attention_mask</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+                <span class="n">padding_mask</span> <span class="o">=</span> <span class="n">padding_mask</span> <span class="o">==</span> <span class="mi">0</span>
+                <span class="n">causal_mask</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:</span><span class="n">mask_length</span><span class="p">]</span> <span class="o">=</span> <span class="n">causal_mask</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:</span><span class="n">mask_length</span><span class="p">]</span><span class="o">.</span><span class="n">masked_fill</span><span class="p">(</span>
+                    <span class="n">padding_mask</span><span class="p">,</span> <span class="n">min_dtype</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">causal_mask</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="decoder-for-language-modeling">
+<h2><span class="section-number">10.7. </span>Decoder for language modeling<a class="headerlink" href="#decoder-for-language-modeling" title="Link to this heading">#</a></h2>
+<p>Decoder with language modeling is the previous stacked decoder layer plus a linear layer as language prediction head. The langauge prediciton head linearly transforms the hidden state into the logits distributed over the vocabulary space.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LlamaForCausalLM</span><span class="p">(</span><span class="n">LlamaPreTrainedModel</span><span class="p">,</span> <span class="n">GenerationMixin</span><span class="p">):</span>
+    <span class="n">_tied_weights_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;lm_head.weight&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">LlamaModel</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lm_head</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Initialize weights and apply final processing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post_init</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">inputs_embeds</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">use_cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_hidden_states</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">return_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cache_position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">num_logits_to_keep</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Unpack</span><span class="p">[</span><span class="n">KwargsForCausalLM</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">,</span> <span class="n">CausalLMOutputWithPast</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            labels (`torch.LongTensor` of shape `(batch_size, sequence_length)`, *optional*):</span>
+<span class="sd">                Labels for computing the masked language modeling loss. Indices should either be in `[0, ...,</span>
+<span class="sd">                config.vocab_size]` or -100 (see `input_ids` docstring). Tokens with indices set to `-100` are ignored</span>
+<span class="sd">                (masked), the loss is only computed for the tokens with labels in `[0, ..., config.vocab_size]`.</span>
+
+<span class="sd">            num_logits_to_keep (`int`, *optional*):</span>
+<span class="sd">                Calculate logits for the last `num_logits_to_keep` tokens. If `0`, calculate logits for all</span>
+<span class="sd">                `input_ids` (special case). Only last token logits are needed for generation, and calculating them only for that</span>
+<span class="sd">                token can save memory, which becomes pretty significant for long sequences or large vocabulary size.</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        ```&quot;&quot;&quot;</span>
+        <span class="c1"># decoder outputs consists of (dec_features, layer_state, dec_hidden, dec_attn)</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span>
+            <span class="n">input_ids</span><span class="o">=</span><span class="n">input_ids</span><span class="p">,</span>
+            <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span>
+            <span class="n">inputs_embeds</span><span class="o">=</span><span class="n">inputs_embeds</span><span class="p">,</span>
+            <span class="n">use_cache</span><span class="o">=</span><span class="n">use_cache</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">output_hidden_states</span><span class="o">=</span><span class="n">output_hidden_states</span><span class="p">,</span>
+            <span class="n">return_dict</span><span class="o">=</span><span class="n">return_dict</span><span class="p">,</span>
+            <span class="n">cache_position</span><span class="o">=</span><span class="n">cache_position</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Only compute necessary logits, and do not upcast them to float if we are not computing the loss</span>
+        <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lm_head</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">[:,</span> <span class="o">-</span><span class="n">num_logits_to_keep</span><span class="p">:,</span> <span class="p">:])</span>
+
+        <span class="n">loss</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_function</span><span class="p">(</span><span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">CausalLMOutputWithPast</span><span class="p">(</span>
+            <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
+            <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span>
+            <span class="n">past_key_values</span><span class="o">=</span><span class="n">outputs</span><span class="o">.</span><span class="n">past_key_values</span><span class="p">,</span>
+            <span class="n">hidden_states</span><span class="o">=</span><span class="n">outputs</span><span class="o">.</span><span class="n">hidden_states</span><span class="p">,</span>
+            <span class="n">attentions</span><span class="o">=</span><span class="n">outputs</span><span class="o">.</span><span class="n">attentions</span><span class="p">,</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs/notebooks/chapter_LLM_arch"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../chapter_LLM_arch/LLM_dense_architectures.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">9. </span>LLM Architectures Fundamentals</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../chapter_LLM_arch/LLM_moe_sparse_architectures.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">11. </span>MOE Sparse Architectures (WIP)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-norm">10.1. RMS Norm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotory-embedding">10.2. Rotory Embedding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-layer">10.3. Attention Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ffn-layer">10.4. FFN Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-decoder-layer">10.5. LLama Decoder Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stacked-decoder-layers">10.6. Stacked Decoder layers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoder-for-language-modeling">10.7. Decoder for language modeling</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuguang Yang
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
