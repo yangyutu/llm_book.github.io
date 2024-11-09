@@ -349,7 +349,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-context-windows">9.6. Extending Context Windows</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#position-interpolation-for-rope">9.6.1. Position Interpolation for RoPE</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ntk-aware-rope">9.6.2. NTK-Aware RoPE</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dual-chunk-attention">9.6.3. Dual Chunk Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ntk-by-parts-and-yarn">9.6.3. NTK-by-parts and YaRN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dual-chunk-attention">9.6.4. Dual Chunk Attention</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenziation-vocabulary-and-weight-tying">9.7. Tokenziation, vocabulary, and weight tying</a><ul class="nav section-nav flex-column">
@@ -379,7 +380,7 @@ document.write(`
 <p>LLM have revolutionized natural language processing and artificial intelligence, demonstrating remarkable capabilities in understanding and generating human-like text. Tech companies like Google, Microsoft, Meta, OpenAI are producing LLMs with increasing sizes and capabilities just over the past few years [<a class="reference internal" href="#chapter-foundation-fig-pretrained-llm-timeline"><span class="std std-numref">Fig. 9.1</span></a>].</p>
 <p>From a high level, LLMs share the following characteristics:</p>
 <ul class="simple">
-<li><p><strong>Scale</strong>: LLMs are trained on enormous datasets, often containing hundreds to thousands of billions of words or tokens. This massive scale allows them to capture intricate patterns and nuances in language. For example, GPT-3 <span id="id1">[<a class="reference internal" href="#id408" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>]</span> was trained on about 500 billion tokens, and recent Llama3 405B <span id="id2">[<a class="reference internal" href="#id1542" title="Abhimanyu Dubey and et al Abhinav Jauhri. The llama 3 herd of models. 2024. URL: https://arxiv.org/abs/2407.21783, arXiv:2407.21783.">DAJ24</a>]</span> was trained on 15.6T tokens.</p></li>
+<li><p><strong>Scale</strong>: LLMs are trained on enormous datasets, often containing hundreds to thousands of billions of words or tokens. This massive scale allows them to capture intricate patterns and nuances in language. For example, GPT-3 <span id="id1">[<a class="reference internal" href="../chapter_foundation/transformers.html#id393" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>]</span> was trained on about 500 billion tokens, and recent Llama3 405B <span id="id2">[<a class="reference internal" href="#id1542" title="Abhimanyu Dubey and et al Abhinav Jauhri. The llama 3 herd of models. 2024. URL: https://arxiv.org/abs/2407.21783, arXiv:2407.21783.">DAJ24</a>]</span> was trained on 15.6T tokens.</p></li>
 <li><p><strong>Transformer architecture</strong>: Most modern LLMs use transformer architectures, which were introduced in the “Attention is All You Need” paper. These models can have billions of parameters - GPT-3 has 175 billion, for instance. The transformer architecture allows for efficient parallel processing and captures long-range dependencies in text.</p></li>
 <li><p><strong>Self-supervised learning</strong>: LLMs are typically pre-trained using self-supervised learning techniques. The most common approach is next-token prediction, where the model learns to predict the next word in a sequence given the previous words. This allows the model to learn from vast amounts of unlabeled text data.</p></li>
 <li><p><strong>Multi-task capability</strong>: A single LLM can perform various language tasks such as translation, summarization, question-answering, reasongin, and text generation without needing separate models for each task. This versatility makes them powerful tools for a wide range of applications.</p></li>
@@ -464,7 +465,7 @@ document.write(`
 </section>
 <section id="layer-normalization-position">
 <h3><span class="section-number">9.2.3. </span>Layer normalization position<a class="headerlink" href="#layer-normalization-position" title="Link to this heading">#</a></h3>
-<p>It has been shown that <span id="id7">[<a class="reference internal" href="#id410" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span> where to replace the normalization layer has an impact on model training, covergence, and final performance.</p>
+<p>It has been shown that <span id="id7">[<a class="reference internal" href="../chapter_foundation/transformers.html#id395" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span> where to replace the normalization layer has an impact on model training, covergence, and final performance.</p>
 <p>The Post-Norm (as in the vanilla Transformer architecture) has can stablize the variance of the output by applying the LayerNorm after the residual connection, which is given by</p>
 <div class="math notranslate nohighlight">
 \[\operatorname{PostNorm Output} = \operatorname{LayerNorm}(X + \operatorname{SubLayer}(X))\]</div>
@@ -472,7 +473,7 @@ document.write(`
 <p>The Pre-Norm normalize the input to SubLayers, which is given by</p>
 <div class="math notranslate nohighlight">
 \[\operatorname{PreNorm Output} = X + \operatorname{SubLayer}(\operatorname{LayerNorm}(X)).\]</div>
-<p>It is shown in <span id="id8">[<a class="reference internal" href="#id410" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span> that the gradients at last layer <span class="math notranslate nohighlight">\(L\)</span> satisfy the following condition:</p>
+<p>It is shown in <span id="id8">[<a class="reference internal" href="../chapter_foundation/transformers.html#id395" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span> that the gradients at last layer <span class="math notranslate nohighlight">\(L\)</span> satisfy the following condition:</p>
 <div class="math notranslate nohighlight">
 \[||G_{PostNorm,L}||_F \leq \mathcal{O}(d \sqrt{\ln d}), ||G_{PreNorm,L}||_F \leq \mathcal{O}\left(d \sqrt{\frac{\ln d}{L}}\right)
 .\]</div>
@@ -997,8 +998,11 @@ b^{\prime}=b \cdot s^{\frac{|d_{model}|}{|d_{model}|-2}} .
 \end{split}\]</div>
 <p>which is a monontically increasing function on <span class="math notranslate nohighlight">\(i\)</span> given that <span class="math notranslate nohighlight">\(d_{model}\)</span> and <span class="math notranslate nohighlight">\(s\)</span> are constants.</p>
 </section>
+<section id="ntk-by-parts-and-yarn">
+<h3><span class="section-number">9.6.3. </span>NTK-by-parts and YaRN<a class="headerlink" href="#ntk-by-parts-and-yarn" title="Link to this heading">#</a></h3>
+</section>
 <section id="dual-chunk-attention">
-<h3><span class="section-number">9.6.3. </span>Dual Chunk Attention<a class="headerlink" href="#dual-chunk-attention" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">9.6.4. </span>Dual Chunk Attention<a class="headerlink" href="#dual-chunk-attention" title="Link to this heading">#</a></h3>
 <p><strong>Dual Chunk Attention</strong> <span id="id26">[]</span> applies the chunking idea to map the position distance <span class="math notranslate nohighlight">\((i - j)\)</span> between a query state at position <span class="math notranslate nohighlight">\(i\)</span> and and a key state at position <span class="math notranslate nohighlight">\(j\)</span> to a value within the <strong>training stage context window size</strong> <span class="math notranslate nohighlight">\(L\)</span>.</p>
 <p>More specifically, let the <span class="math notranslate nohighlight">\(M(i, j)\)</span> be the mapping function of dual chunk attention. <span class="math notranslate nohighlight">\(M\)</span> has hyperparameter of <strong>chunk size</strong> <span class="math notranslate nohighlight">\(s &lt; L\)</span> and <strong>local context window size</strong> <span class="math notranslate nohighlight">\(w = L - s\)</span>, which is given by</p>
 <div class="math notranslate nohighlight">
@@ -1502,7 +1506,8 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-context-windows">9.6. Extending Context Windows</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#position-interpolation-for-rope">9.6.1. Position Interpolation for RoPE</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ntk-aware-rope">9.6.2. NTK-Aware RoPE</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dual-chunk-attention">9.6.3. Dual Chunk Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ntk-by-parts-and-yarn">9.6.3. NTK-by-parts and YaRN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dual-chunk-attention">9.6.4. Dual Chunk Attention</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenziation-vocabulary-and-weight-tying">9.7. Tokenziation, vocabulary, and weight tying</a><ul class="nav section-nav flex-column">
