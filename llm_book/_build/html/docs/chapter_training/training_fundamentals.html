@@ -191,7 +191,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama.html">10. Annotated LLama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama.html">10. *Annotated LLama</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">11. MOE Sparse Architectures (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
@@ -409,7 +409,7 @@ platforms (e.g., StackOverflow).</p></li>
 <a class="reference internal image-reference" href="../../_images/training_data_distribution_summary.png"><img alt="../../_images/training_data_distribution_summary.png" src="../../_images/training_data_distribution_summary.png" style="width: 850.5px; height: 320.5px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 12.1 </span><span class="caption-text">Pretrain data source distribution for existing LLMs. Image from <span id="id3">[<a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html#id1516" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-pretrain-data-distribution" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 12.1 </span><span class="caption-text">Pretrain data source distribution for existing LLMs. Image from <span id="id3">[<a class="reference internal" href="#id1500" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-pretrain-data-distribution" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>While the scale is one factor impacting resulting model performance (i.e., the scaling law), the quality of data and the ratio of different data types play an equally important role. As dominant pretraining data is from the web, data clearning and quality control is a crucial step for sucessful LLM pretraining [<a class="reference internal" href="#chapter-training-fig-fundamentals-pretrain-data-distribution"><span class="std std-numref">Fig. 12.1</span></a>].
@@ -418,7 +418,7 @@ The following <a class="reference internal" href="#chapter-training-fig-fundamen
 <a class="reference internal image-reference" href="../../_images/pretraining_data_cleaning_pipeline.png"><img alt="../../_images/pretraining_data_cleaning_pipeline.png" src="../../_images/pretraining_data_cleaning_pipeline.png" style="width: 866.4px; height: 187.2px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 12.2 </span><span class="caption-text">Illustration of data cleaning pipeline for curating LLM pretraining data. Image from <span id="id4">[<a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html#id1516" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-pretrain-data-clean-pipeline" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 12.2 </span><span class="caption-text">Illustration of data cleaning pipeline for curating LLM pretraining data. Image from <span id="id4">[<a class="reference internal" href="#id1500" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-pretrain-data-clean-pipeline" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Onogoing challenges for constructing LLM pretraining data include:</p>
