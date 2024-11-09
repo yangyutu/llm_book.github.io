@@ -427,12 +427,12 @@ In {ref}`chapter_foundation_sec_pretrained_LM_transformer_arch_absolute_PE`, we 
 
 $$
 \operatorname{PE}(i)_j = \left\{\begin{array}{l}
-\sin \left(w_j i\right), \quad \text { if } j \text{is even} \\
-\cos \left(w_j i\right), \quad \text { if } j \text{is odd}
+\sin \left(w_j i\right), \quad \text { if } j \text{ is even} \\
+\cos \left(w_j i\right), \quad \text { if } j \text{ is odd}
 \end{array}\right.
 $$
 
-where $w_j=1/10000^{j / d_{model}}$ if $j$ is even and $w_j=1/10000^{j-1 / d_{model}}$ if $j$ is odd.
+where $w_j=1/10000^{j / d_{model}}$ if $j$ is even and $w_j=1/10000^{j-1 / d_{model}}$ if $j$ is odd and $j=0,...,d_{model} - 1$.
 
 While absolute position encoding has achieved success in BERT, it has several key issues when is applied in LLMs:
 * Lack of extrapolation due to limited sequence length: Models are restricted to a maximum sequence length during training (e.g., BERT 512), limiting their ability to  generalize to positions beyond the maximum length at inference time.
@@ -441,7 +441,7 @@ While absolute position encoding has achieved success in BERT, it has several ke
 
 ### ALiBi
 
-{cite:p}`press2022trainshorttestlong` is a simple approach that suprisinly addresses all drawbacks in the sinusoidal abolute position encoding above. The key idea is to 1) simply add a static, relative position dependent bias into the Softmax computation step[{numref}`chapter_LLM_arch_fig_fundamentals_position_encoding_Alibi`]. Specifically, for the attention weight between query token $i$ to all the key vectors, we have
+**ALiBi** (Attention with Linear Biases) {cite:p}`press2022trainshorttestlong` is a simple approach that suprisinly addresses all drawbacks in the sinusoidal abolute position encoding above. The key idea is to  **simply add a static, relative position dependent bias into the Softmax computation step** [{numref}`chapter_LLM_arch_fig_fundamentals_position_encoding_Alibi`]. Specifically, for the attention weight between query token $i$ to all the key vectors, we have
 
 $$\operatorname{AttentionWeight} = \operatorname{Softmax}(\underbrace{Q_iK^T/d_{Head}}_{\text{scaled query-key doc product}} + \underbrace{m \cdot[−(i − 1), ..., −2, −1, 0]}_{\text{ALiBi bias vector}})
 $$
@@ -462,7 +462,7 @@ When computing attention weights for each head, ALiBi adds a constant bias (Righ
 
 Compare with sinusoidal absolute position encoding baseline [{numref}`chapter_LLM_arch_fig_fundamentals_position_encoding_Alibi_comparison`], there are several advantages of Alibi:
 * When train and validate on the same input token length $L$, Alibi shows advantages over baseline.
-* When train on shorter L (e.g., 512), but validate on longer (e.g., 1024,...,3072), Alibi method extropolates well.
+* When train on shorter length (e.g., 512), but validate on longer (e.g., 1024,...,3072), Alibi method extropolates well.
 
 
 ```{figure} ../img/chapter_LLM_arch/position_encoding/Alibi_vs_absolution_PE_performance.png
@@ -484,7 +484,7 @@ Rotary Position Encoding (RoPE) {cite:p}`su2023roformerenhancedtransformerrotary
 
 Specifically, the key idea of RoPE is to multiply query vector $Q_m$ (of a token at position $m$) and key vector $K_n$ (of another token at position $n$) by a rotational matrix $\boldsymbol{R}(m; \Theta)$ and $\boldsymbol{R}(n; \Theta)$ before taking the scaled doc product. Here rotational matrix $\boldsymbol{R}(\cdot; \Theta)$ is constructed a group of 2D rotational matrices, whose wave-length are specified by $\Theta$. 
 
-The $d_{model}\times d_{model}$ rotational matrix is given by
+The $d_{model}\times d_{model}$ rotational matrix for position $m$ is given by
 
 $$
 \boldsymbol{R}_{\Theta, m}^d=\left(\begin{array}{ccccccc}
@@ -498,12 +498,12 @@ $$
 \end{array}\right)
 $$
 
-is the rotary matrix with pre-defined parameters $\Theta=\left\{\theta_i=10000^{-2(i-1) / d}, i \in[1,2, \ldots, d_{model} / 2]\right\}$. 
+Here the rotary matrix has pre-defined parameters $\Theta=\left\{\theta_i=10000^{-2(i-1) / d}, i \in[1,2, \ldots, d_{model} / 2]\right\}$, which can be interpreted as wave length from $2\pi$ (when $i = 1$) to $10000 \cdot 2\pi$ (when $i = d_{model}/2$). **Short wave length is used capture the high-frequency, short-ranged information in positions and long wave length is used to capture low-frequency, long-range information in position.** 
 
 Pre-SoftMax input (omitting scaling) for query token at position $m$ and key token at position $n$ is given by 
 
 $$
-\operatorname{PreSoftmax}(Q_m, K_n) =\left(\boldsymbol{R}_{m;\Theta m} Q_m\right) \cdot \left(\boldsymbol{R}{n;\Theta} K_n \right)
+\operatorname{PreSoftmax}(Q_m, K_n) =\left(\boldsymbol{R}_{\Theta, m} Q_m\right) \cdot \left(\boldsymbol{R}{\Theta,n} K_n \right)
 $$
 
 ````{prf:example}
@@ -557,7 +557,7 @@ In other words, the inner product of two rotated vectors is equal to the inner p
 
 **Long-term decay**: In {cite:p}`su2023roformerenhancedtransformerrotary`, it is shown that the inner-product will decay when the relative position increase. This property aligns with desired property that a pair of tokens will have gradually descreasing semantic impact on each other when they are far apart. 
 
-### Understanding RoPE with Visualization
+<!-- ### Understanding RoPE with Visualization
 
 ```{figure} ../img/chapter_LLM_arch/position_encoding/RoPE/RoPE_visualization.png
 ---
@@ -565,7 +565,78 @@ scale: 70%
 name: chapter_LLM_arch_fig_fundamentals_position_encoding_Alibi_comparison
 ---
 Visualization of 2D RoPE and its mechanism in encoding context. Image from [Blog](https://mp.weixin.qq.com/s/dn8Pb80iRF9UkRn4vPOhHA).
+``` -->
+
+## Extending Context Windows
+
+### Position Interpolation for RoPE
+
+**Position Interpolation**{cite:p}`chen2023extending` is a cheap method to extend the context window of an existing LLM, which allows LLM to have longer context window during inference time than the context window size during training. 
+
+The idea is to linearly down-scales the input position indices to match the original context window size [{numref}`chapter_LLM_arch_fig_fundamentals_RoPE_position_interpolation`].Specifically, given that the rotation matrix in RoPE is a continuous function, one can adjust the rotation matrix for large position $m$ to $m'$ as
+
+$$R_{\Theta, m} = R_{\Theta, m'}, m' = \frac{L}{L'}$$
+
+where $L$ maximum length of context window during the training and $L' > L$ is larger context window we would like to apply during the inference stage.
+Intuitively, we reduce position indices from $\left[0, L^{\prime}\right)$ to $[0, L)$ to match the original range of indices before computing RoPE.
+
+
+It is found that Position Interpolation is highly effective and efficient, requiring only a
+very short period of fine-tuning for the model to fully adapt to greatly extended context windows. For example, extending the initial context window of 2048 to 32768 only requires fine-tuning for 1000 steps on the Pile.
+
+
+```{figure} ../img/chapter_LLM_arch/position_encoding/RoPE/Rope_position_interpolation.png
+---
+scale: 70%
+name: chapter_LLM_arch_fig_fundamentals_RoPE_position_interpolation
+---
+An illustration of the Position Interpolation method, which is used to extend an initial context window from 2048 to 4096. Image from {cite:p}`chen2023extending`.
 ```
+
+### NTK-Aware RoPE
+
+From the information encoding (i.e., Neural Tangent Kernel - NTK theory) perspective, the scaling by Position Interpolation uniformly scales wave length by a factor of $L'/L$, which can hurt the model's ability in capture high-frequency, short-ranged position information after rescaling. 
+
+The **NTK-aware interpolation** was proposed in public as a [reddit post](https://www.reddit.com/r/LocalLLaMA/comments/14lz7j5/ntkaware_scaled_rope_allows_llama_models_to_have/). Instead of scaling the wave length of every dimension uniformly, we scale up short wavelength less and long wavelength more.
+
+More precisely, let the scaling factor be $s=L^{\prime} / L$ and $b$ be the original base. We perform a base change as follows:
+
+$$
+b^{\prime}=b \cdot s^{\frac{|d_{model}|}{|d_{model}|-2}} .
+$$
+
+Note that the wave length at dimention $i$ is given $\lambda = 2\pi b^{2i/d_{model}}$. To see the **scaling-up effect is larger on dimensions with large wavelength** (i.e., large $i$), we have
+
+$$
+\begin{align*}
+\log \frac{\lambda'}{\lambda} &= 2 i d_{model} (\log b' - \log b) \\
+                              &= 2 i d_{model} (\frac{|d_{model}|}{|d_{model}|-2} \log s)
+\end{align*}
+$$
+
+which is a monontically increasing function on $i$ given that $d_{model}$ and $s$ are constants.
+
+### Dual Chunk Attention
+
+**Dual Chunk Attention** {cite:p}`an2024training` applies the chunking idea to map the position distance $(i - j)$ between a query state at position $i$ and and a key state at position $j$ to a value within the **training stage context window size** $L$.
+
+More specifically, let the $M(i, j)$ be the mapping function of dual chunk attention. $M$ has hyperparameter of **chunk size** $s < L$ and **local context window size** $w = L - s$, which is given by
+
+$$
+M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] & \text { if }\lfloor i / s\rfloor-\lfloor j / s\rfloor=0 \\ P_{\mathbf{q}}^{\text {Succ }}[i]-P_{\mathbf{k}}[j] & \text { if }\lfloor i / s\rfloor-\lfloor j / s\rfloor=1 \\ P_{\mathbf{q}}^{\text {Inter }}[i]-P_{\mathbf{k}}[j] & \text { if }\lfloor i / s\rfloor-\lfloor j / s\rfloor>1 .\end{cases}
+$$
+
+Here 
+* $P_{\mathbf{q}}^{\text {Intra }}[i] = P_{\mathbf{k}}[i] = i \bmod s$
+* $P_{\mathbf{q}}^{\text {Inter }}[i] = L - 1 $
+* $P_{\mathbf{q}}^{\text {Succ }} = (s, s+1,...,s + w - 1, L-1,...,L-1) $ 
+
+Intutiviely, 
+* When $i$ and $j$ are within the same chunk, i.e., $|i - j| <= s$, $M(i, j) = i - j$, which recovers the original position distance.
+* When $i$ and $j$ are have distances of at least two chunks, $i$ is capped at the value of $L - 1$ and $j = j \bmod s$. 
+* When $i$ and $j$ are within two consecutive chunks separately, a smoothed mapping is used to preverse locality.
+
+To summarize, DCA consists of three components: (1) intra-chunk attention, which recover the same attention when two positions are within the same chunk; (2) inter-chunk attention for tokens between distinct chunks; and (3) successive chunk attention for processing tokens residing in two consecutive distinct chunks. 
 
 
 ## Tokenziation, vocabulary, and weight tying

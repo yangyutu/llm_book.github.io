@@ -191,7 +191,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama.html">10. Annotated LLama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama.html">10. *Annotated LLama</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">11. MOE Sparse Architectures (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
@@ -515,7 +515,7 @@ def activations_memory(num_layers, seq_len, batch_size, hidden_dim, num_heads, p
         16 + 2/precision + 2*num_heads*seq_len/hidden_dim + num_heads*seq_len/(precision*hidden_dim))
     return round(mem_bytes / 10**9, 2)
 ``` -->
-<p><span id="id1">[<a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html#id1539" title="An Yang, Baosong Yang, Binyuan Hui, and et al. Bo Zheng. Qwen2 technical report. 2024. URL: https://arxiv.org/abs/2407.10671, arXiv:2407.10671.">YYHBZ24</a>]</span></p>
+<p><span id="id1">[<a class="reference internal" href="#id1518" title="An Yang, Baosong Yang, Binyuan Hui, and et al. Bo Zheng. Qwen2 technical report. 2024. URL: https://arxiv.org/abs/2407.10671, arXiv:2407.10671.">YYHBZ24</a>]</span></p>
 <p>| Model Size   | <span class="math notranslate nohighlight">\(L\)</span> | <span class="math notranslate nohighlight">\(d\)</span>| <span class="math notranslate nohighlight">\(s\)</span> |<span class="math notranslate nohighlight">\(H\)</span> | <span class="math notranslate nohighlight">\(b\)</span> |GPU Memory  |
 | :— | —: | —: | —: | —: | —: |
 | 0.5B  | 24 | 896 | 4096 | 14 | 1 | 2.9 GB + 2 GB = 4.9 GB |

@@ -191,34 +191,35 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MOE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama.html">10. *Annotated LLama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">11. MOE Sparse Architectures (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">11. LLM Training Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM Finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM Alignement and Preference Learning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">14. *Reinforcement Learning Essentials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">15. LLM Training Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">12. LLM Training Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">13. LLM Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">14. LLM Alignement and Preference Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">16. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">17. Inference Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">17. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">18. Inference Acceleration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">18. Basic Prompting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">19. Advanced Prompting Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">19. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">20. Advanced Prompting Techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">20. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">21. RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">21. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">22. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">22. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">23. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -378,8 +379,8 @@ document.write(`
 <li><p>Speech recognition, where audio signal is converted to meaningful words, phases, and sentences.</p></li>
 </ul>
 <p>A closed related language modeling task is predict the next word following a sequence of words.</p>
-<p>Predicting the next word in a language system can be much more challenging than predicting the next observation in the many physical system. One perspective is that the evolution of many physical systems can governed by physical laws that are well established; on the other hand, the generation of next word, sentence, and even logically coherent paragraph is closely related to human reasoning and intelligence, which remain poorly understood. In fact, it is widely believed that being able to write up logical and coherent paragraphs is an indication of human-level intelligence <span id="id2">[<a class="reference internal" href="#id1132" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>]</span>.</p>
-<p>In this section, we first consider a classical <span class="math notranslate nohighlight">\(n\)</span>-gram statistical language approach <span id="id3">[<a class="reference internal" href="#id894" title="Christopher D Manning and Hinrich Schütze. Foundations of statistical natural language processing. MIT press, 1999.">MSchutze99</a>]</span>, where we count the co-occurrence of words and model the language generation using probabilistic models (e.g., Markov chains). <span class="math notranslate nohighlight">\(n\)</span>-gram models focus on predicting next word based on the superficial co-occurrence counts instead of high-level semantic links between the context and the unknown next word,  It further suffers from the curse of dimensionality since sentences are normally long and language vocabulary size is huge (e.g., <span class="math notranslate nohighlight">\(10^6\)</span>). Over the past two decades, the neural network based language models have attracted considerable attention because these models are able to reveal deep connections between words as well as to alleviate the dimensionality challenge. Our focus in this section is on early development of neural language models; recent developments of pre-trained language models (e.g., GPT 1-3 <span id="id4">[<a class="reference internal" href="#id386" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>, <a class="reference internal" href="#id1131" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf, 2018.">RNSS18</a>, <a class="reference internal" href="#id1132" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>]</span>) will be covered in next section.</p>
+<p>Predicting the next word in a language system can be much more challenging than predicting the next observation in the many physical system. One perspective is that the evolution of many physical systems can governed by physical laws that are well established; on the other hand, the generation of next word, sentence, and even logically coherent paragraph is closely related to human reasoning and intelligence, which remain poorly understood. In fact, it is widely believed that being able to write up logical and coherent paragraphs is an indication of human-level intelligence <span id="id2">[<a class="reference internal" href="transformers.html#id1139" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>]</span>.</p>
+<p>In this section, we first consider a classical <span class="math notranslate nohighlight">\(n\)</span>-gram statistical language approach <span id="id3">[<a class="reference internal" href="#id894" title="Christopher D Manning and Hinrich Schütze. Foundations of statistical natural language processing. MIT press, 1999.">MSchutze99</a>]</span>, where we count the co-occurrence of words and model the language generation using probabilistic models (e.g., Markov chains). <span class="math notranslate nohighlight">\(n\)</span>-gram models focus on predicting next word based on the superficial co-occurrence counts instead of high-level semantic links between the context and the unknown next word,  It further suffers from the curse of dimensionality since sentences are normally long and language vocabulary size is huge (e.g., <span class="math notranslate nohighlight">\(10^6\)</span>). Over the past two decades, the neural network based language models have attracted considerable attention because these models are able to reveal deep connections between words as well as to alleviate the dimensionality challenge. Our focus in this section is on early development of neural language models; recent developments of pre-trained language models (e.g., GPT 1-3 <span id="id4">[<a class="reference internal" href="transformers.html#id393" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>, <a class="reference internal" href="transformers.html#id1138" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf, 2018.">RNSS18</a>, <a class="reference internal" href="transformers.html#id1139" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>]</span>) will be covered in next section.</p>
 </section>
 <section id="statistical-language-models">
 <h2><span class="section-number">2.2. </span>Statistical Language Models<a class="headerlink" href="#statistical-language-models" title="Link to this heading">#</a></h2>

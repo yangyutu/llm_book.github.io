@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>10. Annotated LLama &#8212; LLM Foundations</title>
+    <title>10. *Annotated LLama &#8212; LLM Foundations</title>
   
   
   
@@ -191,7 +191,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">10. Annotated LLama</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">10. *Annotated LLama</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_moe_sparse_architectures.html">11. MOE Sparse Architectures (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
@@ -310,7 +310,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Annotated LLama</h1>
+    <h1>*Annotated LLama</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -339,7 +339,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="annotated-llama">
-<h1><span class="section-number">10. </span>Annotated LLama<a class="headerlink" href="#annotated-llama" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">10. </span>*Annotated LLama<a class="headerlink" href="#annotated-llama" title="Link to this heading">#</a></h1>
 <p>Here we present a simplified llama implementation based <a class="reference external" href="https://github.com/huggingface/transformers/blob/main/src/transformers/models/llama/modeling_llama.py#L731">Huggingface implementation</a> to illustrate different components on the Llama decoder model.</p>
 <p>The key components are</p>
 <ul class="simple">
@@ -479,7 +479,7 @@ document.write(`
 </section>
 <section id="attention-layer">
 <h2><span class="section-number">10.3. </span>Attention Layer<a class="headerlink" href="#attention-layer" title="Link to this heading">#</a></h2>
-<p>Attention layer implement the grouped query attention; Note that the rotary position encoding are implemented by rotating the query encoding and key encoding.</p>
+<p>Attention layer implements the grouped query attention; Note that the rotary position encoding are implemented by rotating the query encoding and key encoding.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># utility function for Group query attention</span>
@@ -569,7 +569,8 @@ document.write(`
 
         <span class="c1"># attn_output has shape (batch_size,  seq_len, num_heads, head_dim) after transpose</span>
         <span class="n">attn_output</span> <span class="o">=</span> <span class="n">attn_output</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
-        <span class="c1"># attn_output output has shape (batch_size, seq_len, num_heads * head_dim</span>
+        <span class="c1"># attn_output output has shape (batch_size, seq_len, num_heads * head_dim) after reshape</span>
+        <span class="c1"># which is equivalent to concatenating the heads</span>
         <span class="n">attn_output</span> <span class="o">=</span> <span class="n">attn_output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="n">q_len</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="c1"># apply the output projection</span>
@@ -588,10 +589,9 @@ document.write(`
 <h2><span class="section-number">10.4. </span>FFN Layer<a class="headerlink" href="#ffn-layer" title="Link to this heading">#</a></h2>
 <p>Llama uses Swish function in the GLU, we can obtain the following variations:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}
-SwiGLU=\text{Swish}_1(xW) \otimes xV \\
+\[
 \operatorname{FFN}_{SwiGLU} = (\text{Swish}_1(\underbrace{xW_1}_{\text{Gate Projection}})\otimes \underbrace{xV}_{\text{Up Projection}} ) \underbrace{W_2}_{\text{Down Projection}}
-\end{split}\]</div>
+\]</div>
 <p>with <span class="math notranslate nohighlight">\(\operatorname{Swish}_1(x)=x \cdot \sigma(x)\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
