@@ -616,6 +616,8 @@ $$
 
 which is a monontically increasing function on $i$ given that $d_{model}$ and $s$ are constants.
 
+### NTK-by-parts and YaRN
+
 ### Dual Chunk Attention
 
 **Dual Chunk Attention** {cite:p}`an2024training` applies the chunking idea to map the position distance $(i - j)$ between a query state at position $i$ and and a key state at position $j$ to a value within the **training stage context window size** $L$.
