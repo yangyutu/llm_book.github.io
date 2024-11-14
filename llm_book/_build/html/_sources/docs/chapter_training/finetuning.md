@@ -132,13 +132,9 @@ to finetuning on just one or the other. Image from {cite:p}`chung2022scalinginst
 
 ### Motivation
 
-To adapt a LLM to a specific downstream task, Full-size fine-tunning the whole LLM is usually not cost effective. For models whose model parameters are at the 1B or above, it is difficult to fine-tune the model using a single consumer grade GPU. Full-size finetuning also runs the risk of Catastrophic Forgetting {cite:p}`luo2024empiricalstudycatastrophicforgetting` which means LLMs forget prior knowledge when learning new data. 
+To adapt a LLM to a specific downstream task, Full-size fine-tunning the whole LLM is usually not cost effective. For models whose model parameters are at the 1B or above, it is difficult to fine-tune the model using a single consumer grade GPU. Full-size finetuning also runs the risk of **Catastrophic Forgetting** {cite:p}`luo2024empiricalstudycatastrophicforgetting` which means LLMs forget prior knowledge when learning new data. 
 
-since the size
-of the fine-tuned dataset is typically much smaller than the
-pretrained dataset, performing full fine-tuning to update all
-the pretrained parameters may lead to overfittin
-
+Since the size of the fine-tuned dataset is typically much smaller than the pretrained dataset, performing full fine-tuning to update all the pretrained parameters may lead to **overfitting**.
 
 PEFT {cite:p}`xu2023parameterefficientfinetuningmethodspretrained` emerges as a cost-effiective approach to LLM finetuning. In essence, PEFT only pdates only a small
 number of additional parameters or updates a subset of the
@@ -233,13 +229,13 @@ $$
 \max _{\theta} \sum_{(x, y) \in \mathcal{Z}} \sum_{t=1}^{|y|} \log \left(p_{\Phi_0+\Delta \Phi(\theta)}\left(y_t \mid x, y_{<t}\right)\right)
 $$
 
-and make the **assumption that task-specific parameter increment $\Delta \Phi=\Delta \Phi(\Theta)$ is further encoded by a much smaller-sized set of parameters $\Theta$ with $|\Theta| \ll\left|\Phi_0\right|**$.
+and make the **assumption that task-specific parameter increment $\Delta \Phi(\Theta)$ is further encoded by a much smaller-sized set of parameters $\Theta$ with $|\Theta| \ll\left|\Phi_0\right|$**.
 
 Specifically and as a further approximation, we only consider the LoRA on projeciton matrices $W_Q, W_K, W_V$. Take $W_Q$ as example. 
 
 $$H = XW^Q = X(W^{Q}_0 + \Delta W) = X(W^Q_0 + \underbrace{B^QA^Q}_{\text{Low Rank}}).$$
 
-Here during finetuning, we freeze $W^Q_0$ and update low rank matrices $B^Q \in \mathbb{R}^{d_{model}\times r}$, $A^Q \in \mathbb{R}^{r\times d_{head}$, with $r \ll \min(d_{model}, d_{head})$ (e.g., $r <= 8$).
+Here during finetuning, we freeze $W^Q_0$ and update low rank matrices $B^Q \in \mathbb{R}^{d_{model}\times r}$, $A^Q \in \mathbb{R}^{r\times d_{head}}$, with $r \ll \min(d_{model}, d_{head})$ (e.g., $r <= 8$).
 
 
 ```{figure} ../img/chapter_training/finetuning/LoRA/LoRA.png
@@ -290,8 +286,8 @@ As shown in the following, LoRA has been successfully applied to various models,
 ```{table} RoBERT with different adaptation methods on the language understanding GLUE benchmark. 
 | Model & Method | # Trainable Parameters | Avg. |
 |----------------|------------------------|------|
-| RoB_base (FT)* | 125.0M | 86.4 |
-| RoB_base (Adpt^D)* | 0.9M | 85.4 |
+| RoB_base (FT) | 125.0M | 86.4 |
+| RoB_base (Adpt^D) | 0.9M | 85.4 |
 | RoB_base (LoRA) | 0.3M | 87.2 |
 ```
 
@@ -343,12 +339,12 @@ But why can LoRA reduce overall memory usage? Because:
 - Although LoRA may cause the peak memory usage of a certain layer to be higher than full fine-tuning, this intermediate result can be cleared after calculating the gradient and doesn't need to be kept continuously
 - When the trainable weights are reduced from $d * d$ to $2 * r * d$, the optimizer states that need to be saved are also reduced (and those are in fp32).
  -->
-
+<!-- 
 ### Discussion: PEFT vs FMT
 {cite:p}`zhang2024scaling`
 How does finetuning affect the generalization capability of the base LLM? While finetuning on task-specific data improves task-specific performance, it may specialize the base LLM towards the task and hurt the models' generalization. We examine this for different finetuning methods by performing zero-shot translation for LLMs finetuned on WMT14 En-De and WMT19 En-Zh (Fewshot results are in Appendix). We focus on generalization to related tasks, where the target language is shared, i.e. De and Zh , and generalization should be relatively easier (Johnson et al., 2017). We report average performance for translation from a diverse set of source languages other than English.
 
-Figure 6 shows the results. While specializing on a downstream task, finetuning could still elicit and improve the generalization for closely related tasks, although the overall zero-shot translation quality is inferior. Note whether finetuning benefits generalization is method- and task-dependent. Overall, Prompt and LoRA achieve relatively better results than FMT particularly when the base LLM is large, mostly because LLM parameters are frozen and the learned knowledge get inherited. This also suggests that when generalization capability is a big concern, PET should be considered.
+Figure 6 shows the results. While specializing on a downstream task, finetuning could still elicit and improve the generalization for closely related tasks, although the overall zero-shot translation quality is inferior. Note whether finetuning benefits generalization is method- and task-dependent. Overall, Prompt and LoRA achieve relatively better results than FMT particularly when the base LLM is large, mostly because LLM parameters are frozen and the learned knowledge get inherited. This also suggests that when generalization capability is a big concern, PET should be considered. -->
 
 ## Scaling Law for Fine Tuning
 
@@ -365,7 +361,7 @@ $$
 where $\{A, E, \alpha, \beta\}$ are data-specific parameters to be fitted, $D_f$ denotes finetuning data size, and $X$ refer to other scaling factors (like model size, and tuning parameter size) and $L$ is perplexity. After fitting to scaling experiments, larger $\alpha$ or $\beta$ means the bigger contribution from these factors. 
 
 The key findings are
-* Finetuning model performance scales better on model size than fine-tuning data size, as indicated by larger $\alpha$ then $\beta$ in {numref}`chapter_training_fig_finetuning_ft_scaling_on_translation_task,chapter_training_fig_finetuning_ft_scaling_on_summary_task`. This suggests that using a larger LLM model is preferred over finetuning over larger data.
+* Finetuning model performance scales better on model size than fine-tuning data size, as indicated by larger $\alpha$ then $\beta$ in {numref}`chapter_training_fig_finetuning_ft_scaling_on_translation_task`,{numref}`chapter_training_fig_finetuning_ft_scaling_on_summary_task`. This suggests that using a larger LLM model is preferred over finetuning over larger data.
 * Finetuning data size have more pronounced influence on FMT than PET (much larger $\beta$ in FMT), where LoRA scales better than Prompt. In other words, FMT is more data hungary and also benefits more from increasing finetuning data.
 * Compared across different PEFT approach, scaling tuning parameters is ineffective, delivering limited gains for both LoRA and Prompt. At the end of day, the amount of newly added trainable parameters often forms a bottleneck for the expressivity of the model.
 
@@ -391,6 +387,12 @@ name: chapter_training_fig_finetuning_ft_scaling_on_PEFT_scaling_law
 ---
 Joint scaling law for tuning parameter size and fine-tuning data sizes for summarization task. Image from {cite:p}`zhang2024scaling`.
 ```
+
+<!-- ````{prf:remark}
+Figure 6 shows the results. While specializing on a downstream task, finetuning could still elicit and improve the generalization for closely related tasks, although the overall zero-shot translation quality is inferior. Note whether finetuning benefits generalization is method- and task-dependent. Overall, Prompt and LoRA achieve relatively better results than FMT particularly when the base LLM is large, mostly because LLM parameters are frozen and the learned knowledge get inherited. This also suggests that when generalization capability is a big concern, PET should be considered.
+
+```` -->
+
 
 ## Bibliography
 

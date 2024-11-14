@@ -342,7 +342,7 @@ document.write(`
 <h1><span class="section-number">20. </span>Advanced Prompting Techniques<a class="headerlink" href="#advanced-prompting-techniques" title="Link to this heading">#</a></h1>
 <section id="cot-with-self-consistency">
 <h2><span class="section-number">20.1. </span>CoT with Self-Consistency<a class="headerlink" href="#cot-with-self-consistency" title="Link to this heading">#</a></h2>
-<p><strong>Chain-of-thought</strong> prompting combined with pre-trained large language models has achieved encouraging results on complex reasoning tasks. <span id="id1">[<a class="reference internal" href="#id497" title="Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language models. arXiv preprint arXiv:2203.11171, 2022.">WWS+22</a>]</span> propose a <strong>self-consistency</strong> strategy to further improve the performance of chain-of-thought prompting.
+<p><strong>Chain-of-thought</strong> prompting combined with pre-trained large language models has achieved encouraging results on complex reasoning tasks. <span id="id1">[]</span> propose a <strong>self-consistency</strong> strategy to further improve the performance of chain-of-thought prompting.
 The key idea is that <code class="xref std std-numref docutils literal notranslate"><span class="pre">chapter_prompt_fig_advanced_prompt_cot_self_consistency_num_paths</span></code>:</p>
 <ol class="arabic simple">
 <li><p>First we samples a diverse set of reasoning paths</p></li>
@@ -411,8 +411,8 @@ high-level principles to guide the reasoning process [<a class="reference intern
 </figcaption>
 </figure>
 <p>The following table shows the performance on MMLU tasks, Step-Back prompting shows furhter improvement on CoT prompting.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1527">
-<caption><span class="caption-number">Table 20.1 </span><span class="caption-text">Performance of Step-Back prompting on MMLU tasks.</span><a class="headerlink" href="#id1527" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id426">
+<caption><span class="caption-number">Table 20.1 </span><span class="caption-text">Performance of Step-Back prompting on MMLU tasks.</span><a class="headerlink" href="#id426" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Method</p></th>
 <th class="head text-center"><p>MMLU Physics</p></th>
@@ -464,7 +464,7 @@ high-level principles to guide the reasoning process [<a class="reference intern
 <section id="combining-together-example-med-prompt">
 <h2><span class="section-number">20.6. </span>Combining Together Example: Med Prompt<a class="headerlink" href="#combining-together-example-med-prompt" title="Link to this heading">#</a></h2>
 <p>By using advanced prompting techniques, GPT-4 demonstrated significant capabilities in areas involving significant domain knowledge, such as medicine, which challenges the assumption that it requires intensive domain-specific training to match specialist capabilities​.</p>
-<p>In <span id="id6">[<a class="reference internal" href="#id496" title="Harsha Nori, Yin Tat Lee, Sheng Zhang, Dean Carignan, Richard Edgar, Nicolo Fusi, Nicholas King, Jonathan Larson, Yuanzhi Li, Weishung Liu, and others. Can generalist foundation models outcompete special-purpose tuning? case study in medicine. arXiv preprint arXiv:2311.16452, 2023.">NLZ+23</a>]</span>, authors carried out a systematic exploration of prompt engineering strategies that significantly enhance GPT-4’s performance in medical question-answering tasks. Medprompt integrates techniques like in-context learning and chain-of-thought reasoning, leading to a 27% reduction in error rate on the MedQA dataset compared to specialist models.</p>
+<p>In <span id="id6">[]</span>, authors carried out a systematic exploration of prompt engineering strategies that significantly enhance GPT-4’s performance in medical question-answering tasks. Medprompt integrates techniques like in-context learning and chain-of-thought reasoning, leading to a 27% reduction in error rate on the MedQA dataset compared to specialist models.</p>
 <p>Medprompt employs dynamic few-shot selection, self-generated chain of thought, and choice shuffle ensembling. These techniques collectively contribute to its high performance in medical benchmarks.</p>
 <p>An ablation study in the following highlighted the relative contributions of Medprompt’s components.Each technique incrementally improves the model’s performance, with the final accuracy reaching 90.2%. The most significant improvements come from GPT Self-Generated CoT (+3.4%) and the 5x Choice-Shuffle Ensemble Layer (+2.1%).</p>
 <figure class="align-default" id="chapter-prompt-fig-advanced-prompt-med-prompt-abalation-study">
@@ -477,19 +477,7 @@ high-level principles to guide the reasoning process [<a class="reference intern
 </section>
 <section id="bibliography">
 <h2><span class="section-number">20.7. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id7">
-<div role="list" class="citation-list">
-<div class="citation" id="id496" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">NLZ+23</a><span class="fn-bracket">]</span></span>
-<p>Harsha Nori, Yin Tat Lee, Sheng Zhang, Dean Carignan, Richard Edgar, Nicolo Fusi, Nicholas King, Jonathan Larson, Yuanzhi Li, Weishung Liu, and others. Can generalist foundation models outcompete special-purpose tuning? case study in medicine. <em>arXiv preprint arXiv:2311.16452</em>, 2023.</p>
-</div>
-<div class="citation" id="id497" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">WWS+22</a><span class="fn-bracket">]</span></span>
-<p>Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language models. <em>arXiv preprint arXiv:2203.11171</em>, 2022.</p>
-</div>
-</div>
-</div>
-</section>
+<span class="target" id="id7"></span></section>
 </section>
 
     <script type="text/x-thebe-config">

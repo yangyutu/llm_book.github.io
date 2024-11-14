@@ -506,8 +506,8 @@ Generation. The original question and the retrieved context are fed into LLM to 
 <section id="indexing-data-sources">
 <h3><span class="section-number">21.3.1. </span>Indexing Data Sources<a class="headerlink" href="#indexing-data-sources" title="Link to this heading">#</a></h3>
 <p>In the indexing stage, there are different data sources, and each has its benefits and challenges.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1534">
-<caption><span class="caption-number">Table 21.1 </span><span class="caption-text">Retrieval Data Sources</span><a class="headerlink" href="#id1534" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id433">
+<caption><span class="caption-number">Table 21.1 </span><span class="caption-text">Retrieval Data Sources</span><a class="headerlink" href="#id433" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Data Type</p></th>
 <th class="head text-left"><p>Examples</p></th>
@@ -549,12 +549,12 @@ base (based on key phrases extracted by LLM) could avoid concept/entity missing 
 <h3><span class="section-number">21.3.2. </span>Data Source Augmentation<a class="headerlink" href="#data-source-augmentation" title="Link to this heading">#</a></h3>
 <p>For unstructured data sources, it can improve document understanding and feature derivation by augmenting the data source with additional information.</p>
 <p>For example, chunks can be enriched with metadata information such as page number, file name, author,category timestamp. Timestamp can be used to improve time-aware retrieval model, ensuring the fresh knowledge are ranked higher and avoiding outdated information.</p>
-<p>Augmented data can also be artificially constructed. For example, adding summaries of paragraph, as well as introducing queries can be answered by the paragraphs (known as doc2query <span id="id4">[<a class="reference internal" href="#id1402" title="Rodrigo Nogueira, Wei Yang, Jimmy Lin, and Kyunghyun Cho. Document expansion by query prediction. arXiv preprint arXiv:1904.08375, 2019.">NYLC19</a>]</span>).</p>
+<p>Augmented data can also be artificially constructed. For example, adding summaries of paragraph, as well as introducing queries can be answered by the paragraphs (known as doc2query <span id="id4">[]</span>).</p>
 <figure class="align-default" id="id6">
 <a class="reference internal image-reference" href="../../_images/doc_2_query.png"><img alt="../../_images/doc_2_query.png" src="../../_images/doc_2_query.png" style="width: 508.2px; height: 374.4px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 21.6 </span><span class="caption-text">Use doc2query to enhance retrieval performance. Image from <span id="id5">[<a class="reference internal" href="#id1402" title="Rodrigo Nogueira, Wei Yang, Jimmy Lin, and Kyunghyun Cho. Document expansion by query prediction. arXiv preprint arXiv:1904.08375, 2019.">NYLC19</a>]</span>.</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.6 </span><span class="caption-text">Use doc2query to enhance retrieval performance. Image from <span id="id5">[]</span>.</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -589,8 +589,8 @@ base (based on key phrases extracted by LLM) could avoid concept/entity missing 
 <li><p><strong>Complex queries</strong> that combine multiple concepts</p></li>
 <li><p><strong>Contextual understanding</strong> from multi-turn conversations</p></li>
 </ul>
-<div class="pst-scrollable-table-container"><table class="table" id="id1535">
-<caption><span class="caption-number">Table 21.2 </span><span class="caption-text">Retrieval Data Sources</span><a class="headerlink" href="#id1535" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id434">
+<caption><span class="caption-number">Table 21.2 </span><span class="caption-text">Retrieval Data Sources</span><a class="headerlink" href="#id434" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Query Type</p></th>
 <th class="head text-left"><p>Example</p></th>
@@ -947,8 +947,8 @@ semantic similarity whether the predicted answer is semantically similar to the 
 </figcaption>
 </figure>
 <p>In the following, we also summarize different factors to consider when choosing among prompting, fine-tuning, and RAG.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1536">
-<caption><span class="caption-number">Table 21.3 </span><span class="caption-text">Different factors to consider when choosing among prompting, fine-tuning, and RAG.</span><a class="headerlink" href="#id1536" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id435">
+<caption><span class="caption-number">Table 21.3 </span><span class="caption-text">Different factors to consider when choosing among prompting, fine-tuning, and RAG.</span><a class="headerlink" href="#id435" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Factors</p></th>
 <th class="head text-left"><p>Prompting</p></th>
@@ -1015,16 +1015,7 @@ In fact, information retrieval plays an irreplaceable role. Providing LLMs with 
 <ul class="simple">
 <li><p><a class="reference external" href="https://acl2023-retrieval-lm.github.io/">Retrieval-based Language Models and Applications ACL2023 Tutorial</a></p></li>
 </ul>
-<div class="docutils container" id="id14">
-<div role="list" class="citation-list">
-<div class="citation" id="id1402" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>NYLC19<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id4">1</a>,<a role="doc-backlink" href="#id5">2</a>)</span>
-<p>Rodrigo Nogueira, Wei Yang, Jimmy Lin, and Kyunghyun Cho. Document expansion by query prediction. <em>arXiv preprint arXiv:1904.08375</em>, 2019.</p>
-</div>
-</div>
-</div>
-</section>
+<span class="target" id="id14"></span></section>
 </section>
 
     <script type="text/x-thebe-config">

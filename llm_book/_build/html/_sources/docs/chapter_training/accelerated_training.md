@@ -34,13 +34,7 @@ The following table gives the example for the memory requirement for models of d
 
 ### Activations
 
-Let's have the following notations:
-
-* $s$ - sequence length
-* $b$ - batch size
-* $d$ - hidden dimension size
-* $H$ - number of attention heads
-* $p$ - precision
+Let's have the following notations: $b$ is the batch size, $s$ is the sequence length, $d$ is the model hidden dim, $L$ is number of layers, $p$ is the byte size per model paraemters (e.g., 2 for float16). The multiplier 2 is because of both K and V are cached.
 
 Based on the **FFN** architecture detailed in {ref}`chapter_foundation_sec_pretrained_LM_transformer_arch_FFN`, we can estimate the memory requireement for FFN activations 
 
@@ -68,18 +62,17 @@ Based on the **MHA** architecture detailed in {ref}`chapter_foundation_sec_pretr
 
 Additionally, there are two **Normalization Layers** in each Transformer Layer, the output from each such layer will require in total $2bsdp$ bytes.
 
-### Total Memory Requirement
+Now we arrive at the **total amount of bytes required to store the activations** for a $L$ layer Transformer:
 
-Now we arrive at the total amount of bytes required to store the activations for a $L$ layer Transformer:
-
-$$M =  \underbrace{17bsdp}{Linear Layer} + \underbrace{2bs^2Hp}_{Softmax} + \underbrace{2bsd + bs^2H}_{Dropout}$$
+$$M_{\text{per layer}} =  \underbrace{17bsdp}_{Linear Layer} + \underbrace{2bs^2Hp}_{Softmax} + \underbrace{2bsd + bs^2H}_{Dropout}$$
 
 If we ignore the small quantity $2bsd$ and take $p = 2$ (which is float16, 2bypte), we have
 
-$$M_{approx} = 34bsd + 5bs^2H$$
+$$M_{approx} = (34bsd + 5bs^2H)\times L$$
 
 The implication on activation memory requirement are
 * $M$ scales linearly with batch size
+* $M$ scales linearly with layer number
 * $M$ scales quadratically with sequence length. During training, we cannot afford large context windows.
 * Using technique like GQA [{ref}`chapter_LLM_arch_sec_self_attention_variant_GQA`] can help save training memory.
 <!-- ```
@@ -89,10 +82,11 @@ def activations_memory(num_layers, seq_len, batch_size, hidden_dim, num_heads, p
         16 + 2/precision + 2*num_heads*seq_len/hidden_dim + num_heads*seq_len/(precision*hidden_dim))
     return round(mem_bytes / 10**9, 2)
 ``` -->
-{cite:p}`yang2024qwen2technicalreport`
 
-| Model Size   | $L$ | $d$| $s$ |$H$ | $b$ |GPU Memory  |
-| :--- | ---: | ---: | ---: | ---: | ---: |
+Using the model training config from Qwen2 model {cite:p}`yang2024qwen2technicalreport`, we have the following summary on the activation GPU memory requirement for setting batch size to 1.
+
+| Model Size | $L$ | $d$| $s$ |$H$ | $b$ |GPU Memory  |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
 | 0.5B  | 24 | 896 | 4096 | 14 | 1 | 2.9 GB + 2 GB = 4.9 GB |
 | 7B | 28 | 3584 | 4096 | 28 | 1 | 3.9 GB + 4 GB = 7.9GB|
 | 72B | 64 | 8192 | 4096 | 64 | 1 | 71 GB + 8 GB = 79GB |

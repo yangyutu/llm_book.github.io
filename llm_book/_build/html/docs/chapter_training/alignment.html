@@ -356,14 +356,14 @@ document.write(`
 <span id="chapter-training-sec-llm-alignment"></span><h1><span class="section-number">14. </span>LLM Alignement and Preference Learning<a class="headerlink" href="#llm-alignement-and-preference-learning" title="Link to this heading">#</a></h1>
 <section id="motivation-and-overview">
 <h2><span class="section-number">14.1. </span>Motivation and Overview<a class="headerlink" href="#motivation-and-overview" title="Link to this heading">#</a></h2>
-<p>The objective function in LLM pretraining is predicting the next token on a webpage from the internet. When the trained model is properly and carefully prompted as demonstration (i.e., in-context learning as in GPT-3), the model can largely accomplish useful tasks by following these demonstrations. However, these model can often generate un-desired outputs, including un-factual content, biased and harmful text, or simply do not follow the instructions in the prompt.</p>
-<p>This is because the pretraining task of <em>predicting the next token</em> is inherently different from the objective training an LLM to be an instruction-following assistant that avoids generating unintended text. While continuing <strong>SFT instruction tuning data</strong> (<a class="reference internal" href="finetuning.html#chapter-training-sec-llm-finetuning"><span class="std std-ref">LLM Finetuning</span></a>), which are (prompt, completion) pairs, can expose the LLM to what humans like to see for given prompts, it is often not enough to prevent model from producing unintended texts. Instead, we need a training methodology to explictly reward the model when it is well-behaved and penalize the model when it is mis-behaved. Training the model to learn the human preference using rewards and penalities are the core of LLM alignment and preference learning. The pioneering approach is using reinforcement learning via the PPO algorithm <span id="id1">[<a class="reference internal" href="#id1506" title="Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. 2022. URL: https://arxiv.org/abs/2203.02155, arXiv:2203.02155.">OWJ+22</a>]</span>.</p>
-<p>As shown in the <a class="reference internal" href="#chapter-training-fig-alignment-model-alignment-motivation"><span class="std std-numref">Fig. 14.1</span></a>, while SFT on instruction tuning dataset and reinforcement learning (PPO) can both improve model helpfulness and instruction following abilities, reinforcement learning can help the model achieve much larger gains than SFT.</p>
+<p>The objective function in LLM pretraining is predicting the next token in the training corpus. When the trained model is properly and carefully prompted as demonstration (i.e., in-context learning as in <a class="reference internal" href="../chapter_foundation/GPT_series.html#content-chapter-foundation-gpt-series-gpt-3"><span class="std std-ref">GPT-3</span></a>), the model can largely accomplish useful tasks by following these demonstrations. However, these model can often generate un-desired outputs, including un-factual content, biased and harmful text, or simply do not follow the instructions in the prompt.</p>
+<p>This is because the pretraining task of <em>predicting the next token</em> is inherently different from the objective of training an LLM to be an instruction-following assistant that avoids generating unintended text. Although <strong>instruction tuning data</strong> (<a class="reference internal" href="finetuning.html#chapter-training-sec-llm-finetuning"><span class="std std-ref">LLM Finetuning</span></a>), which are (prompt, completion) pairs, can expose the LLM to what humans like to see for given prompts, it is often not enough to prevent model from producing unintended texts. Instead, we need a training methodology to <strong>explicitly reward the model when it is well-behaved and penalize the model when it is mis-behaved</strong>. Training the model to learn the human preference using rewards and penalities are the core of LLM alignment and preference learning. The pioneering approach is using reinforcement learning via the PPO algorithm <span id="id1">[]</span>.</p>
+<p>As shown in the <a class="reference internal" href="#chapter-training-fig-alignment-model-alignment-motivation"><span class="std std-numref">Fig. 14.1</span></a>, while SFT on instruction tuning dataset can improve model helpfulness and instruction following abilities, reinforcement learning can help the model achieve much larger gains than SFT.</p>
 <figure class="align-default" id="chapter-training-fig-alignment-model-alignment-motivation">
 <a class="reference internal image-reference" href="../../_images/model_alignment_motivation.png"><img alt="../../_images/model_alignment_motivation.png" src="../../_images/model_alignment_motivation.png" style="width: 556.8000000000001px; height: 324.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 14.1 </span><span class="caption-text">Human evaluations of various models outputs show that how often outputs from each model were preferred to those from the 175B GPT-3 SFT model. The aligned models InstructGPT models (PPO-ptx) as well as variant (PPO) significantly outperform the GPT-3 baselines. Image from <span id="id2">[<a class="reference internal" href="#id1506" title="Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. 2022. URL: https://arxiv.org/abs/2203.02155, arXiv:2203.02155.">OWJ+22</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignment-model-alignment-motivation" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 14.1 </span><span class="caption-text">Human evaluations of various models outputs show that how often outputs from each model were preferred to those from the 175B GPT-3 SFT model. The aligned models InstructGPT models (PPO-ptx) as well as variant (PPO) significantly outperform the GPT-3 baselines. Image from <span id="id2">[]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignment-model-alignment-motivation" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -371,27 +371,27 @@ document.write(`
 <h2><span class="section-number">14.2. </span>Alignment Using RLHF<a class="headerlink" href="#alignment-using-rlhf" title="Link to this heading">#</a></h2>
 <section id="overall-methodology">
 <h3><span class="section-number">14.2.1. </span>Overall methodology<a class="headerlink" href="#overall-methodology" title="Link to this heading">#</a></h3>
-<p>The Alignment methodology <span id="id3">[<a class="reference internal" href="#id1506" title="Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. 2022. URL: https://arxiv.org/abs/2203.02155, arXiv:2203.02155.">OWJ+22</a>]</span> has the following three steps [<code class="xref std std-numref docutils literal notranslate"><span class="pre">chapter_training_fig_alignment_RLHF_demo</span></code>].</p>
+<p>The Alignment methodology <span id="id3">[]</span> has the following three steps [<code class="xref std std-numref docutils literal notranslate"><span class="pre">chapter_training_fig_alignment_RLHF_demo</span></code>].</p>
 <p><strong>Step 1: SFT on demeonstration data</strong>: Collect demonstration data showing the target output given different prompt input, and SFT the model to mimic the target output.</p>
-<p><strong>Step 2: Preference/comparison labeling and reward modeling</strong>: Collect preference data, and train a reward model. The preference data set consiste of labeler’s preferences towards different model outputs. Such preference data will be used to we then train a reward model to predict if human would prefer the model output given a model input.</p>
+<p><strong>Step 2: Preference/comparison labeling and reward modeling</strong>: Collect preference data, and train a reward model. The preference data set consists of labeler’s preferences towards different model outputs. Such preference data will be used to train a reward model to predict if human would prefer the model output given a model input.</p>
 <p><strong>Step 3 Optimize model generation policy with reward model</strong>: The reward model will be used to guide the model’s improvement on producing human preferred outputs. The optimization can be done using reinforcement learning, particularly the PPO algorithm <span id="id4">[]</span>.</p>
-<p>Steps 2 and 3 can be iterated continuously; with model policy improved using reward model, we can collect more preference data to train a new RM and then a new policy.</p>
+<p>Steps 2 and 3 can be iterated continuously; with model policy improved using reward model, we can collect more preference data to train a new RM and then a new policy. The reason is to make sure that the reward model is adapted to the new input distribution determined by the policy.</p>
 <figure class="align-default" id="chapter-training-fig-alignment-rlhf-demo">
 <a class="reference internal image-reference" href="../../_images/RLHF_demo.png"><img alt="../../_images/RLHF_demo.png" src="../../_images/RLHF_demo.png" style="width: 699.5px; height: 413.5px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 14.2 </span><span class="caption-text">A diagram illustrating the three steps of our method: (1) supervised fine-tuning (SFT), (2)
 reward model (RM) training, and (3) reinforcement learning via proximal policy optimization (PPO)
-on this reward model. Image from <span id="id5">[<a class="reference internal" href="#id1506" title="Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. 2022. URL: https://arxiv.org/abs/2203.02155, arXiv:2203.02155.">OWJ+22</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignment-rlhf-demo" title="Link to this image">#</a></p>
+on this reward model. Image from <span id="id5">[]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignment-rlhf-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="preference-data-and-reward-modeling">
 <h3><span class="section-number">14.2.2. </span>Preference Data and Reward Modeling<a class="headerlink" href="#preference-data-and-reward-modeling" title="Link to this heading">#</a></h3>
-<p>After SFT process on positive example, the trained model has improved ability on producing human preferred output. But it often has the overfitting risk and does not generalize well to unseen input data distributions. Preference data collections aims to provide both positive and negative examples, which are then used to train a reward model to help guide the model to generalize.</p>
-<p>In the preference data collection process, human labeler assess different model outputs given the same prompt input and rank the output based on the human preference. The following table show the scoring standard used in the preference ranking process.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1532">
-<caption><span class="caption-number">Table 14.1 </span><span class="caption-text">How labeler evaluates the response quality</span><a class="headerlink" href="#id1532" title="Link to this table">#</a></caption>
+<p>After SFT process on positive example, the trained model has improved ability on producing human preferred output. <strong>But it often has the overfitting risk and does not generalize well to unseen input data distributions.</strong> Preference data collections aims to provide both positive and negative examples, which are then used to train a reward model to help guide the model to generalize.</p>
+<p>In the preference data collection process, human labelers assess different model outputs given the same prompt input and rank the output based on the human preference. The following table show the scoring standard used in the preference ranking process.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id431">
+<caption><span class="caption-number">Table 14.1 </span><span class="caption-text">How labeler evaluates the response quality</span><a class="headerlink" href="#id431" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Metadata</p></th>
 <th class="head text-right"><p>Scale</p></th>
@@ -446,7 +446,7 @@ Instead, we train on all $\binom{K}{2}$ comparisons from each prompt as a single
 </section>
 <section id="markov-decision-process-mdp-and-reinforcement-learning">
 <h3><span class="section-number">14.2.3. </span>Markov Decision Process (MDP) and Reinforcement learning<a class="headerlink" href="#markov-decision-process-mdp-and-reinforcement-learning" title="Link to this heading">#</a></h3>
-<p>To understand how we can use a reward model to guide the improvement of the LLM, we can use the <strong>MDP</strong> <a class="reference external" href="http://framework.In">framework.In</a> the MDP fraemwork, we view model text generation as an agent’s sequential decision process. In particular, the MDP agent, as a response to the given prompt, need to decide the action (which token to generate) at each step, until completing a final human preferred token sequence generation.</p>
+<p>To understand how we can use a reward model to guide the improvement of the LLM using reinforcement learning, we can use the <strong>MDP</strong> framework. In the MDP fraemwork, we view model text generation as an agent’s sequential decision process. In particular, the MDP agent provides a response to the given prompt, need to decide the action (which token to generate) at each step. The alignment of LLM is equivalent to optimizing the agent on decision making policy to complete a final human preferred sequence.</p>
 <p>Mathematically, an MDP is charcterized by tuple <span class="math notranslate nohighlight">\(\langle\mathcal{S}, V, R, \pi, \gamma, T\rangle\)</span>.</p>
 <ul class="simple">
 <li><p>The initial state <span class="math notranslate nohighlight">\(\boldsymbol{s}_0 \in \mathcal{S}\)</span> is a task-specific prompt represented by <span class="math notranslate nohighlight">\(\boldsymbol{x}=\left(x_0, \cdots, x_m\right)\)</span>. That is, <span class="math notranslate nohighlight">\(\boldsymbol{s}_0 = \boldsymbol{x}\)</span>.</p></li>
@@ -456,7 +456,7 @@ Instead, we train on all $\binom{K}{2}$ comparisons from each prompt as a single
 </ul>
 <p>Specifically, we will parameterize the <strong>step-wise policy</strong> by <span class="math notranslate nohighlight">\(\theta\)</span> such that a stochastic policy for each step is given by</p>
 <div class="math notranslate nohighlight">
-\[\pi(a|s, \theta) = Pr(a_t = a| s_t = s, \theta).\]</div>
+\[\pi_s(a|s, \theta) = Pr(a_t = a| s_t = s, \theta).\]</div>
 <!-- 
 Each environment is an NLP task: we are given a supervised dataset $\mathcal{D}=\left\{\left(\boldsymbol{x}^i, \boldsymbol{y}^i\right)\right\}_{i=1}^N$ of $N$ examples, where $\boldsymbol{x} \in \mathcal{X}$ is an language input and $\boldsymbol{y} \in \mathcal{Y}$ is the target string. 
 
@@ -469,7 +469,7 @@ The input $\boldsymbol{x}=\left(x_0, \cdots, x_m\right)$ is a task-specific prom
 </section>
 <section id="the-ppo-algorithm">
 <h3><span class="section-number">14.2.4. </span>The PPO Algorithm<a class="headerlink" href="#the-ppo-algorithm" title="Link to this heading">#</a></h3>
-<p>PPO is a policy gradient algorithm used to find the optimal policy <span class="math notranslate nohighlight">\(\pi*\)</span>. We use following notations:</p>
+<p>PPO is a policy gradient algorithm used to find the optimal policy <span class="math notranslate nohighlight">\(\pi^*\)</span>. We use the following notations:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\((x, y)\)</span> are prompt input <span class="math notranslate nohighlight">\(x\)</span> and completion <span class="math notranslate nohighlight">\(y\)</span> drawn from distribution <span class="math notranslate nohighlight">\(D_{\pi}\)</span> dependent on policy <span class="math notranslate nohighlight">\(\pi\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\pi(y | x) \)</span> is the trajectory level policy that connects to stepwise policy <span class="math notranslate nohighlight">\(\pi_s (a | s)\)</span> via</p></li>
@@ -478,9 +478,13 @@ The input $\boldsymbol{x}=\left(x_0, \cdots, x_m\right)$ is a task-specific prom
 \[\pi(y | x) = \prod_{t &lt;= T} \pi_s(y_t| y_{( &lt; t)}, x).\]</div>
 <p>We <strong>maximize</strong> the following objective function in the PPO RL training:</p>
 <div class="math notranslate nohighlight">
-\[
-\operatorname{Objective}_{\text{PPO}}(\phi)=  E_{(x, y) \sim D_{\pi_\phi^{\mathrm{RL}}}}\left[\underbrace{r_\theta(x, y)}_{\text{reward gain}}-\beta \underbrace{\log \pi_\phi^{\mathrm{RL}}(y \mid x) / \pi^{\mathrm{SFT}}(y \mid x)}_{\text{KL regularization}}\right]
-\]</div>
+\[\begin{split}
+\begin{align*}
+&amp;\max_{\phi}\operatorname{Objective}_{\text{PPO}}(\phi) \\
+=&amp; \max_{\phi} E_{(x, y) \sim D_{\pi_\phi^{\mathrm{RL}}}}\left[r_\theta(x, y)\right] - \operatorname{KL} (\pi_\phi^{\mathrm{RL}} || \pi_\phi^{\mathrm{SFT}}) \\
+=&amp; \max_{\phi} E_{(x, y) \sim D_{\pi_\phi^{\mathrm{RL}}}}\left[\underbrace{r_\theta(x, y)}_{\text{reward gain}}-\beta \underbrace{\log \pi_\phi^{\mathrm{RL}}(y \mid x) / \pi^{\mathrm{SFT}}(y \mid x)}_{\text{KL regularization}}\right]
+\end{align*}
+\end{split}\]</div>
 <p>which contains the <strong>reward gain</strong> and <strong>KL regularization penality</strong>.
 Here  <span class="math notranslate nohighlight">\(\pi_\phi^{\mathrm{RL}}\)</span> is the RL policy to be optimized, <span class="math notranslate nohighlight">\(\pi^{\mathrm{SFT}}\)</span> is the supervised trained model’s model as regularizer. The KL penality term aims to ensure that the optimized policy does not severely deviate from the original policy and overfit to the reward gain.</p>
 <p>Besides the KL penality, to further prevent language modeling performance regression, we can add an auxillary objective to maximize the likelihood on texts sampled from pretraining datasets. The final objective, named <strong>PPO-ptx</strong>, is given by</p>
@@ -490,13 +494,18 @@ Here  <span class="math notranslate nohighlight">\(\pi_\phi^{\mathrm{RL}}\)</spa
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(D_{\text {pretrain }}\)</span> is the pretraining distribution.he pretraining loss coefficient, <span class="math notranslate nohighlight">\(\gamma\)</span>, control the strength of the KL penalty and pretraining gradients respectively.</p>
 <figure class="align-default" id="id6">
-<a class="reference internal image-reference" href="../../_images/RLHF_PPO_training_demo.png"><img alt="../../_images/RLHF_PPO_training_demo.png" src="../../_images/RLHF_PPO_training_demo.png" style="width: 856.5px; height: 376.5px;" />
+<a class="reference internal image-reference" href="../../_images/RLHF_PPO_training_demo.png"><img alt="../../_images/RLHF_PPO_training_demo.png" src="../../_images/RLHF_PPO_training_demo.png" style="width: 599.55px; height: 263.55px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 14.3 </span><span class="caption-text">Illustration of PPO based optimization, which uses a Frozen LLM and KL loss to prevent model optimization from going too far and reward model to encourge model to learn to generate highly-rewarded outputs.</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<!-- ### The PPO algorithm
+<div class="proof remark admonition" id="remark-0">
+<p class="admonition-title"><span class="caption-number">Remark 14.1 </span> (exploitation and exploration aspects from <span class="math notranslate nohighlight">\(\gamma\)</span>)</p>
+<section class="remark-content" id="proof-content">
+<p><span class="math notranslate nohighlight">\(\beta\)</span> controls the balance between exploitation and exploration. When <span class="math notranslate nohighlight">\(\gamma \rightarrow 0\)</span>, the learning will concentrate on the max reward with full exploitation. When <span class="math notranslate nohighlight">\(\gamma \rightarrow \infty\)</span>, optimal policy will be the same as <span class="math notranslate nohighlight">\(\pi_{\mathrm{sft}}\)</span> with full exploration.</p>
+</section>
+</div><!-- ### The PPO algorithm
 
 There are four models needed in the PPO algorithm:
 * Actor LLM 
@@ -514,13 +523,13 @@ There are four models needed in the PPO algorithm:
 <p>In terms of generation demonstration data vs preference labeling,
 preference labeling is much easier than writing the demonstration data.</p>
 <p>Another key difference is that RLHF essentially encourages LLMs to learn correct policies by contrasting the self-generated responses (<strong>discriminating between positive and negative responses</strong>). It no longer forces the model to imitate external, <strong>positive only</strong> demonstration data, and thus can mitigate the hallucination issues with SFT as discussed above.</p>
-<p>RLHF only has its own drawbacks from classic RL algorithms, e.g., sample inefficiency, training complexity and instability. When adapted to LLMs, RLHF further relies on a strong SFT model as initial model checkpoint for efficiently achieving good performance</p>
+<p>Like classic RL algorithms, RLHF has the drawbacks like sample inefficiency, training complexity and instability. When adapted to LLMs, RLHF further relies on a strong SFT model as initial model checkpoint for efficiently achieving good performance</p>
 <p>Overall, SFT is particularly useful to increase the model capacity of pre-trained model checkpoints right after pretraining, while RLHF is promising to further improve the model capacity of SFT models.</p>
 </section>
 </section>
 <section id="dpo">
 <h2><span class="section-number">14.3. </span>DPO<a class="headerlink" href="#dpo" title="Link to this heading">#</a></h2>
-<p><strong>DPO (Direct Preference Optimization)</strong> <span id="id7">[<a class="reference internal" href="#id1505" title="Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning, and Chelsea Finn. Direct preference optimization: your language model is secretly a reward model. 2024. URL: https://arxiv.org/abs/2305.18290, arXiv:2305.18290.">RSM+24</a>]</span> improves the classical RLHF-PPO algorithm from the following two aspects:</p>
+<p><strong>DPO (Direct Preference Optimization)</strong> <span id="id7">[]</span> improves the classical RLHF-PPO algorithm from the following two aspects:</p>
 <ul class="simple">
 <li><p>Reward model is no longer need; Instead, preference data is directly used to train an aligned model in one step.</p></li>
 <li><p>Reinforcement learning is simplified. Using mathematical equivalence, the goal of maximizing probabilites of human-preferred output is accomplished via a simplier appraoch like SFT</p></li>
@@ -533,12 +542,12 @@ preference labeling is much easier than writing the demonstration data.</p>
 <p><span class="caption-number">Fig. 14.4 </span><span class="caption-text">DPO optimizes for human preferences while avoiding reinforcement learning. Existing methods for fine-tuning language models with human feedback first fit a reward model to a dataset of prompts and
 human preferences over pairs of responses, and then use RL to find a policy that maximizes the learned reward.
 In contrast, DPO directly optimizes for the policy best satisfying the preferences with a simple classification
-objective. Image from <span id="id8">[<a class="reference internal" href="#id1505" title="Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning, and Chelsea Finn. Direct preference optimization: your language model is secretly a reward model. 2024. URL: https://arxiv.org/abs/2305.18290, arXiv:2305.18290.">RSM+24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignmenet-dpo-ppo-comparison" title="Link to this image">#</a></p>
+objective. Image from <span id="id8">[]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignmenet-dpo-ppo-comparison" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The DPO training pipelines consists of the following two steps:</p>
 <ul class="simple">
-<li><p>Sample completions <span class="math notranslate nohighlight">\(y_1, y_2 \sim \pi_{\text {ref }}(\cdot \mid x)\)</span> for every prompt <span class="math notranslate nohighlight">\(x\)</span>, label with human preferences to construct the offline dataset of preferences <span class="math notranslate nohighlight">\(\left.\mathcal{D}=\left\{x^{(i)}, y_w^{(i)}, y_l\right)^{(i)}\right\}_{i=1}^N\)</span></p></li>
+<li><p>Sample completions <span class="math notranslate nohighlight">\(y_1, y_2 \sim \pi_{\text {ref }}(\cdot \mid x)\)</span> for every prompt <span class="math notranslate nohighlight">\(x\)</span>, label with human preferences to construct the offline dataset of preferences <span class="math notranslate nohighlight">\(\mathcal{D}=\left\{x^{(i)}, y_w^{(i)}, y_l^{(i)}\right\}_{i=1}^N\)</span></p></li>
 <li><p>Optimize the language model <span class="math notranslate nohighlight">\(\pi_\theta\)</span> to minimize <span class="math notranslate nohighlight">\(\mathcal{L}_{\mathrm{DPO}}\)</span> for the given <span class="math notranslate nohighlight">\(\pi_{\text {ref }}\)</span> and <span class="math notranslate nohighlight">\(\mathcal{D}\)</span> and desired <span class="math notranslate nohighlight">\(\beta\)</span>.</p></li>
 </ul>
 <div class="math notranslate nohighlight">
@@ -548,7 +557,7 @@ objective. Image from <span id="id8">[<a class="reference internal" href="#id150
 <p>Note: Since the preference datasets are sampled using <span class="math notranslate nohighlight">\(\pi^{\mathrm{SFT}}\)</span>, we initialize <span class="math notranslate nohighlight">\(\pi_{\text {ref }}=\pi^{\mathrm{SFT}}\)</span> whenever available.</p>
 <section id="preliminary-preference-modeling">
 <h3><span class="section-number">14.3.1. </span>Preliminary: Preference modeling<a class="headerlink" href="#preliminary-preference-modeling" title="Link to this heading">#</a></h3>
-<p>The <strong>Bradley-Terry model</strong> <span id="id9">[<a class="reference internal" href="#id1508" title="Ralph Allan Bradley and Milton E. Terry. Rank analysis of incomplete block designs: i. the method of paired comparisons. Biometrika, 39(3/4):324–345, 1952. URL: http://www.jstor.org/stable/2334029 (visited on 2024-09-20).">BT52</a>]</span> is a probability model for the outcome of pairwise comparisons between items, teams, or objects. Given a pair of items <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> drawn from some population, it estimates the probability that the pairwise comparison <span class="math notranslate nohighlight">\(i&gt;j\)</span> turns out true, as</p>
+<p>The <strong>Bradley-Terry model</strong> <span id="id9">[]</span> is a probability model for the outcome of pairwise comparisons between items, teams, or objects. Given a pair of items <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> drawn from some population, it estimates the probability that the pairwise comparison <span class="math notranslate nohighlight">\(i&gt;j\)</span> turns out true, as</p>
 <div class="math notranslate nohighlight">
 \[
 \operatorname{Pr}(i\succ j)=\frac{s_i}{s_i+s_j}
@@ -557,8 +566,8 @@ objective. Image from <span id="id8">[<a class="reference internal" href="#id150
 <div class="math notranslate nohighlight">
 \[
 P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}{\exp \left[r\left(x, y_1\right)\right]+\exp \left[r\left(x, y_2\right)\right]}\]</div>
-<div class="proof remark admonition" id="remark-0">
-<p class="admonition-title"><span class="caption-number">Remark 14.1 </span> (Relationship to logistic regression)</p>
+<div class="proof remark admonition" id="remark-1">
+<p class="admonition-title"><span class="caption-number">Remark 14.2 </span> (Relationship to logistic regression)</p>
 <section class="remark-content" id="proof-content">
 <div class="math notranslate nohighlight">
 \[\operatorname{logit} \operatorname{Pr}(i&gt;j)=\log \frac{\operatorname{Pr}(i&gt;j)}{1-\operatorname{Pr}(i&gt;j)}=\log \frac{\operatorname{Pr}(i&gt;j)}{\operatorname{Pr}(j&gt;i)}=\beta_i-\beta_j
@@ -576,17 +585,17 @@ P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}
 <p>It turns out that we can obtain the theoretical solution of <span class="math notranslate nohighlight">\(\pi_r(y|x)\)</span> given by</p>
 <div class="math notranslate nohighlight">
 \[\pi_r(y|x) = \frac{1}{Z(x)}\pi_{\text{ref}}(y|x) \exp(\frac{1}{\beta}r(x, y)),\]</div>
-<p>where <span class="math notranslate nohighlight">\(Z(x)\)</span> is partition funciton dependent only on <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(\pi_{\text{ref}}\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\(Z(x)\)</span> is partition funciton dependent only on <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(\pi_{\text{ref}}\)</span>, which is given by <span class="math notranslate nohighlight">\(Z(x)=\sum_y \pi_{\mathrm{ref}}(y \mid x) \exp \left(\frac{1}{\beta} r(x, y)\right)\)</span>.</p>
 <p>With some algebra, we can also represent the reward funciton with <span class="math notranslate nohighlight">\(\pi_r(y|x)\)</span>, given by</p>
 <div class="math notranslate nohighlight">
 \[r(x, y) = \beta \log \frac{\pi_r (y|x)}{\pi_{\text{ref}}(y|x)} + \beta \log Z.\]</div>
-<div class="proof remark admonition" id="remark-1">
-<p class="admonition-title"><span class="caption-number">Remark 14.2 </span> (Implicit reward)</p>
+<div class="proof remark admonition" id="remark-2">
+<p class="admonition-title"><span class="caption-number">Remark 14.3 </span> (Implicit reward)</p>
 <section class="remark-content" id="proof-content">
-<p>Note that here the reward can be interpreted as the log ratio of the likelihood of a response between the current policy model and the reference model.</p>
+<p>Note that here the reward can be interpreted as the log ratio of the likelihood of a response between the current policy model and the reference model. And the policy is the maximizer of the objective function given the reward.</p>
 </section>
 </div><p>Note that we have just shown that that reward function <span class="math notranslate nohighlight">\(r(x, y)\)</span> and its corresponding optimal policy <span class="math notranslate nohighlight">\(\pi_{\text{ref}}(y|x)\)</span> are inter-convertable, with a funciton <span class="math notranslate nohighlight">\(Z(x)\)</span> independent of <span class="math notranslate nohighlight">\(y\)</span>.</p>
-<p>This means that instead of <strong>numerically optimizing policy <span class="math notranslate nohighlight">\(\pi_r\)</span>, we can also choose optimize the reward function.</strong> When the reward function is optimized, the policy is also optimized at the same time.</p>
+<p>This means that instead of <strong>numerically optimizing policy <span class="math notranslate nohighlight">\(\pi\)</span>, we can also choose optimize the reward function.</strong> When the reward function is optimized, the policy is also optimized at the same time (in other words, we can analytically solve the optimal policy).</p>
 <p>Given the available preference data, one formulation to optimize the reward function is the Bradley-Terry (BT) objective, that is</p>
 <div class="math notranslate nohighlight">
 \[\mathcal{L}_{BT} = -\mathbb{E}_{\left(x, y_w, y_l\right) \sim \mathcal{D}}\left[\log \sigma (r(y_w, x) - r(r_l, x)) \right].\]</div>
@@ -596,8 +605,8 @@ P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}
 \mathcal{L}_{\mathrm{DPO}}\left(\pi_\theta ; \pi_{\mathrm{ref}}\right)=-\mathbb{E}_{\left(x, y_w, y_l\right) \sim \mathcal{D}}\left[\log \sigma\left(\beta \log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}\left(y_w \mid x\right)}-\beta \log \frac{\pi_\theta\left(y_l \mid x\right)}{\pi_{\mathrm{ref}}\left(y_l \mid x\right)}\right)\right].
 \]</div>
 <p>where the terms <span class="math notranslate nohighlight">\(\beta \log Z\)</span> are canceled during subtraction.</p>
-<div class="proof remark admonition" id="remark-2">
-<p class="admonition-title"><span class="caption-number">Remark 14.3 </span> (How DPO loss work)</p>
+<div class="proof remark admonition" id="remark-3">
+<p class="admonition-title"><span class="caption-number">Remark 14.4 </span> (How DPO loss work)</p>
 <section class="remark-content" id="proof-content">
 <p>The gradient of DPO loss function is given by:</p>
 <div class="math notranslate nohighlight">
@@ -611,10 +620,15 @@ P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}
 </section>
 <section id="dpo-vs-rl">
 <h3><span class="section-number">14.3.3. </span>DPO vs RL<a class="headerlink" href="#dpo-vs-rl" title="Link to this heading">#</a></h3>
-<p>One fundamental differences between DPO and RL is that</p>
+<p>One fundamental differences between DPO and RL from policy optimization perspective is that</p>
 <ul class="simple">
 <li><p>DPO is learning from <strong>offline</strong> generated preference data and there is no exploration of the input output space during training. The model has a hard time to generate well beyond what is included in the preference data.</p></li>
 <li><p>RL is <strong>online</strong> learning with exploration. RL does not need offline generated data; the LLM agent itself generates outputs and learn from the reward signal from reward model. The self-generation approach enables RL to have in theory unlimited amount of data to cover much large ranges of input and output distributions.</p></li>
+</ul>
+<p>From reward modeling perspective,</p>
+<ul class="simple">
+<li><p>DPO is approximating the ground-truth reward model using limited, offline generated preference data. The size and distribution of preference data affect the gap of trained reward model and the ground-truth reward model. The gap in the reward model will translate to the gap of policy.</p></li>
+<li><p>To overcome the limitation of offline generated preference data, we can use the exploitation idea from reinforcement learning to generate large-scale and broad ranged (in terms of distribution) data for preference labeling, which can be used to improve reward modeling and close the gap to groundtruth reward model.</p></li>
 </ul>
 </section>
 </section>
@@ -622,7 +636,7 @@ P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}
 <h2><span class="section-number">14.4. </span>DPO variants<a class="headerlink" href="#dpo-variants" title="Link to this heading">#</a></h2>
 <section id="smoothing-preference-label">
 <h3><span class="section-number">14.4.1. </span>Smoothing preference label<a class="headerlink" href="#smoothing-preference-label" title="Link to this heading">#</a></h3>
-<p><span id="id10">[<a class="reference internal" href="#id1507" title="Eric Mitchell. A note on dpo with noisy preferences &amp; relationship to ipo. 2023. URL: https://ericmitchell.ai/cdpo.pdf.">Mit23</a>]</span> explore more robust DPO approach when the preference labels are noisy. It assumes that the labels have been flipped with some small probability <span class="math notranslate nohighlight">\(\epsilon \in(0,0.5)\)</span>. We can use a conservative target distribution instead, <span class="math notranslate nohighlight">\(p\left(y_w \succ y_l\right)=1-\epsilon\)</span>, giving BCE loss:</p>
+<p><span id="id10">[]</span> explore more robust DPO approach when the preference labels are noisy. It assumes that the labels have been flipped with some small probability <span class="math notranslate nohighlight">\(\epsilon \in(0,0.5)\)</span>. We can use a conservative target distribution instead, <span class="math notranslate nohighlight">\(p\left(y_w \succ y_l\right)=1-\epsilon\)</span>, giving BCE loss:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
@@ -642,7 +656,7 @@ P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}
 </section>
 <section id="simple-dpo">
 <h3><span class="section-number">14.4.2. </span>Simple DPO<a class="headerlink" href="#simple-dpo" title="Link to this heading">#</a></h3>
-<p>The simple DPO<span id="id11">[<a class="reference internal" href="#id1509" title="Yu Meng, Mengzhou Xia, and Danqi Chen. Simpo: simple preference optimization with a reference-free reward. 2024. URL: https://arxiv.org/abs/2405.14734, arXiv:2405.14734.">MXC24</a>]</span> improve the original DPO from two aspects:</p>
+<p>The simple DPO<span id="id11">[]</span> improve the original DPO from two aspects:</p>
 <ul class="simple">
 <li><p>Make the sequence likelihood function used in implicit reward be aligned with the likelihood of actual sequence decoding.</p></li>
 <li><p>Add a margin to encourage larger reward gap between positive sequence and negative sequence, which will help generalzation.</p></li>
@@ -665,42 +679,32 @@ r_{\mathrm{SimPO}}(x, y)=\frac{\beta}{|y|} \log \pi_\theta(y \mid x)=\frac{\beta
 p\left(y_w \succ y_l \mid x\right)=\sigma\left(r\left(x, y_w\right)-r\left(x, y_l\right)-\gamma\right)
 \]</div>
 <p>Combined these ideas together, we arrive at the SimPO loss function:</p>
-<p>\begin{aligned}
-&amp; \mathcal{L}<em>{\operatorname{SimPO}}\left(\pi</em>\theta\right)= \
-&amp; -\mathbb{E}\left[\log \sigma\left(\frac{\beta}{\left|y_w\right|} \log \pi_\theta\left(y_w \mid x\right)-\frac{\beta}{\left|y_l\right|} \log \pi_\theta\left(y_l \mid x\right)-\gamma\right)\right]
-\end{aligned}</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}_{\operatorname{SimPO}}\left(\pi_\theta\right)= -\mathbb{E}\left[\log \sigma\left(\frac{\beta}{\left|y_w\right|} \log \pi_\theta\left(y_w \mid x\right)-\frac{\beta}{\left|y_l\right|} \log \pi_\theta\left(y_l \mid x\right)-\gamma\right)\right]
+\end{align}
+\]</div>
 <p>Note that, unlike the traditional DPO, SimPO does not require a reference model, making it more lightweight and easier to implement.</p>
+<!-- 提问：DPO的变体有哪些，主要解决DPO的什么问题？
+
+回答：
+
+RSO [1]：由于DPO的蒙特卡洛采样很难达到，所以其实DPO几乎是off-policy的采样方式，RSO主要从DPO的采样方式来解决DPO的问题。
+Iterative DPO [2]：同样由于DPO的蒙特卡洛采样很难达到，所以通过on-policy的方式采样来替代off-policy的采样。
+IPO [3]：由于BT model的目标是最大化正负response的reward gap，但其实其中忽略了真实情况下我们组的pair可能会有噪音，那么无限去扩大reward gap其实是不准确的，也就是overfit了preference的pair数据，那么解决方案是需要限制这个gap的范围。
+DPOP [4]：由于LLM model很难区分编辑距离较小的pair，那么当持续去区分这批case的时候，模型效果会崩塌，现象是正例子和负例子的概率都往下掉。那么DPOP用了一个新项来惩罚正例往下掉的pair，使得正例概率继续提升。
+[1] Liu T, Zhao Y, Joshi R, et al. Statistical rejection sampling improves preference optimization[J]. arXiv preprint arXiv:2309.06657, 2023.
+
+[2] Yuan W, Pang R Y, Cho K, et al. Self-rewarding language models[J]. arXiv preprint arXiv:2401.10020, 2024.
+
+[3] Azar M G, Rowland M, Piot B, et al. A general theoretical paradigm to understand learning from human preferences[J]. arXiv preprint arXiv:2310.12036, 2023.
+
+[4] Pal A, Karkhanis D, Dooley S, et al. Smaug: Fixing Failure Modes of Preference Optimisation with DPO-Positive[J]. arXiv preprint arXiv:2402.13228, 2024. -->
 </section>
 </section>
 <section id="bibliography">
 <h2><span class="section-number">14.5. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id12">
-<div role="list" class="citation-list">
-<div class="citation" id="id1508" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">BT52</a><span class="fn-bracket">]</span></span>
-<p>Ralph Allan Bradley and Milton E. Terry. Rank analysis of incomplete block designs: i. the method of paired comparisons. <em>Biometrika</em>, 39(3/4):324–345, 1952. URL: <a class="reference external" href="http://www.jstor.org/stable/2334029">http://www.jstor.org/stable/2334029</a> (visited on 2024-09-20).</p>
-</div>
-<div class="citation" id="id1509" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">MXC24</a><span class="fn-bracket">]</span></span>
-<p>Yu Meng, Mengzhou Xia, and Danqi Chen. Simpo: simple preference optimization with a reference-free reward. 2024. URL: <a class="reference external" href="https://arxiv.org/abs/2405.14734">https://arxiv.org/abs/2405.14734</a>, <a class="reference external" href="https://arxiv.org/abs/2405.14734">arXiv:2405.14734</a>.</p>
-</div>
-<div class="citation" id="id1507" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">Mit23</a><span class="fn-bracket">]</span></span>
-<p>Eric Mitchell. A note on dpo with noisy preferences &amp; relationship to ipo. 2023. URL: <a class="reference external" href="https://ericmitchell.ai/cdpo.pdf">https://ericmitchell.ai/cdpo.pdf</a>.</p>
-</div>
-<div class="citation" id="id1506" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>OWJ+22<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>,<a role="doc-backlink" href="#id3">3</a>,<a role="doc-backlink" href="#id5">4</a>)</span>
-<p>Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. 2022. URL: <a class="reference external" href="https://arxiv.org/abs/2203.02155">https://arxiv.org/abs/2203.02155</a>, <a class="reference external" href="https://arxiv.org/abs/2203.02155">arXiv:2203.02155</a>.</p>
-</div>
-<div class="citation" id="id1505" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>RSM+24<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id7">1</a>,<a role="doc-backlink" href="#id8">2</a>)</span>
-<p>Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning, and Chelsea Finn. Direct preference optimization: your language model is secretly a reward model. 2024. URL: <a class="reference external" href="https://arxiv.org/abs/2305.18290">https://arxiv.org/abs/2305.18290</a>, <a class="reference external" href="https://arxiv.org/abs/2305.18290">arXiv:2305.18290</a>.</p>
-</div>
-</div>
-</div>
-</section>
+<span class="target" id="id12"></span></section>
 </section>
 
     <script type="text/x-thebe-config">

@@ -29,7 +29,7 @@ Assume every numerical value are stored in $p$ bytes, we can compute more accura
 ```{table} Memory requirement breakdown
 | Component | Memory Requirement | Note |
 | :--- | :--- | :--- |
-| Model parameter | $V d+L\left(12 d^2+13 d\right)$ \times p | See {ref}`chapter_LLM_arch_sec_parameter_composition`|
+| Model parameter | $V d+L\left(12 d^2+13 d\right) \times p$ | See {ref}`chapter_LLM_arch_sec_parameter_composition`|
 | Activations | $b \times s \times d \times L \times p$ | |
 |KV Cache | $2\times b \times s \times d \times L \times p$ |  See {ref}`chapter_inference_sec_inference_acceleration_KV_cache` | 
 | Input-output | $b\times s \times d \times p$ | |

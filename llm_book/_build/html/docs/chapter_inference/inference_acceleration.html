@@ -393,8 +393,8 @@ Beam search: If used, beam search for text generation adds computational overhea
 <section id="memory-requirement-breakdown">
 <h3><span class="section-number">18.1.2. </span>Memory Requirement Breakdown<a class="headerlink" href="#memory-requirement-breakdown" title="Link to this heading">#</a></h3>
 <p>Assume every numerical value are stored in <span class="math notranslate nohighlight">\(p\)</span> bytes, we can compute more accurate memory requirements as follows.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1531">
-<caption><span class="caption-number">Table 18.1 </span><span class="caption-text">Memory requirement breakdown</span><a class="headerlink" href="#id1531" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id430">
+<caption><span class="caption-number">Table 18.1 </span><span class="caption-text">Memory requirement breakdown</span><a class="headerlink" href="#id430" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Component</p></th>
 <th class="head text-left"><p>Memory Requirement</p></th>
@@ -403,7 +403,7 @@ Beam search: If used, beam search for text generation adds computational overhea
 </thead>
 <tbody>
 <tr class="row-even"><td class="text-left"><p>Model parameter</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(V d+L\left(12 d^2+13 d\right)\)</span> \times p</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(V d+L\left(12 d^2+13 d\right) \times p\)</span></p></td>
 <td class="text-left"><p>See <a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html#chapter-llm-arch-sec-parameter-composition"><span class="std std-ref">Parameter composition in Transformer models</span></a></p></td>
 </tr>
 <tr class="row-odd"><td class="text-left"><p>Activations</p></td>
@@ -489,8 +489,8 @@ Specifically, we can pre-computes and stores the key (K) and value (V) represent
 <section id="computational-cost-with-kv-cache">
 <h3><span class="section-number">18.2.2. </span>Computational cost with KV Cache<a class="headerlink" href="#computational-cost-with-kv-cache" title="Link to this heading">#</a></h3>
 <p>In <a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html#chapter-llm-arch-sec-llm-arch-fundamentals-forward-pass-computation"><span class="std std-ref">Forward Pass Computation Breadown</span></a>, we analyze the computational cost during a forward pass without using KV Cache. In this section, we are going to re-analyze the computatioal cost and compare it with the no-KV-Cache setting.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1532">
-<caption><span class="caption-number">Table 18.2 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id1532" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id431">
+<caption><span class="caption-number">Table 18.2 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id431" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Module</p></th>
 <th class="head text-left"><p>Computation</p></th>
@@ -593,7 +593,7 @@ M_{KV, GQA} = 2\times b \times s \times G \times d_h \times L \times p
 <li><p>Even when actual lengths are known in advance, pre-allocation remains inefficient as the entire memory chunk is reserved for the duration of the request, preventing other shorter requests from utilizing unused portions.</p></li>
 </ul>
 <p>There is also a lack of mechnism for  memory sharing KV cache for different requests are stored in separate contiguous spaces.</p>
-<p>PagedAttention <span id="id1">[<a class="reference internal" href="#id1528" title="Woosuk Kwon, Zhuohan Li, Siyuan Zhuang, Ying Sheng, Lianmin Zheng, Cody Hao Yu, Joseph Gonzalez, Hao Zhang, and Ion Stoica. Efficient memory management for large language model serving with pagedattention. In Proceedings of the 29th Symposium on Operating Systems Principles, 611–626. 2023.">KLZ+23</a>]</span> is improved memory managment and sharing method. The key idea is that
+<p>PagedAttention <span id="id1">[<a class="reference internal" href="#id29" title="Woosuk Kwon, Zhuohan Li, Siyuan Zhuang, Ying Sheng, Lianmin Zheng, Cody Hao Yu, Joseph Gonzalez, Hao Zhang, and Ion Stoica. Efficient memory management for large language model serving with pagedattention. In Proceedings of the 29th Symposium on Operating Systems Principles, 611–626. 2023.">KLZ+23</a>]</span> is improved memory managment and sharing method. The key idea is that
 the request’s KV cache is divided into smaller blocks, each of which can contain the attention keys and values of a fixed number of tokens. The benefits are:</p>
 <ul class="simple">
 <li><p>These smaller blocks enable easy use of non-contiguous space, reducing memory fragment waste.</p></li>
@@ -824,9 +824,9 @@ In this case, each group of 32 channels shares the same scale and zero_point for
 </section>
 <section id="quantization-performance-trade-off-in-language-models">
 <h3><span class="section-number">18.3.7. </span>Quantization-performance trade-off in language models<a class="headerlink" href="#quantization-performance-trade-off-in-language-models" title="Link to this heading">#</a></h3>
-<p>Early research [<span id="id2">[<a class="reference internal" href="#id1501" title="Yelysei Bondarenko, Markus Nagel, and Tijmen Blankevoort. Understanding and overcoming the challenges of efficient transformer quantization. 2021. URL: https://arxiv.org/abs/2109.12948, arXiv:2109.12948.">BNB21</a>]</span>] during the BERT era revealed significant challenges in quantizing large language models. <span id="id3">[<a class="reference internal" href="#id1501" title="Yelysei Bondarenko, Markus Nagel, and Tijmen Blankevoort. Understanding and overcoming the challenges of efficient transformer quantization. 2021. URL: https://arxiv.org/abs/2109.12948, arXiv:2109.12948.">BNB21</a>]</span> demonstrated that applying round-to-nearest (RTN) quantization to both weights and activations of BERT models, reducing them to 8-bit precision, resulted in substantial performance deterioration on language understanding benchmarks.</p>
+<p>Early research [<span id="id2">[]</span>] during the BERT era revealed significant challenges in quantizing large language models. <span id="id3">[]</span> demonstrated that applying round-to-nearest (RTN) quantization to both weights and activations of BERT models, reducing them to 8-bit precision, resulted in substantial performance deterioration on language understanding benchmarks.</p>
 <p>Further ablation shows that quantization on activation is major cause of the performance drop and quantization on the model weights have minimal impact. The reason is that activation values from FFN’s input and output can have strong outliers, which can directly cause notable error in the quantization process.</p>
-<p>As summary in the following table [<span id="id4">[<a class="reference internal" href="#id1501" title="Yelysei Bondarenko, Markus Nagel, and Tijmen Blankevoort. Understanding and overcoming the challenges of efficient transformer quantization. 2021. URL: https://arxiv.org/abs/2109.12948, arXiv:2109.12948.">BNB21</a>]</span>], a strategy of quantizing only the model weights to 8-bit precision while maintaining 32-bit precision for activations (referred to as ‘W8A32’) achieved performance comparable to full-precision models. This finding highlights the importance of selective quantization strategies that preserve critical information in activations while still benefiting from the efficiency gains of weight quantization.</p>
+<p>As summary in the following table [<span id="id4">[]</span>], a strategy of quantizing only the model weights to 8-bit precision while maintaining 32-bit precision for activations (referred to as ‘W8A32’) achieved performance comparable to full-precision models. This finding highlights the importance of selective quantization strategies that preserve critical information in activations while still benefiting from the efficiency gains of weight quantization.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Configuration</p></th>
@@ -890,7 +890,7 @@ In this case, each group of 32 channels shares the same scale and zero_point for
 </table>
 </div>
 <p>As the model size continues to grow to billions of parameters, outlier features of high magnitude start to emerge in all transformer layers, causing failure of simple low-bit quantization. Dettmers et al. (2022) observed such a phenomenon for OPT models larger than 6.7B parameters. Larger models have more layers with extreme outliers and these outlier features have a significant impact on the model performance. The scale of activation outliers in a few dimensions can be <span class="math notranslate nohighlight">\(\sim 100 \times\)</span> larger than most of the other values.</p>
-<p>As language models grow to encompass billions of parameters, a significant challenge emerges: the appearance of high-magnitude outlier features across all transformer layers. This phenomenon compromises the effectiveness of simple low-bit quantization techniques. <span id="id5">[<a class="reference internal" href="#id1502" title="Tim Dettmers, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. Llm.int8(): 8-bit matrix multiplication for transformers at scale. 2022. URL: https://arxiv.org/abs/2208.07339, arXiv:2208.07339.">DLBZ22</a>]</span> identified this issue in OPT models exceeding 6.7 billion parameters.</p>
+<p>As language models grow to encompass billions of parameters, a significant challenge emerges: the appearance of high-magnitude outlier features across all transformer layers. This phenomenon compromises the effectiveness of simple low-bit quantization techniques. <span id="id5">[]</span> identified this issue in OPT models exceeding 6.7 billion parameters.</p>
 <p>The problem intensifies with model size; larger models exhibit more layers with extreme outliers. These outlier features disproportionately influence model performance. In some dimensions, the scale of activation outliers can be approximately 100 times larger than the majority of other values.</p>
 <p>This disparity poses a significant challenge for quantization, as traditional methods struggle to accurately represent both the outliers and the more typical values within the same low-bit format. Consequently, addressing these outliers has become a critical focus in the development of quantization techniques for large language models.</p>
 </section>
@@ -899,7 +899,7 @@ In this case, each group of 32 channels shares the same scale and zero_point for
 <h2><span class="section-number">18.4. </span>Advanced quantization techniques<a class="headerlink" href="#advanced-quantization-techniques" title="Link to this heading">#</a></h2>
 <section id="llm-int8">
 <h3><span class="section-number">18.4.1. </span>LLM.int8()<a class="headerlink" href="#llm-int8" title="Link to this heading">#</a></h3>
-<p><span id="id6">[<a class="reference internal" href="#id1502" title="Tim Dettmers, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. Llm.int8(): 8-bit matrix multiplication for transformers at scale. 2022. URL: https://arxiv.org/abs/2208.07339, arXiv:2208.07339.">DLBZ22</a>]</span></p>
+<p><span id="id6">[]</span></p>
 <p>Motivation</p>
 <p>Basic quantization methods often resulted in significant performance degradation, especially for larger models.</p>
 <p>maintain high performance while significantly reducing the memory footprint and computational requirements of large language models. This makes it possible to run these models on more modest hardware or to scale them more efficiently in production environments.</p>
@@ -925,7 +925,7 @@ In this case, each group of 32 channels shares the same scale and zero_point for
 <a class="reference internal image-reference" href="../../_images/LLM_int8_illustration.png"><img alt="../../_images/LLM_int8_illustration.png" src="../../_images/LLM_int8_illustration.png" style="width: 817.5px; height: 320.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 18.2 </span><span class="caption-text">Figure 2: Schematic of LLM.int8(). Given 16-bit floating-point inputs <span class="math notranslate nohighlight">\(\mathbf{X}_{f 16}\)</span> and weights <span class="math notranslate nohighlight">\(\mathbf{W}_{f 16}\)</span>, the features and weights are decomposed into sub-matrices of large magnitude features and other values. The outlier feature matrices are multiplied in 16 -bit. All other values are multiplied in 8 -bit. We perform 8 -bit vector-wise multiplication by scaling by row and column-wise absolute maximum of <span class="math notranslate nohighlight">\(\mathbf{C}_x\)</span> and <span class="math notranslate nohighlight">\(\mathbf{C}_w\)</span> and then quantizing the outputs to Int8. The Int32 matrix multiplication outputs <span class="math notranslate nohighlight">\(\mathrm{Out}_{i 32}\)</span> are dequantization by the outer product of the normalization constants <span class="math notranslate nohighlight">\(\mathbf{C}_x \otimes \mathbf{C}_w\)</span>. Finally, both outlier and regular outputs are accumulated in 16-bit floating point outputs. Image from <span id="id7">[<a class="reference internal" href="#id1502" title="Tim Dettmers, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. Llm.int8(): 8-bit matrix multiplication for transformers at scale. 2022. URL: https://arxiv.org/abs/2208.07339, arXiv:2208.07339.">DLBZ22</a>]</span>.</span><a class="headerlink" href="#chapter-inference-quantization-fig-llm-int8-illustration-plot" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 18.2 </span><span class="caption-text">Figure 2: Schematic of LLM.int8(). Given 16-bit floating-point inputs <span class="math notranslate nohighlight">\(\mathbf{X}_{f 16}\)</span> and weights <span class="math notranslate nohighlight">\(\mathbf{W}_{f 16}\)</span>, the features and weights are decomposed into sub-matrices of large magnitude features and other values. The outlier feature matrices are multiplied in 16 -bit. All other values are multiplied in 8 -bit. We perform 8 -bit vector-wise multiplication by scaling by row and column-wise absolute maximum of <span class="math notranslate nohighlight">\(\mathbf{C}_x\)</span> and <span class="math notranslate nohighlight">\(\mathbf{C}_w\)</span> and then quantizing the outputs to Int8. The Int32 matrix multiplication outputs <span class="math notranslate nohighlight">\(\mathrm{Out}_{i 32}\)</span> are dequantization by the outer product of the normalization constants <span class="math notranslate nohighlight">\(\mathbf{C}_x \otimes \mathbf{C}_w\)</span>. Finally, both outlier and regular outputs are accumulated in 16-bit floating point outputs. Image from <span id="id7">[]</span>.</span><a class="headerlink" href="#chapter-inference-quantization-fig-llm-int8-illustration-plot" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-inference-quantization-fig-llm-int8-performance-plot">
@@ -933,7 +933,7 @@ In this case, each group of 32 channels shares the same scale and zero_point for
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 18.3 </span><span class="caption-text">OPT model mean zeroshot benchmark accuracy at different quantization settings, including 16-bit baseline, regular 8-bit quantization method, and the LLM.int8() quantization method. Systematic outliers
-emerge at a scale of 6.7B parameters, causing regular quantatization methods to have severe performance degradation. Image from <span id="id8">[<a class="reference internal" href="#id1502" title="Tim Dettmers, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. Llm.int8(): 8-bit matrix multiplication for transformers at scale. 2022. URL: https://arxiv.org/abs/2208.07339, arXiv:2208.07339.">DLBZ22</a>]</span>.</span><a class="headerlink" href="#chapter-inference-quantization-fig-llm-int8-performance-plot" title="Link to this image">#</a></p>
+emerge at a scale of 6.7B parameters, causing regular quantatization methods to have severe performance degradation. Image from <span id="id8">[]</span>.</span><a class="headerlink" href="#chapter-inference-quantization-fig-llm-int8-performance-plot" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -947,7 +947,7 @@ emerge at a scale of 6.7B parameters, causing regular quantatization methods to 
 <h3><span class="section-number">18.4.4. </span>GPTQ<a class="headerlink" href="#gptq" title="Link to this heading">#</a></h3>
 <section id="the-error-minimization-framework">
 <h4><span class="section-number">18.4.4.1. </span>The Error Minimization Framework<a class="headerlink" href="#the-error-minimization-framework" title="Link to this heading">#</a></h4>
-<p><span id="id9">[<a class="reference internal" href="#id1516" title="Yann LeCun, John Denker, and Sara Solla. Optimal brain damage. Advances in neural information processing systems, 1989.">LDS89</a>]</span></p>
+<p><span id="id9">[<a class="reference internal" href="#id17" title="Yann LeCun, John Denker, and Sara Solla. Optimal brain damage. Advances in neural information processing systems, 1989.">LDS89</a>]</span></p>
 <p>If we want to remove some parameters from a model (i.e., pruning), intuitively, we want to remove parameters that have little impact on the objective function <span class="math notranslate nohighlight">\(E\)</span>. So we can perform a Taylor expansion on the objective function <span class="math notranslate nohighlight">\(E\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-chapter-inference-eq-inference-acceleration-gptq-error-minimization-objective-raw">
 <span class="eqno">(18.4)<a class="headerlink" href="#equation-chapter-inference-eq-inference-acceleration-gptq-error-minimization-objective-raw" title="Link to this equation">#</a></span>\[
@@ -976,7 +976,7 @@ emerge at a scale of 6.7B parameters, causing regular quantatization methods to 
 </section>
 <section id="general-case">
 <h4><span class="section-number">18.4.4.3. </span>General Case<a class="headerlink" href="#general-case" title="Link to this heading">#</a></h4>
-<p>OBS <span id="id10">[<a class="reference internal" href="#id1517" title="Babak Hassibi, David G Stork, and Gregory J Wolff. Optimal brain surgeon and general network pruning. In IEEE international conference on neural networks, 293–299. IEEE, 1993.">HSW93</a>]</span></p>
+<p>OBS <span id="id10">[<a class="reference internal" href="#id18" title="Babak Hassibi, David G Stork, and Gregory J Wolff. Optimal brain surgeon and general network pruning. In IEEE international conference on neural networks, 293–299. IEEE, 1993.">HSW93</a>]</span></p>
 <p>To analyze the general case of Eq. <a class="reference internal" href="#equation-chapter-inference-eq-inference-acceleration-gptq-error-minimization-objective">(18.5)</a>, we first write it in vector/matrix form:
 $<span class="math notranslate nohighlight">\(
 \Delta E=\frac{1}{2} \Delta \mathbf{w}^{\mathbf{T}} \mathbf{H} \Delta \mathbf{w}
@@ -1070,25 +1070,15 @@ $<span class="math notranslate nohighlight">\(
 <a class="reference external" href="https://leimao.github.io/article/Neural-Networks-Quantization/">https://leimao.github.io/article/Neural-Networks-Quantization/</a></p>
 <div class="docutils container" id="id11">
 <div role="list" class="citation-list">
-<div class="citation" id="id1501" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>BNB21<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id3">2</a>,<a role="doc-backlink" href="#id4">3</a>)</span>
-<p>Yelysei Bondarenko, Markus Nagel, and Tijmen Blankevoort. Understanding and overcoming the challenges of efficient transformer quantization. 2021. URL: <a class="reference external" href="https://arxiv.org/abs/2109.12948">https://arxiv.org/abs/2109.12948</a>, <a class="reference external" href="https://arxiv.org/abs/2109.12948">arXiv:2109.12948</a>.</p>
-</div>
-<div class="citation" id="id1502" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>DLBZ22<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id5">1</a>,<a role="doc-backlink" href="#id6">2</a>,<a role="doc-backlink" href="#id7">3</a>,<a role="doc-backlink" href="#id8">4</a>)</span>
-<p>Tim Dettmers, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. Llm.int8(): 8-bit matrix multiplication for transformers at scale. 2022. URL: <a class="reference external" href="https://arxiv.org/abs/2208.07339">https://arxiv.org/abs/2208.07339</a>, <a class="reference external" href="https://arxiv.org/abs/2208.07339">arXiv:2208.07339</a>.</p>
-</div>
-<div class="citation" id="id1517" role="doc-biblioentry">
+<div class="citation" id="id18" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">HSW93</a><span class="fn-bracket">]</span></span>
 <p>Babak Hassibi, David G Stork, and Gregory J Wolff. Optimal brain surgeon and general network pruning. In <em>IEEE international conference on neural networks</em>, 293–299. IEEE, 1993.</p>
 </div>
-<div class="citation" id="id1528" role="doc-biblioentry">
+<div class="citation" id="id29" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">KLZ+23</a><span class="fn-bracket">]</span></span>
 <p>Woosuk Kwon, Zhuohan Li, Siyuan Zhuang, Ying Sheng, Lianmin Zheng, Cody Hao Yu, Joseph Gonzalez, Hao Zhang, and Ion Stoica. Efficient memory management for large language model serving with pagedattention. In <em>Proceedings of the 29th Symposium on Operating Systems Principles</em>, 611–626. 2023.</p>
 </div>
-<div class="citation" id="id1516" role="doc-biblioentry">
+<div class="citation" id="id17" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">LDS89</a><span class="fn-bracket">]</span></span>
 <p>Yann LeCun, John Denker, and Sara Solla. Optimal brain damage. <em>Advances in neural information processing systems</em>, 1989.</p>
 </div>

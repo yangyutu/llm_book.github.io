@@ -425,6 +425,12 @@ Examples:
 
 ## Position Encoding and Long Context
 
+#### Motivation
+
+Context window in LLM represents the number of input tokens the model can process simultaneously when reponding into the prompt. GPT-4 has a context window of approximately $32k$ or roughly 25,000 words. Recent advancements have extended this to more than 100k (e.g., Llama3) or even 1 million (Gemini), which is about 8 average length English novels. 
+
+A longer context window allows the model to process and understand more information before generating a response, providing a deeper grasp of the context. This capability is especially useful when inputting a large amount of specific data into a language model and asking questions about it. For instance, when analyzing an extensive document about a particular company or issue, a larger context window enables the language model to review and retain more of this detailed information, leading to more accurate and customized responses.
+
 ### Absolute Position Encoding
 
 In {ref}`chapter_foundation_sec_pretrained_LM_transformer_arch_absolute_PE`, we discuss **absolute position encoding**, which maps an integer $i$ (used to represent the position of the token) to a $d_{model}$ sinusoidal vector. Specifically, let $PE(i)_j$ represent the $j$th dimention position encoding, we have
@@ -571,15 +577,11 @@ name: chapter_LLM_arch_fig_fundamentals_position_encoding_Alibi_comparison
 Visualization of 2D RoPE and its mechanism in encoding context. Image from [Blog](https://mp.weixin.qq.com/s/dn8Pb80iRF9UkRn4vPOhHA).
 ``` -->
 
-## Extending Context Windows
-### Motivation
-
-Context window in LLM represents the number of input tokens the model can process simultaneously when reponding into the prompt. GPT-4 has a context window of approximately $32k$ or roughly 25,000 words. Recent advancements have extended this to more than 100k (e.g., Llama3) or even 1 million (Gemini), which is about 8 average length English novels. 
-
-A longer context window allows the model to process and understand more information before generating a response, providing a deeper grasp of the context. This capability is especially useful when inputting a large amount of specific data into a language model and asking questions about it. For instance, when analyzing an extensive document about a particular company or issue, a larger context window enables the language model to review and retain more of this detailed information, leading to more accurate and customized responses.
+### Extending Context Windows via RoPE
 
 
-### Position Interpolation for RoPE
+
+#### Position Interpolation for RoPE
 
 **Position Interpolation**{cite:p}`chen2023extending` is a cheap method to extend the context window of an existing LLM, which allows LLM to have longer context window during inference time than the context window size during training. 
 
@@ -603,7 +605,7 @@ name: chapter_LLM_arch_fig_fundamentals_RoPE_position_interpolation
 An illustration of the Position Interpolation method, which is used to extend an initial context window from 2048 to 4096. Image from {cite:p}`chen2023extending`.
 ```
 
-### NTK-Aware RoPE
+#### NTK-Aware RoPE
 
 From the information encoding (i.e., Neural Tangent Kernel - NTK theory) perspective, the scaling by Position Interpolation uniformly scales wave length by a factor of $L'/L$, which can hurt the model's ability in capture high-frequency, short-ranged position information after rescaling. 
 
@@ -626,9 +628,9 @@ $$
 
 which is a monontically increasing function on $i$ given that $d_{model}$ and $s$ are constants.
 
-### NTK-by-parts and YaRN
+#### NTK-by-parts and YaRN
 
-### Dual Chunk Attention
+#### Dual Chunk Attention
 
 **Dual Chunk Attention** {cite:p}`an2024training` applies the chunking idea to map the position distance $(i - j)$ between a query state at position $i$ and and a key state at position $j$ to a value within the **training stage context window size** $L$.
 
