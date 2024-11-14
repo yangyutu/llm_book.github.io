@@ -201,6 +201,10 @@ $$G_k^{RMSProp} \approx  \frac{(1 - \rho^k)}{k} G_k^{AdaGrad}, G_k^{AdaGrad}\app
 
 ````
 
+````{prf:remark} Importance of adaptive learning rate
+One example to demonstrate the importance of having adaptive learing rate is learning word embeddings. Embeddings of rare words only get limited chances to update because they have limited presence in the training data. On the other hand, embeddings of common words get update frequently. With adaptive learning rate, embeddings of rare words will have large learning rate whenever it gets update. This help the model learn better embeddings for rare words. 
+````
+
 
 ### Momentum Method
 

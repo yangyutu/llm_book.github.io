@@ -220,7 +220,7 @@ name: chapter_foundation_fig_word_embedding_skipgramcbow
 ````{prf:definition} Skip-gram and CBOW optimization problem
 :label: chapter_foundation_word_embedding_def_skipGramOptimization
 
-The neural network weights $\{v_i, v_i'\}$ of the Skip-gram model are optimized to maximize the observation of a text consisting of words $w_1, w_2, ..., w_T$, which can then be written by
+The neural network weights $\{v_i, v_i'\}$ of the **Skip-Gram model** are optimized to maximize the observation of a text consisting of words $w_1, w_2, ..., w_T$, which can then be written by
 
 $$\begin{align}
 	& \max_{v,v'} \sum_{t = 1}^T\sum_{-c \leq j \leq c, j \neq 0} \ln p\left(w_{t+j} | w_{t}\right) \\
@@ -229,7 +229,7 @@ $$\begin{align}
 \end{align}
 $$
 
-In the CBOW model, the optimization problem becomes
+In the **CBOW model**, the optimization problem becomes
 
 $$
 \begin{align}
@@ -244,8 +244,9 @@ In the original Skip-gram and the CBOW model, each word will have two embeddings
 
 With the trained embeddings for each word, we can assemble then into a matrix of size $D\times V$, which is also called an Embedding layer. In applications, the one-hot word vector is fed into the embedding layer and produce the corresponding dense word vectors. From the computational perspective, we do not need to perform matrix multiplication; instead, we can view the Embedding layer as a dictionary that maps integer indices of the word to dense vectors.
 
-In Skip-gram, the weight associated with each word receives adjustment signal (via gradient descent) from its surrounding context words. In CBOW, a central word provides signal to optimize the weights of its multiple surrounding words. Skip-gram is more computational expensive than CBOW as the Skip-gram model has to make predictions of size $O(cV)$  while CBOW makes prediction on the scale of $O(V)$. Further, because of the averaging effect from input layer to hidden layer in CBOW, CBOW is less competent in calculating effective word embedding for rare words than Skip-gram.  
-
+````{prf:remark} (Skip-gram vs CBOW performance)
+**In Skip-gram, the weight associated with each word receives adjustment signal (via gradient descent) from its surrounding context words.** In CBOW, a central word provides signal to optimize the weights of its multiple surrounding words. **Skip-gram is more computational expensive** than CBOW as the Skip-gram model has to make predictions of size $O(cV)$  while CBOW makes prediction on the scale of $O(V)$. Further, because of the averaging effect from input layer to hidden layer in CBOW, CBOW is less competent in calculating effective word embedding for rare words than Skip-gram.  
+````
 
 ### Optimization I: negative sampling
 
@@ -253,7 +254,7 @@ Solving Skip-gram optimization [{prf:ref}`chapter_foundation_word_embedding_def_
 Note that negative sampling will result in incorrect normalization since we are not summing over the vast majority of the vocabulary. In practice, this approximation that turns out to work well. Further, the computational cost to update weight parameters goes from $O(D\cdot |V|)$ to $O(D\cdot k)$.
 
 
-In the optimization, gradient descent steps tend to pull embeddings of frequently co-occurring words closer (i.e., to make $v_i\cdot v_j$ have a larger value) while push embeddings of rarely co-occurring words away (i.e.,  to make $v_i\cdot v_j$ have a smaller value). Because frequent words are more frequently used as positive examples, it is justified to pick more commonly seen words with **larger probability** as negative samples to compensate. In this way, embeddings of commonly seen words will be encouraged to stay away from other commonly seen but irrelevant words. In the study, the negative samples $w$ are empirically sampled from 
+In the optimization, gradient descent steps tend to pull embeddings of frequently co-occurring words closer (i.e., to make $v_i\cdot v_j$ have a larger value) while push embeddings of rarely co-occurring words away (i.e.,  to make $v_i\cdot v_j$ have a smaller value). Because frequent words are more frequently used as positive examples, it is justified to **pick more commonly seen words with larger probability as negative samples** to compensate. This is similar to the idea of **hard negative mining** in contrastive learning. In this way, embeddings of commonly seen words will be encouraged to stay away from other commonly seen but irrelevant words. In the study, the negative samples $w$ are empirically sampled from 
 
 $$P_n(w) = \frac{f(w)^{3/4}}{\sum_{w'\in V} f(w')^{3/4}},$$
 

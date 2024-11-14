@@ -59,7 +59,11 @@ where
 * $\sigma$ is the standard deviation across feature dimensions, i.e.,
 $\sigma =\sqrt{\frac{1}{H} \sum_{i=1}^H\left(x_i-\mu\right)^2+\epsilon}$.
 * $\epsilon$ is a small number acting as regularizer for division.
-* $\gamma$ and $\beta$ are learnable scaling and shifting parameters
+* $\gamma$ and $\beta$ are learnable scaling and shifting parameters.
+
+````{prf:remark} Why we need $\gamma$ and $\beta$
+$\gamma$ and $\beta$ are parameters used to enhance the model's learning capacity. As the normalization operation is used to stablize the learning by standardizing the data distribution, it also remove useful feature distributions and decrease the model's learning capacity. With learnable shift and scaling parameter, we offset the negative impact of normalization. 
+````
 
 
 
@@ -71,7 +75,7 @@ $$
 \operatorname{RMSNorm}(x)=\frac{x}{\sqrt{\frac{1}{H} \sum_{i=1}^H x_i^2}} \cdot \gamma
 $$(chapter_LLM_arch_RMS_nomalization_formula)
 
-where $\gamma$ is learnable parameter. Experiments show that RMSNorm can achieve on-par performance with LayerNorm with much reduced training cost.
+where $\gamma$ is learnable scaling parameter. Note that since we don't normalize the mean, we don't need need a learnable shift parameter like what is in the LayerNorm. Experiments show that RMSNorm can achieve on-par performance with LayerNorm with much reduced training cost.
 
 
 In the following, we summarize the differences between RMSNorm and LayerNorm
@@ -165,7 +169,7 @@ Post-layer normalization and pre-layer normalization in an encoder layer.
 
 Another modification of Post-Norm to enable training of very deep Post-Norm Transformer model (up to 1000 layers) is **Deep-Norm** {cite:p}`wang2022deepnetscalingtransformers1000`, which gives 
 
-$$\operatorname{DeepNorm Output} = \operatorname{LayerNorm}(\alphaX + \operatorname{SubLayer}(X))$$
+$$\operatorname{DeepNorm Output} = \operatorname{LayerNorm}(\alpha X + \operatorname{SubLayer}(X))$$
 
 Here $\alpha > 1$ is a constant, which up scales the residual connection (to help gradient vanishing issue for deep models). Besides, the weights in the SubLayers are scaled by $\beta < 1$ (i.e., make it smaller) during initalization. 
 
@@ -568,6 +572,12 @@ Visualization of 2D RoPE and its mechanism in encoding context. Image from [Blog
 ``` -->
 
 ## Extending Context Windows
+### Motivation
+
+Context window in LLM represents the number of input tokens the model can process simultaneously when reponding into the prompt. GPT-4 has a context window of approximately $32k$ or roughly 25,000 words. Recent advancements have extended this to more than 100k (e.g., Llama3) or even 1 million (Gemini), which is about 8 average length English novels. 
+
+A longer context window allows the model to process and understand more information before generating a response, providing a deeper grasp of the context. This capability is especially useful when inputting a large amount of specific data into a language model and asking questions about it. For instance, when analyzing an extensive document about a particular company or issue, a larger context window enables the language model to review and retain more of this detailed information, leading to more accurate and customized responses.
+
 
 ### Position Interpolation for RoPE
 
