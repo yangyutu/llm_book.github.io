@@ -350,7 +350,7 @@ document.write(`
 <li><p>Poor genearlization to unseen word combination.</p></li>
 </ul>
 <p>The recent neural language models are good at capturing the semantics of words, and they give good prediction for low frequency sequences.</p>
-<p>These limitations of <span class="math notranslate nohighlight">\(n\)</span>-gram models motivated researchers to explore neural network approaches [<span id="id1">[<a class="reference internal" href="#id1171" title="Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. Journal of machine learning research, 3(Feb):1137–1155, 2003.">BDVJ03</a>, <a class="reference internal" href="#id1172" title="Tomas Mikolov, Martin Karafiát, Lukás Burget, Jan Cernocký, and Sanjeev Khudanpur. Recurrent neural network based language model. In Takao Kobayashi, Keikichi Hirose, and Satoshi Nakamura, editors, INTERSPEECH, 1045–1048. ISCA, 2010. URL: http://dblp.uni-trier.de/db/conf/interspeech/interspeech2010.html#MikolovKBCK10.">MKB+10</a>]</span>] that could capture deeper semantic relationships and longer-range dependencies in language. The resulting neural language models are proved to have the following advantages</p>
+<p>These limitations of <span class="math notranslate nohighlight">\(n\)</span>-gram models motivated researchers to explore neural network approaches [<span id="id1">[]</span>] that could capture deeper semantic relationships and longer-range dependencies in language. The resulting neural language models are proved to have the following advantages</p>
 <ul class="simple">
 <li><p>Improved <strong>efficient</strong> representation: Neural networks can learn a compact distributed representations of words (word embeddings), capturing semantic similarities. As a comparison, n-gram model only stores the statistical counting results.</p></li>
 <li><p>Better generalization with efficient model parameters: Neural models can generalize to unseen word combinations more effectively.</p></li>
@@ -361,7 +361,7 @@ document.write(`
 <p>The core idea of <span class="math notranslate nohighlight">\(n\)</span>-gram model is nothing but a mechanical counter of co-occurrence of words. In natural language, there are many words that are similar in their meaning as wells as their grammar rules.
 For example, <em>A cat is walking in the living room</em> vs. <em>a dog is running in the bedroom</em> have similar word pairs (cat, dog), (walking, running), (living room, bedroom) and use similar patterns.
 These similarities or word semantic meaning (i.e., the latent representation of words) can be exploited to construct model with much smaller model parameters.</p>
-<p><span id="id2">[<a class="reference internal" href="#id1171" title="Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. Journal of machine learning research, 3(Feb):1137–1155, 2003.">BDVJ03</a>]</span> proposed neural language models, which predict and generate next word based on its context and operating at a low dimensional dense vector space (i.e., word embedding).</p>
+<p><span id="id2">[]</span> proposed neural language models, which predict and generate next word based on its context and operating at a low dimensional dense vector space (i.e., word embedding).</p>
 <p>The core idea is that by projecting words into low dimensional space (via learning and gradient descent), words with similar semantics are automatically clustered together, thus providing opportunities for effecient parameterization and mitigating the the curse of dimensionality in <span class="math notranslate nohighlight">\(n\)</span>-gram language models.</p>
 <p>In the feed-forward network model, each word, together with its preceding <span class="math notranslate nohighlight">\(n - 1\)</span> words as context are projected into low-dimensional space and further predict the next word probability. Note that the context has a fixed length of <span class="math notranslate nohighlight">\(n\)</span>, which it is limited in the same way as in <span class="math notranslate nohighlight">\(n\)</span>-gram models [<span class="xref std std-ref">chapter_foundation_fig_language_model_feedforward_model</span>].</p>
 <p>Formally, the model is optimized to maximize</p>
@@ -374,10 +374,10 @@ y=b+We+U \tanh(d+He)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(W, H\)</span> are matrices and <span class="math notranslate nohighlight">\(b, d\)</span> are biases. Here <span class="math notranslate nohighlight">\(W\)</span> can optionally zero, meaning no direct connections. <span class="math notranslate nohighlight">\(e = (e_1,...,e_{n-1})\)</span> is the concatenations of word embeddings of each preceding token.</p>
 <p>Feed-forward neural language model brings several improvements over the traditional <span class="math notranslate nohighlight">\(n\)</span>-gram language model: it provides a <strong>compact and efficient parameterization</strong> to capture word dependencies among text data. Recall that <span class="math notranslate nohighlight">\(n\)</span>-gram model would have to store all observed <span class="math notranslate nohighlight">\(n\)</span>-grams. However, feed-forward neural language model still meet challenges to capture long-distance dependencies in natural language. In the feed-forward neural language model, <strong>capturing long-distance dependencies will require an increase of the context window size</strong>, which linearly scales with model parameters <span class="math notranslate nohighlight">\(W\)</span>. Another drawback is that a word that appears at different locations will be multiplied by different weights to get its embedding, which is inconsistent.</p>
-<figure class="align-default" id="id1523">
+<figure class="align-default" id="id422">
 <img alt="../../_images/FeedForwardModel_v2.png" src="../../_images/FeedForwardModel_v2.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Feedforward neural netowk based language model.</span><a class="headerlink" href="#id1523" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Feedforward neural netowk based language model.</span><a class="headerlink" href="#id422" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -408,20 +408,7 @@ Specially, let the recurrent network input be <span class="math notranslate nohi
 </section>
 <section id="bibliography">
 <h2><span class="section-number">3.3. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id3">
-<div role="list" class="citation-list">
-<div class="citation" id="id1171" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>BDVJ03<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
-<p>Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. <em>Journal of machine learning research</em>, 3(Feb):1137–1155, 2003.</p>
-</div>
-<div class="citation" id="id1172" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">MKB+10</a><span class="fn-bracket">]</span></span>
-<p>Tomas Mikolov, Martin Karafiát, Lukás Burget, Jan Cernocký, and Sanjeev Khudanpur. Recurrent neural network based language model. In Takao Kobayashi, Keikichi Hirose, and Satoshi Nakamura, editors, <em>INTERSPEECH</em>, 1045–1048. ISCA, 2010. URL: <a class="reference external" href="http://dblp.uni-trier.de/db/conf/interspeech/interspeech2010.html#MikolovKBCK10">http://dblp.uni-trier.de/db/conf/interspeech/interspeech2010.html#MikolovKBCK10</a>.</p>
-</div>
-</div>
-</div>
-</section>
+<span class="target" id="id3"></span></section>
 </section>
 
     <script type="text/x-thebe-config">

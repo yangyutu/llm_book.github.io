@@ -95,7 +95,7 @@ One critical difference between GPT-2 and traditional NLP models that is the tas
 
 GPT-2 uses the same Transformer decoder architecture like GPT-1, except that the model size is  has been expanded by more than 10 times from GPT-1. The training corpus used by GPT-1is the BookCorpus dataset, while the training corpus used by GPT-2 is crawled from more than 8 million web pages monolingual data, the amount of data is more than 10 times that of the GPT-1.
 
-
+(content:chapter_foundation:GPT_series:GPT_3)=
 ## GPT-3
 
 ### Introduction

@@ -386,7 +386,7 @@ we cover this direction in <a class="reference internal" href="alignment.html#ch
 <div class="math notranslate nohighlight">
 \[L = - \sum_{t=1}^{T} \log p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1},\theta\right)\]</div>
 <p>where <span class="math notranslate nohighlight">\(p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1}\right)\)</span> is the predicted probability distribution for token <span class="math notranslate nohighlight">\(x_t\)</span> given preceding token sequence <span class="math notranslate nohighlight">\(\mathbf{x}_{t-k-1:t-1}\)</span> with a context window size <span class="math notranslate nohighlight">\(k\)</span> (<span class="math notranslate nohighlight">\(k\)</span> can range from hundreds to tens of thousands, depending on the model configuration).</p>
-<p>There are scaling laws <span id="id1">[<a class="reference internal" href="#id403" title="Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei. Scaling laws for neural language models. ArXiv:2001.08361, 2020.">KMH+20</a>]</span> discovered on LLM pretraining, which establishes mathematical relationships model performance given model size, dataset size, and the amount of compute. The availability of scaling laws has several benefits:</p>
+<p>There are scaling laws <span id="id1">[<a class="reference internal" href="#id33" title="Tom Henighan, Jared Kaplan, Mor Katz, Mark Chen, Christopher Hesse, Jacob Jackson, Heewoo Jun, Tom B Brown, Prafulla Dhariwal, Scott Gray, and others. Scaling laws for autoregressive generative modeling. arXiv preprint arXiv:2010.14701, 2020.">HKK+20</a>, <a class="reference internal" href="#id32" title="Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei. Scaling laws for neural language models. arXiv preprint arXiv:2001.08361, 2020.">KMH+20</a>]</span> discovered on LLM pretraining, which establishes mathematical relationships model performance given model size, dataset size, and the amount of compute. The availability of scaling laws has several benefits:</p>
 <ul class="simple">
 <li><p>It provides to benchmark to enable LLM pretraining to be done in a predictable way.</p></li>
 <li><p>It help design better training strategy by optimizing the model size and data size under compute constraint.</p></li>
@@ -400,7 +400,7 @@ we cover this direction in <a class="reference internal" href="alignment.html#ch
 <li><p>Books and Literature: Projects like BookCorpus, the Gutenberg Project, arXiv offer high-quality, long-form text.This is an important source for LLM to learn world knowledge and liguistic information.</p></li>
 <li><p>Wikipedia: A reliable source of factual information across many languages and domains.</p></li>
 <li><p>Social Media and Forums: Platforms like Reddit or X (twitter) provide more informal, conversational language.</p></li>
-<li><p>Code: Github code (as used in Codex <span id="id2">[]</span>) and code-related question-answering
+<li><p>Code: Github code (as used in Codex <span id="id2">[<a class="reference internal" href="#id34" title="Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde De Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, and others. Evaluating large language models trained on code. arXiv preprint arXiv:2107.03374, 2021.">CTJ+21</a>]</span>) and code-related question-answering
 platforms (e.g., StackOverflow).</p></li>
 <li><p>Domain specific Corpora: Domain-specific datasets (e.g., scientific papers, legal documents) for targeted pretraining.</p></li>
 </ol>
@@ -409,7 +409,7 @@ platforms (e.g., StackOverflow).</p></li>
 <a class="reference internal image-reference" href="../../_images/training_data_distribution_summary.png"><img alt="../../_images/training_data_distribution_summary.png" src="../../_images/training_data_distribution_summary.png" style="width: 850.5px; height: 320.5px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 12.1 </span><span class="caption-text">Pretrain data source distribution for existing LLMs. Image from <span id="id3">[<a class="reference internal" href="#id1500" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-pretrain-data-distribution" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 12.1 </span><span class="caption-text">Pretrain data source distribution for existing LLMs. Image from <span id="id3">[]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-pretrain-data-distribution" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>While the scale is one factor impacting resulting model performance (i.e., the scaling law), the quality of data and the ratio of different data types play an equally important role. As dominant pretraining data is from the web, data clearning and quality control is a crucial step for sucessful LLM pretraining [<a class="reference internal" href="#chapter-training-fig-fundamentals-pretrain-data-distribution"><span class="std std-numref">Fig. 12.1</span></a>].
@@ -418,7 +418,7 @@ The following <a class="reference internal" href="#chapter-training-fig-fundamen
 <a class="reference internal image-reference" href="../../_images/pretraining_data_cleaning_pipeline.png"><img alt="../../_images/pretraining_data_cleaning_pipeline.png" src="../../_images/pretraining_data_cleaning_pipeline.png" style="width: 866.4px; height: 187.2px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 12.2 </span><span class="caption-text">Illustration of data cleaning pipeline for curating LLM pretraining data. Image from <span id="id4">[<a class="reference internal" href="#id1500" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-pretrain-data-clean-pipeline" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 12.2 </span><span class="caption-text">Illustration of data cleaning pipeline for curating LLM pretraining data. Image from <span id="id4">[]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-pretrain-data-clean-pipeline" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Onogoing challenges for constructing LLM pretraining data include:</p>
@@ -495,7 +495,7 @@ It improve LLM’s performance in the target domain by enhance language understa
 <section class="remark-content" id="proof-content">
 <ul class="simple">
 <li><p>The estimation quality of gradient via minibatch gradient descent is strongly affected by the minibatch size. In general, the gradient estimate is unbiased, irrespective of the choice of minibatch size, but its variance will decrease as the minibatch increases.</p></li>
-<li><p>For larger minibatch size, we can increase learning rate since the estimated gradient is more certain. There is an empirical <em><strong>Linear Scaling Rule</strong></em>: When the minibatch size is multiplied by <span class="math notranslate nohighlight">\(k\)</span>, multiply the learning rate by <span class="math notranslate nohighlight">\(k\)</span> <span id="id5">[<a class="reference internal" href="#id1092" title="Priya Goyal, Piotr Dollár, Ross Girshick, Pieter Noordhuis, Lukasz Wesolowski, Aapo Kyrola, Andrew Tulloch, Yangqing Jia, and Kaiming He. Accurate, large minibatch sgd: training imagenet in 1 hour. arXiv preprint arXiv:1706.02677, 2017.">GDollarG+17</a>]</span>.</p></li>
+<li><p>For larger minibatch size, we can increase learning rate since the estimated gradient is more certain. There is an empirical <em><strong>Linear Scaling Rule</strong></em>: When the minibatch size is multiplied by <span class="math notranslate nohighlight">\(k\)</span>, multiply the learning rate by <span class="math notranslate nohighlight">\(k\)</span> <span id="id5">[]</span>.</p></li>
 </ul>
 </section>
 </div></section>
@@ -504,7 +504,7 @@ It improve LLM’s performance in the target domain by enhance language understa
 <section id="adaptive-gradient-adagrad">
 <h4><span class="section-number">12.3.2.1. </span>Adaptive Gradient (AdaGrad)<a class="headerlink" href="#adaptive-gradient-adagrad" title="Link to this heading">#</a></h4>
 <p>For simple stochastic gradient methods, we need to set the learning rate hyperparameter or even dynamically schedule learning rate, which is usually a difficult task or problem specific. Further, a uniform learning rate is usually not an effective way for high-dimensional gradient descent methods, since one learning rate could be too large for one-dimension but, on the contrary, too small for another dimension.</p>
-<p>The AdaGrad algorithm<span id="id6">[<a class="reference internal" href="#id1091" title="John Duchi, Elad Hazan, and Yoram Singer. Adaptive subgradient methods for online learning and stochastic optimization. Journal of Machine Learning Research, 12(Jul):2121–2159, 2011.">DHS11</a>]</span> addresses the issue by choosing different learning rates for each dimension. The algorithm adaptively scales the learning rate for each dimension based on the <strong>accumulated gradient magnitude</strong> on that dimension so far.</p>
+<p>The AdaGrad algorithm<span id="id6">[]</span> addresses the issue by choosing different learning rates for each dimension. The algorithm adaptively scales the learning rate for each dimension based on the <strong>accumulated gradient magnitude</strong> on that dimension so far.</p>
 <p>Let <span class="math notranslate nohighlight">\(G_k\)</span> be the <strong>accumulated gradient</strong> up to iteration <span class="math notranslate nohighlight">\(k\)</span>, given by</p>
 <div class="math notranslate nohighlight">
 \[G_k = G_{k-1} + \hat{g}_k\odot \hat{g}_k, G_0 = 0.\]</div>
@@ -523,7 +523,7 @@ It improve LLM’s performance in the target domain by enhance language understa
 <p>Then we compute update</p>
 <div class="math notranslate nohighlight">
 \[\theta_k= \theta_{k-1} - \frac{\alpha_0}{\delta + \sqrt{G_k}} \hat{g}_k.\]</div>
-<p>which is the core part of the RMSProp algorithm <span id="id7">[<a class="reference internal" href="#id1090" title="Geoffrey Hinton. Neural Networks for Machine Learning. University of Toronto, 2012.">Hin12</a>]</span>.</p>
+<p>which is the core part of the RMSProp algorithm <span id="id7">[]</span>.</p>
 <p>How this modification can make the <span class="math notranslate nohighlight">\(G_k\)</span> smaller than that in the AdaGrad, as can be seen from following expansion.</p>
 <div class="proof remark admonition" id="remark-2">
 <p class="admonition-title"><span class="caption-number">Remark 12.2 </span> (Expansion of <span class="math notranslate nohighlight">\(G_k\)</span>)</p>
@@ -552,7 +552,7 @@ roughly,</p>
 </section>
 <section id="momentum-method">
 <h3><span class="section-number">12.3.3. </span>Momentum Method<a class="headerlink" href="#momentum-method" title="Link to this heading">#</a></h3>
-<p>Simple SGD with small learning rate can lead to extremely slow learning for functional surfaces with long, narrow valleys <span id="id8">[<a class="reference internal" href="#id1088" title="Ilya Sutskever, James Martens, George Dahl, and Geoffrey Hinton. On the importance of initialization and momentum in deep learning. In International conference on machine learning, 1139–1147. 2013.">SMDH13</a>]</span>. One intuition inspired by the physics of a heavy ball falling down is to add momentum to the gradient descent steps. Mathematically, adding momentum is equivalent to adding historical weighted averaged gradient to the current gradient. The total gradient will then be hopefully large enough to enable fast movement on relatively flat regions.</p>
+<p>Simple SGD with small learning rate can lead to extremely slow learning for functional surfaces with long, narrow valleys <span id="id8">[]</span>. One intuition inspired by the physics of a heavy ball falling down is to add momentum to the gradient descent steps. Mathematically, adding momentum is equivalent to adding historical weighted averaged gradient to the current gradient. The total gradient will then be hopefully large enough to enable fast movement on relatively flat regions.</p>
 <figure class="align-default" id="chapter-training-fig-optimizer-sgd-momentum">
 <a class="reference internal image-reference" href="../../_images/SGDMomentum.jpg"><img alt="../../_images/SGDMomentum.jpg" src="../../_images/SGDMomentum.jpg" style="width: 927.5999999999999px; height: 210.29999999999998px;" />
 </a>
@@ -586,7 +586,7 @@ v_k &amp;= \alpha v_{k-1} - \hat{g}_k\\
 <h3><span class="section-number">12.3.4. </span>Combined Together: Adam and AdamW<a class="headerlink" href="#combined-together-adam-and-adamw" title="Link to this heading">#</a></h3>
 <section id="adam">
 <h4><span class="section-number">12.3.4.1. </span>Adam<a class="headerlink" href="#adam" title="Link to this heading">#</a></h4>
-<p>By combining the ideas of momentum and adaptive learning rate, we yield Adam, one of most popular gradient descent algorithm in deep learning community<span id="id9">[<a class="reference internal" href="#id1087" title="Diederik P Kingma and Jimmy Ba. Adam: a method for stochastic optimization. arXiv preprint arXiv:1412.6980, 2014.">KB14</a>]</span>. The name Adam is derived from adaptive moment estimation. As its name suggests, Adam will compute velocity via momentum type of averaging and adjust the learning rate using inverse of accumulated gradients.</p>
+<p>By combining the ideas of momentum and adaptive learning rate, we yield Adam, one of most popular gradient descent algorithm in deep learning community<span id="id9">[]</span>. The name Adam is derived from adaptive moment estimation. As its name suggests, Adam will compute velocity via momentum type of averaging and adjust the learning rate using inverse of accumulated gradients.</p>
 <p>Specifically, the velocity is computed via</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -638,7 +638,7 @@ G_k &amp;= \rho_2 G_{k-1} + (1-\rho_2)\hat{g}_k \odot \hat{g}_k \\
 <div class="math notranslate nohighlight">
 \[{g}_{k} \leftarrow \nabla f_{k}\left({\theta}_{k-1}\right)+\lambda {\theta}_{k-1},\]</div>
 <p>where <span class="math notranslate nohighlight">\(\lambda\)</span> is the decay parameter, corresponding the strength of the regularization.</p>
-<p>AdamW <span id="id10">[<a class="reference internal" href="#id1334" title="Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. arXiv preprint arXiv:1711.05101, 2017.">LH17</a>]</span> is the algorithm that correctly implements Adam with <span class="math notranslate nohighlight">\(L_2\)</span> regularization, which is also called Adam with decoupled weight decay.</p>
+<p>AdamW <span id="id10">[]</span> is the algorithm that correctly implements Adam with <span class="math notranslate nohighlight">\(L_2\)</span> regularization, which is also called Adam with decoupled weight decay.</p>
 <p>The algorithm is given by the following.</p>
 <div class="proof algorithm admonition" id="Adam_stochastic_gradient_descent_algorithm_with_weight_decay">
 <p class="admonition-title"><span class="caption-number">Algorithm 12.3 </span> (Adam stochastic gradient descent algorithm with weight decay)</p>
@@ -676,38 +676,17 @@ G_k &amp;= \rho_2 G_{k-1} + (1-\rho_2)\hat{g}_k \odot \hat{g}_k \\
 <h2><span class="section-number">12.4. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id11">
 <div role="list" class="citation-list">
-<div class="citation" id="id1091" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">DHS11</a><span class="fn-bracket">]</span></span>
-<p>John Duchi, Elad Hazan, and Yoram Singer. Adaptive subgradient methods for online learning and stochastic optimization. <em>Journal of Machine Learning Research</em>, 12(Jul):2121–2159, 2011.</p>
+<div class="citation" id="id34" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">CTJ+21</a><span class="fn-bracket">]</span></span>
+<p>Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde De Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, and others. Evaluating large language models trained on code. <em>arXiv preprint arXiv:2107.03374</em>, 2021.</p>
 </div>
-<div class="citation" id="id1092" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">GDollarG+17</a><span class="fn-bracket">]</span></span>
-<p>Priya Goyal, Piotr Dollár, Ross Girshick, Pieter Noordhuis, Lukasz Wesolowski, Aapo Kyrola, Andrew Tulloch, Yangqing Jia, and Kaiming He. Accurate, large minibatch sgd: training imagenet in 1 hour. <em>arXiv preprint arXiv:1706.02677</em>, 2017.</p>
+<div class="citation" id="id33" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">HKK+20</a><span class="fn-bracket">]</span></span>
+<p>Tom Henighan, Jared Kaplan, Mor Katz, Mark Chen, Christopher Hesse, Jacob Jackson, Heewoo Jun, Tom B Brown, Prafulla Dhariwal, Scott Gray, and others. Scaling laws for autoregressive generative modeling. <em>arXiv preprint arXiv:2010.14701</em>, 2020.</p>
 </div>
-<div class="citation" id="id1090" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">Hin12</a><span class="fn-bracket">]</span></span>
-<p>Geoffrey Hinton. <em>Neural Networks for Machine Learning</em>. University of Toronto, 2012.</p>
-</div>
-<div class="citation" id="id403" role="doc-biblioentry">
+<div class="citation" id="id32" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">KMH+20</a><span class="fn-bracket">]</span></span>
-<p>Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei. Scaling laws for neural language models. <em>ArXiv:2001.08361</em>, 2020.</p>
-</div>
-<div class="citation" id="id1087" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">KB14</a><span class="fn-bracket">]</span></span>
-<p>Diederik P Kingma and Jimmy Ba. Adam: a method for stochastic optimization. <em>arXiv preprint arXiv:1412.6980</em>, 2014.</p>
-</div>
-<div class="citation" id="id1334" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">LH17</a><span class="fn-bracket">]</span></span>
-<p>Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. <em>arXiv preprint arXiv:1711.05101</em>, 2017.</p>
-</div>
-<div class="citation" id="id1088" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">SMDH13</a><span class="fn-bracket">]</span></span>
-<p>Ilya Sutskever, James Martens, George Dahl, and Geoffrey Hinton. On the importance of initialization and momentum in deep learning. In <em>International conference on machine learning</em>, 1139–1147. 2013.</p>
-</div>
-<div class="citation" id="id1500" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>ZZL+23<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id4">2</a>)</span>
-<p>Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. <em>arXiv preprint arXiv:2303.18223</em>, 2023.</p>
+<p>Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei. Scaling laws for neural language models. <em>arXiv preprint arXiv:2001.08361</em>, 2020.</p>
 </div>
 </div>
 </div>

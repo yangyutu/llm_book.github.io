@@ -313,9 +313,9 @@ $$
 p(w \mid u, v)=\frac{1}{V}
 $$
 
-for all $u, v, w$. In this case, it can be shown that the perplexity is equal to $N$. 
+for all $u, v, w$. In this case, it can be shown that the perplexity is equal to $V$. 
 
-$$\operatorname{perplexity} = \exp(-\frac{1}{N}\sum_{i=1}^N \ln \frac{1}{V}).$$
+$$\operatorname{perplexity} = \exp(-\frac{1}{N}\sum_{i=1}^N \ln \frac{1}{V}) = V.$$
 
 If, for example, the perplexity of the model is 120 (even though the vocabulary size is say 10,000), then this is roughly equivalent to having an effective vocabulary size of 120 for the next word given the context.
 
