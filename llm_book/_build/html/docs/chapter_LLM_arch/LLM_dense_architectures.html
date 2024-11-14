@@ -347,10 +347,11 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-context-windows">9.6. Extending Context Windows</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#position-interpolation-for-rope">9.6.1. Position Interpolation for RoPE</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ntk-aware-rope">9.6.2. NTK-Aware RoPE</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ntk-by-parts-and-yarn">9.6.3. NTK-by-parts and YaRN</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dual-chunk-attention">9.6.4. Dual Chunk Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">9.6.1. Motivation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#position-interpolation-for-rope">9.6.2. Position Interpolation for RoPE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ntk-aware-rope">9.6.3. NTK-Aware RoPE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ntk-by-parts-and-yarn">9.6.4. NTK-by-parts and YaRN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dual-chunk-attention">9.6.5. Dual Chunk Attention</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenziation-vocabulary-and-weight-tying">9.7. Tokenziation, vocabulary, and weight tying</a><ul class="nav section-nav flex-column">
@@ -380,7 +381,7 @@ document.write(`
 <p>LLM have revolutionized natural language processing and artificial intelligence, demonstrating remarkable capabilities in understanding and generating human-like text. Tech companies like Google, Microsoft, Meta, OpenAI are producing LLMs with increasing sizes and capabilities just over the past few years [<a class="reference internal" href="#chapter-foundation-fig-pretrained-llm-timeline"><span class="std std-numref">Fig. 9.1</span></a>].</p>
 <p>From a high level, LLMs share the following characteristics:</p>
 <ul class="simple">
-<li><p><strong>Scale</strong>: LLMs are trained on enormous datasets, often containing hundreds to thousands of billions of words or tokens. This massive scale allows them to capture intricate patterns and nuances in language. For example, GPT-3 <span id="id1">[<a class="reference internal" href="../chapter_foundation/transformers.html#id393" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>]</span> was trained on about 500 billion tokens, and recent Llama3 405B <span id="id2">[<a class="reference internal" href="#id1542" title="Abhimanyu Dubey and et al Abhinav Jauhri. The llama 3 herd of models. 2024. URL: https://arxiv.org/abs/2407.21783, arXiv:2407.21783.">DAJ24</a>]</span> was trained on 15.6T tokens.</p></li>
+<li><p><strong>Scale</strong>: LLMs are trained on enormous datasets, often containing hundreds to thousands of billions of words or tokens. This massive scale allows them to capture intricate patterns and nuances in language. For example, GPT-3 <span id="id1">[<a class="reference internal" href="#id408" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020.">BMR+20</a>]</span> was trained on about 500 billion tokens, and recent Llama3 405B <span id="id2">[<a class="reference internal" href="#id1542" title="Abhimanyu Dubey and et al Abhinav Jauhri. The llama 3 herd of models. 2024. URL: https://arxiv.org/abs/2407.21783, arXiv:2407.21783.">DAJ24</a>]</span> was trained on 15.6T tokens.</p></li>
 <li><p><strong>Transformer architecture</strong>: Most modern LLMs use transformer architectures, which were introduced in the “Attention is All You Need” paper. These models can have billions of parameters - GPT-3 has 175 billion, for instance. The transformer architecture allows for efficient parallel processing and captures long-range dependencies in text.</p></li>
 <li><p><strong>Self-supervised learning</strong>: LLMs are typically pre-trained using self-supervised learning techniques. The most common approach is next-token prediction, where the model learns to predict the next word in a sequence given the previous words. This allows the model to learn from vast amounts of unlabeled text data.</p></li>
 <li><p><strong>Multi-task capability</strong>: A single LLM can perform various language tasks such as translation, summarization, question-answering, reasongin, and text generation without needing separate models for each task. This versatility makes them powerful tools for a wide range of applications.</p></li>
@@ -423,9 +424,14 @@ document.write(`
 <li><p><span class="math notranslate nohighlight">\(\sigma\)</span> is the standard deviation across feature dimensions, i.e.,
 <span class="math notranslate nohighlight">\(\sigma =\sqrt{\frac{1}{H} \sum_{i=1}^H\left(x_i-\mu\right)^2+\epsilon}\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\epsilon\)</span> is a small number acting as regularizer for division.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> are learnable scaling and shifting parameters</p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> are learnable scaling and shifting parameters.</p></li>
 </ul>
+<div class="proof remark admonition" id="remark-0">
+<p class="admonition-title"><span class="caption-number">Remark 9.1 </span> (Why we need <span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>)</p>
+<section class="remark-content" id="proof-content">
+<p><span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> are parameters used to enhance the model’s learning capacity. As the normalization operation is used to stablize the learning by standardizing the data distribution, it also remove useful feature distributions and decrease the model’s learning capacity. With learnable shift and scaling parameter, we offset the negative impact of normalization.</p>
 </section>
+</div></section>
 <section id="rms-norm-root-mean-square-norm">
 <h3><span class="section-number">9.2.2. </span>RMS Norm (Root Mean Square Norm)<a class="headerlink" href="#rms-norm-root-mean-square-norm" title="Link to this heading">#</a></h3>
 <p>A common hypothesis on why layer normalization can help stalize training and boost model convergence is the capability in  handling re-centering and re-scaling of both inputs and weight matrix. RMSNorm <span id="id5">[<a class="reference internal" href="#id1527" title="Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: https://arxiv.org/abs/1910.07467, arXiv:1910.07467.">ZS19</a>]</span> is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. RMSNorm hypothesizes that only the re-scaling component is necessary and proposes the following simplified normalization formula</p>
@@ -433,7 +439,7 @@ document.write(`
 <span class="eqno">(9.2)<a class="headerlink" href="#equation-chapter-llm-arch-rms-nomalization-formula" title="Link to this equation">#</a></span>\[
 \operatorname{RMSNorm}(x)=\frac{x}{\sqrt{\frac{1}{H} \sum_{i=1}^H x_i^2}} \cdot \gamma
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\gamma\)</span> is learnable parameter. Experiments show that RMSNorm can achieve on-par performance with LayerNorm with much reduced training cost.</p>
+<p>where <span class="math notranslate nohighlight">\(\gamma\)</span> is learnable scaling parameter. Note that since we don’t normalize the mean, we don’t need need a learnable shift parameter like what is in the LayerNorm. Experiments show that RMSNorm can achieve on-par performance with LayerNorm with much reduced training cost.</p>
 <p>In the following, we summarize the differences between RMSNorm and LayerNorm</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
@@ -465,7 +471,7 @@ document.write(`
 </section>
 <section id="layer-normalization-position">
 <h3><span class="section-number">9.2.3. </span>Layer normalization position<a class="headerlink" href="#layer-normalization-position" title="Link to this heading">#</a></h3>
-<p>It has been shown that <span id="id7">[<a class="reference internal" href="../chapter_foundation/transformers.html#id395" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span> where to replace the normalization layer has an impact on model training, covergence, and final performance.</p>
+<p>It has been shown that <span id="id7">[<a class="reference internal" href="#id410" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span> where to replace the normalization layer has an impact on model training, covergence, and final performance.</p>
 <p>The Post-Norm (as in the vanilla Transformer architecture) has can stablize the variance of the output by applying the LayerNorm after the residual connection, which is given by</p>
 <div class="math notranslate nohighlight">
 \[\operatorname{PostNorm Output} = \operatorname{LayerNorm}(X + \operatorname{SubLayer}(X))\]</div>
@@ -473,7 +479,7 @@ document.write(`
 <p>The Pre-Norm normalize the input to SubLayers, which is given by</p>
 <div class="math notranslate nohighlight">
 \[\operatorname{PreNorm Output} = X + \operatorname{SubLayer}(\operatorname{LayerNorm}(X)).\]</div>
-<p>It is shown in <span id="id8">[<a class="reference internal" href="../chapter_foundation/transformers.html#id395" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span> that the gradients at last layer <span class="math notranslate nohighlight">\(L\)</span> satisfy the following condition:</p>
+<p>It is shown in <span id="id8">[<a class="reference internal" href="#id410" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span> that the gradients at last layer <span class="math notranslate nohighlight">\(L\)</span> satisfy the following condition:</p>
 <div class="math notranslate nohighlight">
 \[||G_{PostNorm,L}||_F \leq \mathcal{O}(d \sqrt{\ln d}), ||G_{PreNorm,L}||_F \leq \mathcal{O}\left(d \sqrt{\frac{\ln d}{L}}\right)
 .\]</div>
@@ -539,7 +545,7 @@ a small/tiny learning rate, and then gradually increases it to a pre-defined max
 </div>
 <p>Another modification of Post-Norm to enable training of very deep Post-Norm Transformer model (up to 1000 layers) is <strong>Deep-Norm</strong> <span id="id9">[]</span>, which gives</p>
 <div class="math notranslate nohighlight">
-\[\operatorname{DeepNorm Output} = \operatorname{LayerNorm}(\alphaX + \operatorname{SubLayer}(X))\]</div>
+\[\operatorname{DeepNorm Output} = \operatorname{LayerNorm}(\alpha X + \operatorname{SubLayer}(X))\]</div>
 <p>Here <span class="math notranslate nohighlight">\(\alpha &gt; 1\)</span> is a constant, which up scales the residual connection (to help gradient vanishing issue for deep models). Besides, the weights in the SubLayers are scaled by <span class="math notranslate nohighlight">\(\beta &lt; 1\)</span> (i.e., make it smaller) during initalization.</p>
 </section>
 <section id="layer-normalization-example-choices">
@@ -901,7 +907,7 @@ validation set and the sinusoidal absolute position encoding baseline. Image fro
 \[
 \operatorname{PreSoftmax}(Q_m, K_n) =\left(\boldsymbol{R}_{\Theta, m} Q_m\right) \cdot \left(\boldsymbol{R}{\Theta,n} K_n \right)
 \]</div>
-<div class="proof example admonition" id="example-0">
+<div class="proof example admonition" id="example-1">
 <p class="admonition-title"><span class="caption-number">Example 9.1 </span></p>
 <section class="example-content" id="proof-content">
 <p>For <span class="math notranslate nohighlight">\(d_{model} == 2\)</span>, the rotation matrix for position <span class="math notranslate nohighlight">\(m \)</span> is:</p>
@@ -961,8 +967,13 @@ Visualization of 2D RoPE and its mechanism in encoding context. Image from [Blog
 </section>
 <section id="extending-context-windows">
 <h2><span class="section-number">9.6. </span>Extending Context Windows<a class="headerlink" href="#extending-context-windows" title="Link to this heading">#</a></h2>
+<section id="motivation">
+<h3><span class="section-number">9.6.1. </span>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h3>
+<p>Context window in LLM represents the number of input tokens the model can process simultaneously when reponding into the prompt. GPT-4 has a context window of approximately <span class="math notranslate nohighlight">\(32k\)</span> or roughly 25,000 words. Recent advancements have extended this to more than 100k (e.g., Llama3) or even 1 million (Gemini), which is about 8 average length English novels.</p>
+<p>A longer context window allows the model to process and understand more information before generating a response, providing a deeper grasp of the context. This capability is especially useful when inputting a large amount of specific data into a language model and asking questions about it. For instance, when analyzing an extensive document about a particular company or issue, a larger context window enables the language model to review and retain more of this detailed information, leading to more accurate and customized responses.</p>
+</section>
 <section id="position-interpolation-for-rope">
-<h3><span class="section-number">9.6.1. </span>Position Interpolation for RoPE<a class="headerlink" href="#position-interpolation-for-rope" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">9.6.2. </span>Position Interpolation for RoPE<a class="headerlink" href="#position-interpolation-for-rope" title="Link to this heading">#</a></h3>
 <p><strong>Position Interpolation</strong><span id="id24">[]</span> is a cheap method to extend the context window of an existing LLM, which allows LLM to have longer context window during inference time than the context window size during training.</p>
 <p>The idea is to linearly down-scales the input position indices to match the original context window size [<a class="reference internal" href="#chapter-llm-arch-fig-fundamentals-rope-position-interpolation"><span class="std std-numref">Fig. 9.10</span></a>].Specifically, given that the rotation matrix in RoPE is a continuous function, one can adjust the rotation matrix for large position <span class="math notranslate nohighlight">\(m\)</span> to <span class="math notranslate nohighlight">\(m'\)</span> as</p>
 <div class="math notranslate nohighlight">
@@ -980,7 +991,7 @@ very short period of fine-tuning for the model to fully adapt to greatly extende
 </figure>
 </section>
 <section id="ntk-aware-rope">
-<h3><span class="section-number">9.6.2. </span>NTK-Aware RoPE<a class="headerlink" href="#ntk-aware-rope" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">9.6.3. </span>NTK-Aware RoPE<a class="headerlink" href="#ntk-aware-rope" title="Link to this heading">#</a></h3>
 <p>From the information encoding (i.e., Neural Tangent Kernel - NTK theory) perspective, the scaling by Position Interpolation uniformly scales wave length by a factor of <span class="math notranslate nohighlight">\(L'/L\)</span>, which can hurt the model’s ability in capture high-frequency, short-ranged position information after rescaling.</p>
 <p>The <strong>NTK-aware interpolation</strong> was proposed in public as a <a class="reference external" href="https://www.reddit.com/r/LocalLLaMA/comments/14lz7j5/ntkaware_scaled_rope_allows_llama_models_to_have/">reddit post</a>. Instead of scaling the wave length of every dimension uniformly, we scale up short wavelength less and long wavelength more.</p>
 <p>More precisely, let the scaling factor be <span class="math notranslate nohighlight">\(s=L^{\prime} / L\)</span> and <span class="math notranslate nohighlight">\(b\)</span> be the original base. We perform a base change as follows:</p>
@@ -999,10 +1010,10 @@ b^{\prime}=b \cdot s^{\frac{|d_{model}|}{|d_{model}|-2}} .
 <p>which is a monontically increasing function on <span class="math notranslate nohighlight">\(i\)</span> given that <span class="math notranslate nohighlight">\(d_{model}\)</span> and <span class="math notranslate nohighlight">\(s\)</span> are constants.</p>
 </section>
 <section id="ntk-by-parts-and-yarn">
-<h3><span class="section-number">9.6.3. </span>NTK-by-parts and YaRN<a class="headerlink" href="#ntk-by-parts-and-yarn" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">9.6.4. </span>NTK-by-parts and YaRN<a class="headerlink" href="#ntk-by-parts-and-yarn" title="Link to this heading">#</a></h3>
 </section>
 <section id="dual-chunk-attention">
-<h3><span class="section-number">9.6.4. </span>Dual Chunk Attention<a class="headerlink" href="#dual-chunk-attention" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">9.6.5. </span>Dual Chunk Attention<a class="headerlink" href="#dual-chunk-attention" title="Link to this heading">#</a></h3>
 <p><strong>Dual Chunk Attention</strong> <span id="id26">[]</span> applies the chunking idea to map the position distance <span class="math notranslate nohighlight">\((i - j)\)</span> between a query state at position <span class="math notranslate nohighlight">\(i\)</span> and and a key state at position <span class="math notranslate nohighlight">\(j\)</span> to a value within the <strong>training stage context window size</strong> <span class="math notranslate nohighlight">\(L\)</span>.</p>
 <p>More specifically, let the <span class="math notranslate nohighlight">\(M(i, j)\)</span> be the mapping function of dual chunk attention. <span class="math notranslate nohighlight">\(M\)</span> has hyperparameter of <strong>chunk size</strong> <span class="math notranslate nohighlight">\(s &lt; L\)</span> and <strong>local context window size</strong> <span class="math notranslate nohighlight">\(w = L - s\)</span>, which is given by</p>
 <div class="math notranslate nohighlight">
@@ -1044,7 +1055,7 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <li><p>Return the subword vocabulary <span class="math notranslate nohighlight">\(V\)</span>.</p></li>
 </ol>
 </section>
-</div><div class="proof example admonition" id="example-2">
+</div><div class="proof example admonition" id="example-3">
 <p class="admonition-title"><span class="caption-number">Example 9.2 </span></p>
 <section class="example-content" id="proof-content">
 <p>GPT-2’s vocabulary size is 50,257, corresponding to 256 basic byte tokens, a special end-of-text token, and 50,000 tokens obtained through merging process.</p>
@@ -1088,8 +1099,8 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <li><p>Unified tokenization: The BBPE method does not rely on language-specific character structures. Therefore, it can be uniformly applied to multilingual tasks without adding extra complexity, simplifying the tokenization process in both pre-training and downstream tasks.</p></li>
 <li><p>Compatibility with emojis and special characters: Modern large language models need to process large amounts of internet data, which contains many emojis, special characters, and non-standard symbols. BBPE can better support these types of symbols.</p></li>
 </ul>
-<div class="proof remark admonition" id="remark-3">
-<p class="admonition-title"><span class="caption-number">Remark 9.1 </span> (What does Byte-level mean?)</p>
+<div class="proof remark admonition" id="remark-4">
+<p class="admonition-title"><span class="caption-number">Remark 9.2 </span> (What does Byte-level mean?)</p>
 <section class="remark-content" id="proof-content">
 <p>“Byte-level” in the context of BBPE means that the algorithm operates on individual bytes of data rather than on characters or higher-level text units. Note that characters are typically encoded using schemes like UTF-8, where a single character might be represented by one or more bytes. In other words, BBPE treats the input as a sequence of raw bytes, without interpreting them as characters or considering character boundaries.</p>
 <p>Below is more context about UTF-8 encoding.</p>
@@ -1201,13 +1212,13 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <li><p>The total number of parameters scales linearly with number of layers <span class="math notranslate nohighlight">\(L\)</span></p></li>
 <li><p>The total number of parameters scales quadratically with model hidden dimensionality <span class="math notranslate nohighlight">\(d\)</span>.</p></li>
 </ul>
-<div class="proof remark admonition" id="remark-4">
-<p class="admonition-title"><span class="caption-number">Remark 9.2 </span></p>
+<div class="proof remark admonition" id="remark-5">
+<p class="admonition-title"><span class="caption-number">Remark 9.3 </span></p>
 <section class="remark-content" id="proof-content">
 <p>We have simplification in the above computation for MHA but the results are the same. Suppose we have <span class="math notranslate nohighlight">\(H\)</span> heads, head dimension <span class="math notranslate nohighlight">\(d_{head}\)</span> and <span class="math notranslate nohighlight">\(H \times d_{head} = d\)</span>. QKV transformation matrices have weight parameters <span class="math notranslate nohighlight">\(3 \times H \times d \times d_{head} = 3d^2\)</span>.</p>
 <p>With GQA that has <span class="math notranslate nohighlight">\(G\)</span> key-value shared heads, the total parameters are <span class="math notranslate nohighlight">\(d^2 + 2Gd_{head}d\)</span>.</p>
 </section>
-</div><div class="proof example admonition" id="example-5">
+</div><div class="proof example admonition" id="example-6">
 <p class="admonition-title"><span class="caption-number">Example 9.3 </span></p>
 <section class="example-content" id="proof-content">
 <p>Take the following GPT-3 13B and 175B as an example, 175B model has approximate 2.4 times of <span class="math notranslate nohighlight">\(L\)</span> and <span class="math notranslate nohighlight">\(d_{model}\)</span>. Extrapolating from 13B model, we estimate the 175B model to have model parameters of <span class="math notranslate nohighlight">\(13\times 2.4^3 = 179B\)</span>, which is very close.</p>
@@ -1244,8 +1255,8 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <section id="forward-pass-computation-breadown">
 <span id="chapter-llm-arch-sec-llm-arch-fundamentals-forward-pass-computation"></span><h2><span class="section-number">9.9. </span>Forward Pass Computation Breadown<a class="headerlink" href="#forward-pass-computation-breadown" title="Link to this heading">#</a></h2>
 <p>In this section, we estimate the computational cost (in term of FLOPS) for a forward pass.</p>
-<div class="proof remark admonition" id="remark-6">
-<p class="admonition-title"><span class="caption-number">Remark 9.3 </span> (FLOPs estimation)</p>
+<div class="proof remark admonition" id="remark-7">
+<p class="admonition-title"><span class="caption-number">Remark 9.4 </span> (FLOPs estimation)</p>
 <section class="remark-content" id="proof-content">
 <p>If <span class="math notranslate nohighlight">\(A \in R^{m \times k}, B \in R^{k \times n}\)</span> then, to compute <span class="math notranslate nohighlight">\(A B\)</span> the number of floating-point arithmetic required is <span class="math notranslate nohighlight">\(2 m n k\)</span>.</p>
 <p>For example, for</p>
@@ -1504,10 +1515,11 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-context-windows">9.6. Extending Context Windows</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#position-interpolation-for-rope">9.6.1. Position Interpolation for RoPE</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ntk-aware-rope">9.6.2. NTK-Aware RoPE</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ntk-by-parts-and-yarn">9.6.3. NTK-by-parts and YaRN</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dual-chunk-attention">9.6.4. Dual Chunk Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">9.6.1. Motivation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#position-interpolation-for-rope">9.6.2. Position Interpolation for RoPE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ntk-aware-rope">9.6.3. NTK-Aware RoPE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ntk-by-parts-and-yarn">9.6.4. NTK-by-parts and YaRN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dual-chunk-attention">9.6.5. Dual Chunk Attention</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenziation-vocabulary-and-weight-tying">9.7. Tokenziation, vocabulary, and weight tying</a><ul class="nav section-nav flex-column">
