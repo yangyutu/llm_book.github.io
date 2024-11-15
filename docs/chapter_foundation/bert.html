@@ -486,8 +486,8 @@ E_{\text {word }}=\left[\begin{array}{lll}
 <li><p>BERT-BASE, <span class="math notranslate nohighlight">\(L=12, d_{model}=768, H=12\)</span>, total Parameters 110M.</p></li>
 <li><p>BERT-LARGE, <span class="math notranslate nohighlight">\(L=24, d_{model} = 1024, H=16\)</span>, total parameters 340M.</p></li>
 </ul>
-<div class="pst-scrollable-table-container"><table class="table" id="id447">
-<caption><span class="caption-number">Table 6.1 </span><span class="caption-text">The hyperparameter settings of various pretrained BERT configurations.  BERTBase and BERTLarge are the two most commonly used configurations today;</span><a class="headerlink" href="#id447" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id458">
+<caption><span class="caption-number">Table 6.1 </span><span class="caption-text">The hyperparameter settings of various pretrained BERT configurations.  BERTBase and BERTLarge are the two most commonly used configurations today;</span><a class="headerlink" href="#id458" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Size</p></th>
 <th class="head text-right"><p>Layers</p></th>
@@ -673,8 +673,8 @@ The two-step projection only requires parameters <span class="math notranslate n
 <li><p><em><strong>Cross-layer parameter sharing</strong></em>. In the original BERT, each encoder sub-unit (which has an attention module and a feed-forward module) has different parameters. In ALBERT, these parameters are shared in different sub-units to reduce model size and improve parameter efficiency.  The authors also mentioned that there are alternative parameter sharing strategies: only sharing feed-forward network parameters; only sharing attention module parameters; sharing both feed-forward network and attention module.</p></li>
 </ul>
 <p>The effect of embedding factorization and parameter sharing can be illustrated in the following comparison.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id448">
-<caption><span class="caption-number">Table 6.2 </span><span class="caption-text">BERT model parameters</span><a class="headerlink" href="#id448" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id459">
+<caption><span class="caption-number">Table 6.2 </span><span class="caption-text">BERT model parameters</span><a class="headerlink" href="#id459" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Model</p></th>
 <th class="head text-center"><p>Parameters</p></th>
@@ -712,7 +712,7 @@ The two-step projection only requires parameters <span class="math notranslate n
 <section id="distillbert">
 <h3><span class="section-number">6.4.1. </span>DistillBERT<a class="headerlink" href="#distillbert" title="Link to this heading">#</a></h3>
 <p>Knowledge distillation is a knowledge transfer approach to transfer knowledge to a large BERT model (also called a teacher model), to a smaller, ready-to-deploy BERT model (also called a student model) such that the small model can have performance close to the teacher model.</p>
-<p>DistilBERT <span id="id10">[<a class="reference internal" href="#id444" title="Victor Sanh, Lysandre Debut, Julien Chaumond, and Thomas Wolf. DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter. ArXiv:1910.01108, 2019.">SDCW19</a>]</span> applies a knowledge distillation method based on triple loss (TripleLoss). Next, the knowledge distillation method used by DistilBERT is introduced.</p>
+<p>DistilBERT <span id="id10">[<a class="reference internal" href="#id455" title="Victor Sanh, Lysandre Debut, Julien Chaumond, and Thomas Wolf. DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter. ArXiv:1910.01108, 2019.">SDCW19</a>]</span> applies a knowledge distillation method based on triple loss (TripleLoss). Next, the knowledge distillation method used by DistilBERT is introduced.</p>
 <p>The DistilBERT model has six Transformer layers, which is the half the total number of BERT <span class="math notranslate nohighlight">\(_{\text {BASE }}\)</span>. DistillBERT also removes the token embedding in the input.  Compared with the BERT model, the parameters of DistilBERT are compressed to 40% of the original, and at the same time, the reasoning speed is improved, and it reaches 97% of the effect of the BERT model on multiple downstream tasks. The teacher model directly uses the original BERT-base model. The student model uses the first six layers of the teacher model for initialization.</p>
 <p>To transfer the knowledge from a teacher model to a student model, DistillBERT employs three types of losses: MLM loss, distillation MLM loss, and cosine similarity loss. Next sentence prediction pretraining task is removed.</p>
 <p>The MLM loss is the same as the original BERT model training. The distillation MLM loss is based on the Soft label produced from the teacher model, given by</p>
@@ -927,7 +927,7 @@ As the generator is trained, the replaced tokens is harder and harder to disting
 <h2><span class="section-number">6.6. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id28">
 <div role="list" class="citation-list">
-<div class="citation" id="id444" role="doc-biblioentry">
+<div class="citation" id="id455" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">SDCW19</a><span class="fn-bracket">]</span></span>
 <p>Victor Sanh, Lysandre Debut, Julien Chaumond, and Thomas Wolf. DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter. <em>ArXiv:1910.01108</em>, 2019.</p>
 </div>

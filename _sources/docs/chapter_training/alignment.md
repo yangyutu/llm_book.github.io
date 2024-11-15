@@ -373,10 +373,42 @@ Combined these ideas together, we arrive at the SimPO loss function:
 
 $$
 \mathcal{L}_{\operatorname{SimPO}}\left(\pi_\theta\right)= -\mathbb{E}\left[\log \sigma\left(\frac{\beta}{\left|y_w\right|} \log \pi_\theta\left(y_w \mid x\right)-\frac{\beta}{\left|y_l\right|} \log \pi_\theta\left(y_l \mid x\right)-\gamma\right)\right]
-\end{align}
 $$
 
 Note that, unlike the traditional DPO, SimPO does not require a reference model, making it more lightweight and easier to implement.
+
+### DPO-Positive
+
+DPO and its variant usually perform well when the preference paired data consists of strong contrastive pairs, i.e., positive example and negative example are sharply different from edit distance perspective. For these examples, DPO can enhance the probability of generating the positive and reduce the probability of generating the negative. 
+
+However, for paired data that is small edit distance (i.e., positive and negative pairs look similiar), DPO algorithm can lead to failure model - that is, both the generating probability of positive and negative example both decrease (although negative ones decrease more).
+
+Authors from {cite:p}`pal2024smaug` not only provides an theoretical understanding of above phenomonon, they will propose one approach to mitigate the failure mode, known as **DPO-Positive** or **DPO-P**.
+
+The key idea is to add a penality term when the model reduces the probability of positive examples. The modified loss function is given by
+
+$$
+\mathcal{L}_{\mathrm{DPOP}}\left(\pi_\theta\right)=-\mathbb{E}_{\left(x, y_w, y_l\right) \sim D}\left[\log \sigma \left(\beta \left(\log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}\left(y_w \mid x\right)}\right.\right.\right.  -\log \frac{\pi_\theta\left(y_l \mid x\right)}{\pi_{\mathrm{ref}}\left(y_l \mid x\right)} \\
+ \left.\left.\left.-\lambda \cdot \max \left(0, \log \frac{\pi_{\mathrm{ref}}\left(y_w \mid x\right)}{\pi_\theta\left(y_w \mid x\right)}\right)\right)\right)\right]
+$$
+
+where $\lambda>0$ is a hyperparameter determining the strength of the penalty. From the Bradley-Terry modeling framework, 
+* for the negative $y_l$, the loss function is encourging **minimize** term of
+
+$$
+\beta \cdot \log \frac{\pi_\theta(y_l \mid x)}{\pi_{\mathrm{ref}}(y_l \mid x)}
+$$
+
+* for the positive $y_w$, the loss function is encouraging **maximizing** the term of
+
+$$\beta\left[\log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}(y \mid x)}-\lambda \cdot \max \left(0, \log \frac{\pi_{\mathrm{ref}}(y_w \mid x)}{\pi_\theta(y_w \mid x)}\right)\right].
+$$
+
+Clearly, if we want to maximize these terms for $y_w$, we need to ensure that the generating probability $\pi_{\theta}(y_w|x)$ not to reduce too much from $\pi_{\text{ref}}(y_w|x)$.
+
+
+
+
 
 
 <!-- 提问：DPO的变体有哪些，主要解决DPO的什么问题？
@@ -393,10 +425,10 @@ DPOP [4]：由于LLM model很难区分编辑距离较小的pair，那么当持�
 
 [3] Azar M G, Rowland M, Piot B, et al. A general theoretical paradigm to understand learning from human preferences[J]. arXiv preprint arXiv:2310.12036, 2023.
 
-[4] Pal A, Karkhanis D, Dooley S, et al. Smaug: Fixing Failure Modes of Preference Optimisation with DPO-Positive[J]. arXiv preprint arXiv:2402.13228, 2024. -->
+[4] Pal A, Karkhanis D, Dooley S, et al. g: Fixing Failure Modes of Preference Optimisation with DPO-Positive[J]. arXiv preprint arXiv:2402.13228, 2024. -->
 
 ## Bibliography
 
 ```{bibliography} ../../_bibliography/references.bib
 :filter: docname in docnames
-```
+```Smau

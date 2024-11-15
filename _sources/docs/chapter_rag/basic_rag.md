@@ -126,6 +126,42 @@ Following table summarize practical challenges and possible causes when applying
  -->
 
 
+## RAG Evaluation
+
+% https://docs.llamaindex.ai/en/stable/module_guides/evaluating/
+Evaluation and benchmarking are crucial steps for RAG development. You cannot improve something you cannot measure it. 
+
+RAG application evaluation consists of two facets:
+* **Retrieval Evaluation**, which evaluates if the retrieved sources are relevant to the query, which can be further measured by recall and precision. 
+* **Response Evaluation**, which evaluates if the final LLM response:
+  * (Consistence & faithfulness) Be consistent with retrieved context, 
+  * (Usefulness) Addresses the information need of the query (if the query is an information seeking query)
+  * (Expected Style) has expected style (like conciseness, clarity for summary type applications)
+  * (Insturction following) Follows additional guidelines if any (specified by the user).
+
+
+Evaluting the response quality is not a straight forward task and could be subjective. One popular way is to use a powerful LLM (e.g. GPT-4) to decide the response quality from different aspects. For example,
+* **Correctness**: Whether the generated answer matches that of the reference answer given the query (requires labels). Or whether the predicted answer is semantically similar to the reference answer.
+* **Faithfulness**: Evaluates if the answer is faithful to the retrieved contexts (in other words, whether if there's hallucination).
+* **Answer Relevance & Usefulness**: Whether the generated answer is relevant to the query and address the information need of the query.
+* **Instruction Following**: Whether additional instructions are followed.
+* **Alignment with Reference Answer**: If there are high quality reference answer, we can use it to compare the alignment of generated response and reference answer. 
+
+We can leverage established relevance and ranking metrics to evaluating the **retrieval quality**, with LLM as query-document relevance labeler.
+
+When we adopt RAG is a new domain, we might not have enough test data to evaluate how the system works. We can leverage LLM to generate synthetic (question, answer) pairs.
+
+There are also efforts to automatic the RAG evaluation process, as shown in the following [{numref}`chapter_rag_fig_rag_rag_checker`] from **RAGChecker** {cite:p}`ru2024ragchecker`.
+
+```{figure} ../img/chapter_rag/rag_evaluation/rag_checker_demo.png
+---
+scale: 60%
+name: chapter_rag_fig_rag_rag_checker
+---
+llustration of the proposed metrics in RAGChecker. Image from {cite:p}`ru2024ragchecker`.
+```
+
+
 
 
 ## RAG Optimization: Documents
@@ -317,7 +353,7 @@ As shown in the {numref}`chapter_rag_fig_promptagator_demo`, PROMPTAGATOR consis
 scale: 70%
 name: chapter_rag_fig_promptagator_demo
 ---
-Illustration of PROMPTAGATOR, which generates synthetic data using LLM. Synthetic data, after consistency filtering, is used to train a retriever in labeled data scarcity domain. Image from {cite:p}`chapter_rag_fig_promptagator_demo`.
+Illustration of PROMPTAGATOR, which generates synthetic data using LLM. Synthetic data, after consistency filtering, is used to train a retriever in labeled data scarcity domain. Image from {cite:p}`dai2022promptagator`.
 ```
 
 
@@ -483,43 +519,6 @@ Compared with Baseline RAG, which finds the top-k semantically related document 
 * Search related **entities** of the quesion/task (the search could be keyword extraction based or embedding based)
 * Get subGraph of those entities ($k$-depth) from the **knowledge graph**
 * Build context based on the subGraph
-
-
-## RAG Evaluation
-
-% https://docs.llamaindex.ai/en/stable/module_guides/evaluating/
-Evaluation and benchmarking are crucial steps for RAG development. You cannot improve something you cannot measure it. 
-
-RAG application evaluation consists of two facets:
-**Retrieval Evaluation**, which evaluates if the retrieved sources are relevant to the query.
-**Response Evaluation**, which evaluates if the final LLM response:
-* Be consistent consistent retrieved context, 
-* Addresses the information need of the query
-* Follows additional guidelines if any (specified by the user).
-
-
-Evaluting the response quality is not a straight forward task and could be subjective. One popular way is to use a powerful LLM (e.g. GPT-4) to decide the response quality from different aspects. For example,
-**Correctness**: Whether the generated answer matches that of the reference answer given the query (requires labels).
-semantic similarity whether the predicted answer is semantically similar to the reference answer (requires labels).
-**Faithfulness**: Evaluates if the answer is faithful to the retrieved contexts (in other words, whether if there's hallucination).
-**Answer Relevance**: Whether the generated answer is relevant to the query.
-**Instruction Following**: Whether additional instructions are followed.
-**Alignment with Reference Answer**: If there are high quality reference answer, we can use it to compare the alignment of generated response and reference answer. 
-
-
-We can leverage established relevance and ranking metrics to evaluating the **retrieval quality**, with LLM as query-document relevance labeler.
-
-When we adopt RAG is a new domain, we might not have enough test data to evaluate how the system works. We can leverage LLM to generate synthetic (question, answer) pairs.
-
-There are also efforts to automatic the RAG evaluation process, as shown in the following [{numref}`chapter_rag_fig_rag_rag_checker`] from **RAGChecker** [{cite:p}`ru2024ragchecker`].
-
-```{figure} ../img/chapter_rag/rag_evaluation/rag_checker_demo.png
----
-scale: 30%
-name: chapter_rag_fig_rag_rag_checker
----
-llustration of the proposed metrics in RAGChecker. Image from {cite:p}`ru2024ragchecker`.
-```
 
 
 
