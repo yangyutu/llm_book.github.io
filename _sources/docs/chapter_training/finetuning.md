@@ -361,9 +361,9 @@ $$
 where $\{A, E, \alpha, \beta\}$ are data-specific parameters to be fitted, $D_f$ denotes finetuning data size, and $X$ refer to other scaling factors (like model size, and tuning parameter size) and $L$ is perplexity. After fitting to scaling experiments, larger $\alpha$ or $\beta$ means the bigger contribution from these factors. 
 
 The key findings are
-* Finetuning model performance scales better on model size than fine-tuning data size, as indicated by larger $\alpha$ then $\beta$ in {numref}`chapter_training_fig_finetuning_ft_scaling_on_translation_task`,{numref}`chapter_training_fig_finetuning_ft_scaling_on_summary_task`. This suggests that using a larger LLM model is preferred over finetuning over larger data.
-* Finetuning data size have more pronounced influence on FMT than PET (much larger $\beta$ in FMT), where LoRA scales better than Prompt. In other words, FMT is more data hungary and also benefits more from increasing finetuning data.
-* Compared across different PEFT approach, scaling tuning parameters is ineffective, delivering limited gains for both LoRA and Prompt. At the end of day, the amount of newly added trainable parameters often forms a bottleneck for the expressivity of the model.
+* Finetuning model performance scales better on model size than fine-tuning data size, as indicated by larger $\alpha$ then $\beta$ in {numref}`chapter_training_fig_finetuning_ft_scaling_on_translation_task`,{numref}`chapter_training_fig_finetuning_ft_scaling_on_summary_task`. This suggests that using a **larger LLM model is preferred over finetuning over larger data.**
+* Finetuning data size have more pronounced influence on FMT than PET (much larger $\beta$ in FMT), where LoRA scales better than Prompt. In other words, **FMT is more data hungary and also benefits more from increasing finetuning data.**
+* Compared across different **PEFT approach, scaling tuning parameters is ineffective,** delivering limited gains for both LoRA and Prompt. At the end of day, the amount of newly added trainable parameters often forms a bottleneck for the expressivity of the model.
 
 ```{figure} ../img/chapter_training/finetuning/FT_scaling_on_translation_task.png
 ---

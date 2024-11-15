@@ -504,7 +504,7 @@ Here  <span class="math notranslate nohighlight">\(\pi_\phi^{\mathrm{RL}}\)</spa
 <div class="proof remark admonition" id="remark-0">
 <p class="admonition-title"><span class="caption-number">Remark 14.1 </span> (exploitation and exploration aspects from <span class="math notranslate nohighlight">\(\gamma\)</span>)</p>
 <section class="remark-content" id="proof-content">
-<p><span class="math notranslate nohighlight">\(\beta\)</span> controls the balance between exploitation and exploration. When <span class="math notranslate nohighlight">\(\gamma \rightarrow 0\)</span>, the learning will concentrate on the max reward with full exploitation. When <span class="math notranslate nohighlight">\(\gamma \rightarrow \infty\)</span>, optimal policy will be the same as <span class="math notranslate nohighlight">\(\pi_{\mathrm{sft}}\)</span> with full exploration.</p>
+<p><span class="math notranslate nohighlight">\(\gamma\)</span> controls the balance between exploitation and exploration. When <span class="math notranslate nohighlight">\(\gamma \rightarrow 0\)</span>, the learning will concentrate on the max reward with full exploitation. When <span class="math notranslate nohighlight">\(\gamma \rightarrow \infty\)</span>, optimal policy will be the same as <span class="math notranslate nohighlight">\(\pi_{\mathrm{sft}}\)</span> with full exploration.</p>
 </section>
 </div><!-- ### The PPO algorithm
 
@@ -519,12 +519,30 @@ There are four models needed in the PPO algorithm:
 </section>
 <section id="sft-vs-rlhf">
 <h3><span class="section-number">14.2.5. </span>SFT vs RLHF<a class="headerlink" href="#sft-vs-rlhf" title="Link to this heading">#</a></h3>
-<p>SFT adopts a teacher-forcing approach, which directly optimizes the likelihood of a demonstration output. Such a token-level training way essentially does behavior cloning to imitate the demonstrations behavior.</p>
-<p>On the other hand, RLHF firstly learns the reward model from preference data, and then employs it to improve the LLM with RL training (e.g., PPO).</p>
-<p>In terms of generation demonstration data vs preference labeling,
-preference labeling is much easier than writing the demonstration data.</p>
-<p>Another key difference is that RLHF essentially encourages LLMs to learn correct policies by contrasting the self-generated responses (<strong>discriminating between positive and negative responses</strong>). It no longer forces the model to imitate external, <strong>positive only</strong> demonstration data, and thus can mitigate the hallucination issues with SFT as discussed above.</p>
-<p>Like classic RL algorithms, RLHF has the drawbacks like sample inefficiency, training complexity and instability. When adapted to LLMs, RLHF further relies on a strong SFT model as initial model checkpoint for efficiently achieving good performance</p>
+<p>SFT adopts a teacher-forcing approach, which directly optimizes the likelihood of a demonstration output. Such a token-level training way essentially does <strong>behavior cloning</strong> to imitate the demonstrations behavior.</p>
+<p>On the other hand, RLHF firstly learns the reward model from preference data, and then employs it to improve the LLM with RL training (e.g., PPO). <strong>The reward model not just encourages positive behavior, but only discourages undesired responses.</strong></p>
+<p>In terms of generating comprehensive demonstration data vs preference labeling, preference labeling is much easier than writing the demonstration data.</p>
+<p>RLHF essentially encourages LLMs to learn correct policies by contrasting the self-generated responses (<strong>discriminating between positive and negative responses</strong>). It no just forces the model to imitate external, <strong>positive only</strong> demonstration data but also forces the model to know when not to imitate or to know when to reject when there is uncertainty.</p>
+<p>These negative response can mitigate the hallucination or over-generalization issues with SFT on positive only data.</p>
+<div class="proof example admonition" id="example-1">
+<p class="admonition-title"><span class="caption-number">Example 14.1 </span> (SFT on positive only data can lead to over-generalization)</p>
+<section class="example-content" id="proof-content">
+<p>Let’s consider how an LLM learns about geographic facts through SFT. During training, it might see examples like:
+Training Data:</p>
+<p>Q: “What is the capital of France?” <br />
+A: “Paris is the capital of France.” <br />
+Q: “What is the capital of Germany?” <br />
+A: “Berlin is the capital of Germany.” \</p>
+<p>The model learns a simple pattern: “[City] is the capital of [Country].” While this works for legitimate countries, it leads to problematic overgeneralization for fictional/hypothetical places:</p>
+<p>Q: “What is the capital of Mars?” <br />
+A: “Olympus City is the capital of Mars.”</p>
+<p>RLHF can mitigate the issue by introducing explicit examples of what not to do:</p>
+<p>Question: “What is the capital of Mars?” <br />
+✓ Preferred: “Mars is a planet and does not have a capital city. While there are various geographic features on Mars, including Olympus Mons and Valles Marineris, the concept of a capital city applies to political entities on Earth.” <br />
+✗ Rejected: “Olympus Mons is the capital of Mars.” <br />
+✗ Rejected: “The Mars Colony Capital was established in 2020.”</p>
+</section>
+</div><p>Like classic RL algorithms, RLHF has the drawbacks like sample inefficiency, training complexity and instability. When adapted to LLMs, RLHF further relies on a strong SFT model as initial model checkpoint for efficiently achieving good performance</p>
 <p>Overall, SFT is particularly useful to increase the model capacity of pre-trained model checkpoints right after pretraining, while RLHF is promising to further improve the model capacity of SFT models.</p>
 </section>
 </section>
@@ -567,7 +585,7 @@ objective. Image from <span id="id8">[<a class="reference internal" href="#id21"
 <div class="math notranslate nohighlight">
 \[
 P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}{\exp \left[r\left(x, y_1\right)\right]+\exp \left[r\left(x, y_2\right)\right]}\]</div>
-<div class="proof remark admonition" id="remark-1">
+<div class="proof remark admonition" id="remark-2">
 <p class="admonition-title"><span class="caption-number">Remark 14.2 </span> (Relationship to logistic regression)</p>
 <section class="remark-content" id="proof-content">
 <div class="math notranslate nohighlight">
@@ -590,7 +608,7 @@ P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}
 <p>With some algebra, we can also represent the reward funciton with <span class="math notranslate nohighlight">\(\pi_r(y|x)\)</span>, given by</p>
 <div class="math notranslate nohighlight">
 \[r(x, y) = \beta \log \frac{\pi_r (y|x)}{\pi_{\text{ref}}(y|x)} + \beta \log Z.\]</div>
-<div class="proof remark admonition" id="remark-2">
+<div class="proof remark admonition" id="remark-3">
 <p class="admonition-title"><span class="caption-number">Remark 14.3 </span> (Implicit reward)</p>
 <section class="remark-content" id="proof-content">
 <p>Note that here the reward can be interpreted as the log ratio of the likelihood of a response between the current policy model and the reference model. And the policy is the maximizer of the objective function given the reward.</p>
@@ -606,7 +624,7 @@ P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}
 \mathcal{L}_{\mathrm{DPO}}\left(\pi_\theta ; \pi_{\mathrm{ref}}\right)=-\mathbb{E}_{\left(x, y_w, y_l\right) \sim \mathcal{D}}\left[\log \sigma\left(\beta \log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}\left(y_w \mid x\right)}-\beta \log \frac{\pi_\theta\left(y_l \mid x\right)}{\pi_{\mathrm{ref}}\left(y_l \mid x\right)}\right)\right].
 \]</div>
 <p>where the terms <span class="math notranslate nohighlight">\(\beta \log Z\)</span> are canceled during subtraction.</p>
-<div class="proof remark admonition" id="remark-3">
+<div class="proof remark admonition" id="remark-4">
 <p class="admonition-title"><span class="caption-number">Remark 14.4 </span> (How DPO loss work)</p>
 <section class="remark-content" id="proof-content">
 <p>The gradient of DPO loss function is given by:</p>
@@ -637,7 +655,7 @@ P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}
 <h2><span class="section-number">14.4. </span>DPO variants<a class="headerlink" href="#dpo-variants" title="Link to this heading">#</a></h2>
 <section id="smoothing-preference-label">
 <h3><span class="section-number">14.4.1. </span>Smoothing preference label<a class="headerlink" href="#smoothing-preference-label" title="Link to this heading">#</a></h3>
-<p><span id="id10">[<a class="reference internal" href="#id23" title="Eric Mitchell. A note on dpo with noisy preferences &amp; relationship to ipo. 2023. URL: https://ericmitchell.ai/cdpo.pdf.">Mit23</a>]</span> explore more robust DPO approach when the preference labels are noisy. It assumes that the labels have been flipped with some small probability <span class="math notranslate nohighlight">\(\epsilon \in(0,0.5)\)</span>. We can use a conservative target distribution instead, <span class="math notranslate nohighlight">\(p\left(y_w \succ y_l\right)=1-\epsilon\)</span>, giving BCE loss:</p>
+<p><span id="id10">[<a class="reference internal" href="#id23" title="Eric Mitchell. A note on dpo with noisy preferences &amp; relationship to ipo. 2023. URL: https://ericmitchell.ai/cdpo.pdf.">Mit23</a>]</span> explore a more robust DPO approach when the preference labels are noisy. It assumes that the labels have been flipped with some small probability <span class="math notranslate nohighlight">\(\epsilon \in(0,0.5)\)</span>. We can use a conservative target distribution instead, <span class="math notranslate nohighlight">\(p\left(y_w \succ y_l\right)=1-\epsilon\)</span>, giving BCE loss:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
@@ -665,16 +683,16 @@ P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}
 <p>First, the authors argue that original DPO derives the closed form implicit reward as the log ratio of the likelihood of a response between the current policy model and the reference model plus a constant only depending on <span class="math notranslate nohighlight">\(x\)</span></p>
 <div class="math notranslate nohighlight">
 \[r(x, y)=\beta \log \frac{\pi_\theta(y \mid x)}{\pi_{\mathrm{ref}}(y \mid x)} + Const(x).\]</div>
-<p>In actual decoding process, the likelihood of a response is usually length averaged (see <a class="reference internal" href="../chapter_inference/inference_fundamentals.html#chapter-inference-sec-deconding-beam-search"><span class="std std-ref">Beam search decoding</span></a>), for example,</p>
+<p>In actual decoding process, the likelihood of a response is usually <strong>length averaged</strong> (see <a class="reference internal" href="../chapter_inference/inference_fundamentals.html#chapter-inference-sec-deconding-beam-search"><span class="std std-ref">Beam search decoding</span></a>), for example,</p>
 <div class="math notranslate nohighlight">
 \[p_\theta(y \mid x)=\frac{1}{|y|} \log \pi_\theta(y \mid x)=\frac{1}{|y|} \sum_{i=1}^{|y|} \log \pi_\theta\left(y_i \mid x, y_{&lt;i}\right)\]</div>
-<p>Length-normalized reward formulation. Naturally, we consider replacing the reward formulation in DPO with <span class="math notranslate nohighlight">\(p_\theta\)</span> in Eq. (3), so that it aligns with the likehood metric that guides generation. This results in a length-normalized reward:</p>
+<p>Naturally, we consider replacing the reward formulation in DPO with <span class="math notranslate nohighlight">\(p_\theta\)</span> above, so that it aligns with the likehood metric that guides generation. This results in a length-normalized reward:</p>
 <div class="math notranslate nohighlight">
 \[
 r_{\mathrm{SimPO}}(x, y)=\frac{\beta}{|y|} \log \pi_\theta(y \mid x)=\frac{\beta}{|y|} \sum_{i=1}^{|y|} \log \pi_\theta\left(y_i \mid x, y_{&lt;i}\right)
 \]</div>
-<p>The author argues that normalizing the reward with response lengths is crucial; removing the length normalization term from the reward formulation results in a bias toward generating longer but lower-quality sequences.</p>
-<p>Additionally,a target reward margin term, <span class="math notranslate nohighlight">\(\gamma&gt;0\)</span>, is added to the Bradley-Terry objective to ensure that the reward for the winning response, <span class="math notranslate nohighlight">\(r\left(x, y_w\right)\)</span>, exceeds the reward for the losing response, <span class="math notranslate nohighlight">\(r\left(x, y_l\right)\)</span>, by at least <span class="math notranslate nohighlight">\(\gamma\)</span>. This is margin idea is also commonly used in constrastive learning.</p>
+<p>The author argues that normalizing the reward with response lengths is crucial: <strong>removing the length normalization term from the reward formulation results in a bias toward generating longer but lower-quality sequences.</strong></p>
+<p>Additionally,a target <strong>reward margin term</strong>, <span class="math notranslate nohighlight">\(\gamma&gt;0\)</span>, is added to the Bradley-Terry objective to ensure that the reward for the winning response, <span class="math notranslate nohighlight">\(r\left(x, y_w\right)\)</span>, exceeds the reward for the losing response, <span class="math notranslate nohighlight">\(r\left(x, y_l\right)\)</span>, by at least <span class="math notranslate nohighlight">\(\gamma\)</span>. This is margin idea is also commonly used in constrastive learning.</p>
 <div class="math notranslate nohighlight">
 \[
 p\left(y_w \succ y_l \mid x\right)=\sigma\left(r\left(x, y_w\right)-r\left(x, y_l\right)-\gamma\right)

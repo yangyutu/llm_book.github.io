@@ -161,7 +161,7 @@ Illustration of PPO based optimization, which uses a Frozen LLM and KL loss to p
 
 
 ````{prf:remark} exploitation and exploration aspects from $\gamma$
-$\beta$ controls the balance between exploitation and exploration. When $\gamma \rightarrow 0$, the learning will concentrate on the max reward with full exploitation. When $\gamma \rightarrow \infty$, optimal policy will be the same as $\pi_{\mathrm{sft}}$ with full exploration.
+$\gamma$ controls the balance between exploitation and exploration. When $\gamma \rightarrow 0$, the learning will concentrate on the max reward with full exploitation. When $\gamma \rightarrow \infty$, optimal policy will be the same as $\pi_{\mathrm{sft}}$ with full exploration.
 ````
 
 
@@ -181,14 +181,38 @@ There are four models needed in the PPO algorithm:
 
 % from https://arxiv.org/pdf/2303.18223
 
-SFT adopts a teacher-forcing approach, which directly optimizes the likelihood of a demonstration output. Such a token-level training way essentially does behavior cloning to imitate the demonstrations behavior. 
+SFT adopts a teacher-forcing approach, which directly optimizes the likelihood of a demonstration output. Such a token-level training way essentially does **behavior cloning** to imitate the demonstrations behavior. 
 
-On the other hand, RLHF firstly learns the reward model from preference data, and then employs it to improve the LLM with RL training (e.g., PPO).
+On the other hand, RLHF firstly learns the reward model from preference data, and then employs it to improve the LLM with RL training (e.g., PPO). **The reward model not just encourages positive behavior, but only discourages undesired responses.**
 
-In terms of generation demonstration data vs preference labeling,
-preference labeling is much easier than writing the demonstration data.
+In terms of generating comprehensive demonstration data vs preference labeling, preference labeling is much easier than writing the demonstration data.
 
-Another key difference is that RLHF essentially encourages LLMs to learn correct policies by contrasting the self-generated responses (**discriminating between positive and negative responses**). It no longer forces the model to imitate external, **positive only** demonstration data, and thus can mitigate the hallucination issues with SFT as discussed above.
+ RLHF essentially encourages LLMs to learn correct policies by contrasting the self-generated responses (**discriminating between positive and negative responses**). It no just forces the model to imitate external, **positive only** demonstration data but also forces the model to know when not to imitate or to know when to reject when there is uncertainty. 
+ 
+These negative response can mitigate the hallucination or over-generalization issues with SFT on positive only data. 
+
+````{prf:example} SFT on positive only data can lead to over-generalization
+Let's consider how an LLM learns about geographic facts through SFT. During training, it might see examples like:
+Training Data:
+
+Q: "What is the capital of France?" \
+A: "Paris is the capital of France." \
+Q: "What is the capital of Germany?" \
+A: "Berlin is the capital of Germany." \
+
+The model learns a simple pattern: "[City] is the capital of [Country]." While this works for legitimate countries, it leads to problematic overgeneralization for fictional/hypothetical places:
+
+Q: "What is the capital of Mars?" \
+A: "Olympus City is the capital of Mars." 
+
+RLHF can mitigate the issue by introducing explicit examples of what not to do:
+
+Question: "What is the capital of Mars?" \
+✓ Preferred: "Mars is a planet and does not have a capital city. While there are various geographic features on Mars, including Olympus Mons and Valles Marineris, the concept of a capital city applies to political entities on Earth." \
+✗ Rejected: "Olympus Mons is the capital of Mars." \
+✗ Rejected: "The Mars Colony Capital was established in 2020."
+
+````
 
 Like classic RL algorithms, RLHF has the drawbacks like sample inefficiency, training complexity and instability. When adapted to LLMs, RLHF further relies on a strong SFT model as initial model checkpoint for efficiently achieving good performance
 
@@ -318,7 +342,7 @@ From reward modeling perspective,
 
 ### Smoothing preference label
 
-{cite:p}`Mitchell2023noteondpo` explore more robust DPO approach when the preference labels are noisy. It assumes that the labels have been flipped with some small probability $\epsilon \in(0,0.5)$. We can use a conservative target distribution instead, $p\left(y_w \succ y_l\right)=1-\epsilon$, giving BCE loss:
+{cite:p}`Mitchell2023noteondpo` explore a more robust DPO approach when the preference labels are noisy. It assumes that the labels have been flipped with some small probability $\epsilon \in(0,0.5)$. We can use a conservative target distribution instead, $p\left(y_w \succ y_l\right)=1-\epsilon$, giving BCE loss:
 
 $$
 \begin{aligned}
@@ -350,19 +374,19 @@ First, the authors argue that original DPO derives the closed form implicit rewa
 
 $$r(x, y)=\beta \log \frac{\pi_\theta(y \mid x)}{\pi_{\mathrm{ref}}(y \mid x)} + Const(x).$$
 
-In actual decoding process, the likelihood of a response is usually length averaged (see {ref}`chapter_inference_sec_deconding_beam_search`), for example,
+In actual decoding process, the likelihood of a response is usually **length averaged** (see {ref}`chapter_inference_sec_deconding_beam_search`), for example,
 
 $$p_\theta(y \mid x)=\frac{1}{|y|} \log \pi_\theta(y \mid x)=\frac{1}{|y|} \sum_{i=1}^{|y|} \log \pi_\theta\left(y_i \mid x, y_{<i}\right)$$
 
-Length-normalized reward formulation. Naturally, we consider replacing the reward formulation in DPO with $p_\theta$ in Eq. (3), so that it aligns with the likehood metric that guides generation. This results in a length-normalized reward:
+Naturally, we consider replacing the reward formulation in DPO with $p_\theta$ above, so that it aligns with the likehood metric that guides generation. This results in a length-normalized reward:
 
 $$
 r_{\mathrm{SimPO}}(x, y)=\frac{\beta}{|y|} \log \pi_\theta(y \mid x)=\frac{\beta}{|y|} \sum_{i=1}^{|y|} \log \pi_\theta\left(y_i \mid x, y_{<i}\right)
 $$
 
-The author argues that normalizing the reward with response lengths is crucial; removing the length normalization term from the reward formulation results in a bias toward generating longer but lower-quality sequences.
+The author argues that normalizing the reward with response lengths is crucial: **removing the length normalization term from the reward formulation results in a bias toward generating longer but lower-quality sequences.**
 
-Additionally,a target reward margin term, $\gamma>0$, is added to the Bradley-Terry objective to ensure that the reward for the winning response, $r\left(x, y_w\right)$, exceeds the reward for the losing response, $r\left(x, y_l\right)$, by at least $\gamma$. This is margin idea is also commonly used in constrastive learning. 
+Additionally,a target **reward margin term**, $\gamma>0$, is added to the Bradley-Terry objective to ensure that the reward for the winning response, $r\left(x, y_w\right)$, exceeds the reward for the losing response, $r\left(x, y_l\right)$, by at least $\gamma$. This is margin idea is also commonly used in constrastive learning. 
 
 $$
 p\left(y_w \succ y_l \mid x\right)=\sigma\left(r\left(x, y_w\right)-r\left(x, y_l\right)-\gamma\right)
