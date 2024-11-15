@@ -381,7 +381,7 @@ Note that, unlike the traditional DPO, SimPO does not require a reference model,
 
 DPO and its variant usually perform well when the preference paired data consists of strong contrastive pairs, i.e., positive example and negative example are sharply different from edit distance perspective. For these examples, DPO can enhance the probability of generating the positive and reduce the probability of generating the negative. 
 
-However, for paired data that is small edit distance (i.e., positive and negative pairs look similiar), DPO algorithm can lead to failure model - that is, both the generating probability of positive and negative example both decrease (although negative ones decrease more).
+However, for paired data that is small edit distance (i.e., positive and negative pairs look similiar), DPO algorithm can lead to **failure mode - that is, both the generating probability of positive and negative example decrease** (although negative ones decrease more).
 
 Authors from {cite:p}`pal2024smaug` not only provides an theoretical understanding of above phenomonon, they will propose one approach to mitigate the failure mode, known as **DPO-Positive** or **DPO-P**.
 
@@ -401,7 +401,7 @@ $$
 
 * for the positive $y_w$, the loss function is encouraging **maximizing** the term of
 
-$$\beta\left[\log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}(y \mid x)}-\lambda \cdot \max \left(0, \log \frac{\pi_{\mathrm{ref}}(y_w \mid x)}{\pi_\theta(y_w \mid x)}\right)\right].
+$$\beta\left[\log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}(y_w \mid x)}-\lambda \cdot \max \left(0, \log \frac{\pi_{\mathrm{ref}}(y_w \mid x)}{\pi_\theta(y_w \mid x)}\right)\right].
 $$
 
 Clearly, if we want to maximize these terms for $y_w$, we need to ensure that the generating probability $\pi_{\theta}(y_w|x)$ not to reduce too much from $\pi_{\text{ref}}(y_w|x)$.
@@ -431,4 +431,4 @@ DPOP [4]：由于LLM model很难区分编辑距离较小的pair，那么当持�
 
 ```{bibliography} ../../_bibliography/references.bib
 :filter: docname in docnames
-```Smau
+```

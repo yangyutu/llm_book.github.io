@@ -1789,6 +1789,11 @@ For traditional information retrieval, see {cite}`schutze2008introduction, buttc
 
 [Faiss](https://github.com/facebookresearch/faiss/wiki/) is a recently developed computational library for efficient similarity search and clustering of dense vectors. 
 
+
+```{bibliography} ../../_bibliography/references.bib
+:filter: docname in docnames
+```
+
 <!-- \printbibliography
 \end{refsection}
 

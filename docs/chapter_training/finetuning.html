@@ -387,7 +387,7 @@ You should change your car’s oil every 5,000 to 7,500 miles, or as recommended
 <li><p>Creating a dataset of instruction-output pairs covering a wide range of tasks.</p></li>
 <li><p>Fine-tuning the pre-trained LLM on this dataset, often using supervised learning techniques.</p></li>
 </ol>
-<p>Instruction tuning can often substantially improves zero shot performance on unseen tasks <span id="id2">[]</span>.</p>
+<p>Instruction tuning can often substantially improves zero shot performance on unseen tasks <span id="id2">[<a class="reference internal" href="#id537" title="Jason Wei, Maarten Bosma, Vincent Y Zhao, Kelvin Guu, Adams Wei Yu, Brian Lester, Nan Du, Andrew M Dai, and Quoc V Le. Finetuned language models are zero-shot learners. ArXiv:2109.01652, 2021.">WBZ+21</a>]</span>.</p>
 <figure class="align-default" id="chapter-training-fig-finetuning-instruction-finetuning">
 <a class="reference internal image-reference" href="../../_images/instruction_finetuning_demo.png"><img alt="../../_images/instruction_finetuning_demo.png" src="../../_images/instruction_finetuning_demo.png" style="width: 812.8000000000001px; height: 324.8px;" />
 </a>
@@ -400,7 +400,7 @@ an unseen task type; for instance, we could evaluate the model on natural langua
 <a class="reference internal image-reference" href="../../_images/instruction_finetuning_performance.png"><img alt="../../_images/instruction_finetuning_performance.png" src="../../_images/instruction_finetuning_performance.png" style="width: 1457.6000000000001px; height: 381.6px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 13.2 </span><span class="caption-text">Performance of zero-shot FLAN, compared with zero-shot and few-shot GPT-3, on three unseen task types where instruction tuning improved performance substantially. Image from <span id="id4">[]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-instruction-finetuning-gpt3-performance" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 13.2 </span><span class="caption-text">Performance of zero-shot FLAN, compared with zero-shot and few-shot GPT-3, on three unseen task types where instruction tuning improved performance substantially. Image from <span id="id4">[<a class="reference internal" href="#id537" title="Jason Wei, Maarten Bosma, Vincent Y Zhao, Kelvin Guu, Adams Wei Yu, Brian Lester, Nan Du, Andrew M Dai, and Quoc V Le. Finetuned language models are zero-shot learners. ArXiv:2109.01652, 2021.">WBZ+21</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-instruction-finetuning-gpt3-performance" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The following summarize the Pros and Cons of instruction finetuning.</p>
@@ -444,7 +444,7 @@ an unseen task type; for instance, we could evaluate the model on natural langua
 <a class="reference internal image-reference" href="../../_images/instruction_finetuning_comparison.png"><img alt="../../_images/instruction_finetuning_comparison.png" src="../../_images/instruction_finetuning_comparison.png" style="width: 732.0px; height: 244.2px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 13.3 </span><span class="caption-text">Comparing instruction tuning with pretrain–finetune and prompting. Image from <span id="id5">[]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-instruction-finetuning-comparison" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 13.3 </span><span class="caption-text">Comparing instruction tuning with pretrain–finetune and prompting. Image from <span id="id5">[<a class="reference internal" href="#id537" title="Jason Wei, Maarten Bosma, Vincent Y Zhao, Kelvin Guu, Adams Wei Yu, Brian Lester, Nan Du, Andrew M Dai, and Quoc V Le. Finetuned language models are zero-shot learners. ArXiv:2109.01652, 2021.">WBZ+21</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-instruction-finetuning-comparison" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -494,19 +494,19 @@ the risk of catastrophic forgetting.</p>
 </section>
 <section id="adapter-tuning">
 <span id="chapter-training-sec-llm-finetuning-adapter-tuning"></span><h3><span class="section-number">13.3.2. </span>Adapter Tuning<a class="headerlink" href="#adapter-tuning" title="Link to this heading">#</a></h3>
-<p>The key idea of Adapter Tuning <span id="id11">[]</span> is to add several additional trainable modules (i.e., layers) to the Transformer that acting as adapting module and at the same time freeze the remaining model weights the original LLM. The intuition is that by these adapter modules can be trained to assist the original LLM to better adapt to downstream tasks.</p>
+<p>The key idea of Adapter Tuning <span id="id11">[<a class="reference internal" href="#id1548" title="Neil Houlsby, Andrei Giurgiu, Stanislaw Jastrzebski, Bruna Morrone, Quentin de Laroussilhe, Andrea Gesmundo, Mona Attariyan, and Sylvain Gelly. Parameter-efficient transfer learning for nlp. 2019. URL: https://arxiv.org/abs/1902.00751, arXiv:1902.00751.">HGJ+19</a>]</span> is to add several additional trainable modules (i.e., layers) to the Transformer that acting as adapting module and at the same time freeze the remaining model weights the original LLM. The intuition is that by these adapter modules can be trained to assist the original LLM to better adapt to downstream tasks.</p>
 <p>As shown in <a class="reference internal" href="#chapter-training-fig-finetuning-adapter-arch"><span class="std std-numref">Fig. 13.6</span></a>, in each Transformer layer, adapter module are added at different places: after the multihead attention and after FFD. The output of the adapter is directly fed into the following layer normalization. The adaptor module can use a bottleneck architure to save compute cost. Specifically, The adapters first project the original <span class="math notranslate nohighlight">\(d_{model}\)</span>-dimensional features into a smaller dimension, <span class="math notranslate nohighlight">\(m\)</span>, apply a nonlinearity, then project back to <span class="math notranslate nohighlight">\(d_{model}\)</span> dimensions.</p>
 <figure class="align-default" id="chapter-training-fig-finetuning-adapter-arch">
 <a class="reference internal image-reference" href="../../_images/adapter_arch.png"><img alt="../../_images/adapter_arch.png" src="../../_images/adapter_arch.png" style="width: 561.5px; height: 404.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 13.6 </span><span class="caption-text">Architecture of the adapter module and its integration with the Transformer. (Left) Adapter module are added at different places in each Transformer layer: after the projection following multihead attention and after the position-wise FFD layers. (Right) The adapter consists of a bottleneck first mapping the input to lower dimensions and then mappign the output to higher dimensions.  Image from <span id="id12">[]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-adapter-arch" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 13.6 </span><span class="caption-text">Architecture of the adapter module and its integration with the Transformer. (Left) Adapter module are added at different places in each Transformer layer: after the projection following multihead attention and after the position-wise FFD layers. (Right) The adapter consists of a bottleneck first mapping the input to lower dimensions and then mappign the output to higher dimensions.  Image from <span id="id12">[<a class="reference internal" href="#id1548" title="Neil Houlsby, Andrei Giurgiu, Stanislaw Jastrzebski, Bruna Morrone, Quentin de Laroussilhe, Andrea Gesmundo, Mona Attariyan, and Sylvain Gelly. Parameter-efficient transfer learning for nlp. 2019. URL: https://arxiv.org/abs/1902.00751, arXiv:1902.00751.">HGJ+19</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-adapter-arch" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="prompt-tuning">
 <span id="chapter-training-sec-llm-finetuning-prompt-tuning"></span><h3><span class="section-number">13.3.3. </span>Prompt Tuning<a class="headerlink" href="#prompt-tuning" title="Link to this heading">#</a></h3>
-<p>Prompt tuning <span id="id13">[]</span> is a technique that involves learning a small set of continuous task-specific vectors (soft prompts) while keeping the pretrained model parameters frozen. Specifically [<a class="reference internal" href="#chapter-training-fig-finetuning-prompt-tuning"><span class="std std-numref">Fig. 13.7</span></a>], additional <span class="math notranslate nohighlight">\(l\)</span> learnable prompt token vectors, <span class="math notranslate nohighlight">\(P=\left[P_1\right],\left[P_2\right], \cdots,\left[P_l\right]\)</span>, are combined with the model input <span class="math notranslate nohighlight">\(X \in \mathbb{R}^{n \times d}\)</span> to generate the final input <span class="math notranslate nohighlight">\(\hat{X}\)</span>, that is,</p>
+<p>Prompt tuning <span id="id13">[<a class="reference internal" href="#id1551" title="Brian Lester, Rami Al-Rfou, and Noah Constant. The power of scale for parameter-efficient prompt tuning. arXiv preprint arXiv:2104.08691, 2021.">LARC21</a>]</span> is a technique that involves learning a small set of continuous task-specific vectors (soft prompts) while keeping the pretrained model parameters frozen. Specifically [<a class="reference internal" href="#chapter-training-fig-finetuning-prompt-tuning"><span class="std std-numref">Fig. 13.7</span></a>], additional <span class="math notranslate nohighlight">\(l\)</span> learnable prompt token vectors, <span class="math notranslate nohighlight">\(P=\left[P_1\right],\left[P_2\right], \cdots,\left[P_l\right]\)</span>, are combined with the model input <span class="math notranslate nohighlight">\(X \in \mathbb{R}^{n \times d}\)</span> to generate the final input <span class="math notranslate nohighlight">\(\hat{X}\)</span>, that is,</p>
 <div class="math notranslate nohighlight">
 \[\hat{X} = \operatorname{Concat}(P, X) = [P, X] \in \mathbb{R}^{(l+n)\times d}.\]</div>
 <p>During fine-tuning, only the prompt token parameters of <span class="math notranslate nohighlight">\(P\)</span> are updated through gradient descent, while pretrained parameters remain frozen. When applying prompt tuning to the multi-task fine-tuning scenario, we can have task-specific prompt tokens work with a fixed pretrained model.</p>
@@ -529,7 +529,7 @@ the embeddings for the string representations of each class in the downstream ta
 </section>
 <section id="prefix-tuning">
 <span id="chapter-training-sec-llm-finetuning-prefix-tuning"></span><h3><span class="section-number">13.3.4. </span>Prefix-tuning<a class="headerlink" href="#prefix-tuning" title="Link to this heading">#</a></h3>
-<p>Prefix-tuning <span id="id14">[]</span> proposes to prepend soft prompts <span class="math notranslate nohighlight">\(P=\)</span> <span class="math notranslate nohighlight">\(\left[P_1\right],\left[P_2\right], \cdots,\left[P_l\right]\)</span> ( <span class="math notranslate nohighlight">\(l\)</span> denotes the length of the prefix) to the hidden states of the multi-head attention layer, differing from prompt-tuning that adds soft prompts to the input. To ensure stable training, a FFN is introduced to parameterize the soft prompts, as direct optimization of the soft prompts can lead to instability. Two sets of prefix vectors <span class="math notranslate nohighlight">\(\hat{P}_k\)</span> and <span class="math notranslate nohighlight">\(\hat{P}_v\)</span> are concatenated to the original key <span class="math notranslate nohighlight">\((K)\)</span> and value <span class="math notranslate nohighlight">\((V)\)</span> vectors of the attention layer. The self-attention mechanism with prefix-tuning can be represented by Equation 8. During training, only <span class="math notranslate nohighlight">\(\hat{P}_k, \hat{P}_v\)</span>, and the parameters of FFN are optimized, while all other parameters of PLMs remain frozen. The structure of prefix-tuning is illustrated in <a class="reference internal" href="#chapter-training-fig-finetuning-prefix-tuning"><span class="std std-numref">Fig. 13.9</span></a>. After training, the FFN is discarded, and only <span class="math notranslate nohighlight">\(P_k\)</span> and <span class="math notranslate nohighlight">\(P_v\)</span> are used for inference.</p>
+<p>Prefix-tuning <span id="id14">[<a class="reference internal" href="#id1552" title="Xiang Lisa Li and Percy Liang. Prefix-tuning: optimizing continuous prompts for generation. arXiv preprint arXiv:2101.00190, 2021.">LL21</a>]</span> proposes to prepend soft prompts <span class="math notranslate nohighlight">\(P=\)</span> <span class="math notranslate nohighlight">\(\left[P_1\right],\left[P_2\right], \cdots,\left[P_l\right]\)</span> ( <span class="math notranslate nohighlight">\(l\)</span> denotes the length of the prefix) to the hidden states of the multi-head attention layer, differing from prompt-tuning that adds soft prompts to the input. To ensure stable training, a FFN is introduced to parameterize the soft prompts, as direct optimization of the soft prompts can lead to instability. Two sets of prefix vectors <span class="math notranslate nohighlight">\(\hat{P}_k\)</span> and <span class="math notranslate nohighlight">\(\hat{P}_v\)</span> are concatenated to the original key <span class="math notranslate nohighlight">\((K)\)</span> and value <span class="math notranslate nohighlight">\((V)\)</span> vectors of the attention layer. The self-attention mechanism with prefix-tuning can be represented by Equation 8. During training, only <span class="math notranslate nohighlight">\(\hat{P}_k, \hat{P}_v\)</span>, and the parameters of FFN are optimized, while all other parameters of PLMs remain frozen. The structure of prefix-tuning is illustrated in <a class="reference internal" href="#chapter-training-fig-finetuning-prefix-tuning"><span class="std std-numref">Fig. 13.9</span></a>. After training, the FFN is discarded, and only <span class="math notranslate nohighlight">\(P_k\)</span> and <span class="math notranslate nohighlight">\(P_v\)</span> are used for inference.</p>
 <div class="math notranslate nohighlight">
 \[
 head=\operatorname{Attention}\left(X W_q,\operatorname{Concat}\left[\hat{P}_k, X W_k\right],\operatorname{Concat}\left[\hat{P}_v, X W_v\right]\right) 
@@ -547,7 +547,7 @@ head=\operatorname{Attention}\left(X W_q,\operatorname{Concat}\left[\hat{P}_k, X
 <h3><span class="section-number">13.3.5. </span>LoRA (Low-Rank Adaptation)<a class="headerlink" href="#lora-low-rank-adaptation" title="Link to this heading">#</a></h3>
 <section id="the-hypothesis-and-method">
 <h4><span class="section-number">13.3.5.1. </span>The hypothesis and method<a class="headerlink" href="#the-hypothesis-and-method" title="Link to this heading">#</a></h4>
-<p>LoRA <span id="id15">[]</span> is one of the most influential strategy among PEFT strategies. Compared with <a class="reference internal" href="#chapter-training-sec-llm-finetuning-adapter-tuning"><span class="std std-ref">Adapter Tuning</span></a>, which needs to add sequential layers vertically, and with <a class="reference internal" href="#chapter-training-sec-llm-finetuning-prompt-tuning"><span class="std std-ref">Prompt Tuning</span></a>,<a class="reference internal" href="#chapter-training-sec-llm-finetuning-prefix-tuning"><span class="std std-ref">Prefix-tuning</span></a>, which need to expand input vectors with extra tokens, LoRA is much more elegant approach from the perspective of archectural design and mathematics.</p>
+<p>LoRA <span id="id15">[<a class="reference internal" href="#id1549" title="Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen. Lora: low-rank adaptation of large language models. 2021. URL: https://arxiv.org/abs/2106.09685, arXiv:2106.09685.">HSW+21</a>]</span> is one of the most influential strategy among PEFT strategies. Compared with <a class="reference internal" href="#chapter-training-sec-llm-finetuning-adapter-tuning"><span class="std std-ref">Adapter Tuning</span></a>, which needs to add sequential layers vertically, and with <a class="reference internal" href="#chapter-training-sec-llm-finetuning-prompt-tuning"><span class="std std-ref">Prompt Tuning</span></a>,<a class="reference internal" href="#chapter-training-sec-llm-finetuning-prefix-tuning"><span class="std std-ref">Prefix-tuning</span></a>, which need to expand input vectors with extra tokens, LoRA is much more elegant approach from the perspective of archectural design and mathematics.</p>
 <p>Use the notation that each downstream task is represented by a training dataset of input-target pairs: <span class="math notranslate nohighlight">\(Z = \{(x_i, y_i), i=1,2,...,N\}\)</span>, where both <span class="math notranslate nohighlight">\(x_i\)</span> is the input prompt tokens, and <span class="math notranslate nohighlight">\(y_i\)</span> are response/completion tokens.</p>
 <p>The key observation is that, we can express model fine-tuning on model weight <span class="math notranslate nohighlight">\(\Phi\)</span> in its full-update-formulation</p>
 <div class="math notranslate nohighlight">
@@ -607,8 +607,8 @@ The selection of low rank matrices
 <section id="study-results">
 <h4><span class="section-number">13.3.5.2. </span>Study Results<a class="headerlink" href="#study-results" title="Link to this heading">#</a></h4>
 <p>As shown in the following, LoRA has been successfully applied to various models, including RoBERT and GPT-3, showing competitive performance with full finetuning while using only 0.01% of the trainable parameters.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id450">
-<caption><span class="caption-number">Table 13.1 </span><span class="caption-text">RoBERT with different adaptation methods on the language understanding GLUE benchmark.</span><a class="headerlink" href="#id450" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1559">
+<caption><span class="caption-number">Table 13.1 </span><span class="caption-text">RoBERT with different adaptation methods on the language understanding GLUE benchmark.</span><a class="headerlink" href="#id1559" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Model &amp; Method</p></th>
 <th class="head"><p># Trainable Parameters</p></th>
@@ -631,8 +631,8 @@ The selection of low rank matrices
 </tbody>
 </table>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id451">
-<caption><span class="caption-number">Table 13.2 </span><span class="caption-text">GPT-3-175B with different adaptation methods on the language understanding benchmark.</span><a class="headerlink" href="#id451" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1560">
+<caption><span class="caption-number">Table 13.2 </span><span class="caption-text">GPT-3-175B with different adaptation methods on the language understanding benchmark.</span><a class="headerlink" href="#id1560" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Model&amp;Method</p></th>
 <th class="head text-center"><p># Trainable Parameters</p></th>
@@ -675,8 +675,8 @@ The selection of low rank matrices
 <li><p><span class="math notranslate nohighlight">\(r\)</span> as small as one suffices for adapting both <span class="math notranslate nohighlight">\(W^Q\)</span> and <span class="math notranslate nohighlight">\(W^V\)</span> on these datasets while training <span class="math notranslate nohighlight">\(W^Q\)</span> alone needs a larger <span class="math notranslate nohighlight">\(r\)</span>.</p></li>
 <li><p>Adapting more matrices will improve model performance but has marginal gain when adapting all matrices.</p></li>
 </ul>
-<div class="pst-scrollable-table-container"><table class="table" id="id452">
-<caption><span class="caption-number">Table 13.3 </span><span class="caption-text">Validation accuracy on WikiSQL and MultiNLI with different rank <span class="math notranslate nohighlight">\(r\)</span>.</span><a class="headerlink" href="#id452" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1561">
+<caption><span class="caption-number">Table 13.3 </span><span class="caption-text">Validation accuracy on WikiSQL and MultiNLI with different rank <span class="math notranslate nohighlight">\(r\)</span>.</span><a class="headerlink" href="#id1561" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-center"><p></p></th>
 <th class="head text-center"><p>Weight Type</p></th>
@@ -821,6 +821,23 @@ Figure 6 shows the results. While specializing on a downstream task, finetuning 
 <span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id6">2</a>,<a role="doc-backlink" href="#id7">3</a>,<a role="doc-backlink" href="#id8">4</a>)</span>
 <p>Hyung Won Chung, Le Hou, Shayne Longpre, Barret Zoph, Yi Tay, William Fedus, Yunxuan Li, Xuezhi Wang, Mostafa Dehghani, Siddhartha Brahma, Albert Webson, Shixiang Shane Gu, Zhuyun Dai, Mirac Suzgun, Xinyun Chen, Aakanksha Chowdhery, Alex Castro-Ros, Marie Pellat, Kevin Robinson, Dasha Valter, Sharan Narang, Gaurav Mishra, Adams Yu, Vincent Zhao, Yanping Huang, Andrew Dai, Hongkun Yu, Slav Petrov, Ed H. Chi, Jeff Dean, Jacob Devlin, Adam Roberts, Denny Zhou, Quoc V. Le, and Jason Wei. Scaling instruction-finetuned language models. 2022. URL: <a class="reference external" href="https://arxiv.org/abs/2210.11416">https://arxiv.org/abs/2210.11416</a>, <a class="reference external" href="https://arxiv.org/abs/2210.11416">arXiv:2210.11416</a>.</p>
 </div>
+<div class="citation" id="id1548" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HGJ+19<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id11">1</a>,<a role="doc-backlink" href="#id12">2</a>)</span>
+<p>Neil Houlsby, Andrei Giurgiu, Stanislaw Jastrzebski, Bruna Morrone, Quentin de Laroussilhe, Andrea Gesmundo, Mona Attariyan, and Sylvain Gelly. Parameter-efficient transfer learning for nlp. 2019. URL: <a class="reference external" href="https://arxiv.org/abs/1902.00751">https://arxiv.org/abs/1902.00751</a>, <a class="reference external" href="https://arxiv.org/abs/1902.00751">arXiv:1902.00751</a>.</p>
+</div>
+<div class="citation" id="id1549" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id15">HSW+21</a><span class="fn-bracket">]</span></span>
+<p>Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen. Lora: low-rank adaptation of large language models. 2021. URL: <a class="reference external" href="https://arxiv.org/abs/2106.09685">https://arxiv.org/abs/2106.09685</a>, <a class="reference external" href="https://arxiv.org/abs/2106.09685">arXiv:2106.09685</a>.</p>
+</div>
+<div class="citation" id="id1551" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">LARC21</a><span class="fn-bracket">]</span></span>
+<p>Brian Lester, Rami Al-Rfou, and Noah Constant. The power of scale for parameter-efficient prompt tuning. <em>arXiv preprint arXiv:2104.08691</em>, 2021.</p>
+</div>
+<div class="citation" id="id1552" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id14">LL21</a><span class="fn-bracket">]</span></span>
+<p>Xiang Lisa Li and Percy Liang. Prefix-tuning: optimizing continuous prompts for generation. <em>arXiv preprint arXiv:2101.00190</em>, 2021.</p>
+</div>
 <div class="citation" id="id56" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">LZY24</a><span class="fn-bracket">]</span></span>
 <p>Renze Lou, Kai Zhang, and Wenpeng Yin. Large language model instruction following: a survey of progresses and challenges. <em>Computational Linguistics</em>, pages 1–10, 2024.</p>
@@ -828,6 +845,11 @@ Figure 6 shows the results. While specializing on a downstream task, finetuning 
 <div class="citation" id="id34" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">LYM+24</a><span class="fn-bracket">]</span></span>
 <p>Yun Luo, Zhen Yang, Fandong Meng, Yafu Li, Jie Zhou, and Yue Zhang. An empirical study of catastrophic forgetting in large language models during continual fine-tuning. 2024. URL: <a class="reference external" href="https://arxiv.org/abs/2308.08747">https://arxiv.org/abs/2308.08747</a>, <a class="reference external" href="https://arxiv.org/abs/2308.08747">arXiv:2308.08747</a>.</p>
+</div>
+<div class="citation" id="id537" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WBZ+21<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id4">2</a>,<a role="doc-backlink" href="#id5">3</a>)</span>
+<p>Jason Wei, Maarten Bosma, Vincent Y Zhao, Kelvin Guu, Adams Wei Yu, Brian Lester, Nan Du, Andrew M Dai, and Quoc V Le. Finetuned language models are zero-shot learners. <em>ArXiv:2109.01652</em>, 2021.</p>
 </div>
 <div class="citation" id="id57" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">XXQ+23</a><span class="fn-bracket">]</span></span>

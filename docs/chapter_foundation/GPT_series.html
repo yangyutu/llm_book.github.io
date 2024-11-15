@@ -359,7 +359,7 @@ document.write(`
 <h2><span class="section-number">8.1. </span>GPT-1<a class="headerlink" href="#gpt-1" title="Link to this heading">#</a></h2>
 <section id="introduction">
 <h3><span class="section-number">8.1.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h3>
-<p>GPT-1 <span id="id1">[]</span> and its successors (GPT-2 and GPT-3) are a series Transformer-based model architectures aim to offer generic task-agnostic model architecture and learning schemes to diverse natural language processing (NLP) tasks, such as textual entailment, question answering, semantic similarity assessment.</p>
+<p>GPT-1 <span id="id1">[<a class="reference internal" href="transformers.html#id1171" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf, 2018.">RNSS18</a>]</span> and its successors (GPT-2 and GPT-3) are a series Transformer-based model architectures aim to offer generic task-agnostic model architecture and learning schemes to diverse natural language processing (NLP) tasks, such as textual entailment, question answering, semantic similarity assessment.</p>
 <p>At that time, specific NLP tasks requires the collection of a massive amount of task-specific labeled data as well as the design of task-specific architectures that learns best from it. Given the broad range of NLP tasks, this paradigm does not scale well and model learning cannot be shared across different tasks.</p>
 <p>One of the major contributions of the GPT-1 study is the introduction of a two-stage paradigm to NLP tasks, including an unsupervised pretraining stage and a supervised fine-tuning stage. They demonstrates that a pre-trained model with a small scale fine-tuning can achieve satisfactory results over a range of diverse tasks, not just for a single task.</p>
 <p>GPT-1 model consists of multiple transformer decoder layers [<a class="reference internal" href="transformers.html#content-chapter-foundation-transformers-transformers"><span class="std std-ref">Transformers Anatomy</span></a>]. The pretraining task is auto-regression language modeling, that it, predicting the next word given the preceding word sequence. In the Transformer architecture, the activation in the final transformer block is fed into a Softmax function that produces the word probability distributions over an entire vocabulary of words to predict the next word.</p>
@@ -402,7 +402,7 @@ document.write(`
 <a class="reference internal image-reference" href="../../_images/GPT_arch.png"><img alt="../../_images/GPT_arch.png" src="../../_images/GPT_arch.png" style="width: 797.6px; height: 338.40000000000003px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 8.2 </span><span class="caption-text">(left) Transformer architecture and training objectives used in this work. (right) Input transformations for fine-tuning on different tasks. We convert all structured inputs into token sequences to be processed by our pre-trained model, followed by a linear+softmax layer. Image from <span id="id2">[]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-gpt-gpt-architecture" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 8.2 </span><span class="caption-text">(left) Transformer architecture and training objectives used in this work. (right) Input transformations for fine-tuning on different tasks. We convert all structured inputs into token sequences to be processed by our pre-trained model, followed by a linear+softmax layer. Image from <span id="id2">[<a class="reference internal" href="transformers.html#id1171" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf, 2018.">RNSS18</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-gpt-gpt-architecture" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The fine-tuning process involves continuing the model training over a labeled dataset <span class="math notranslate nohighlight">\(\mathcal{C}\)</span>. Take text classification task as an example. Suppose that each labeled example consists of a sequence of input tokens, <span class="math notranslate nohighlight">\(x^{1}, \ldots, x^{m}\)</span> along with a label <span class="math notranslate nohighlight">\(y\)</span>. The input sequence is first encoded by the pre-trained model to an embedding vector <span class="math notranslate nohighlight">\(h_{l}^{m}\)</span> at the position of the last input token. <span class="math notranslate nohighlight">\(h_{l}^{m}\)</span> is then fed into an linear layer with Softmax to obtain distribution over class labels. The training loss can simply be the binary cross entropy (BCE) loss. It is also found that including language modeling as an auxiliary task during fine-tuning can improve generalization of the fine-tuned model and speed up convergence.</p>
@@ -410,7 +410,7 @@ document.write(`
 </section>
 <section id="gpt-2">
 <h2><span class="section-number">8.2. </span>GPT-2<a class="headerlink" href="#gpt-2" title="Link to this heading">#</a></h2>
-<p>GPT-2 <span id="id3">[]</span>, a successor to the original GPT-1, is a larger model trained on much more training data, called WebText, than the original one. It achieved state-of-the-art results on seven out of the eight tasks in a zero-shot setting in which there is no fine-tuning applied but had limited success in some tasks.
+<p>GPT-2 <span id="id3">[<a class="reference internal" href="transformers.html#id1172" title="Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. OpenAI Blog, 1(8):9, 2019.">RWC+19</a>]</span>, a successor to the original GPT-1, is a larger model trained on much more training data, called WebText, than the original one. It achieved state-of-the-art results on seven out of the eight tasks in a zero-shot setting in which there is no fine-tuning applied but had limited success in some tasks.
 The key contribution of GPT-2 is not about further refining the two-stage pretraining-fine-tuning paradigm in GPT-1, but about investigating the capability of zero-shot learning with extensively pretrained language model alone. In other words, it aims to answer whether language modeling is a universal task that can help the model to gain universal knowledge that can accomplish other language tasks without subsequent supervised learning.</p>
 <p>The intuition is that a model can be very skilled in the sense that it can learn much of the information about a language during the pre-training phase, there will be no need to learn extra information through fine-tuning phase. Take machine translation in the following box as an example, which contains examples of naturally occurring demonstrations of English to French and French to English translation found throughout the WebText training set. By learning to predict future words in the language modeling task, we expect the model to automatically acquire the ability to translate when we can provide the right prompt (e.g., <em>translate from English to French</em>) to the model.</p>
 <div class="proof example admonition" id="example-0">
@@ -489,8 +489,8 @@ and few-shot, only require the model to perform forward passes at test time.</sp
 <p>Like language modeling, the most natural ability for GPT3 is to generate smooth and nature texts.</p>
 <p>Performance is evaluated by how well humans can detect whether generated text is from a model model generated text. Regarding the test,  25 article titles and subtitles from the website are arbitrarily selected, with a mean length of 215 words. Four language models ranging in size from 125M to 175B (GPT-3) are used to generated completions from these titles and subtitles.</p>
 <p>Following shows the performance across different model sizes. As the model size increases, the generated texts are more realistic, natural, and coherent, therefore more difficult for humans to detect.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id436">
-<caption><span class="caption-number">Table 8.1 </span><span class="caption-text">Human accuracy in identifying whether short (around 200 word) news articles are model generated.</span><a class="headerlink" href="#id436" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1545">
+<caption><span class="caption-number">Table 8.1 </span><span class="caption-text">Human accuracy in identifying whether short (around 200 word) news articles are model generated.</span><a class="headerlink" href="#id1545" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p></p></th>
 <th class="head text-center"><p>Mean accuracy</p></th>
@@ -532,8 +532,8 @@ and few-shot, only require the model to perform forward passes at test time.</sp
 <p>The following shows the performance comparison among  supervised SOTA neural machine translation models, unsupervised multi-lingual pretrained language models, and GPT-3. Supervised models are the clear winners in this domain. However, GPT-3 demonstrates its decent performance when performing translation back to English, probably because GPT-3 is a strong English language model.</p>
 <p>The performance GPT-3 also has a noticeable skew depending on language direction. Specifically, GPT-3 significantly outperforms prior unsupervised models when translating into English but under-performs when translating in the other direction.</p>
 <p>In general, across all three language models tested, there is a smooth upward trend with model capacity. While in the zero-shot setting, GPT-3 underperforms recent unsupervised model, offering a few demonstrations to GPT-3 can quickly boost the BLEU scores.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id437">
-<caption><span class="caption-number">Table 8.2 </span><span class="caption-text">Performance comparison among  supervised SOTA neural machine translation models, unsupervised multi-lingual pretrained language models, and GPT-3.</span><a class="headerlink" href="#id437" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1546">
+<caption><span class="caption-number">Table 8.2 </span><span class="caption-text">Performance comparison among  supervised SOTA neural machine translation models, unsupervised multi-lingual pretrained language models, and GPT-3.</span><a class="headerlink" href="#id1546" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Setting</p></th>
 <th class="head text-center"><p>En → Fr</p></th>
@@ -734,6 +734,15 @@ Machine translation is typically implemented via encoder-decoder paradigm, in wh
 <div class="citation" id="id423" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">BMR+20</a><span class="fn-bracket">]</span></span>
 <p>Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and et al. Language models are few-shot learners. <em>Advances in Neural Information Processing Systems</em>, 33:1877–1901, 2020.</p>
+</div>
+<div class="citation" id="id1163" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>RNSS18<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
+<p>Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. <em>URL https://s3-us-west-2. amazonaws. com/openai-assets/researchcovers/languageunsupervised/language understanding paper. pdf</em>, 2018.</p>
+</div>
+<div class="citation" id="id1164" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">RWC+19</a><span class="fn-bracket">]</span></span>
+<p>Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language models are unsupervised multitask learners. <em>OpenAI Blog</em>, 1(8):9, 2019.</p>
 </div>
 </div>
 </div>
