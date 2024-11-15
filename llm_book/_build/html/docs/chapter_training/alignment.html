@@ -375,7 +375,7 @@ document.write(`
 <p>The Alignment methodology <span id="id3">[<a class="reference internal" href="#id22" title="Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. 2022. URL: https://arxiv.org/abs/2203.02155, arXiv:2203.02155.">OWJ+22</a>]</span> has the following three steps [<code class="xref std std-numref docutils literal notranslate"><span class="pre">chapter_training_fig_alignment_RLHF_demo</span></code>].</p>
 <p><strong>Step 1: SFT on demeonstration data</strong>: Collect demonstration data showing the target output given different prompt input, and SFT the model to mimic the target output.</p>
 <p><strong>Step 2: Preference/comparison labeling and reward modeling</strong>: Collect preference data, and train a reward model. The preference data set consists of labeler’s preferences towards different model outputs. Such preference data will be used to train a reward model to predict if human would prefer the model output given a model input.</p>
-<p><strong>Step 3 Optimize model generation policy with reward model</strong>: The reward model will be used to guide the model’s improvement on producing human preferred outputs. The optimization can be done using reinforcement learning, particularly the PPO algorithm <span id="id4">[]</span>.</p>
+<p><strong>Step 3 Optimize model generation policy with reward model</strong>: The reward model will be used to guide the model’s improvement on producing human preferred outputs. The optimization can be done using reinforcement learning, particularly the PPO algorithm <span id="id4">[<a class="reference internal" href="#id1546" title="John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. Proximal policy optimization algorithms. 2017. URL: https://arxiv.org/abs/1707.06347, arXiv:1707.06347.">SWD+17</a>]</span>.</p>
 <p>Steps 2 and 3 can be iterated continuously; with model policy improved using reward model, we can collect more preference data to train a new RM and then a new policy. The reason is to make sure that the reward model is adapted to the new input distribution determined by the policy.</p>
 <figure class="align-default" id="chapter-training-fig-alignment-rlhf-demo">
 <a class="reference internal image-reference" href="../../_images/RLHF_demo.png"><img alt="../../_images/RLHF_demo.png" src="../../_images/RLHF_demo.png" style="width: 699.5px; height: 413.5px;" />
@@ -391,8 +391,8 @@ on this reward model. Image from <span id="id5">[<a class="reference internal" h
 <h3><span class="section-number">14.2.2. </span>Preference Data and Reward Modeling<a class="headerlink" href="#preference-data-and-reward-modeling" title="Link to this heading">#</a></h3>
 <p>After SFT process on positive example, the trained model has improved ability on producing human preferred output. <strong>But it often has the overfitting risk and does not generalize well to unseen input data distributions.</strong> Preference data collections aims to provide both positive and negative examples, which are then used to train a reward model to help guide the model to generalize.</p>
 <p>In the preference data collection process, human labelers assess different model outputs given the same prompt input and rank the output based on the human preference. The following table show the scoring standard used in the preference ranking process.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id443">
-<caption><span class="caption-number">Table 14.1 </span><span class="caption-text">How labeler evaluates the response quality</span><a class="headerlink" href="#id443" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1552">
+<caption><span class="caption-number">Table 14.1 </span><span class="caption-text">How labeler evaluates the response quality</span><a class="headerlink" href="#id1552" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Metadata</p></th>
 <th class="head text-right"><p>Scale</p></th>
@@ -558,7 +558,7 @@ objective. Image from <span id="id8">[<a class="reference internal" href="#id21"
 <p>Note: Since the preference datasets are sampled using <span class="math notranslate nohighlight">\(\pi^{\mathrm{SFT}}\)</span>, we initialize <span class="math notranslate nohighlight">\(\pi_{\text {ref }}=\pi^{\mathrm{SFT}}\)</span> whenever available.</p>
 <section id="preliminary-preference-modeling">
 <h3><span class="section-number">14.3.1. </span>Preliminary: Preference modeling<a class="headerlink" href="#preliminary-preference-modeling" title="Link to this heading">#</a></h3>
-<p>The <strong>Bradley-Terry model</strong> <span id="id9">[]</span> is a probability model for the outcome of pairwise comparisons between items, teams, or objects. Given a pair of items <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> drawn from some population, it estimates the probability that the pairwise comparison <span class="math notranslate nohighlight">\(i&gt;j\)</span> turns out true, as</p>
+<p>The <strong>Bradley-Terry model</strong> <span id="id9">[<a class="reference internal" href="#id1538" title="Ralph Allan Bradley and Milton E. Terry. Rank analysis of incomplete block designs: i. the method of paired comparisons. Biometrika, 39(3/4):324–345, 1952. URL: http://www.jstor.org/stable/2334029 (visited on 2024-09-20).">BT52</a>]</span> is a probability model for the outcome of pairwise comparisons between items, teams, or objects. Given a pair of items <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> drawn from some population, it estimates the probability that the pairwise comparison <span class="math notranslate nohighlight">\(i&gt;j\)</span> turns out true, as</p>
 <div class="math notranslate nohighlight">
 \[
 \operatorname{Pr}(i\succ j)=\frac{s_i}{s_i+s_j}
@@ -689,7 +689,7 @@ p\left(y_w \succ y_l \mid x\right)=\sigma\left(r\left(x, y_w\right)-r\left(x, y_
 <section id="dpo-positive">
 <h3><span class="section-number">14.4.3. </span>DPO-Positive<a class="headerlink" href="#dpo-positive" title="Link to this heading">#</a></h3>
 <p>DPO and its variant usually perform well when the preference paired data consists of strong contrastive pairs, i.e., positive example and negative example are sharply different from edit distance perspective. For these examples, DPO can enhance the probability of generating the positive and reduce the probability of generating the negative.</p>
-<p>However, for paired data that is small edit distance (i.e., positive and negative pairs look similiar), DPO algorithm can lead to failure model - that is, both the generating probability of positive and negative example both decrease (although negative ones decrease more).</p>
+<p>However, for paired data that is small edit distance (i.e., positive and negative pairs look similiar), DPO algorithm can lead to <strong>failure mode - that is, both the generating probability of positive and negative example decrease</strong> (although negative ones decrease more).</p>
 <p>Authors from <span id="id12">[<a class="reference internal" href="#id25" title="Arka Pal, Deep Karkhanis, Samuel Dooley, Manley Roberts, Siddartha Naidu, and Colin White. Smaug: fixing failure modes of preference optimisation with dpo-positive. arXiv preprint arXiv:2402.13228, 2024.">PKD+24</a>]</span> not only provides an theoretical understanding of above phenomonon, they will propose one approach to mitigate the failure mode, known as <strong>DPO-Positive</strong> or <strong>DPO-P</strong>.</p>
 <p>The key idea is to add a penality term when the model reduces the probability of positive examples. The modified loss function is given by</p>
 <div class="math notranslate nohighlight">
@@ -709,7 +709,7 @@ p\left(y_w \succ y_l \mid x\right)=\sigma\left(r\left(x, y_w\right)-r\left(x, y_
 <li><p>for the positive <span class="math notranslate nohighlight">\(y_w\)</span>, the loss function is encouraging <strong>maximizing</strong> the term of</p></li>
 </ul>
 <div class="math notranslate nohighlight">
-\[\beta\left[\log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}(y \mid x)}-\lambda \cdot \max \left(0, \log \frac{\pi_{\mathrm{ref}}(y_w \mid x)}{\pi_\theta(y_w \mid x)}\right)\right].
+\[\beta\left[\log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}(y_w \mid x)}-\lambda \cdot \max \left(0, \log \frac{\pi_{\mathrm{ref}}(y_w \mid x)}{\pi_\theta(y_w \mid x)}\right)\right].
 \]</div>
 <p>Clearly, if we want to maximize these terms for <span class="math notranslate nohighlight">\(y_w\)</span>, we need to ensure that the generating probability <span class="math notranslate nohighlight">\(\pi_{\theta}(y_w|x)\)</span> not to reduce too much from <span class="math notranslate nohighlight">\(\pi_{\text{ref}}(y_w|x)\)</span>.</p>
 <!-- 提问：DPO的变体有哪些，主要解决DPO的什么问题？
@@ -733,6 +733,10 @@ DPOP [4]：由于LLM model很难区分编辑距离较小的pair，那么当持�
 <h2><span class="section-number">14.5. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id13">
 <div role="list" class="citation-list">
+<div class="citation" id="id1538" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">BT52</a><span class="fn-bracket">]</span></span>
+<p>Ralph Allan Bradley and Milton E. Terry. Rank analysis of incomplete block designs: i. the method of paired comparisons. <em>Biometrika</em>, 39(3/4):324–345, 1952. URL: <a class="reference external" href="http://www.jstor.org/stable/2334029">http://www.jstor.org/stable/2334029</a> (visited on 2024-09-20).</p>
+</div>
 <div class="citation" id="id24" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">MXC24</a><span class="fn-bracket">]</span></span>
 <p>Yu Meng, Mengzhou Xia, and Danqi Chen. Simpo: simple preference optimization with a reference-free reward. 2024. URL: <a class="reference external" href="https://arxiv.org/abs/2405.14734">https://arxiv.org/abs/2405.14734</a>, <a class="reference external" href="https://arxiv.org/abs/2405.14734">arXiv:2405.14734</a>.</p>
@@ -754,6 +758,10 @@ DPOP [4]：由于LLM model很难区分编辑距离较小的pair，那么当持�
 <span class="label"><span class="fn-bracket">[</span>RSM+24<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id7">1</a>,<a role="doc-backlink" href="#id8">2</a>)</span>
 <p>Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning, and Chelsea Finn. Direct preference optimization: your language model is secretly a reward model. 2024. URL: <a class="reference external" href="https://arxiv.org/abs/2305.18290">https://arxiv.org/abs/2305.18290</a>, <a class="reference external" href="https://arxiv.org/abs/2305.18290">arXiv:2305.18290</a>.</p>
+</div>
+<div class="citation" id="id1546" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">SWD+17</a><span class="fn-bracket">]</span></span>
+<p>John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. Proximal policy optimization algorithms. 2017. URL: <a class="reference external" href="https://arxiv.org/abs/1707.06347">https://arxiv.org/abs/1707.06347</a>, <a class="reference external" href="https://arxiv.org/abs/1707.06347">arXiv:1707.06347</a>.</p>
 </div>
 </div>
 </div>

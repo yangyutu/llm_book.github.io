@@ -445,7 +445,7 @@ Sentiment:</p>
 </section>
 <section id="chain-of-thought-cot-prompting">
 <span id="chapter-prompt-sec-cot-prompting"></span><h2><span class="section-number">19.4. </span>Chain-of-Thought (CoT) Prompting<a class="headerlink" href="#chain-of-thought-cot-prompting" title="Link to this heading">#</a></h2>
-<p>Chain of Thought (CoT) prompting <span id="id1">[]</span> is a technique used with Large Language Models (LLMs) to enhance their problem-solving capabilities, especially for complex tasks requiring multi-step reasoning. The motivation behind CoT prompting is to mimic human-like step-by-step thinking processes, addressing the limitation of LLMs in handling tasks that require intermediate logical steps.</p>
+<p>Chain of Thought (CoT) prompting <span id="id1">[<a class="reference internal" href="#id507" title="Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Ed Chi, Quoc Le, and Denny Zhou. Chain of thought prompting elicits reasoning in large language models. ArXiv:2201.11903, 2022.">WWS+22</a>]</span> is a technique used with Large Language Models (LLMs) to enhance their problem-solving capabilities, especially for complex tasks requiring multi-step reasoning. The motivation behind CoT prompting is to mimic human-like step-by-step thinking processes, addressing the limitation of LLMs in handling tasks that require intermediate logical steps.</p>
 <p>The key idea is to prompt the model to “think aloud” by breaking down its reasoning into explicit steps, often by providing examples of such step-by-step reasoning in the prompt. This approach offers several benefits: it improves the model’s performance on complex tasks, increases transparency in the decision-making process, and allows for easier error detection and correction.</p>
 <p>CoT prompting can help LLMs tackle problems that were previously challenging, such as multi-step mathematical or logical reasoning tasks.</p>
 <p>However, this method also has drawbacks: it can significantly increase the length of prompts and responses, potentially leading to higher computational costs and token usage. Moreover, the effectiveness of CoT prompting can vary depending on the specific task and the quality of the examples provided, and it may not always yield improvements for simpler tasks where direct answers suffice.</p>
@@ -464,7 +464,7 @@ Sentiment:</p>
 <p><span class="caption-number">Fig. 19.2 </span><span class="caption-text">More COT examples for different tasks.</span><a class="headerlink" href="#chapter-prompt-fig-basic-prompt-cot-demo2" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>The classically CoT prompting requires CoT few-shot demonstration, a further simplification is to use sentence like “Let’s think step by step” to encourage the model to directly produce a reasoning chain before generating the final answer<span id="id2">[]</span>. This approach is illustrated as the following.</p>
+<p>The classically CoT prompting requires CoT few-shot demonstration, a further simplification is to use sentence like “Let’s think step by step” to encourage the model to directly produce a reasoning chain before generating the final answer<span id="id2">[<a class="reference internal" href="#id511" title="Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke Iwasawa. Large language models are zero-shot reasoners. arxiv.org/abs/2205.11916, 2022.">KGR+22</a>]</span>. This approach is illustrated as the following.</p>
 <figure class="align-default" id="chapter-prompt-fig-basic-prompt-zero-shot-cot">
 <a class="reference internal image-reference" href="../../_images/zero_shot_CoT.png"><img alt="../../_images/zero_shot_CoT.png" src="../../_images/zero_shot_CoT.png" style="width: 1031.8px; height: 527.8px;" />
 </a>
@@ -510,7 +510,19 @@ Sentiment:</p>
 </section>
 <section id="bibliography">
 <h2><span class="section-number">19.5. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<span class="target" id="id3"></span></section>
+<div class="docutils container" id="id3">
+<div role="list" class="citation-list">
+<div class="citation" id="id511" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">KGR+22</a><span class="fn-bracket">]</span></span>
+<p>Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke Iwasawa. Large language models are zero-shot reasoners. <em>arxiv.org/abs/2205.11916</em>, 2022.</p>
+</div>
+<div class="citation" id="id507" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">WWS+22</a><span class="fn-bracket">]</span></span>
+<p>Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Ed Chi, Quoc Le, and Denny Zhou. Chain of thought prompting elicits reasoning in large language models. <em>ArXiv:2201.11903</em>, 2022.</p>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
