@@ -1785,14 +1785,16 @@ For excellent reviews in neural information retrieval, see {cite}`guo2020deep, m
 
 For traditional information retrieval, see {cite}`schutze2008introduction, buttcher2016information, robertson2009probabilistic, croft2010search`
 
-### Software
-
-[Faiss](https://github.com/facebookresearch/faiss/wiki/) is a recently developed computational library for efficient similarity search and clustering of dense vectors. 
 
 
 ```{bibliography} ../../_bibliography/references.bib
 :filter: docname in docnames
 ```
+
+### Software
+
+[Faiss](https://github.com/facebookresearch/faiss/wiki/) is a recently developed computational library for efficient similarity search and clustering of dense vectors. 
+
 
 <!-- \printbibliography
 \end{refsection}

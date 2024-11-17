@@ -602,8 +602,8 @@ This subcomponent aims to figure out the main intent behind the query, e.g., the
 <p>The first reason is due to the polysemy of words. That is, a word can mean different things depending on context. The meaning of <em>book</em> is different in <em>text book</em> and <em>book a hotel room</em>. Short queries particularly suffer from Polysemy because they are often devoid of context.</p>
 <p>The second reason is due to the fact that a concept is often expressed using different vocabularies and language styles in documents and queries. As a result, such a model would have difficulty in retrieving documents that have none of the query terms but turn out to be relevant.</p>
 <p>Modern neural-based IR model enable semantic retrieval by learning latent representations of text from data and enable document retrieval based on semantic similarity.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1613">
-<caption><span class="caption-number">Table 22.1 </span><span class="caption-text">Retrieval results based on exact matching methods and semantic matching methods.</span><a class="headerlink" href="#id1613" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1617">
+<caption><span class="caption-number">Table 22.1 </span><span class="caption-text">Retrieval results based on exact matching methods and semantic matching methods.</span><a class="headerlink" href="#id1617" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Query</strong></p></th>
 <th class="head"><p>“Weather Related Fatalities”</p></th>
@@ -849,8 +849,8 @@ BM25(q, d)=\sum_{t_q \in q\cap d} idf(t_q) \cdot \frac{\left(k_{1}+1\right) tf(t
 </ul>
 <p>One problem of this method is collision, i.e., two different
 words could have the same letter n-gram vector representation because this is a bag-of-words representation that does not take into account orders. But the collision probability is rather low.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1614">
-<caption><span class="caption-number">Table 22.2 </span><span class="caption-text">Word hashing token size and collision numbers as a function of the vocabulary size and the type of letter ngrams.</span><a class="headerlink" href="#id1614" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1618">
+<caption><span class="caption-number">Table 22.2 </span><span class="caption-text">Word hashing token size and collision numbers as a function of the vocabulary size and the type of letter ngrams.</span><a class="headerlink" href="#id1618" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Word Size</p></th>
 <th class="head"><p>Letter-Bigram</p></th>
@@ -2262,10 +2262,6 @@ Documents
 <h3><span class="section-number">22.13.1. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h3>
 <p>For excellent reviews in neural information retrieval, see <span id="id72">[<a class="reference internal" href="#id1438" title="Jiafeng Guo, Yixing Fan, Liang Pang, Liu Yang, Qingyao Ai, Hamed Zamani, Chen Wu, W Bruce Croft, and Xueqi Cheng. A deep look into neural ranking models for information retrieval. Information Processing &amp; Management, 57(6):102067, 2020.">GFP+20</a>, <a class="reference internal" href="#id1492" title="Jimmy Lin, Rodrigo Nogueira, and Andrew Yates. Pretrained transformers for text ranking: bert and beyond. Synthesis Lectures on Human Language Technologies, 14(4):1–325, 2021.">LNY21</a>, <a class="reference internal" href="#id1439" title="Bhaskar Mitra, Nick Craswell, and others. An introduction to neural information retrieval. Now Foundations and Trends Boston, MA, 2018.">MC+18</a>]</span></p>
 <p>For traditional information retrieval, see <span id="id73">[<a class="reference internal" href="#id1501" title="Stefan Buttcher, Charles LA Clarke, and Gordon V Cormack. Information retrieval: Implementing and evaluating search engines. Mit Press, 2016.">BCC16</a>, <a class="reference internal" href="#id1525" title="W Bruce Croft, Donald Metzler, and Trevor Strohman. Search engines: Information retrieval in practice. Volume 520. Addison-Wesley Reading, 2010.">CMS10</a>, <a class="reference internal" href="#id1520" title="Stephen Robertson and Hugo Zaragoza. The probabilistic relevance framework: BM25 and beyond. Now Publishers Inc, 2009.">RZ09</a>, <a class="reference internal" href="#id1500" title="Hinrich Schütze, Christopher D Manning, and Prabhakar Raghavan. Introduction to information retrieval. Volume 39. Cambridge University Press Cambridge, 2008.">SchutzeMR08</a>]</span></p>
-</section>
-<section id="software">
-<h3><span class="section-number">22.13.2. </span>Software<a class="headerlink" href="#software" title="Link to this heading">#</a></h3>
-<p><a class="reference external" href="https://github.com/facebookresearch/faiss/wiki/">Faiss</a> is a recently developed computational library for efficient similarity search and clustering of dense vectors.</p>
 <div class="docutils container" id="id74">
 <div role="list" class="citation-list">
 <div class="citation" id="id1566" role="doc-biblioentry">
@@ -2527,6 +2523,10 @@ Documents
 </div>
 </div>
 </div>
+</section>
+<section id="software">
+<h3><span class="section-number">22.13.2. </span>Software<a class="headerlink" href="#software" title="Link to this heading">#</a></h3>
+<p><a class="reference external" href="https://github.com/facebookresearch/faiss/wiki/">Faiss</a> is a recently developed computational library for efficient similarity search and clustering of dense vectors.</p>
 <!-- \printbibliography
 \end{refsection}
 

@@ -6,7 +6,7 @@
 ## CoT with Self-Consistency
 
 **Chain-of-thought** prompting combined with pre-trained large language models has achieved encouraging results on complex reasoning tasks. {cite:p}`wang2022self` propose a **self-consistency** strategy to further improve the performance of chain-of-thought prompting. 
-The key idea is that {numref}`chapter_prompt_fig_advanced_prompt_cot_self_consistency_num_paths`:
+The key idea is that {numref}`chapter_prompt_fig_advanced_prompt_cot_self_consistency`:
 1. First we samples a diverse set of reasoning paths 
 2. Then we select the most consistent answer by marginalizing out the sampled reasoning paths. 
 Self-consistency is based on the intuition that a complex reasoning problem typically admits multiple different ways of thinking leading to its unique correct answer.
@@ -14,7 +14,7 @@ Self-consistency is based on the intuition that a complex reasoning problem typi
 ```{figure} ../img/chapter_prompt/advanced_prompt/cot_self_consistency.png
 ---
 scale: 80%
-name: chapter_prompt_fig_advanced_prompt_cot_self_consistency_num_paths
+name: chapter_prompt_fig_advanced_prompt_cot_self_consistency
 ---
 CoT with self-consistency. Image from {cite:p}`wang2023selfconsistencyimproveschainthought`.
 ```

@@ -52,7 +52,7 @@ Overview of instruction tuning and FLAN. Instruction tuning finetunes a pretrain
 
 ```{figure} ../img/chapter_training/finetuning/instruction_finetuning/instruction_finetuning_performance.png
 ---
-scale: 80%
+scale: 50%
 name: chapter_training_fig_finetuning_instruction_finetuning_gpt3_performance
 ---
 Performance of zero-shot FLAN, compared with zero-shot and few-shot GPT-3, on three unseen task types where instruction tuning improved performance substantially. Image from {cite:p}`wei2021finetuned`.
