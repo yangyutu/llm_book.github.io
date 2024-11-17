@@ -24,7 +24,7 @@ Human evaluations of various models outputs show that how often outputs from eac
 
 ### Overall methodology
 
-The Alignment methodology {cite:p}`ouyang2022traininglanguagemodelsfollow` has the following three steps [{numref}`chapter_training_fig_alignment_RLHF_demo`].
+The Alignment methodology {cite:p}`ouyang2022traininglanguagemodelsfollow,stiennon2020learning` has the following three steps [{numref}`chapter_training_fig_alignment_RLHF_demo`].
 
 **Step 1: SFT on demeonstration data**: Collect demonstration data showing the target output given different prompt input, and SFT the model to mimic the target output. 
 
@@ -32,7 +32,13 @@ The Alignment methodology {cite:p}`ouyang2022traininglanguagemodelsfollow` has t
 
 **Step 3 Optimize model generation policy with reward model**: The reward model will be used to guide the model's improvement on producing human preferred outputs. The optimization can be done using reinforcement learning, particularly the PPO algorithm {cite:p}`schulman2017proximalpolicyoptimizationalgorithms`. 
 
-Steps 2 and 3 can be iterated continuously; with model policy improved using reward model, we can collect more preference data to train a new RM and then a new policy. The reason is to make sure that the reward model is adapted to the new input distribution determined by the policy.
+````{prf:example} Iterative reward model and policy improvement
+**Steps 2 and 3 can be, and sometimes must be, iterated continuously**; with model policy improved using reward model, the reward model might need be updated to further guide the improvement of the data. The reason is that
+* The text generated from improved model will have a different distribution than what is used in reward model training.
+* The trained reward model $R_0$ is an approximate to the groundtruth reward model $R_{GT}$. After one round of policy optimization, the model is likely overfitting to the $R_0$, and actually performs poorly under the evaluation of $R_{GT}$ (also see {cite:p}`stiennon2020learning`).
+
+To iterate the reward model to adapte to the new input distribution determined by the policy, we can collect more preference data, and combine with the original preference data to train a new RM and then a new policy. 
+````
 
 ```{figure} ../img/chapter_training/alignment/RLHF_PPO/RLHF_demo.png
 ---
@@ -44,7 +50,7 @@ reward model (RM) training, and (3) reinforcement learning via proximal policy o
 on this reward model. Image from {cite:p}`ouyang2022traininglanguagemodelsfollow`.
 ```
 
-````{prf:reward} The importance of accurate reward model
+````{prf:remark} The importance of accurate reward model
 In classical RL, the reward model is usually deterministic and given. And RL algorithm optimizes the policy to maximize the reward. In LLM alignment, the reward model is not clearly defined and needs to be inferred from the preference data. 
 
 The size, quality, and distribution of the preference data affects how good we can train a reward model that approximates the ground-truth reward model. If there is a gap between the trained reward model and the ground-truth reward model, the gap will translate to the sub-optimality of the learned policy. 
@@ -154,7 +160,7 @@ where $D_{\text {pretrain }}$ is the pretraining distribution.he pretraining los
 ```{figure} ../img/chapter_training/alignment/RLHF_PPO/RLHF_PPO_training_demo.png
 ---
 scale: 35%
-name: chapter_training_fig_alignment_RLHF_demo
+name: chapter_training_fig_alignment_PPO_training_demo
 ---
 Illustration of PPO based optimization, which uses a Frozen LLM and KL loss to prevent model optimization from going too far and reward model to encourge model to learn to generate highly-rewarded outputs.
 ```
@@ -177,7 +183,8 @@ There are four models needed in the PPO algorithm:
  -->
 
 
-### SFT vs RLHF
+
+### Discussion: SFT vs RLHF
 
 % from https://arxiv.org/pdf/2303.18223
 
@@ -218,14 +225,47 @@ Like classic RL algorithms, RLHF has the drawbacks like sample inefficiency, tra
 
 Overall, SFT is particularly useful to increase the model capacity of pre-trained model checkpoints right after pretraining, while RLHF is promising to further improve the model capacity of SFT models.
 
+(chapter_training_sec_LLM_alignment_reward_model_criticality)=
+### Discussion: Reward Model Criticality 
+
+For aligning LLM to human preference, **reward modeling plays crucial role of human preferences and set the optimization direction for the model** - if the reward model is built incorrectly or inaccruately, the model is optimized towards the wrong direction. 
+
+Let the groundtruth reward model be $R_{GT}$. In reward modeling, we are training models $R_0$ to approximate $R_{GT}$. The typical reward modeling involves collecting preference label from labeler and build the reward model by learning from preference labels. 
+The gap $R_0$ and $R_{GT}$ is affected by the following factors:
+* **The preference data quality, quantity, and distribution**; more specifically,
+  * label's consistence with human preference
+  * more high-quality preference data, the smaller the gap
+  * the distribution should be broad and diverse to reflect the richness of the input space 
+* **The model's learning capacity** - a weak model cannot capture intricate aspects of human preferences.
+
+Suppose we obtain a reward model $R_0$. What happen as we optimizes the model policy towards the reward model? Optimizing against reward model $R_0$ is supposed to make our policy align with human preferences, i.e., $R_{GT}$. But the $R_0$ is not a perfect representation of our labeler preferences, as it has limited capacity and only sees a limited amount of preference data from a likely narrow distribution of inputs. Studies from {cite:p}`stiennon2020learning,gao2023scaling` show that optimizing towards an imperfect reward model can run into the overfitting risk, leading to a model achieving high score with respect to $R_0$ but actually low score with respect to $R_{GT}$ [{numref}`chapter_training_fig_alignment_reward_model_overfitting`]. To minimize the gap between $R_0$ and $R_{GT}$, they also empirically show that one can enlarge the model size as well as the training data size.
+
+```{figure} ../img/chapter_training/alignment/reward_model/reward_model_overfitting.png
+---
+scale: 55%
+name: chapter_training_fig_alignment_reward_model_overfitting
+---
+(Left) The overfitting phenomonon of optimizing the model towards an imperfect reward model, leading to a model achieving high score with respect to $R_0$ (dash line) but actually low score with respect to $R_{GT}$ (solid line). Here the KL distance w.r.t. the initial policy is used to measure the degree of over-optimization. (Right) To reduce the gap to $R_{GT}$, one can enlarge model size as well as enlarge preference training data.
+```
+
+Studies from {cite:p}`wang2024secrets` further reveals that 
+* **The importance of label quality** - incorrect and ambiguous preference pairs in the dataset may hinder the reward
+model from accurately capturing human intent. 
+* **Poor generation of reward model** - reward models trained on data from a specific distribution often struggle to generalize to examples outside that distribution and are not suitable for iterative RLHF training.
+
+To mitigate these drawbacks, they proposed that
+* One can measure the strength of preferences within the data using ensemble reward models.
+* Use labeling smoothing to reduce the impact of noisy labels (also discussed in {ref}`chapter_training_sec_LLM_alignment_label_smoothing_DPO`).
+* Use adaptive margin, originated from contrastive learning, in training reward model (also discussed in {ref}`chapter_training_sec_LLM_alignment_simple_DPO`).
 
 ## DPO
+### Overview
 
 **DPO (Direct Preference Optimization)** {cite:p}`rafailov2024directpreferenceoptimizationlanguage` improves the classical RLHF-PPO algorithm from the following two aspects:
 
-* Reward model is no longer need; Instead, preference data is directly used to train an aligned model in one step.
-* Reinforcement learning is simplified. Using mathematical equivalence, the goal of maximizing probabilites of human-preferred output is accomplished via a simplier appraoch like SFT
-
+* **Additional reward model is no longer need**; Instead, the LLM itself can act as a reward model itself; preference data is directly used to train an aligned model in one step.
+* **Reinforcement learning no longer need**. Optimizing the policy of an LLM towards a reward model is mathematially equivalent to directly training the LLM as a reward model on the preference data. 
+ 
 The following illustrates from the DPO paper to visually compare the differences between RLHF-PPO and DPO
 
 ```{figure} ../img/chapter_training/alignment/DPO/DPO_PPO_comparison.png
@@ -240,8 +280,8 @@ objective. Image from {cite:p}`rafailov2024directpreferenceoptimizationlanguage`
 ```
 
 The DPO training pipelines consists of the following two steps:
-* Sample completions $y_1, y_2 \sim \pi_{\text {ref }}(\cdot \mid x)$ for every prompt $x$, label with human preferences to construct the offline dataset of preferences $\mathcal{D}=\left\{x^{(i)}, y_w^{(i)}, y_l^{(i)}\right\}_{i=1}^N$ 
-*  Optimize the language model $\pi_\theta$ to minimize $\mathcal{L}_{\mathrm{DPO}}$ for the given $\pi_{\text {ref }}$ and $\mathcal{D}$ and desired $\beta$. 
+* **Preference data construction** - sample completions $y_1, y_2 \sim \pi_{\text {ref }}(\cdot \mid x)$ for every prompt $x$, label with human preferences to construct the offline dataset of preferences $\mathcal{D}=\left\{x^{(i)}, y_w^{(i)}, y_l^{(i)}\right\}_{i=1}^N$ 
+*  **Optimize the language model as a reward model**, which is equivalent to optimize $\pi_\theta$ to minimize $\mathcal{L}_{\mathrm{DPO}}$ for the given $\pi_{\text {ref }}$ and $\mathcal{D}$ and desired $\beta$. 
    
 $$
 \mathcal{L}_{\mathrm{DPO}}\left(\pi_\theta ; \pi_{\mathrm{ref}}\right)=-\mathbb{E}_{\left(x, y_w, y_l\right) \sim \mathcal{D}}\left[\log \sigma\left(\beta \log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}\left(y_w \mid x\right)}-\beta \log \frac{\pi_\theta\left(y_l \mid x\right)}{\pi_{\mathrm{ref}}\left(y_l \mid x\right)}\right)\right].
@@ -272,7 +312,7 @@ $$
 
 ### Driving the DPO
 
-Here we outline the key steps to derive the DPO objective function. 
+Here we outline the key steps to derive the DPO objective function, and explain why optimizing LLM as a reward model is equivalent to optimizing its policy. 
 
 First we start with the objective of LLM alignment with a given **fixed reward function** $r$ with a KL constraint, 
 
@@ -328,18 +368,28 @@ where for the preference completion pair $y_w \succ y_l$, as long as $\hat{p} < 
 
 % https://mp.weixin.qq.com/s/WKuEcsyMFkaKf19o20Ci3g -->
 
-### DPO vs RL
+### Discussion: DPO vs RL
 
-One fundamental differences between DPO and RL from policy optimization perspective is that
-* DPO is learning from **offline** generated preference data and there is no exploration of the input output space during training. The model has a hard time to generate well beyond what is included in the preference data.
-* RL is **online** learning with exploration. RL does not need offline generated data; the LLM agent itself generates outputs and learn from the reward signal from reward model. The self-generation approach enables RL to have in theory unlimited amount of data to cover much large ranges of input and output distributions.
+**DPO and RL-PPO have the same objective - optimizing LLM's generation behavior towards what human prefer.** Since there is no theorectially correct human preference model $R_{GT} $available; instead of, we use colect preference label data $D$ from human labelers to reflect what human prefer. 
 
-From reward modeling perspective, 
-* DPO is approximating the ground-truth reward model using limited, offline generated preference data. The size and distribution of preference data affect the gap of trained reward model and the ground-truth reward model. The gap in the reward model will translate to the gap of policy. 
-* To overcome the limitation of offline generated preference data, we can use the exploitation idea from reinforcement learning to generate large-scale and broad ranged (in terms of distribution) data for preference labeling, which can be used to improve reward modeling and close the gap to groundtruth reward model. 
+In the RL-PPO approach, a proxy reward model $R_0$ is first learned from human-labeled data to approximate $R_{GT}$; then the PPO algorithm is used to optimize the model policy toward $R_0$, with the hope that optimizing towards $R_0$ will more or less optimizing towards $R_{GT}$. As a comparison, instead of learning a reward model, DPO directly optimizes the policy over preference data.
 
-## DPO variants
+Normally, the finite-sized $D$ cannot cover the whole input-output space, and the proxy reward model $R_0$ often performs poorly in the face of out-ofdistribution data [Also see {ref}`chapter_training_sec_LLM_alignment_reward_model_criticality`]. Studies from {cite:p}`xu2024dpo` show that with an imperfect reward model, the policy $\pi_{\text{DPO}}$ from DPO, which is trained to maximize $y_w$ and minimize $y_l$ probability, **can unexpectedly favor out of distribution responses** (i.e., output $y$ that is different from $y_w$ and $y_l$ ) and lead to unpredictable behaviors.
 
+The reason for the lack of robustness for DPO compared to RL-PPO is that
+* DPO is learning from **limited, offline generated** preference data and there is no additional exploration of the input output space during training. The resulting model has a hard time to generate well beyond what is included in the preference data. In the loss function, this is a limited regularization effect on $\pi_{\text{DPO}}(y)$, when $y$ is largely different from $y_w$ or $y_l$ in the training data. 
+* RL-PPO is **online** learning with exploration. After obtaining the reward model, RL-PPO does not need offline generated data to train the policy $\pi_{\text{PPO}}$; the LLM agent itself generates outputs and learn from the reward signal from reward model. The self-generation approach enables RL to have in theory **unlimited amount of data to cover much large ranges of input and output distributions**. Even an output $y$ is largely different from $y_w$ or $y_l$ in the training data, such $y$ might be covered in the online exploration process; As a result, at least the KL regularization in the loss function can still properly guide $\pi_{\text{PPO}}(y)$ to not to be far away from $\pi_{\text{ref}}(y)$.  
+
+Nevertheless, from reward modeling perspective, DPO and RL-PPO share the vulnerbility to reward model
+* Both DPO and RL-PPO is approximating the ground-truth reward model using limited, offline generated preference data. The size and distribution of preference data affect the gap of trained reward model and the ground-truth reward model. The gap in the reward model will translate to the gap of policy. 
+* To overcome the limitation of reward modeling on offline generated data, we can use iterative approach to improve reward modeling (i.e., collecting additional preference data label on DPO or RL-PPO policies for continous reward modeling improvement). 
+
+````{prf:remark} Effective implementing PPO is critical
+Although RL-PPO has better robustness to imperfect reward model {cite:p}`xu2024dpo`, an effective implementation of PPO is critical. This involves tricks like advantage normalization, large batch size, and exponential moving average update for the reference model, etc.
+````
+
+## DPO Variants
+(chapter_training_sec_LLM_alignment_label_smoothing_DPO)=
 ### Smoothing preference label
 
 {cite:p}`Mitchell2023noteondpo` explore a more robust DPO approach when the preference labels are noisy. It assumes that the labels have been flipped with some small probability $\epsilon \in(0,0.5)$. We can use a conservative target distribution instead, $p\left(y_w \succ y_l\right)=1-\epsilon$, giving BCE loss:
@@ -364,6 +414,7 @@ $$
 <!-- The gradient is zero when $\hat{p}_\theta\left(y_w \succ y_l\right)=(1-\epsilon)$, i.e., our (implicit) reward assigns the desired confidence level in this training example under the Bradley-Terry model [2]. For normal DPO, the gradient is never zero! Using the shorthand $h_{\pi_\theta}^{y_w, y_l}=\log \frac{\pi_\theta\left(y_w\right)}{\pi_{\text {ref }}\left(y_w\right)}-\log \frac{\pi_\theta\left(y_l\right)}{\pi_{\text {ref }}\left(y_l\right)}$, let's compare the conservative DPO (cDPO?) -->
 
 
+(chapter_training_sec_LLM_alignment_simple_DPO)=
 ### Simple DPO
 
 The simple DPO{cite:p}`meng2024simposimplepreferenceoptimization` improve the original DPO from two aspects:

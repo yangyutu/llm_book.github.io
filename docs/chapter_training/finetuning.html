@@ -397,7 +397,7 @@ an unseen task type; for instance, we could evaluate the model on natural langua
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-training-fig-finetuning-instruction-finetuning-gpt3-performance">
-<a class="reference internal image-reference" href="../../_images/instruction_finetuning_performance.png"><img alt="../../_images/instruction_finetuning_performance.png" src="../../_images/instruction_finetuning_performance.png" style="width: 1457.6000000000001px; height: 381.6px;" />
+<a class="reference internal image-reference" href="../../_images/instruction_finetuning_performance.png"><img alt="../../_images/instruction_finetuning_performance.png" src="../../_images/instruction_finetuning_performance.png" style="width: 911.0px; height: 238.5px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 13.2 </span><span class="caption-text">Performance of zero-shot FLAN, compared with zero-shot and few-shot GPT-3, on three unseen task types where instruction tuning improved performance substantially. Image from <span id="id4">[<a class="reference internal" href="#id537" title="Jason Wei, Maarten Bosma, Vincent Y Zhao, Kelvin Guu, Adams Wei Yu, Brian Lester, Nan Du, Andrew M Dai, and Quoc V Le. Finetuned language models are zero-shot learners. ArXiv:2109.01652, 2021.">WBZ+21</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-finetuning-instruction-finetuning-gpt3-performance" title="Link to this image">#</a></p>
@@ -607,8 +607,8 @@ The selection of low rank matrices
 <section id="study-results">
 <h4><span class="section-number">13.3.5.2. </span>Study Results<a class="headerlink" href="#study-results" title="Link to this heading">#</a></h4>
 <p>As shown in the following, LoRA has been successfully applied to various models, including RoBERT and GPT-3, showing competitive performance with full finetuning while using only 0.01% of the trainable parameters.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1559">
-<caption><span class="caption-number">Table 13.1 </span><span class="caption-text">RoBERT with different adaptation methods on the language understanding GLUE benchmark.</span><a class="headerlink" href="#id1559" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1563">
+<caption><span class="caption-number">Table 13.1 </span><span class="caption-text">RoBERT with different adaptation methods on the language understanding GLUE benchmark.</span><a class="headerlink" href="#id1563" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Model &amp; Method</p></th>
 <th class="head"><p># Trainable Parameters</p></th>
@@ -631,8 +631,8 @@ The selection of low rank matrices
 </tbody>
 </table>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id1560">
-<caption><span class="caption-number">Table 13.2 </span><span class="caption-text">GPT-3-175B with different adaptation methods on the language understanding benchmark.</span><a class="headerlink" href="#id1560" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1564">
+<caption><span class="caption-number">Table 13.2 </span><span class="caption-text">GPT-3-175B with different adaptation methods on the language understanding benchmark.</span><a class="headerlink" href="#id1564" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Model&amp;Method</p></th>
 <th class="head text-center"><p># Trainable Parameters</p></th>
@@ -675,8 +675,8 @@ The selection of low rank matrices
 <li><p><span class="math notranslate nohighlight">\(r\)</span> as small as one suffices for adapting both <span class="math notranslate nohighlight">\(W^Q\)</span> and <span class="math notranslate nohighlight">\(W^V\)</span> on these datasets while training <span class="math notranslate nohighlight">\(W^Q\)</span> alone needs a larger <span class="math notranslate nohighlight">\(r\)</span>.</p></li>
 <li><p>Adapting more matrices will improve model performance but has marginal gain when adapting all matrices.</p></li>
 </ul>
-<div class="pst-scrollable-table-container"><table class="table" id="id1561">
-<caption><span class="caption-number">Table 13.3 </span><span class="caption-text">Validation accuracy on WikiSQL and MultiNLI with different rank <span class="math notranslate nohighlight">\(r\)</span>.</span><a class="headerlink" href="#id1561" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1565">
+<caption><span class="caption-number">Table 13.3 </span><span class="caption-text">Validation accuracy on WikiSQL and MultiNLI with different rank <span class="math notranslate nohighlight">\(r\)</span>.</span><a class="headerlink" href="#id1565" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-center"><p></p></th>
 <th class="head text-center"><p>Weight Type</p></th>
