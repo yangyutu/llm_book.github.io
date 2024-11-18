@@ -21,7 +21,7 @@ Classify the sentiment of the following movie review as positive, negative, or n
 
 **Review**: 'The visuals were stunning and the action sequences kept me on the edge of my seat. However, the plot was thin and the characters lacked depth. Overall, it was an entertaining but forgettable experience.
 
-**Response**: neutral
+**Response**: The sentiment of the movie review can be classified as **neutral**.   While the reviewer mentions positive aspects such as "stunning visuals" and "action sequences," they also highlight significant drawbacks like a "thin plot" and "characters lacked depth." The conclusion that it was an "entertaining but forgettable experience" suggests a mixed sentiment, leading to a neutral overall impression.
 ````
 
 Besides the above demonstrated classification text, LLM can accomplish a wide rangle of straight forward tasks, as shown in the following.
@@ -34,7 +34,7 @@ Extract the title, h1, and body text from the following HTML
 
 &lt;head>&lt;title>A simple page&lt;/title>&lt;/head>&lt;body>&lt;h1>Hello
 World&lt;/h1>&lt;p>This is some text in a simple html page.&lt;/p>&lt;/
-body>&lt;/btml>
+body>
 
 **Response**:
 Title: A simple page

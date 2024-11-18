@@ -374,10 +374,10 @@ y=b+We+U \tanh(d+He)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(W, H\)</span> are matrices and <span class="math notranslate nohighlight">\(b, d\)</span> are biases. Here <span class="math notranslate nohighlight">\(W\)</span> can optionally zero, meaning no direct connections. <span class="math notranslate nohighlight">\(e = (e_1,...,e_{n-1})\)</span> is the concatenations of word embeddings of each preceding token.</p>
 <p>Feed-forward neural language model brings several improvements over the traditional <span class="math notranslate nohighlight">\(n\)</span>-gram language model: it provides a <strong>compact and efficient parameterization</strong> to capture word dependencies among text data. Recall that <span class="math notranslate nohighlight">\(n\)</span>-gram model would have to store all observed <span class="math notranslate nohighlight">\(n\)</span>-grams. However, feed-forward neural language model still meet challenges to capture long-distance dependencies in natural language. In the feed-forward neural language model, <strong>capturing long-distance dependencies will require an increase of the context window size</strong>, which linearly scales with model parameters <span class="math notranslate nohighlight">\(W\)</span>. Another drawback is that a word that appears at different locations will be multiplied by different weights to get its embedding, which is inconsistent.</p>
-<figure class="align-default" id="id1546">
+<figure class="align-default" id="id1548">
 <img alt="../../_images/FeedForwardModel_v2.png" src="../../_images/FeedForwardModel_v2.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Feedforward neural netowk based language model.</span><a class="headerlink" href="#id1546" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Feedforward neural netowk based language model.</span><a class="headerlink" href="#id1548" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>

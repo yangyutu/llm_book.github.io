@@ -593,8 +593,8 @@ These factors combine to potentially shorten both training and inference times, 
 </figcaption>
 </figure>
 <p>We can estimate the memory storage consumption according to the following table. Denote the model parameter size by <span class="math notranslate nohighlight">\(\Phi\)</span>. Let the storage unit be byte. We need <span class="math notranslate nohighlight">\(16\Phi\)</span> memory storage in total.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1549">
-<caption><span class="caption-number">Table 16.1 </span><span class="caption-text">Storage requirement for different components during LLM training using Adam.</span><a class="headerlink" href="#id1549" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1551">
+<caption><span class="caption-number">Table 16.1 </span><span class="caption-text">Storage requirement for different components during LLM training using Adam.</span><a class="headerlink" href="#id1551" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Type</p></th>
 <th class="head text-left"><p>Storage Size</p></th>
@@ -921,8 +921,8 @@ From the above, we can see that all operations within the for loop satisfy the a
 This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Phi\)</span> communication volume, in which the step 1 has <span class="math notranslate nohighlight">\((N_d-1)\Phi\)</span> and step 2 has <span class="math notranslate nohighlight">\((N_d-1)\Phi\)</span>. The naive implementation has the communication load imbalance issue as all data are sent into and sent out from Rank0 device.</p></li>
 </ol>
 <p>The <strong>RingAllReduce</strong> address the load imbalance issue by engaging all devices in data communication and reduction (i.e., more parallelism). The RingAllReduce is equivalent to first RingReduceScatter and then AllGather.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1550">
-<caption><span class="caption-number">Table 16.2 </span><span class="caption-text">Communication volumne summary for different operations. Let <span class="math notranslate nohighlight">\(\Phi\)</span> be the total data size in one device and <span class="math notranslate nohighlight">\(N\)</span> be the total number of devices.</span><a class="headerlink" href="#id1550" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1552">
+<caption><span class="caption-number">Table 16.2 </span><span class="caption-text">Communication volumne summary for different operations. Let <span class="math notranslate nohighlight">\(\Phi\)</span> be the total data size in one device and <span class="math notranslate nohighlight">\(N\)</span> be the total number of devices.</span><a class="headerlink" href="#id1552" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Type</p></th>
 <th class="head text-left"><p>Storage Size</p></th>

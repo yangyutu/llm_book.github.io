@@ -657,6 +657,11 @@ The implication is that the impact of pruning parameter $w_q$ is $\frac{1}{2} \f
 
 #### Speed-Up Hessian Computation
 
+## Prompt Compression
+
+{cite:p}`jiang2023llmlingua`
+
+
 ## FP8
 
 
