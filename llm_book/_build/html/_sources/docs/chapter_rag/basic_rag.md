@@ -3,8 +3,8 @@
 ## Motivation
 LLMs have revolutionized natural language processing, but they still face several significant challenges, particularly in **knowledge intensive tasks**:
 
-* **Hallucination**: LLMs can generate plausible-sounding but factually incorrect information when they are prompted with rare or ambiguous queries, e.g., what is kuula? (a fishing god).
-* **Outdated knowledge**: The knowledge of LLMs is limited to their pre-training data, which can quickly become obsolete.
+* **Hallucination**: LLMs can generate plausible-sounding but factually incorrect information when they are prompted with rare or ambiguous queries, e.g., what is kuula? (a fishing god). And there lacks an intrinsic way of detecting when LLM is making up facts.
+* **Outdated knowledge**: The knowledge of LLMs is limited to their pre-training data, which can quickly become obsolete. LLM cannot answer questions like stock market values, weather forecast, news, etc. that require access to dynamic, ever-changing knowledge.
 * **Untraceable reasoning**: The decision-making process of LLMs is often unclear, making it difficult to verify or understand their outputs.
 * **Expensive cost to inject knowledge**: Although one can inject domain knowledge or updated knowledge via continuous pretraining or finetining, the cost of data collections and training is very high.
 
@@ -22,13 +22,10 @@ Generation. The original question and the retrieved context are fed into LLM to 
 
 Compared to LLM's responses that are relied on its own internal knowledge, RAG exhibits the following advantages:
 
-**Improved Accuracy and Reliability**: By supplementing the LLM's knowledge with current, factual information from external sources, RAG can significantly reduce hallucinations and increase the accuracy of generated content.
-
-**Superior Performance on Knowledge-Intensive Tasks**: RAG excels in tasks that require specific, detailed information, such as question-answering, fact-checking, and research assistance.
-
-**Continuous Knowledge Updates**: Unlike traditional LLMs, which require retraining to incorporate new information, RAG systems can be updated by simply modifying the external knowledge base. This allows for more frequent and efficient knowledge updates.
-
-**Domain-Specific Information Integration**: RAG enables the integration of specialized knowledge from particular fields or industries, making it possible to create more focused and accurate outputs for specific domains.
+* **Improved accuracy and reliability**: By supplementing the LLM's knowledge with current, factual information from external sources, RAG can significantly reduce hallucinations and increase the accuracy of generated content.
+* **Superior performance on knowledge-intensive tasks**: RAG excels in tasks that require specific, detailed information, such as question-answering, fact-checking, and research assistance.
+* **Continuous knowledge updates**: Unlike traditional LLMs, which require retraining or continuous pretraining to incorporate new information, RAG systems can be updated by simply modifying the external knowledge base. This allows for more frequent and efficient knowledge updates.
+* **Domain-specific information integration**: RAG enables the integration of specialized knowledge from particular fields or industries, making it possible to create more focused and accurate outputs for specific domains.
 
 
 ## RAG Frameworks
@@ -37,8 +34,9 @@ Compared to LLM's responses that are relied on its own internal knowledge, RAG e
 
 RAG is a technique that combines the powerful language understanding generation capabilities of LLMs with the information retrieval ability of a retrieval system/search engine. This hybrid approach aims to leverage the strengths of both systems to produce more accurate, up-to-date, and verifiable outputs.
 
-The **RAG** framework is built upon three fundamental components [{numref}`chapter_rag_fig_rag_framework_demo`]:
-* **Indexing building**, which transforms raw documents into a format that enables efficient retrieval and knowledge integration. For example, one can split a document into multiple chunks, and encode each of them into dense embedding vectors (for dense retrieval) or inverted index (for sparse retrieval). Indexing building is usually done offline.
+The **RAG** framework is built upon four fundamental components [{numref}`chapter_rag_fig_rag_framework_demo`]:
+* **Data Source**, which involves the collection of public or private data relevant to the domain of interest. Data can come from a large variety of sources and from different modalities.
+* **Indexing building**, which transforms data source into a format that enables efficient retrieval and knowledge integration. For example, one can split a document into multiple chunks, and encode each of them into dense embedding vectors (for dense retrieval) or inverted index (for sparse retrieval). Indexing building is usually done offline.
 * **Retrieval**, which is the process of extracting relevant paragraph/chunks from the index in response to a query. This step involves online query understanding and processing - transform the query into embedding vector (for dense retrieval) or terms (for sparse retrieval) and retrieving documents using query vectors or terms. 
 * **Generation**, which involves using the retrieved information along with the language model's inherent knowledge to produce a response. This step leverages the power of large language models to understand context, integrate the retrieved information, and generate coherent and relevant text. 
 
@@ -211,7 +209,7 @@ During document indexing stage, we need to split documents into different chunks
 
 Coarse-grained retrieval units fundamentally improve the **recall at the cost of precision**; that is, it can provide more relevant information for the problem, but they may also contain redundant content, which could distract the retriever and language models in downstream tasks. Intutively, encoding a large chunk of text into a single vector will have information loss.
 
-On the other hand, fine-grained retrieval unit granularity increases the burden of retrieval and does not guarantee content completeness and semantic integrity (i.e., not enough context).
+On the other hand, fine-grained retrieval unit granularity increases the burden of retrieval and does not guarantee content completeness and semantic integrity (i.e., not enough context). As a result, the quality of LLM response will be affected negatively.
 
 From a high level, an ideal splitting should consider the following factors:
 * **Semantic coherence**: Chunks should maintain semantic coherence - split boundaries should respect natural semantic units and closely related information should stay in the same chunk.

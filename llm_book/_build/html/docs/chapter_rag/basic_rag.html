@@ -380,8 +380,8 @@ document.write(`
 <h2><span class="section-number">21.1. </span>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
 <p>LLMs have revolutionized natural language processing, but they still face several significant challenges, particularly in <strong>knowledge intensive tasks</strong>:</p>
 <ul class="simple">
-<li><p><strong>Hallucination</strong>: LLMs can generate plausible-sounding but factually incorrect information when they are prompted with rare or ambiguous queries, e.g., what is kuula? (a fishing god).</p></li>
-<li><p><strong>Outdated knowledge</strong>: The knowledge of LLMs is limited to their pre-training data, which can quickly become obsolete.</p></li>
+<li><p><strong>Hallucination</strong>: LLMs can generate plausible-sounding but factually incorrect information when they are prompted with rare or ambiguous queries, e.g., what is kuula? (a fishing god). And there lacks an intrinsic way of detecting when LLM is making up facts.</p></li>
+<li><p><strong>Outdated knowledge</strong>: The knowledge of LLMs is limited to their pre-training data, which can quickly become obsolete. LLM cannot answer questions like stock market values, weather forecast, news, etc. that require access to dynamic, ever-changing knowledge.</p></li>
 <li><p><strong>Untraceable reasoning</strong>: The decision-making process of LLMs is often unclear, making it difficult to verify or understand their outputs.</p></li>
 <li><p><strong>Expensive cost to inject knowledge</strong>: Although one can inject domain knowledge or updated knowledge via continuous pretraining or finetining, the cost of data collections and training is very high.</p></li>
 </ul>
@@ -396,19 +396,22 @@ Generation. The original question and the retrieved context are fed into LLM to 
 </figcaption>
 </figure>
 <p>Compared to LLM’s responses that are relied on its own internal knowledge, RAG exhibits the following advantages:</p>
-<p><strong>Improved Accuracy and Reliability</strong>: By supplementing the LLM’s knowledge with current, factual information from external sources, RAG can significantly reduce hallucinations and increase the accuracy of generated content.</p>
-<p><strong>Superior Performance on Knowledge-Intensive Tasks</strong>: RAG excels in tasks that require specific, detailed information, such as question-answering, fact-checking, and research assistance.</p>
-<p><strong>Continuous Knowledge Updates</strong>: Unlike traditional LLMs, which require retraining to incorporate new information, RAG systems can be updated by simply modifying the external knowledge base. This allows for more frequent and efficient knowledge updates.</p>
-<p><strong>Domain-Specific Information Integration</strong>: RAG enables the integration of specialized knowledge from particular fields or industries, making it possible to create more focused and accurate outputs for specific domains.</p>
+<ul class="simple">
+<li><p><strong>Improved accuracy and reliability</strong>: By supplementing the LLM’s knowledge with current, factual information from external sources, RAG can significantly reduce hallucinations and increase the accuracy of generated content.</p></li>
+<li><p><strong>Superior performance on knowledge-intensive tasks</strong>: RAG excels in tasks that require specific, detailed information, such as question-answering, fact-checking, and research assistance.</p></li>
+<li><p><strong>Continuous knowledge updates</strong>: Unlike traditional LLMs, which require retraining or continuous pretraining to incorporate new information, RAG systems can be updated by simply modifying the external knowledge base. This allows for more frequent and efficient knowledge updates.</p></li>
+<li><p><strong>Domain-specific information integration</strong>: RAG enables the integration of specialized knowledge from particular fields or industries, making it possible to create more focused and accurate outputs for specific domains.</p></li>
+</ul>
 </section>
 <section id="rag-frameworks">
 <h2><span class="section-number">21.2. </span>RAG Frameworks<a class="headerlink" href="#rag-frameworks" title="Link to this heading">#</a></h2>
 <section id="basic-rag">
 <h3><span class="section-number">21.2.1. </span>Basic RAG<a class="headerlink" href="#basic-rag" title="Link to this heading">#</a></h3>
 <p>RAG is a technique that combines the powerful language understanding generation capabilities of LLMs with the information retrieval ability of a retrieval system/search engine. This hybrid approach aims to leverage the strengths of both systems to produce more accurate, up-to-date, and verifiable outputs.</p>
-<p>The <strong>RAG</strong> framework is built upon three fundamental components [<a class="reference internal" href="#chapter-rag-fig-rag-framework-demo"><span class="std std-numref">Fig. 21.2</span></a>]:</p>
+<p>The <strong>RAG</strong> framework is built upon four fundamental components [<a class="reference internal" href="#chapter-rag-fig-rag-framework-demo"><span class="std std-numref">Fig. 21.2</span></a>]:</p>
 <ul class="simple">
-<li><p><strong>Indexing building</strong>, which transforms raw documents into a format that enables efficient retrieval and knowledge integration. For example, one can split a document into multiple chunks, and encode each of them into dense embedding vectors (for dense retrieval) or inverted index (for sparse retrieval). Indexing building is usually done offline.</p></li>
+<li><p><strong>Data Source</strong>, which involves the collection of public or private data relevant to the domain of interest. Data can come from a large variety of sources and from different modalities.</p></li>
+<li><p><strong>Indexing building</strong>, which transforms data source into a format that enables efficient retrieval and knowledge integration. For example, one can split a document into multiple chunks, and encode each of them into dense embedding vectors (for dense retrieval) or inverted index (for sparse retrieval). Indexing building is usually done offline.</p></li>
 <li><p><strong>Retrieval</strong>, which is the process of extracting relevant paragraph/chunks from the index in response to a query. This step involves online query understanding and processing - transform the query into embedding vector (for dense retrieval) or terms (for sparse retrieval) and retrieving documents using query vectors or terms.</p></li>
 <li><p><strong>Generation</strong>, which involves using the retrieved information along with the language model’s inherent knowledge to produce a response. This step leverages the power of large language models to understand context, integrate the retrieved information, and generate coherent and relevant text.</p></li>
 </ul>
@@ -540,8 +543,8 @@ Generation. The original question and the retrieved context are fed into LLM to 
 <section id="indexing-data-sources">
 <h3><span class="section-number">21.4.1. </span>Indexing Data Sources<a class="headerlink" href="#indexing-data-sources" title="Link to this heading">#</a></h3>
 <p>In the indexing stage, there are different data sources, and each has its benefits and challenges.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1557">
-<caption><span class="caption-number">Table 21.1 </span><span class="caption-text">Retrieval Data Sources</span><a class="headerlink" href="#id1557" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1559">
+<caption><span class="caption-number">Table 21.1 </span><span class="caption-text">Retrieval Data Sources</span><a class="headerlink" href="#id1559" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Data Type</p></th>
 <th class="head text-left"><p>Examples</p></th>
@@ -596,7 +599,7 @@ base (based on key phrases extracted by LLM) could avoid concept/entity missing 
 <h3><span class="section-number">21.4.3. </span>Document Splitting and Granularity<a class="headerlink" href="#document-splitting-and-granularity" title="Link to this heading">#</a></h3>
 <p>During document indexing stage, we need to split documents into different chunks. Such retrieval granularity ranges from fine to coarse, including Phrase, Sentence, Paragrpahs.</p>
 <p>Coarse-grained retrieval units fundamentally improve the <strong>recall at the cost of precision</strong>; that is, it can provide more relevant information for the problem, but they may also contain redundant content, which could distract the retriever and language models in downstream tasks. Intutively, encoding a large chunk of text into a single vector will have information loss.</p>
-<p>On the other hand, fine-grained retrieval unit granularity increases the burden of retrieval and does not guarantee content completeness and semantic integrity (i.e., not enough context).</p>
+<p>On the other hand, fine-grained retrieval unit granularity increases the burden of retrieval and does not guarantee content completeness and semantic integrity (i.e., not enough context). As a result, the quality of LLM response will be affected negatively.</p>
 <p>From a high level, an ideal splitting should consider the following factors:</p>
 <ul class="simple">
 <li><p><strong>Semantic coherence</strong>: Chunks should maintain semantic coherence - split boundaries should respect natural semantic units and closely related information should stay in the same chunk.</p></li>
@@ -623,8 +626,8 @@ base (based on key phrases extracted by LLM) could avoid concept/entity missing 
 <li><p><strong>Complex queries</strong> that combine multiple concepts</p></li>
 <li><p><strong>Contextual understanding</strong> from multi-turn conversations</p></li>
 </ul>
-<div class="pst-scrollable-table-container"><table class="table" id="id1558">
-<caption><span class="caption-number">Table 21.2 </span><span class="caption-text">Retrieval Data Sources</span><a class="headerlink" href="#id1558" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1560">
+<caption><span class="caption-number">Table 21.2 </span><span class="caption-text">Retrieval Data Sources</span><a class="headerlink" href="#id1560" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Query Type</p></th>
 <th class="head text-left"><p>Example</p></th>
@@ -952,8 +955,8 @@ omparison between two responses given by InstructGPT. The retrieved passages are
 </figcaption>
 </figure>
 <p>In the following, we also summarize different factors to consider when choosing among prompting, fine-tuning, and RAG.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1559">
-<caption><span class="caption-number">Table 21.3 </span><span class="caption-text">Different factors to consider when choosing among prompting, fine-tuning, and RAG.</span><a class="headerlink" href="#id1559" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1561">
+<caption><span class="caption-number">Table 21.3 </span><span class="caption-text">Different factors to consider when choosing among prompting, fine-tuning, and RAG.</span><a class="headerlink" href="#id1561" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Factors</p></th>
 <th class="head text-left"><p>Prompting</p></th>

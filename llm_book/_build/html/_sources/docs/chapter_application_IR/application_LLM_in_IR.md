@@ -13,13 +13,18 @@
 
 ## Query-Doc Ranking
 
+[Is ChatGPT Good at Search? Investigating Large Language Models as Re-Ranking Agents](https://arxiv.org/pdf/2304.09542v2)
+
 [A Setwise Approach for Effective and Highly Efficient Zero-shot Ranking with Large Language Models](https://arxiv.org/abs/2310.09497)
 
 [Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting](https://aclanthology.org/2024.findings-naacl.97/)
 
 [Zero-Shot Listwise Document Reranking with a Large Language Model](https://arxiv.org/abs/2305.02156)
 
-## Document Understanding and Rewriting
+## LLM Embedding Model
+
+[Improving text embeddings with large language models](https://arxiv.org/pdf/2401.00368)
+[NV-Embed: Improved Techniques for Training LLMs as Generalist Embedding Models.](https://arxiv.org/pdf/2405.17428)
 
 
 ## Application in RAG
