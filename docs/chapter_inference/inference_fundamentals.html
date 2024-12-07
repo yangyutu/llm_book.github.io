@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=b4b7a797" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -215,11 +215,12 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">21. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">22. Advanced RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">22. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">23. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -421,7 +422,7 @@ Y_{n}=\underset{Y_{n} \in \mathcal{Y}_t}{\operatorname{argmax}} \operatorname{Sc
 </section>
 <section id="controling-beam-search-behavior">
 <h4><span class="section-number">17.1.2.3. </span>Controling beam search behavior<a class="headerlink" href="#controling-beam-search-behavior" title="Link to this heading">#</a></h4>
-<p>Since beam-decoding is optimizing a user-defined score function, we can incorpoate various penalties or rewards into the score function to control the diversity, brevity, smoothness, etc. of the generated sequence.\cite{vijayakumar2016diverse}
+<p>Since beam-decoding is optimizing a user-defined score function, we can incorpoate various penalties or rewards into the score function to control the diversity, brevity, smoothness, etc. of the generated sequence<span id="id1">[<a class="reference internal" href="#id1496" title="Ashwin K Vijayakumar, Michael Cogswell, Ramprasath R Selvaraju, Qing Sun, Stefan Lee, David Crandall, and Dhruv Batra. Diverse beam search: decoding diverse solutions from neural sequence models. arXiv preprint arXiv:1610.02424, 2016.">VCS+16</a>]</span>.
 For example,</p>
 <ul class="simple">
 <li><p>Let <span class="math notranslate nohighlight">\(s\)</span> be the original score, we can add length penalty by using score <span class="math notranslate nohighlight">\(s\exp(-\alpha l)\)</span>, where <span class="math notranslate nohighlight">\(\alpha\)</span> is a scalar and <span class="math notranslate nohighlight">\(l\)</span> is the length of the generated sequence. <span class="math notranslate nohighlight">\(\alpha &gt; 0.0\)</span> means that the beam score is penalized by the sequence length; <span class="math notranslate nohighlight">\(\alpha  &lt; 0.0\)</span> is used to encourage the model to generate longer sequence.</p></li>
@@ -467,7 +468,15 @@ The temperature-controlled sampling randomly samples from the model output’s p
 </section>
 <section id="bibliography">
 <h2><span class="section-number">17.3. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<span class="target" id="id1"></span></section>
+<div class="docutils container" id="id2">
+<div role="list" class="citation-list">
+<div class="citation" id="id1496" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">VCS+16</a><span class="fn-bracket">]</span></span>
+<p>Ashwin K Vijayakumar, Michael Cogswell, Ramprasath R Selvaraju, Qing Sun, Stefan Lee, David Crandall, and Dhruv Batra. Diverse beam search: decoding diverse solutions from neural sequence models. <em>arXiv preprint arXiv:1610.02424</em>, 2016.</p>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">

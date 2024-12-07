@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=b4b7a797" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -215,11 +215,12 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">21. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">22. Advanced RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">22. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">23. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -394,8 +395,8 @@ Beam search: If used, beam search for text generation adds computational overhea
 <section id="memory-requirement-breakdown">
 <h3><span class="section-number">18.1.2. </span>Memory Requirement Breakdown<a class="headerlink" href="#memory-requirement-breakdown" title="Link to this heading">#</a></h3>
 <p>Assume every numerical value are stored in <span class="math notranslate nohighlight">\(p\)</span> bytes, we can compute more accurate memory requirements as follows.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1557">
-<caption><span class="caption-number">Table 18.1 </span><span class="caption-text">Memory requirement breakdown</span><a class="headerlink" href="#id1557" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1560">
+<caption><span class="caption-number">Table 18.1 </span><span class="caption-text">Memory requirement breakdown</span><a class="headerlink" href="#id1560" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Component</p></th>
 <th class="head text-left"><p>Memory Requirement</p></th>
@@ -490,8 +491,8 @@ Specifically, we can pre-computes and stores the key (K) and value (V) represent
 <section id="computational-cost-with-kv-cache">
 <h3><span class="section-number">18.2.2. </span>Computational cost with KV Cache<a class="headerlink" href="#computational-cost-with-kv-cache" title="Link to this heading">#</a></h3>
 <p>In <a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html#chapter-llm-arch-sec-llm-arch-fundamentals-forward-pass-computation"><span class="std std-ref">Forward Pass Computation Breadown</span></a>, we analyze the computational cost during a forward pass without using KV Cache. In this section, we are going to re-analyze the computatioal cost and compare it with the no-KV-Cache setting.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1558">
-<caption><span class="caption-number">Table 18.2 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id1558" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1561">
+<caption><span class="caption-number">Table 18.2 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id1561" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Module</p></th>
 <th class="head text-left"><p>Computation</p></th>

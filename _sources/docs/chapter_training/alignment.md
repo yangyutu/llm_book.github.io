@@ -180,6 +180,10 @@ There are four models needed in the PPO algorithm:
 * Frozen Reward model
   
 
+### PPO implementation
+
+{cite:p}`zheng2023secrets`
+
  -->
 
 
