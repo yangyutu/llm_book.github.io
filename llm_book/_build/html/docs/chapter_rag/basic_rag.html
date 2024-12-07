@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_rag/basic_rag';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="22. Information Retrieval and Text Ranking" href="../chapter_application_IR/information_retrieval_fundamentals.html" />
+    <link rel="next" title="22. Advanced RAG" href="advanced_rag.html" />
     <link rel="prev" title="20. Advanced Prompting Techniques" href="../chapter_prompt/advanced_prompt.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -215,11 +215,12 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">21. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_rag.html">22. Advanced RAG</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">22. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">23. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -332,13 +333,19 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indexing-data-sources">21.4.1. Indexing Data Sources</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-source-augmentation">21.4.2. Data Source Augmentation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#document-splitting-and-granularity">21.4.3. Document Splitting and Granularity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#utilizing-knowledge-graph">21.4.4. Utilizing Knowledge Graph</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fundamentals">21.4.4.1. Fundamentals</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#challenges">21.4.4.2. Challenges</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-optimization-query-understanding-and-rewriting">21.5. RAG Optimization: Query Understanding and Rewriting</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">21.5.1. Motivation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">21.5.1. Motivation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-to-vocalbulary-mismatch">21.5.2. Approach to Vocalbulary Mismatch</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-to-complex-multi-concept-queries">21.5.3. Approach to Complex Multi-Concept Queries</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-to-multi-turn-conversations">21.5.4. Approach to Multi-Turn Conversations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-query-categorization">21.5.5. Advanced Query Categorization</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-optimization-retriever-and-reranker">21.6. RAG Optimization: Retriever and ReRanker</a><ul class="nav section-nav flex-column">
@@ -352,17 +359,12 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-finetuning">21.7.3. Model Finetuning</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-rag">21.8. Advanced RAG</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agentic-rag">21.8.1. Agentic RAG</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graphrag">21.8.2. GraphRAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-rag-discussion">21.8. Further RAG Discussion</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-vs-prompting-and-fine-tuning">21.8.1. RAG vs Prompting and Fine Tuning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-vs-long-context-llm">21.8.2. RAG vs Long Context LLM</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-rag-discussion">21.9. Further RAG Discussion</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-vs-prompting-and-fine-tuning">21.9.1. RAG vs Prompting and Fine Tuning</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-vs-long-context-llm">21.9.2. RAG vs Long Context LLM</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">21.10. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">21.9. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -390,17 +392,16 @@ document.write(`
 <a class="reference internal image-reference" href="../../_images/RAG_demo.png"><img alt="../../_images/RAG_demo.png" src="../../_images/RAG_demo.png" style="width: 712.1999999999999px; height: 414.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 21.1 </span><span class="caption-text">Illustration of RAG process applied to question answering. It mainly consists of basic steps. 1) Offline Indexing. Documents are split into chunks,
+<p><span class="caption-number">Fig. 21.1 </span><span class="caption-text">Illustration of RAG process applied to question answering. It mainly consists of basic steps. 1) Offline Indexing. Documents are collected and split into chunks,
 encoded into vectors, and stored in a vector database. 2) Retrieval. Retrieve the Top <span class="math notranslate nohighlight">\(k\)</span> relevant chunks as context or knowledge supplement. 3)
 Generation. The original question and the retrieved context are fed into LLM to generate the final answer. Image from <span id="id1">[<a class="reference internal" href="#id1549" title="Yunfan Gao, Yun Xiong, Xinyu Gao, Kangxiang Jia, Jinliu Pan, Yuxi Bi, Yi Dai, Jiawei Sun, and Haofen Wang. Retrieval-augmented generation for large language models: a survey. arXiv preprint arXiv:2312.10997, 2023.">GXG+23</a>]</span>.</span><a class="headerlink" href="#chapter-rag-fig-rag-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Compared to LLM’s responses that are relied on its own internal knowledge, RAG exhibits the following advantages:</p>
 <ul class="simple">
-<li><p><strong>Improved accuracy and reliability</strong>: By supplementing the LLM’s knowledge with current, factual information from external sources, RAG can significantly reduce hallucinations and increase the accuracy of generated content.</p></li>
+<li><p><strong>Improved accuracy and reliability</strong>: By supplementing the LLM’s knowledge with current, factual information from external sources, RAG can significantly reduce hallucinations and increase the accuracy of generated content. In additional, by comparing retrieved sources and generated output, one can trace or verify claims in the output.</p></li>
 <li><p><strong>Superior performance on knowledge-intensive tasks</strong>: RAG excels in tasks that require specific, detailed information, such as question-answering, fact-checking, and research assistance.</p></li>
-<li><p><strong>Continuous knowledge updates</strong>: Unlike traditional LLMs, which require retraining or continuous pretraining to incorporate new information, RAG systems can be updated by simply modifying the external knowledge base. This allows for more frequent and efficient knowledge updates.</p></li>
-<li><p><strong>Domain-specific information integration</strong>: RAG enables the integration of specialized knowledge from particular fields or industries, making it possible to create more focused and accurate outputs for specific domains.</p></li>
+<li><p><strong>Continuous and domain-specific knowledge updates</strong>: Unlike traditional LLMs, which require retraining or continuous pretraining to incorporate updated or additional information, RAG systems can be updated by simply modifying the external knowledge base. This allows for more frequent and efficient knowledge updates and the integration of specialized knowledge from particular fields or industries, making it possible to create more focused and accurate outputs for specific domains.</p></li>
 </ul>
 </section>
 <section id="rag-frameworks">
@@ -410,7 +411,7 @@ Generation. The original question and the retrieved context are fed into LLM to 
 <p>RAG is a technique that combines the powerful language understanding generation capabilities of LLMs with the information retrieval ability of a retrieval system/search engine. This hybrid approach aims to leverage the strengths of both systems to produce more accurate, up-to-date, and verifiable outputs.</p>
 <p>The <strong>RAG</strong> framework is built upon four fundamental components [<a class="reference internal" href="#chapter-rag-fig-rag-framework-demo"><span class="std std-numref">Fig. 21.2</span></a>]:</p>
 <ul class="simple">
-<li><p><strong>Data Source</strong>, which involves the collection of public or private data relevant to the domain of interest. Data can come from a large variety of sources and from different modalities.</p></li>
+<li><p><strong>Data Collection</strong>, which involves the collection of public or private data relevant to the domain of interest. Data can come from a large variety of sources and from different modalities.</p></li>
 <li><p><strong>Indexing building</strong>, which transforms data source into a format that enables efficient retrieval and knowledge integration. For example, one can split a document into multiple chunks, and encode each of them into dense embedding vectors (for dense retrieval) or inverted index (for sparse retrieval). Indexing building is usually done offline.</p></li>
 <li><p><strong>Retrieval</strong>, which is the process of extracting relevant paragraph/chunks from the index in response to a query. This step involves online query understanding and processing - transform the query into embedding vector (for dense retrieval) or terms (for sparse retrieval) and retrieving documents using query vectors or terms.</p></li>
 <li><p><strong>Generation</strong>, which involves using the retrieved information along with the language model’s inherent knowledge to produce a response. This step leverages the power of large language models to understand context, integrate the retrieved information, and generate coherent and relevant text.</p></li>
@@ -440,12 +441,12 @@ Generation. The original question and the retrieved context are fed into LLM to 
 <h3><span class="section-number">21.2.2. </span>RAG Optimizations<a class="headerlink" href="#rag-optimizations" title="Link to this heading">#</a></h3>
 <p>Various optimizations can be applied to the basic RAG framework [<a class="reference internal" href="#chapter-rag-fig-rag-framework-demo"><span class="std std-numref">Fig. 21.2</span></a>] to improve the quality and reliability of the system’s outputs. These optimizations address common challenges in RAG systems, including query-document mismatch, retrieval accuracy, and output reliability.</p>
 <p>As shown in <a class="reference internal" href="#chapter-rag-fig-rag-framework-optimization-demo"><span class="std std-numref">Fig. 21.3</span></a>, we can divide optimizations into the following categories:</p>
-<p><strong>Document Understanding &amp; Augmentation</strong>:Instead of performing mechanism chunking to split the document, we can apply language understanding models to split documents into semnatically coherent units. Besides, we can enriches documents with additional context, metadata (e.g., stamptime), and alternative representations (queries related to document) before they enter the indexing phase. This enrichment makes documents more discoverable and helps maintain their semantic context even when split into chunks for processing.</p>
+<p><strong>Document Understanding &amp; Augmentation</strong>:Instead of performing mechanism chunking to split the document, we can apply language understanding models to split documents into semnatically coherent units. Besides, we can enriches documents with additional context, metadata (e.g., stamptime), and alternative representations (e.g., summaries, queries related to document) before they enter the indexing phase. This enrichment makes documents more discoverable and helps maintain their semantic context even when they are split into chunks for processing.</p>
 <p><strong>Query Understanding and Rewriting</strong>: This enhancement addresses one of the fundamental challenges in information retrieval: the vocabulary mismatch between query language and document language. The system can employ LLM to analyze and reformulate user queries, making them more effective for retrieval. It can help complex, multi-concept queries by decomposing the original query into multiple manageable subqueries.</p>
 <p><strong>Hybrid retrieval</strong>: Instead of using only sparse retrieval or dense retrieval, one can combine them together to form a hybrid retrieval system. For example, encoder models used in dense retriever can produce additional features for rankers in the sparse retriever side.</p>
-<p><strong>Re-ranking</strong>: After the initial retrieval, the Re-ranking step can significantly improves the quality and precision of retrieved content before it reaches the LLM. Documents are re-ranked using a much powerful model based on their contextual relevance to the user query, not just the vector semantic similarity. In addition, the re-ranking process often penalize similiar documents to promote a diverse set of relevant documents are sent to LLM.</p>
+<p><strong>Re-ranking for quality control</strong>: After the initial retrieval, the Re-ranking step can significantly improves the quality and precision of retrieved content before it reaches the LLM. Documents are re-ranked using a much powerful model based on their contextual relevance to the user query, not just the vector semantic similarity. In addition, the re-ranking process can use extra rules to penalize similiar documents to promote a diverse set of relevant documents are sent to LLM.</p>
 <p><strong>LLM Understanding &amp; Generation</strong>：Even with high-quality inputs to LLM, LLM can still produce poor results. This can be alleviated by improving model size, pretraining data quality and distribution, and fine-tuning strategies.</p>
-<p><strong>Output verification</strong>: As an additional quality control, after the LLM’s output, we can add additional step to validates the LLM’s output against the retrieved and re-ranked sources. This final check ensures accuracy and consistency.</p>
+<p><strong>Output verification</strong>: As the final layer quality control, after the LLM’s output, we can add an additional step to validates the LLM’s output against the retrieved and re-ranked sources. This final check ensures accuracy and consistency.</p>
 <figure class="align-default" id="chapter-rag-fig-rag-framework-optimization-demo">
 <a class="reference internal image-reference" href="../../_images/Basic_RAG_framework_optimization.png"><img alt="../../_images/Basic_RAG_framework_optimization.png" src="../../_images/Basic_RAG_framework_optimization.png" style="width: 388.5px; height: 493.49999999999994px;" />
 </a>
@@ -513,7 +514,7 @@ Generation. The original question and the retrieved context are fed into LLM to 
 <li><p><strong>Response Evaluation</strong>, which evaluates if the final LLM response:</p>
 <ul>
 <li><p>(Consistence &amp; faithfulness) Be consistent with retrieved context,</p></li>
-<li><p>(Usefulness) Addresses the information need of the query (if the query is an information seeking query)</p></li>
+<li><p>(Relevance &amp; Usefulness) Addresses the information need of the query (if the query is an information seeking query)</p></li>
 <li><p>(Expected Style) has expected style (like conciseness, clarity for summary type applications)</p></li>
 <li><p>(Insturction following) Follows additional guidelines if any (specified by the user).</p></li>
 </ul>
@@ -523,13 +524,30 @@ Generation. The original question and the retrieved context are fed into LLM to 
 <ul class="simple">
 <li><p><strong>Correctness</strong>: Whether the generated answer matches that of the reference answer given the query (requires labels). Or whether the predicted answer is semantically similar to the reference answer.</p></li>
 <li><p><strong>Faithfulness</strong>: Evaluates if the answer is faithful to the retrieved contexts (in other words, whether if there’s hallucination).</p></li>
-<li><p><strong>Answer Relevance &amp; Usefulness</strong>: Whether the generated answer is relevant to the query and address the information need of the query.</p></li>
+<li><p><strong>Relevance &amp; Usefulness</strong>: Whether the generated answer is relevant to the query and address the information need of the query.</p></li>
 <li><p><strong>Instruction Following</strong>: Whether additional instructions are followed.</p></li>
 <li><p><strong>Alignment with Reference Answer</strong>: If there are high quality reference answer, we can use it to compare the alignment of generated response and reference answer.</p></li>
 </ul>
-<p>We can leverage established relevance and ranking metrics to evaluating the <strong>retrieval quality</strong>, with LLM as query-document relevance labeler.</p>
-<p>When we adopt RAG is a new domain, we might not have enough test data to evaluate how the system works. We can leverage LLM to generate synthetic (question, answer) pairs.</p>
-<p>There are also efforts to automatic the RAG evaluation process, as shown in the following [<a class="reference internal" href="#chapter-rag-fig-rag-rag-checker"><span class="std std-numref">Fig. 21.5</span></a>] from <strong>RAGChecker</strong> <span id="id2">[<a class="reference internal" href="#id20" title="Dongyu Ru, Lin Qiu, Xiangkun Hu, Tianhang Zhang, Peng Shi, Shuaichen Chang, Jiayang Cheng, Cunxiang Wang, Shichao Sun, Huanyu Li, and others. Ragchecker: a fine-grained framework for diagnosing retrieval-augmented generation. arXiv preprint arXiv:2408.08067, 2024.">RQH+24</a>]</span>.</p>
+<p>We can leverage established relevance and ranking quality metrics to evaluating the <strong>retrieval quality</strong>. For example</p>
+<ul class="simple">
+<li><p>One can use LLM as query-document relevance labeler, and compute precision and nDCG metrics. When we adopt RAG to a new domain, we might not have enough test data to evaluate how the system works. We can leverage LLM to generate synthetic (question, answer) pairs.</p></li>
+<li><p>Diversity of retrieved results might also play an important role in tasks that require LLM to generate complete and comprehensive results. As typical ranking metrics does not penalize duplicate results, one might need to develop alternative diversity metrics.</p></li>
+</ul>
+<p>There are also efforts to automate the RAG evaluation process, as shown in the following [<a class="reference internal" href="#chapter-rag-fig-rag-rag-checker"><span class="std std-numref">Fig. 21.5</span></a>] from <strong>RAGChecker</strong> <span id="id2">[<a class="reference internal" href="#id20" title="Dongyu Ru, Lin Qiu, Xiangkun Hu, Tianhang Zhang, Peng Shi, Shuaichen Chang, Jiayang Cheng, Cunxiang Wang, Shichao Sun, Huanyu Li, and others. Ragchecker: a fine-grained framework for diagnosing retrieval-augmented generation. arXiv preprint arXiv:2408.08067, 2024.">RQH+24</a>]</span>.</p>
+<p>The key idea is to separate the overall metrics into retriever metrics and generator metrics and to compute metrics at a fine-grained chunks or claim level.</p>
+<p>Ideally, a <strong>perfect retriever</strong> returns precisely all claims needed to generate the ground-truth answer. Therefore,</p>
+<ul class="simple">
+<li><p>One can use <strong>precision</strong> to measure how many chunks are relevant (i.e., any ground-truth claim is in it) with respect to all retrieved chunks.</p></li>
+<li><p>One can use <strong>claim recall</strong> to measure how many claims made in the ground-truth answer are covered by retrieved chunks.</p></li>
+</ul>
+<p>Given retrieved chunks (possibly mixing relevant and irrelevant information), a <strong>perfect generator</strong> would identify and include all ground-truth-relevant claims and ignore any that are not. Because the generator’s results have dependency on retrieved chunks, we use the following metrics to capture different aspects of its performance.</p>
+<ul class="simple">
+<li><p>Context utilization, which captures percentage of correct claims in the final output over the correct claims in the retrieved chunks.</p></li>
+<li><p>Noise sensitivity, which is the percentage of incorrect claims arising from retrieved chunks over the total number of output claims. A generator with high noise tolerance is expected to have lower number of incorrect claims arsing from retrieved chunks.</p></li>
+<li><p>Hallucination, which is the percentage of made-up, incorrect claims over the total number of output claims. The made-up claims here refers to claims not coming from retrieved chunks.</p></li>
+<li><p>Self-knowledge, which is the percentage of correct claims not coming from retrieved chunks over the total number of output claims. This captures the ability to utilize its own knowledge.</p></li>
+<li><p>Faithfulness, which is the percentage of claims coming from retrieved chunks over the total number of output claims. A perfectly failthful generator will have every output claims originated from retrieved chunks; In other words, its hallucination and self-knowledge metrics are zero.</p></li>
+</ul>
 <figure class="align-default" id="chapter-rag-fig-rag-rag-checker">
 <a class="reference internal image-reference" href="../../_images/rag_checker_demo.png"><img alt="../../_images/rag_checker_demo.png" src="../../_images/rag_checker_demo.png" style="width: 522.6px; height: 469.2px;" />
 </a>
@@ -543,8 +561,8 @@ Generation. The original question and the retrieved context are fed into LLM to 
 <section id="indexing-data-sources">
 <h3><span class="section-number">21.4.1. </span>Indexing Data Sources<a class="headerlink" href="#indexing-data-sources" title="Link to this heading">#</a></h3>
 <p>In the indexing stage, there are different data sources, and each has its benefits and challenges.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1559">
-<caption><span class="caption-number">Table 21.1 </span><span class="caption-text">Retrieval Data Sources</span><a class="headerlink" href="#id1559" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1562">
+<caption><span class="caption-number">Table 21.1 </span><span class="caption-text">Retrieval Data Sources</span><a class="headerlink" href="#id1562" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Data Type</p></th>
 <th class="head text-left"><p>Examples</p></th>
@@ -597,9 +615,21 @@ base (based on key phrases extracted by LLM) could avoid concept/entity missing 
 </section>
 <section id="document-splitting-and-granularity">
 <h3><span class="section-number">21.4.3. </span>Document Splitting and Granularity<a class="headerlink" href="#document-splitting-and-granularity" title="Link to this heading">#</a></h3>
-<p>During document indexing stage, we need to split documents into different chunks. Such retrieval granularity ranges from fine to coarse, including Phrase, Sentence, Paragrpahs.</p>
-<p>Coarse-grained retrieval units fundamentally improve the <strong>recall at the cost of precision</strong>; that is, it can provide more relevant information for the problem, but they may also contain redundant content, which could distract the retriever and language models in downstream tasks. Intutively, encoding a large chunk of text into a single vector will have information loss.</p>
-<p>On the other hand, fine-grained retrieval unit granularity increases the burden of retrieval and does not guarantee content completeness and semantic integrity (i.e., not enough context). As a result, the quality of LLM response will be affected negatively.</p>
+<p>During document indexing stage, we need to split documents into different <strong>chunks</strong>. The goal is to break down a full-length documents into smaller, more manageable pieces of text. This serves a few purposes:</p>
+<ul class="simple">
+<li><p>Creating semantic units of data centered around specific information: This can make it easier to retrieve and use the data, as it is organized into smaller, more focused units.</p></li>
+<li><p>Allowing knowledge to fit within the model’s prompt limits: If we feed a full-length document into the prompt, we would be likely to run into size limit problems.</p></li>
+<li><p>Allowing the creation of relationships between chunks: This means that chunks can be linked together based on their relationships (the relationship can be as simple as preceding and subsequent chunks), creating a network of interconnected data. This can be useful to derive structures within the documents.</p></li>
+</ul>
+<figure class="align-default" id="id9">
+<a class="reference internal image-reference" href="../../_images/document_spliting.png"><img alt="../../_images/document_spliting.png" src="../../_images/document_spliting.png" style="width: 873.0px; height: 235.79999999999998px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 21.8 </span><span class="caption-text">Documents are splitted into inter-connected chunks.</span><a class="headerlink" href="#id9" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The size of chunks ranges from fine to coarse, including phrases, sentence, paragrpahs.  From retrieval perspective, coarse-grained retrieval units fundamentally improve the <strong>recall at the cost of precision</strong>; that is, it can provide more relevant information for the problem, but they may also contain redundant, verbose content, which could distract the retriever and language models in downstream tasks. Intutively, encoding a large chunk of text into a single vector will have information loss, leading to poor retriever performance.</p>
+<p>On the other hand, fine-grained retrieval unit increases the burden of retrieval - it increases the number of chunks needed for offline indexing and requires retrieving more chunks for online querying stage. Despite its higher cost, fine-grained retrieval unit does not guarantee content completeness and semantic integrity (i.e., not enough context). As a result, the quality of LLM response will be affected negatively.</p>
 <p>From a high level, an ideal splitting should consider the following factors:</p>
 <ul class="simple">
 <li><p><strong>Semantic coherence</strong>: Chunks should maintain semantic coherence - split boundaries should respect natural semantic units and closely related information should stay in the same chunk.</p></li>
@@ -608,16 +638,75 @@ base (based on key phrases extracted by LLM) could avoid concept/entity missing 
 </ul>
 <p>There are different approaches to splitting:</p>
 <ul class="simple">
-<li><p><strong>Mechanical splitting</strong> based on a fixed window size. This has the lowest processing cost, but there is no guaratee on maintaining semantic completeness for each chunk - it can create arbitrary breakpoints in the middle of sentences. One mitigation is to use overlapping sliding windows during splitting.</p></li>
-<li><p><strong>Structure-aware splitting</strong> by leveraging document structures (headers, sections). This also has low processing cost and it respect the hierachical organization of the docuemnt. However, the chunk size can vary a lot as different documents can organize differently. Also, this method can only apply to relatively formal text data with such structural annotations.</p></li>
-<li><p><strong>Semantic-based splitting.</strong> This method invovles using language understanding model to predict the semantic relationship between sentences and paragraphs. For example, we can use BERT to predict if two sentences are sementically close via the next sentence prediction task.  Sentences and paragraphs that are closely related to each other will be grouped into the same chunk. This method is much costly compared to previously two approaches, but it preserves topic coherence within the chunk.</p></li>
+<li><p><strong>Mechanical splitting</strong> based on a fixed window size. This has the lowest processing cost, but there is no guaratee on maintaining semantic completeness for each chunk - it can create arbitrary breakpoints in the middle of sentences. <strong>One mitigation is to use overlapping sliding windows during splitting.</strong></p></li>
+<li><p><strong>Structure-aware splitting</strong> by leveraging document structures (headers, sections). This also has low processing cost and it respect the hierachical organization of the docuemnt. However, <strong>the chunk size can vary a lot as different documents can organize differently</strong>. Also, this method can only apply to relatively formal text data with such structural annotations.</p></li>
+<li><p><strong>Semantic-based splitting.</strong> This method invovles using language understanding model to predict the semantic relationship between sentences and paragraphs. For example, we can use BERT to predict if two sentences are sementically close via the next sentence prediction task.  Consecutive sentences and paragraphs that are closely related to each other will be grouped into the same chunk. This method is much costly compared to previously two approaches, but it preserves topic coherence within the chunk.</p></li>
 </ul>
+</section>
+<section id="utilizing-knowledge-graph">
+<h3><span class="section-number">21.4.4. </span>Utilizing Knowledge Graph<a class="headerlink" href="#utilizing-knowledge-graph" title="Link to this heading">#</a></h3>
+<section id="fundamentals">
+<h4><span class="section-number">21.4.4.1. </span>Fundamentals<a class="headerlink" href="#fundamentals" title="Link to this heading">#</a></h4>
+<p>Compared with unstructed text as an external knowledge source, one can utilize knowledge graphs to represent information in a structured, interconnected format. By querying a knowledge graph, we can usually obtain concise and comprehensive results for the generator to process.</p>
+<p>Knowledge graphs consist of entities (nodes) and relationships (edges) between those entities. Entities can represent real-world objects, concepts, or ideas, while relationships describe how those entities are connected.</p>
+<p>During querying time, exploring these connections will allow us to find new information and make conclusions that would be hard to draw from separate pieces of information.</p>
+<div class="proof example admonition" id="example-1">
+<p class="admonition-title"><span class="caption-number">Example 21.2 </span> (Knowledge graph example)</p>
+<section class="example-content" id="proof-content">
+<p>Suppose we have a collection of documents containing text chunks describing different person works for different companies.</p>
+<p>To utilize knowledge graph in the RAG, we first use LLM to extract entities and their relationship from documents. In this case, we can extract the information on <em>person works for company</em>, where <em>person</em> and <em>company</em> are entities, and <em>works for</em> is relationship.</p>
+<p>For an easy local query like <em>where does Tom work?</em>, we start with the knowledge graph node <em>Tom</em>, and follow the <em>works for</em> relationship edge to search for answer. Such local query is also straight forward for basic RAG as long as there are sentences in the original text describring Tom’s employment status.</p>
+<p>For a global query like <em>who works for company DeepAI</em>, we start with the knolwedge graph node <em>DeepAI</em>, and follow the <em>works for</em> relationship edge to search for all the persons working for DeepAI. If the <em>work for</em> fact is scattered, and <em>implicitly stated</em> in different chunks, it is very challenging for basic RAG retrieve all these relevant chunks (i.e., the recall needs to be sufficiently high).</p>
+<p>For another reasoning-needed query <em>does Michael work for the same company as Tom</em>, with knowledge graph, we can easily solve the query by examining nodes of <em>Michael</em> and <em>Tom</em> as well as their edges to draw conclusion.</p>
+</section>
+</div><p>The following table compares knowledge graph and vector databases from different aspects.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Feature</p></th>
+<th class="head text-center"><p>Knowledge Graphs</p></th>
+<th class="head text-center"><p>Vector Databases</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>Data Representation</p></td>
+<td class="text-center"><p>Entities (nodes) and relationships (edges) between entities, forming a graph structure.</p></td>
+<td class="text-center"><p>High-dimensional vectors, each representing a chunk of text from a document.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Retrieval Method</p></td>
+<td class="text-center"><p>Starting with nodes and traversing the graph following relationship edges</p></td>
+<td class="text-center"><p>Similarity search in high dimensional space to identify most relevant chunks</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Explainability and transparency</p></td>
+<td class="text-center"><p>Human-interpretable representation of knowledge, include graph structure and relationships between entities.</p></td>
+<td class="text-center"><p>Less interpretable to humans due to high-dimensional numerical representations. Challenging to directly understand relationships or reasoning behind retrieved information.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Inference Time Reasoning</p></td>
+<td class="text-center"><p>Can reason over relationship among entities. Both explicit and implicit Relationship can be extracted during knowledge construction time. New knowledge can be derived from inference time</p></td>
+<td class="text-center"><p>Limited. Vector similarity may miss implicit relationships during inference time. Can identify explicit and simple relationship but not complex relationships.</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Scalability</p></td>
+<td class="text-center"><p>More cost to construct knowledge graph for new documents, which involves incoporating new entities and relationships from documents</p></td>
+<td class="text-center"><p>Minimal cost to indexing new documents</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Both knowledge graphs and vector databases have their strengths and use cases, and the choice between them depends on the specific requirements of the application. Knowledge graphs excel at representing and reasoning over small-scaled structured knowledge (e.g., representing complex relationships and enabling multi-hop reasoning), while vector databases are well-suited for large scale tasks that rely heavily on semantic similarity and simple reasoning.</p>
+</section>
+<section id="challenges">
+<h4><span class="section-number">21.4.4.2. </span>Challenges<a class="headerlink" href="#challenges" title="Link to this heading">#</a></h4>
+<p>Setting up knowledge graphs for RAG applications in the real world can be a complex task with several challenges:</p>
+<p><strong>Knowledge graph construction</strong>: Building a high-quality knowledge graph is a complex and time-consuming process that requires significant domain expertise and effort. Extracting entities, relationships, and facts from various data sources and integrating them into a coherent knowledge graph can be challenging, especially for large and diverse datasets. It involves understanding the domain, identifying relevant information, and structuring it in a way that accurately captures the relationships and semantics.</p>
+<p><strong>Data integration</strong>: RAG applications often need to integrate data from multiple heterogeneous sources, each with its own structure, format, and semantics. Ensuring data consistency, resolving entity and relationship conflicts, and mapping entities and relationships across different data sources is non-trivial. It requires careful data cleaning, transformation, and mapping to ensure that the knowledge graph accurately represents the information from various sources.</p>
+<p><strong>Knowledge graph maintenance and update</strong>: To ensure up-to-date RAG application, Knowledge graphs also need to be continuously updated and maintained as new knowledge becomes available or existing knowledge changes. Keeping the knowledge graph up-to-date and consistent involves monitoring changes in the data sources, identifying relevant updates, and propagating those updates to the knowledge graph while maintaining its integrity and consistency.</p>
+<p><strong>Scalability and performance</strong>: As the knowledge graph grows in size and complexity, ensuring efficient storage, retrieval, and querying of the graph data becomes increasingly challenging. Scalability and performance issues can arise, particularly for large-scale RAG applications with high query volumes.</p>
+</section>
 </section>
 </section>
 <section id="rag-optimization-query-understanding-and-rewriting">
 <h2><span class="section-number">21.5. </span>RAG Optimization: Query Understanding and Rewriting<a class="headerlink" href="#rag-optimization-query-understanding-and-rewriting" title="Link to this heading">#</a></h2>
-<section id="id9">
-<h3><span class="section-number">21.5.1. </span>Motivation<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<section id="id10">
+<h3><span class="section-number">21.5.1. </span>Motivation<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
 <p>Query understanding and rewriting is a crucial component in optimizing RAG  systems. The effectiveness of RAG heavily depends on the quality of the retrieval step, which in turn relies on how well the system understands and processes user queries. Raw user queries that ** don’t directly match the way information is indexed offline** can lead to poor retrieval results.</p>
 <p>Specifically, Key challenges that necessitate query rewriting include:</p>
 <ul class="simple">
@@ -626,8 +715,8 @@ base (based on key phrases extracted by LLM) could avoid concept/entity missing 
 <li><p><strong>Complex queries</strong> that combine multiple concepts</p></li>
 <li><p><strong>Contextual understanding</strong> from multi-turn conversations</p></li>
 </ul>
-<div class="pst-scrollable-table-container"><table class="table" id="id1560">
-<caption><span class="caption-number">Table 21.2 </span><span class="caption-text">Retrieval Data Sources</span><a class="headerlink" href="#id1560" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1563">
+<caption><span class="caption-number">Table 21.2 </span><span class="caption-text">Retrieval Data Sources</span><a class="headerlink" href="#id1563" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Query Type</p></th>
 <th class="head text-left"><p>Example</p></th>
@@ -707,8 +796,8 @@ The reason is that concepts are often expressed differently in document language
 </ul>
 <p>Tradictional approaches are usually computationally efficient, and it is predictable and interpretable. However, it often requires significant manual effort to craft rules and update dictionary.</p>
 <p>With the advancement of LLM, LLM can be used for more sophisticated query rewriting, as shown in the following example.</p>
-<div class="proof example admonition" id="example-1">
-<p class="admonition-title"><span class="caption-number">Example 21.2 </span> (LLM prompt to query rewrite)</p>
+<div class="proof example admonition" id="example-2">
+<p class="admonition-title"><span class="caption-number">Example 21.3 </span> (LLM prompt to query rewrite)</p>
 <section class="example-content" id="proof-content">
 <p><strong>Prompt:</strong>
 Given a query <em>What’s the state tax rate?</em> from a user located at <em>San Jose, US</em> on <em>June, 2024</em>.
@@ -727,8 +816,8 @@ Rewrite this query to help retrieve comprehensive results from search engine lik
 <li><p>Breaking down complex queries into simpler, atomic questions</p></li>
 <li><p>Creating multiple focused, logically-related subqueries</p></li>
 </ul>
-<div class="proof example admonition" id="example-2">
-<p class="admonition-title"><span class="caption-number">Example 21.3 </span></p>
+<div class="proof example admonition" id="example-3">
+<p class="admonition-title"><span class="caption-number">Example 21.4 </span></p>
 <section class="example-content" id="proof-content">
 <p>The original query <em>Can I take ibuprofen with my blood pressure medication while pregnant?</em>” can be decomposed into:</p>
 <ol class="arabic simple">
@@ -748,6 +837,38 @@ Rewrite this query to help retrieve comprehensive results from search engine lik
 </ul>
 <p>Given the complexity of multi-turn conversations, using LLM can offer a clean solution rather than using multiple specialized NLP modules/models.</p>
 </section>
+<section id="advanced-query-categorization">
+<h3><span class="section-number">21.5.5. </span>Advanced Query Categorization<a class="headerlink" href="#advanced-query-categorization" title="Link to this heading">#</a></h3>
+<p>To better understand the RAG performance over different query types, one can further categorize queries into the following types:</p>
+<p><strong>Explicit fact queries</strong>: Explicit fact queries are the most basic and straightforward type, which directly request specific, known facts, with answers readily available in the provided data, requiring no additional reasoning processes. For instance, the query <em>Who invented the telephone?</em>, its answer, <em>Alexander Graham Bell invented the telephone</em> is directly retrieved from external data.</p>
+<p><strong>Implicit fact queries</strong>:  Implicit fact queries are more complex than explicit ones, requiring the model to reveal hidden facts within the data. The required information might be scattered across multiple data fragments or need to be obtained through simple reasoning processes. For example, the question, <em>Which country won the most gold medals in the 2020 Olympics?</em> requires retrieving data on multiple countries’ gold medals and comparing them.</p>
+<p><strong>Interpretable rationale queries</strong>: Interpretable rationale queries further enhance the complexity of the RAG architecture, requiring not only the mastery of facts but also the ability to understand and apply domain-specific reasoning justifications closely related to the data context. These queries demand both factual knowledge and the ability to interpret domain-specific rules, often sourced from external resources and rarely encountered in the initial pre-training of general language models.</p>
+<p>For instance, in financial auditing, language models need to follow regulatory compliance guidelines to assess whether a company’s financial statements meet standards; in technical support scenarios, they must adhere to predefined troubleshooting workflows to effectively respond to user queries. These applications require the RAG architecture to provide precise and compliant responses while generating clear, understandable reasoning process explanations.</p>
+<p><strong>Hidden Rationale Queries</strong>: Hidden rationale queries represent the highest level and most challenging category within the RAG task classification. These queries require AI models to infer complex, unrecorded reasoning justifications relying on patterns and outcome analysis within the data. For example, in IT operations, language models need to mine implicit knowledge from historical events resolved by cloud operations teams, identifying successful strategies and decision-making processes; in software development, they must extract guiding principles from past debugging error records.</p>
+<!-- In handling explicit fact queries, the key to the RAG architecture lies in efficient retrieval and accurate matching. Microsoft leverages models like BERT to encode queries and documents into dense vectors for similarity matching, enabling rapid location and extraction of required information from vast datasets. Additionally, classic retrieval algorithms like BM25 play a crucial role, ranking relevance based on term frequency and document frequency to ensure the retrieved information highly matches the user's query.
+
+The application scenarios of explicit fact queries are extensive, including knowledge-based question answering and information retrieval. At this level, the RAG architecture primarily relies on vector space and semantic similarity calculations to achieve fast and accurate answer extraction.
+
+In implicit fact queries, the RAG architecture introduces reasoning and action elements, necessitating a more agentic approach. Microsoft employs multi-hop reasoning and information aggregation techniques at this level, constructing relationship graphs among documents for multi-round retrieval and gradually collecting required information. Additionally, graph neural networks and iterative retrieval methods are used to effectively combine information from different sources, generating comprehensive and accurate answers.
+
+The application scenarios of implicit fact queries are equally broad, including but not limited to data analysis and decision support. At this level, the RAG architecture not only requires retrieval capabilities but also a certain degree of reasoning to reveal hidden patterns and regularities in the data.
+
+Interpretable Rationale Queries: The Combination of Domain Knowledge and Logical Reasoning
+
+Interpretable rationale queries further enhance the complexity of the RAG architecture, requiring not only the mastery of facts but also the ability to understand and apply domain-specific reasoning justifications closely related to the data context. These queries demand both factual knowledge and the ability to interpret domain-specific rules, often sourced from external resources and rarely encountered in the initial pre-training of general language models.
+
+For instance, in financial auditing, language models need to follow regulatory compliance guidelines to assess whether a company's financial statements meet standards; in technical support scenarios, they must adhere to predefined troubleshooting workflows to effectively respond to user queries. These applications require the RAG architecture to provide precise and compliant responses while generating clear, understandable reasoning process explanations.
+
+To achieve this, Microsoft integrates neural-symbolic methods in the RAG architecture, combining neural networks with symbolic reasoning systems, and uses Chain-of-Thought prompting techniques to guide language models through step-by-step reasoning. These technologies enable the RAG architecture to excel in specific domains while providing interpretable reasoning processes, enhancing user trust in the answers.
+
+### 4. Hidden Rationale Queries: Uncovering Deep-Level Patterns and Meanings
+
+Hidden rationale queries represent the highest level and most challenging category within the RAG task classification. These queries require AI models to infer complex, unrecorded reasoning justifications relying on patterns and outcome analysis within the data. For example, in IT operations, language models need to mine implicit knowledge from historical events resolved by cloud operations teams, identifying successful strategies and decision-making processes; in software development, they must extract guiding principles from past debugging error records.
+
+In handling hidden rationale queries, the RAG architecture relies on robust global retrieval capabilities and deep-level understanding. Microsoft introduces knowledge graphs and community detection mechanisms to achieve deep mining and comprehensive grasp of information structures. GraphRAG, as an innovative achievement in this field, leverages large language models to extract entities, relationships, and attributes from source documents, constructing structured knowledge graphs. Community detection algorithms identify closely related entity groups (communities) and generate summaries for each community, enabling comprehensive and accurate answers to complex, multi-topic questions.
+
+The application scenarios of hidden rationale queries include but are not limited to strategic decision-making and market analysis. At this level, the RAG architecture not only provides answers but also reveals the deep-level patterns and meanings behind them, offering strong support for decision-making. -->
+</section>
 </section>
 <section id="rag-optimization-retriever-and-reranker">
 <h2><span class="section-number">21.6. </span>RAG Optimization: Retriever and ReRanker<a class="headerlink" href="#rag-optimization-retriever-and-reranker" title="Link to this heading">#</a></h2>
@@ -760,8 +881,8 @@ Rewrite this query to help retrieve comprehensive results from search engine lik
 <li><p><strong>Term weight prediction</strong>: Deep model can be used to predict contextualized term weights in a query, which can help sparse retrieval model to pay more attention to important terms give the query as a context. (See <a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html#ch-neural-network-and-deep-learning-applicationnlp-irsearch-contextualized-term-importance"><span class="std std-ref">Contextualized Term Importance</span></a>)</p></li>
 <li><p><strong>Enhance sparse retrieval ranker</strong>: Sparse retrieval in practice often use much more sophositcated rankers than BM25. These ranker can benefit from query-document semantic similarity feature besides query document exact matching features.</p></li>
 </ul>
-<p>We are usually face the training data scarcity issue when we adapt a generic retrieval models to a highly specialized domain (e.g., medical, law, scientific). <span id="id10">[<a class="reference internal" href="#id15" title="Zhuyun Dai, Vincent Y Zhao, Ji Ma, Yi Luan, Jianmo Ni, Jing Lu, Anton Bakalov, Kelvin Guu, Keith B Hall, and Ming-Wei Chang. Promptagator: few-shot dense retrieval from 8 examples. arXiv preprint arXiv:2209.11755, 2022.">DZM+22</a>]</span> introduces a LLM-based approach, PROMPTAGATOR,  to enhance task-specific retrievers.</p>
-<p>As shown in the <a class="reference internal" href="#chapter-rag-fig-promptagator-demo"><span class="std std-numref">Fig. 21.8</span></a>, PROMPTAGATOR consists of three components:</p>
+<p>We are usually face the training data scarcity issue when we adapt a generic retrieval models to a highly specialized domain (e.g., medical, law, scientific). <span id="id11">[<a class="reference internal" href="#id15" title="Zhuyun Dai, Vincent Y Zhao, Ji Ma, Yi Luan, Jianmo Ni, Jing Lu, Anton Bakalov, Kelvin Guu, Keith B Hall, and Ming-Wei Chang. Promptagator: few-shot dense retrieval from 8 examples. arXiv preprint arXiv:2209.11755, 2022.">DZM+22</a>]</span> introduces a LLM-based approach, PROMPTAGATOR,  to enhance task-specific retrievers.</p>
+<p>As shown in the <a class="reference internal" href="#chapter-rag-fig-promptagator-demo"><span class="std std-numref">Fig. 21.9</span></a>, PROMPTAGATOR consists of three components:</p>
 <ul class="simple">
 <li><p>Prompt-based query generation, a task-specific prompt will be combined with a large language model to produce queries for all documents.</p></li>
 <li><p>Consistency filtering, which cleans the generated data based on round-trip consistency - query should be answered by the passage from which the query was generated.</p></li>
@@ -771,7 +892,7 @@ Rewrite this query to help retrieve comprehensive results from search engine lik
 <a class="reference internal image-reference" href="../../_images/promptagator_training.png"><img alt="../../_images/promptagator_training.png" src="../../_images/promptagator_training.png" style="width: 765.8px; height: 225.39999999999998px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 21.8 </span><span class="caption-text">Illustration of PROMPTAGATOR, which generates synthetic data using LLM. Synthetic data, after consistency filtering, is used to train a retriever in labeled data scarcity domain. Image from <span id="id11">[<a class="reference internal" href="#id15" title="Zhuyun Dai, Vincent Y Zhao, Ji Ma, Yi Luan, Jianmo Ni, Jing Lu, Anton Bakalov, Kelvin Guu, Keith B Hall, and Ming-Wei Chang. Promptagator: few-shot dense retrieval from 8 examples. arXiv preprint arXiv:2209.11755, 2022.">DZM+22</a>]</span>.</span><a class="headerlink" href="#chapter-rag-fig-promptagator-demo" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.9 </span><span class="caption-text">Illustration of PROMPTAGATOR, which generates synthetic data using LLM. Synthetic data, after consistency filtering, is used to train a retriever in labeled data scarcity domain. Image from <span id="id12">[<a class="reference internal" href="#id15" title="Zhuyun Dai, Vincent Y Zhao, Ji Ma, Yi Luan, Jianmo Ni, Jing Lu, Anton Bakalov, Kelvin Guu, Keith B Hall, and Ming-Wei Chang. Promptagator: few-shot dense retrieval from 8 examples. arXiv preprint arXiv:2209.11755, 2022.">DZM+22</a>]</span>.</span><a class="headerlink" href="#chapter-rag-fig-promptagator-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -801,8 +922,8 @@ Rewrite this query to help retrieve comprehensive results from search engine lik
 <h3><span class="section-number">21.7.2. </span>Prompting<a class="headerlink" href="#prompting" title="Link to this heading">#</a></h3>
 <p>If we have a capable instructed LLM, prompting is a cost-effective technique to instruct LLM to behave in certain way.</p>
 <p>Following is an example prompt that ask LLM to provide tracable answers and to reject the question if it cannot be answered.</p>
-<div class="proof example admonition" id="example-3">
-<p class="admonition-title"><span class="caption-number">Example 21.4 </span></p>
+<div class="proof example admonition" id="example-4">
+<p class="admonition-title"><span class="caption-number">Example 21.5 </span></p>
 <section class="example-content" id="proof-content">
 <p>You are an AI assistant that helps users learn from the information found in the source material.
 Answer the query using only the sources provided below.
@@ -883,80 +1004,23 @@ omparison between two responses given by InstructGPT. The retrieved passages are
 ``` -->
 </section>
 </section>
-<section id="advanced-rag">
-<h2><span class="section-number">21.8. </span>Advanced RAG<a class="headerlink" href="#advanced-rag" title="Link to this heading">#</a></h2>
-<section id="agentic-rag">
-<h3><span class="section-number">21.8.1. </span>Agentic RAG<a class="headerlink" href="#agentic-rag" title="Link to this heading">#</a></h3>
-<p>Based on the image, I’ll explain the concept of Agentic RAG (Retrieval-Augmented Generation):</p>
-<p>Agentic RAG represents an evolution of traditional RAG systems by incorporating multiple specialized agents that work together to produce more accurate and reliable responses. The diagram shows multiple agents then work collaboratively within a structured framework:</p>
-<ul class="simple">
-<li><p>The Planning Agent determines the strategy for answering the question</p></li>
-<li><p>The Synthesis Agent processes and combines information</p></li>
-<li><p>These agents interact with the search service to gather necessary information</p></li>
-</ul>
-<figure class="align-default" id="chapter-rag-fig-rag-agent-rag">
-<a class="reference internal image-reference" href="../../_images/agentic_rag_introduction.png"><img alt="../../_images/agentic_rag_introduction.png" src="../../_images/agentic_rag_introduction.png" style="width: 567.9px; height: 187.2px;" />
-</a>
-<figcaption>
-<p><span class="caption-number">Fig. 21.9 </span><span class="caption-text">Illustration of agentic RAG, in which multiple agents work collaboratively to provide grounding.</span><a class="headerlink" href="#chapter-rag-fig-rag-agent-rag" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-<p>What makes this “agentic” is the way it delegates different aspects of the task to specialized agents that each handle specific parts of the process - planning, searching, and synthesizing. This division of labor allows for more sophisticated reasoning and better accuracy compared to simple RAG systems that just retrieve and generate without this structured agency approach.</p>
-<p>As shown in <a class="reference internal" href="#chapter-rag-fig-rag-agent-rag-example"><span class="std std-numref">Fig. 21.10</span></a>, the key innovation here appears to be the coordination between these different agents, allowing them to work together to break down complex queries into manageable steps and cross-validate information before producing a final response. This cooperative approach helps reduce errors and provides more reliable answers by combining multiple perspectives and verification steps.</p>
-<figure class="align-default" id="chapter-rag-fig-rag-agent-rag-example">
-<a class="reference internal image-reference" href="../../_images/agentic_rag_examples.png"><img alt="../../_images/agentic_rag_examples.png" src="../../_images/agentic_rag_examples.png" style="width: 502.2px; height: 392.85px;" />
-</a>
-<figcaption>
-<p><span class="caption-number">Fig. 21.10 </span><span class="caption-text">Agentic RAG example in breaking down a complex query into smaller manageable steps.</span><a class="headerlink" href="#chapter-rag-fig-rag-agent-rag-example" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-<p>While agentic RAG can improve the success on complex and reasoning-demanding queries, but it often comes at the cost of increased latency, higher resource usage, and potential reliability issues.</p>
-<ul class="simple">
-<li><p><strong>High latency</strong>: reasoning steps are lengthy, multiple calls to LLM are required; diffcult to manage and control the response time.</p></li>
-<li><p><strong>High cost</strong>: Multiple reasoning and search steps result in high GPU serving costs</p></li>
-<li><p><strong>Error prone reasoning</strong>: As there are multiple reasoning steps and each steps can cause error, the final reasoning outcome is error-prone. Reasoning steps might mistakenly reject correct answers.</p></li>
-</ul>
-</section>
-<section id="graphrag">
-<h3><span class="section-number">21.8.2. </span>GraphRAG<a class="headerlink" href="#graphrag" title="Link to this heading">#</a></h3>
-<p>Baseline RAG was created to help solve this problem, but we observe situations where baseline RAG performs very poorly. For example:</p>
-<ul class="simple">
-<li><p>Baseline RAG struggles to connect the dots. This happens when answering a question requires traversing disparate pieces of information through their shared attributes in order to provide new synthesized insights.</p></li>
-<li><p>Baseline RAG performs poorly when being asked to holistically understand summarized semantic concepts over large data collections or even singular large documents.</p></li>
-</ul>
-<p>To tackle these challenges for baseline RAG, <strong>GraphRAG</strong> [<span id="id12">[<a class="reference internal" href="#id18" title="Darren Edge, Ha Trinh, Newman Cheng, Joshua Bradley, Alex Chao, Apurva Mody, Steven Truitt, and Jonathan Larson. From local to global: a graph rag approach to query-focused summarization. arXiv preprint arXiv:2404.16130, 2024.">ETC+24</a>]</span>] was proposed by Microsoft to use knowledge graphs to aid question-and-answer when reasoning about complex information.</p>
-<p>The GraphRAG process involves the following steps:</p>
-<ul class="simple">
-<li><p>Extracting a knowledge graph out of raw text, usually using a LLM,</p></li>
-<li><p>Building a community hierarchy for nodes in the knowledge graph,</p></li>
-<li><p>Generating summaries or other meta-data for these communities,</p></li>
-<li><p>Leveraging these structures when perform RAG-based tasks.</p></li>
-</ul>
-<p>Compared with Baseline RAG, which finds the top-k semantically related document chunks to use as context for synthesizing the answer, GraphRAG uses subGraphs related to entities in the task or question as context. More specifically, GraphRAG will have the following online querying process:</p>
-<ul class="simple">
-<li><p>Search related <strong>entities</strong> of the quesion/task (the search could be keyword extraction based or embedding based)</p></li>
-<li><p>Get subGraph of those entities (<span class="math notranslate nohighlight">\(k\)</span>-depth) from the <strong>knowledge graph</strong></p></li>
-<li><p>Build context based on the subGraph</p></li>
-</ul>
-</section>
-</section>
 <section id="further-rag-discussion">
-<h2><span class="section-number">21.9. </span>Further RAG Discussion<a class="headerlink" href="#further-rag-discussion" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">21.8. </span>Further RAG Discussion<a class="headerlink" href="#further-rag-discussion" title="Link to this heading">#</a></h2>
 <section id="rag-vs-prompting-and-fine-tuning">
-<h3><span class="section-number">21.9.1. </span>RAG vs Prompting and Fine Tuning<a class="headerlink" href="#rag-vs-prompting-and-fine-tuning" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">21.8.1. </span>RAG vs Prompting and Fine Tuning<a class="headerlink" href="#rag-vs-prompting-and-fine-tuning" title="Link to this heading">#</a></h3>
 <p>When adapt an generalist LLM to different usage scenarios, there are different approaches, including direct prompting, fine-tuning, and RAG.</p>
-<p>Each method has distinct characteristics as illustrated in <a class="reference internal" href="#chapter-rag-fig-rag-vs-prompt-ft"><span class="std std-numref">Fig. 21.11</span></a>. We used a quadrant chart to illustrate the differences among three methods in two dimensions: external knowledge requirements and model adaption requirements. Prompt engineering leverages a model’s inherent capabilities with minimum necessity for external knowledge and model adaption. RAG can leverage external knowledge via information retrieval, making it excellet for knowledge intentsive tasks. In contrast, FT is suitable for customizing models to specific structures, styles, or formats.</p>
+<p>Each method has distinct characteristics as illustrated in <a class="reference internal" href="#chapter-rag-fig-rag-vs-prompt-ft"><span class="std std-numref">Fig. 21.10</span></a>. We used a quadrant chart to illustrate the differences among three methods in two dimensions: external knowledge requirements and model adaption requirements. Prompt engineering leverages a model’s inherent capabilities with minimum necessity for external knowledge and model adaption. RAG can leverage external knowledge via information retrieval, making it excellet for knowledge intentsive tasks. In contrast, FT is suitable for customizing models to specific structures, styles, or formats.</p>
 <p>Prompt Engineering requires low modifications to the model. It is suitable for relative simple tasks without intensive external knowledge. RAG is particularly suitable dealing with dynamic knowledge tasks. For these tasks, indexing stage in RAG often has auto-refresh ability, enabling RAG to provide realtime knowledge updates and effective utilization of external knowledge sources with high interpretability. However, it comes with low latency scenarios, RAG has to spend extra time (~200-500ms) to perform retrieval. On the other hand, FT is more static, requiring retraining for knowledge updates and instruction following. It often demands significant computational resources for dataset preparation and training.</p>
 <figure class="align-default" id="chapter-rag-fig-rag-vs-prompt-ft">
 <a class="reference internal image-reference" href="../../_images/RAG_vs_FT_vs_prompt.png"><img alt="../../_images/RAG_vs_FT_vs_prompt.png" src="../../_images/RAG_vs_FT_vs_prompt.png" style="width: 730.4000000000001px; height: 434.40000000000003px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 21.11 </span><span class="caption-text">RAG compared with other model optimization methods in the aspects of <strong>External Knowledge Required</strong> and <strong>Model Adaption Required</strong>.  Image from <span id="id13">[<a class="reference internal" href="#id1549" title="Yunfan Gao, Yun Xiong, Xinyu Gao, Kangxiang Jia, Jinliu Pan, Yuxi Bi, Yi Dai, Jiawei Sun, and Haofen Wang. Retrieval-augmented generation for large language models: a survey. arXiv preprint arXiv:2312.10997, 2023.">GXG+23</a>]</span>.</span><a class="headerlink" href="#chapter-rag-fig-rag-vs-prompt-ft" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.10 </span><span class="caption-text">RAG compared with other model optimization methods in the aspects of <strong>External Knowledge Required</strong> and <strong>Model Adaption Required</strong>.  Image from <span id="id13">[<a class="reference internal" href="#id1549" title="Yunfan Gao, Yun Xiong, Xinyu Gao, Kangxiang Jia, Jinliu Pan, Yuxi Bi, Yi Dai, Jiawei Sun, and Haofen Wang. Retrieval-augmented generation for large language models: a survey. arXiv preprint arXiv:2312.10997, 2023.">GXG+23</a>]</span>.</span><a class="headerlink" href="#chapter-rag-fig-rag-vs-prompt-ft" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>In the following, we also summarize different factors to consider when choosing among prompting, fine-tuning, and RAG.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1561">
-<caption><span class="caption-number">Table 21.3 </span><span class="caption-text">Different factors to consider when choosing among prompting, fine-tuning, and RAG.</span><a class="headerlink" href="#id1561" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1564">
+<caption><span class="caption-number">Table 21.3 </span><span class="caption-text">Different factors to consider when choosing among prompting, fine-tuning, and RAG.</span><a class="headerlink" href="#id1564" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Factors</p></th>
 <th class="head text-left"><p>Prompting</p></th>
@@ -1005,7 +1069,7 @@ omparison between two responses given by InstructGPT. The retrieved passages are
 </div>
 </section>
 <section id="rag-vs-long-context-llm">
-<h3><span class="section-number">21.9.2. </span>RAG vs Long Context LLM<a class="headerlink" href="#rag-vs-long-context-llm" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">21.8.2. </span>RAG vs Long Context LLM<a class="headerlink" href="#rag-vs-long-context-llm" title="Link to this heading">#</a></h3>
 <p>Long context LLM is one active research area, as enabling long context can open opportunties to handle more complex tasks.
 For example, Gemini 1.5 (<a class="reference external" href="https://blog.google/technology/ai/google-gemini-next-generation-model-february-2024/">https://blog.google/technology/ai/google-gemini-next-generation-model-february-2024/</a>) has a context window of 1 million tokens.  This capability makes it possible for long-document question answering, in which user can now incorporate the entire document directly into the prompt.</p>
 <p><strong>Do we still need information retrieval component when it comes to long context LLM?</strong> Can we just put a large document as knowledge base in the prompt?
@@ -1018,7 +1082,7 @@ In fact, information retrieval plays an irreplaceable role. Providing LLMs with 
 </section>
 </section>
 <section id="bibliography">
-<h2><span class="section-number">21.10. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">21.9. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <p>Important resources:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://acl2023-retrieval-lm.github.io/">Retrieval-based Language Models and Applications ACL2023 Tutorial</a></p></li>
@@ -1027,12 +1091,8 @@ In fact, information retrieval plays an irreplaceable role. Providing LLMs with 
 <div role="list" class="citation-list">
 <div class="citation" id="id15" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>DZM+22<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id10">1</a>,<a role="doc-backlink" href="#id11">2</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id11">1</a>,<a role="doc-backlink" href="#id12">2</a>)</span>
 <p>Zhuyun Dai, Vincent Y Zhao, Ji Ma, Yi Luan, Jianmo Ni, Jing Lu, Anton Bakalov, Kelvin Guu, Keith B Hall, and Ming-Wei Chang. Promptagator: few-shot dense retrieval from 8 examples. <em>arXiv preprint arXiv:2209.11755</em>, 2022.</p>
-</div>
-<div class="citation" id="id18" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id12">ETC+24</a><span class="fn-bracket">]</span></span>
-<p>Darren Edge, Ha Trinh, Newman Cheng, Joshua Bradley, Alex Chao, Apurva Mody, Steven Truitt, and Jonathan Larson. From local to global: a graph rag approach to query-focused summarization. <em>arXiv preprint arXiv:2404.16130</em>, 2024.</p>
 </div>
 <div class="citation" id="id1549" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>GXG+23<span class="fn-bracket">]</span></span>
@@ -1099,11 +1159,11 @@ In fact, information retrieval plays an irreplaceable role. Providing LLMs with 
       </div>
     </a>
     <a class="right-next"
-       href="../chapter_application_IR/information_retrieval_fundamentals.html"
+       href="advanced_rag.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">22. </span>Information Retrieval and Text Ranking</p>
+        <p class="prev-next-title"><span class="section-number">22. </span>Advanced RAG</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1135,13 +1195,19 @@ In fact, information retrieval plays an irreplaceable role. Providing LLMs with 
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indexing-data-sources">21.4.1. Indexing Data Sources</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-source-augmentation">21.4.2. Data Source Augmentation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#document-splitting-and-granularity">21.4.3. Document Splitting and Granularity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#utilizing-knowledge-graph">21.4.4. Utilizing Knowledge Graph</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fundamentals">21.4.4.1. Fundamentals</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#challenges">21.4.4.2. Challenges</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-optimization-query-understanding-and-rewriting">21.5. RAG Optimization: Query Understanding and Rewriting</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">21.5.1. Motivation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">21.5.1. Motivation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-to-vocalbulary-mismatch">21.5.2. Approach to Vocalbulary Mismatch</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-to-complex-multi-concept-queries">21.5.3. Approach to Complex Multi-Concept Queries</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-to-multi-turn-conversations">21.5.4. Approach to Multi-Turn Conversations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-query-categorization">21.5.5. Advanced Query Categorization</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-optimization-retriever-and-reranker">21.6. RAG Optimization: Retriever and ReRanker</a><ul class="nav section-nav flex-column">
@@ -1155,17 +1221,12 @@ In fact, information retrieval plays an irreplaceable role. Providing LLMs with 
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-finetuning">21.7.3. Model Finetuning</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-rag">21.8. Advanced RAG</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agentic-rag">21.8.1. Agentic RAG</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graphrag">21.8.2. GraphRAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-rag-discussion">21.8. Further RAG Discussion</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-vs-prompting-and-fine-tuning">21.8.1. RAG vs Prompting and Fine Tuning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-vs-long-context-llm">21.8.2. RAG vs Long Context LLM</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-rag-discussion">21.9. Further RAG Discussion</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-vs-prompting-and-fine-tuning">21.9.1. RAG vs Prompting and Fine Tuning</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-vs-long-context-llm">21.9.2. RAG vs Long Context LLM</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">21.10. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">21.9. Bibliography</a></li>
 </ul>
   </nav></div>
 

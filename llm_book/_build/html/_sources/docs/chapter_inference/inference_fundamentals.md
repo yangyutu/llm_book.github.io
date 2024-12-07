@@ -87,7 +87,7 @@ We can tune the diversity or length of generated text by incorporating other ele
 
 #### Controling beam search behavior
 
-Since beam-decoding is optimizing a user-defined score function, we can incorpoate various penalties or rewards into the score function to control the diversity, brevity, smoothness, etc. of the generated sequence.\cite{vijayakumar2016diverse} 
+Since beam-decoding is optimizing a user-defined score function, we can incorpoate various penalties or rewards into the score function to control the diversity, brevity, smoothness, etc. of the generated sequence{cite:p}`vijayakumar2016diverse`. 
 For example,
 - Let $s$ be the original score, we can add length penalty by using score $s\exp(-\alpha l)$, where $\alpha$ is a scalar and $l$ is the length of the generated sequence. $\alpha > 0.0$ means that the beam score is penalized by the sequence length; $\alpha  < 0.0$ is used to encourage the model to generate longer sequence. 
 - We can use `min_length` to force the model to not produce an EOS (end of sentence) token before `min_length` is reached.

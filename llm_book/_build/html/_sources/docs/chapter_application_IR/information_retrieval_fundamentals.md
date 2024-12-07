@@ -1527,16 +1527,18 @@ The Lloyd quantizer, which corresponds to the **$k$-means clustering algorithm**
 Codecook construction can be achieved using k-means algorithm to compute $K$ centroids from database vectors.
 ```
 
-The **storage** for $N$ vectors now reduce to storage of their index values plus the centroids in the codebook. Each index value requires $\log_{2} K$ bits. On the other hand, storing the original vectors typically take more than $\log_2(k)$ bits.
+The **storage** for $N$ vectors now reduce to storage of their index values plus the centroids in the codebook. Each index value requires $\log_{2} k$ bits. On the other hand, storing the original vectors typically take more than $\log_2(k)$ bits.
 
-Two important benefits to compressing the dataset are that (1) memory access times are generally the limiting factor on processing speed, and (2) sheer memory capacity can be a problem for big datasets.
+Two important benefits of compressing the dataset are 
+* Memory access times are generally the limiting factor on processing speed; With compression, the processing speed will be drastically accelerated.
+* Reduce sheer memory capacity for big datasets.
 
 In {numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:codebookmemorysavingdemo`, we illustrate the storage saving by representing a $D$ dimensional vector by a codebook of 256 centroids. We only need 8-bits ($2^8 = 256$) to store a centroid id. Each vector is now replace by a 8-bit integers.
 
 ```{figure} ../img/chapter_application_IR/ApplicationIRSearch/ApproximateNearestNeighbor/codebook_memory_saving_demo.png
 :scale: 30%
 :name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:codebookmemorysavingdemo
-Illustration of memory saving benefits of vector quantization. A $D$-dimensional float vector is stored as its nearest centroid integer id, which only occupies $\log_2 K$ bit.  
+Illustration of memory saving benefits of vector quantization. A $D$-dimensional float vector is stored as its nearest centroid integer id, which only occupies $\log_2 k$ bit.  
 ```
 
 #### Approximating Distances Using Quantized Codes

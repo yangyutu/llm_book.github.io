@@ -15,17 +15,16 @@ To address these challenges, researchers and developers have been exploring prom
 scale: 60%
 name: chapter_rag_fig_rag_demo
 ---
-Illustration of RAG process applied to question answering. It mainly consists of basic steps. 1) Offline Indexing. Documents are split into chunks,
+Illustration of RAG process applied to question answering. It mainly consists of basic steps. 1) Offline Indexing. Documents are collected and split into chunks,
 encoded into vectors, and stored in a vector database. 2) Retrieval. Retrieve the Top $k$ relevant chunks as context or knowledge supplement. 3)
 Generation. The original question and the retrieved context are fed into LLM to generate the final answer. Image from {cite:p}`gao2023retrieval`.
 ```
 
 Compared to LLM's responses that are relied on its own internal knowledge, RAG exhibits the following advantages:
 
-* **Improved accuracy and reliability**: By supplementing the LLM's knowledge with current, factual information from external sources, RAG can significantly reduce hallucinations and increase the accuracy of generated content.
+* **Improved accuracy and reliability**: By supplementing the LLM's knowledge with current, factual information from external sources, RAG can significantly reduce hallucinations and increase the accuracy of generated content. In additional, by comparing retrieved sources and generated output, one can trace or verify claims in the output.
 * **Superior performance on knowledge-intensive tasks**: RAG excels in tasks that require specific, detailed information, such as question-answering, fact-checking, and research assistance.
-* **Continuous knowledge updates**: Unlike traditional LLMs, which require retraining or continuous pretraining to incorporate new information, RAG systems can be updated by simply modifying the external knowledge base. This allows for more frequent and efficient knowledge updates.
-* **Domain-specific information integration**: RAG enables the integration of specialized knowledge from particular fields or industries, making it possible to create more focused and accurate outputs for specific domains.
+* **Continuous and domain-specific knowledge updates**: Unlike traditional LLMs, which require retraining or continuous pretraining to incorporate updated or additional information, RAG systems can be updated by simply modifying the external knowledge base. This allows for more frequent and efficient knowledge updates and the integration of specialized knowledge from particular fields or industries, making it possible to create more focused and accurate outputs for specific domains.
 
 
 ## RAG Frameworks
@@ -35,7 +34,7 @@ Compared to LLM's responses that are relied on its own internal knowledge, RAG e
 RAG is a technique that combines the powerful language understanding generation capabilities of LLMs with the information retrieval ability of a retrieval system/search engine. This hybrid approach aims to leverage the strengths of both systems to produce more accurate, up-to-date, and verifiable outputs.
 
 The **RAG** framework is built upon four fundamental components [{numref}`chapter_rag_fig_rag_framework_demo`]:
-* **Data Source**, which involves the collection of public or private data relevant to the domain of interest. Data can come from a large variety of sources and from different modalities.
+* **Data Collection**, which involves the collection of public or private data relevant to the domain of interest. Data can come from a large variety of sources and from different modalities.
 * **Indexing building**, which transforms data source into a format that enables efficient retrieval and knowledge integration. For example, one can split a document into multiple chunks, and encode each of them into dense embedding vectors (for dense retrieval) or inverted index (for sparse retrieval). Indexing building is usually done offline.
 * **Retrieval**, which is the process of extracting relevant paragraph/chunks from the index in response to a query. This step involves online query understanding and processing - transform the query into embedding vector (for dense retrieval) or terms (for sparse retrieval) and retrieving documents using query vectors or terms. 
 * **Generation**, which involves using the retrieved information along with the language model's inherent knowledge to produce a response. This step leverages the power of large language models to understand context, integrate the retrieved information, and generate coherent and relevant text. 
@@ -73,17 +72,17 @@ Various optimizations can be applied to the basic RAG framework [{numref}`chapte
 
 As shown in {numref}`chapter_rag_fig_rag_framework_optimization_demo`, we can divide optimizations into the following categories:
 
-**Document Understanding & Augmentation**:Instead of performing mechanism chunking to split the document, we can apply language understanding models to split documents into semnatically coherent units. Besides, we can enriches documents with additional context, metadata (e.g., stamptime), and alternative representations (queries related to document) before they enter the indexing phase. This enrichment makes documents more discoverable and helps maintain their semantic context even when split into chunks for processing.
+**Document Understanding & Augmentation**:Instead of performing mechanism chunking to split the document, we can apply language understanding models to split documents into semnatically coherent units. Besides, we can enriches documents with additional context, metadata (e.g., stamptime), and alternative representations (e.g., summaries, queries related to document) before they enter the indexing phase. This enrichment makes documents more discoverable and helps maintain their semantic context even when they are split into chunks for processing.
 
 **Query Understanding and Rewriting**: This enhancement addresses one of the fundamental challenges in information retrieval: the vocabulary mismatch between query language and document language. The system can employ LLM to analyze and reformulate user queries, making them more effective for retrieval. It can help complex, multi-concept queries by decomposing the original query into multiple manageable subqueries. 
 
 **Hybrid retrieval**: Instead of using only sparse retrieval or dense retrieval, one can combine them together to form a hybrid retrieval system. For example, encoder models used in dense retriever can produce additional features for rankers in the sparse retriever side. 
 
-**Re-ranking**: After the initial retrieval, the Re-ranking step can significantly improves the quality and precision of retrieved content before it reaches the LLM. Documents are re-ranked using a much powerful model based on their contextual relevance to the user query, not just the vector semantic similarity. In addition, the re-ranking process often penalize similiar documents to promote a diverse set of relevant documents are sent to LLM.
+**Re-ranking for quality control**: After the initial retrieval, the Re-ranking step can significantly improves the quality and precision of retrieved content before it reaches the LLM. Documents are re-ranked using a much powerful model based on their contextual relevance to the user query, not just the vector semantic similarity. In addition, the re-ranking process can use extra rules to penalize similiar documents to promote a diverse set of relevant documents are sent to LLM.
 
 **LLM Understanding & Generation**：Even with high-quality inputs to LLM, LLM can still produce poor results. This can be alleviated by improving model size, pretraining data quality and distribution, and fine-tuning strategies. 
 
-**Output verification**: As an additional quality control, after the LLM's output, we can add additional step to validates the LLM's output against the retrieved and re-ranked sources. This final check ensures accuracy and consistency.
+**Output verification**: As the final layer quality control, after the LLM's output, we can add an additional step to validates the LLM's output against the retrieved and re-ranked sources. This final check ensures accuracy and consistency.
 
 ```{figure} ../img/chapter_rag/Basic_RAG_framework_optimization.png
 ---
@@ -133,7 +132,7 @@ RAG application evaluation consists of two facets:
 * **Retrieval Evaluation**, which evaluates if the retrieved sources are relevant to the query, which can be further measured by recall and precision. 
 * **Response Evaluation**, which evaluates if the final LLM response:
   * (Consistence & faithfulness) Be consistent with retrieved context, 
-  * (Usefulness) Addresses the information need of the query (if the query is an information seeking query)
+  * (Relevance & Usefulness) Addresses the information need of the query (if the query is an information seeking query)
   * (Expected Style) has expected style (like conciseness, clarity for summary type applications)
   * (Insturction following) Follows additional guidelines if any (specified by the user).
 
@@ -141,15 +140,29 @@ RAG application evaluation consists of two facets:
 Evaluting the response quality is not a straight forward task and could be subjective. One popular way is to use a powerful LLM (e.g. GPT-4) to decide the response quality from different aspects. For example,
 * **Correctness**: Whether the generated answer matches that of the reference answer given the query (requires labels). Or whether the predicted answer is semantically similar to the reference answer.
 * **Faithfulness**: Evaluates if the answer is faithful to the retrieved contexts (in other words, whether if there's hallucination).
-* **Answer Relevance & Usefulness**: Whether the generated answer is relevant to the query and address the information need of the query.
+* **Relevance & Usefulness**: Whether the generated answer is relevant to the query and address the information need of the query.
 * **Instruction Following**: Whether additional instructions are followed.
 * **Alignment with Reference Answer**: If there are high quality reference answer, we can use it to compare the alignment of generated response and reference answer. 
 
-We can leverage established relevance and ranking metrics to evaluating the **retrieval quality**, with LLM as query-document relevance labeler.
+We can leverage established relevance and ranking quality metrics to evaluating the **retrieval quality**. For example
+* One can use LLM as query-document relevance labeler, and compute precision and nDCG metrics. When we adopt RAG to a new domain, we might not have enough test data to evaluate how the system works. We can leverage LLM to generate synthetic (question, answer) pairs.
+* Diversity of retrieved results might also play an important role in tasks that require LLM to generate complete and comprehensive results. As typical ranking metrics does not penalize duplicate results, one might need to develop alternative diversity metrics.
 
-When we adopt RAG is a new domain, we might not have enough test data to evaluate how the system works. We can leverage LLM to generate synthetic (question, answer) pairs.
+There are also efforts to automate the RAG evaluation process, as shown in the following [{numref}`chapter_rag_fig_rag_rag_checker`] from **RAGChecker** {cite:p}`ru2024ragchecker`.
 
-There are also efforts to automatic the RAG evaluation process, as shown in the following [{numref}`chapter_rag_fig_rag_rag_checker`] from **RAGChecker** {cite:p}`ru2024ragchecker`.
+The key idea is to separate the overall metrics into retriever metrics and generator metrics and to compute metrics at a fine-grained chunks or claim level. 
+
+Ideally, a **perfect retriever** returns precisely all claims needed to generate the ground-truth answer. Therefore,
+* One can use **precision** to measure how many chunks are relevant (i.e., any ground-truth claim is in it) with respect to all retrieved chunks.
+* One can use **claim recall** to measure how many claims made in the ground-truth answer are covered by retrieved chunks. 
+
+Given retrieved chunks (possibly mixing relevant and irrelevant information), a **perfect generator** would identify and include all ground-truth-relevant claims and ignore any that are not. Because the generator's results have dependency on retrieved chunks, we use the following metrics to capture different aspects of its performance.
+* Context utilization, which captures percentage of correct claims in the final output over the correct claims in the retrieved chunks.
+* Noise sensitivity, which is the percentage of incorrect claims arising from retrieved chunks over the total number of output claims. A generator with high noise tolerance is expected to have lower number of incorrect claims arsing from retrieved chunks.
+* Hallucination, which is the percentage of made-up, incorrect claims over the total number of output claims. The made-up claims here refers to claims not coming from retrieved chunks.
+* Self-knowledge, which is the percentage of correct claims not coming from retrieved chunks over the total number of output claims. This captures the ability to utilize its own knowledge.
+* Faithfulness, which is the percentage of claims coming from retrieved chunks over the total number of output claims. A perfectly failthful generator will have every output claims originated from retrieved chunks; In other words, its hallucination and self-knowledge metrics are zero.
+
 
 ```{figure} ../img/chapter_rag/rag_evaluation/rag_checker_demo.png
 ---
@@ -205,11 +218,22 @@ Use doc2query to enhance retrieval performance. Image from {cite:p}`nogueira2019
 
 ### Document Splitting and Granularity
 
-During document indexing stage, we need to split documents into different chunks. Such retrieval granularity ranges from fine to coarse, including Phrase, Sentence, Paragrpahs. 
+During document indexing stage, we need to split documents into different **chunks**. The goal is to break down a full-length documents into smaller, more manageable pieces of text. This serves a few purposes:
+- Creating semantic units of data centered around specific information: This can make it easier to retrieve and use the data, as it is organized into smaller, more focused units.
+- Allowing knowledge to fit within the model's prompt limits: If we feed a full-length document into the prompt, we would be likely to run into size limit problems.
+- Allowing the creation of relationships between chunks: This means that chunks can be linked together based on their relationships (the relationship can be as simple as preceding and subsequent chunks), creating a network of interconnected data. This can be useful to derive structures within the documents.
 
-Coarse-grained retrieval units fundamentally improve the **recall at the cost of precision**; that is, it can provide more relevant information for the problem, but they may also contain redundant content, which could distract the retriever and language models in downstream tasks. Intutively, encoding a large chunk of text into a single vector will have information loss.
+```{figure} ../img/chapter_rag/data_source/document_spliting.png
+---
+scale: 60%
+name: chapter_rag_fig_rag_knowledge_base_demo
+---
+Documents are splitted into inter-connected chunks.
+```
+  
+The size of chunks ranges from fine to coarse, including phrases, sentence, paragrpahs.  From retrieval perspective, coarse-grained retrieval units fundamentally improve the **recall at the cost of precision**; that is, it can provide more relevant information for the problem, but they may also contain redundant, verbose content, which could distract the retriever and language models in downstream tasks. Intutively, encoding a large chunk of text into a single vector will have information loss, leading to poor retriever performance.
 
-On the other hand, fine-grained retrieval unit granularity increases the burden of retrieval and does not guarantee content completeness and semantic integrity (i.e., not enough context). As a result, the quality of LLM response will be affected negatively.
+On the other hand, fine-grained retrieval unit increases the burden of retrieval - it increases the number of chunks needed for offline indexing and requires retrieving more chunks for online querying stage. Despite its higher cost, fine-grained retrieval unit does not guarantee content completeness and semantic integrity (i.e., not enough context). As a result, the quality of LLM response will be affected negatively.
 
 From a high level, an ideal splitting should consider the following factors:
 * **Semantic coherence**: Chunks should maintain semantic coherence - split boundaries should respect natural semantic units and closely related information should stay in the same chunk.
@@ -217,9 +241,54 @@ From a high level, an ideal splitting should consider the following factors:
 * **Information density**: Each chunk should contain sufficient information to be independently meaningful. 
 
 There are different approaches to splitting:
-* **Mechanical splitting** based on a fixed window size. This has the lowest processing cost, but there is no guaratee on maintaining semantic completeness for each chunk - it can create arbitrary breakpoints in the middle of sentences. One mitigation is to use overlapping sliding windows during splitting.
-* **Structure-aware splitting** by leveraging document structures (headers, sections). This also has low processing cost and it respect the hierachical organization of the docuemnt. However, the chunk size can vary a lot as different documents can organize differently. Also, this method can only apply to relatively formal text data with such structural annotations.
-* **Semantic-based splitting.** This method invovles using language understanding model to predict the semantic relationship between sentences and paragraphs. For example, we can use BERT to predict if two sentences are sementically close via the next sentence prediction task.  Sentences and paragraphs that are closely related to each other will be grouped into the same chunk. This method is much costly compared to previously two approaches, but it preserves topic coherence within the chunk.
+* **Mechanical splitting** based on a fixed window size. This has the lowest processing cost, but there is no guaratee on maintaining semantic completeness for each chunk - it can create arbitrary breakpoints in the middle of sentences. **One mitigation is to use overlapping sliding windows during splitting.**
+* **Structure-aware splitting** by leveraging document structures (headers, sections). This also has low processing cost and it respect the hierachical organization of the docuemnt. However, **the chunk size can vary a lot as different documents can organize differently**. Also, this method can only apply to relatively formal text data with such structural annotations.
+* **Semantic-based splitting.** This method invovles using language understanding model to predict the semantic relationship between sentences and paragraphs. For example, we can use BERT to predict if two sentences are sementically close via the next sentence prediction task.  Consecutive sentences and paragraphs that are closely related to each other will be grouped into the same chunk. This method is much costly compared to previously two approaches, but it preserves topic coherence within the chunk.
+
+### Utilizing Knowledge Graph
+
+#### Fundamentals
+Compared with unstructed text as an external knowledge source, one can utilize knowledge graphs to represent information in a structured, interconnected format. By querying a knowledge graph, we can usually obtain concise and comprehensive results for the generator to process.
+
+Knowledge graphs consist of entities (nodes) and relationships (edges) between those entities. Entities can represent real-world objects, concepts, or ideas, while relationships describe how those entities are connected.
+
+During querying time, exploring these connections will allow us to find new information and make conclusions that would be hard to draw from separate pieces of information.
+
+````{prf:example} Knowledge graph example
+Suppose we have a collection of documents containing text chunks describing different person works for different companies. 
+
+To utilize knowledge graph in the RAG, we first use LLM to extract entities and their relationship from documents. In this case, we can extract the information on *person works for company*, where *person* and *company* are entities, and *works for* is relationship.
+
+For an easy local query like *where does Tom work?*, we start with the knowledge graph node *Tom*, and follow the *works for* relationship edge to search for answer. Such local query is also straight forward for basic RAG as long as there are sentences in the original text describring Tom's employment status. 
+
+For a global query like *who works for company DeepAI*, we start with the knolwedge graph node *DeepAI*, and follow the *works for* relationship edge to search for all the persons working for DeepAI. If the *work for* fact is scattered, and *implicitly stated* in different chunks, it is very challenging for basic RAG retrieve all these relevant chunks (i.e., the recall needs to be sufficiently high).
+
+For another reasoning-needed query *does Michael work for the same company as Tom*, with knowledge graph, we can easily solve the query by examining nodes of *Michael* and *Tom* as well as their edges to draw conclusion. 
+````
+
+The following table compares knowledge graph and vector databases from different aspects.
+
+| Feature | Knowledge Graphs | Vector Databases |
+| :---: | :---: | :---: |
+| Data Representation | Entities (nodes) and relationships (edges) between entities, forming a graph structure. | High-dimensional vectors, each representing a chunk of text from a document. |
+| Retrieval Method| Starting with nodes and traversing the graph following relationship edges | Similarity search in high dimensional space to identify most relevant chunks |
+| Explainability and transparency | Human-interpretable representation of knowledge, include graph structure and relationships between entities. |Less interpretable to humans due to high-dimensional numerical representations. Challenging to directly understand relationships or reasoning behind retrieved information. |
+| Inference Time Reasoning | Can reason over relationship among entities. Both explicit and implicit Relationship can be extracted during knowledge construction time. New knowledge can be derived from inference time | Limited. Vector similarity may miss implicit relationships during inference time. Can identify explicit and simple relationship but not complex relationships. |
+|Scalability | More cost to construct knowledge graph for new documents, which involves incoporating new entities and relationships from documents | Minimal cost to indexing new documents|
+
+Both knowledge graphs and vector databases have their strengths and use cases, and the choice between them depends on the specific requirements of the application. Knowledge graphs excel at representing and reasoning over small-scaled structured knowledge (e.g., representing complex relationships and enabling multi-hop reasoning), while vector databases are well-suited for large scale tasks that rely heavily on semantic similarity and simple reasoning.
+
+#### Challenges
+
+Setting up knowledge graphs for RAG applications in the real world can be a complex task with several challenges:
+
+**Knowledge graph construction**: Building a high-quality knowledge graph is a complex and time-consuming process that requires significant domain expertise and effort. Extracting entities, relationships, and facts from various data sources and integrating them into a coherent knowledge graph can be challenging, especially for large and diverse datasets. It involves understanding the domain, identifying relevant information, and structuring it in a way that accurately captures the relationships and semantics.
+
+**Data integration**: RAG applications often need to integrate data from multiple heterogeneous sources, each with its own structure, format, and semantics. Ensuring data consistency, resolving entity and relationship conflicts, and mapping entities and relationships across different data sources is non-trivial. It requires careful data cleaning, transformation, and mapping to ensure that the knowledge graph accurately represents the information from various sources.
+
+**Knowledge graph maintenance and update**: To ensure up-to-date RAG application, Knowledge graphs also need to be continuously updated and maintained as new knowledge becomes available or existing knowledge changes. Keeping the knowledge graph up-to-date and consistent involves monitoring changes in the data sources, identifying relevant updates, and propagating those updates to the knowledge graph while maintaining its integrity and consistency.
+
+**Scalability and performance**: As the knowledge graph grows in size and complexity, ensuring efficient storage, retrieval, and querying of the graph data becomes increasingly challenging. Scalability and performance issues can arise, particularly for large-scale RAG applications with high query volumes.
 
 
 ## RAG Optimization: Query Understanding and Rewriting
@@ -326,6 +395,43 @@ In conversational QA scenario (e.g., a chatbot), understanding user's query requ
 
 Given the complexity of multi-turn conversations, using LLM can offer a clean solution rather than using multiple specialized NLP modules/models.
 
+### Advanced Query Categorization
+
+To better understand the RAG performance over different query types, one can further categorize queries into the following types:
+
+**Explicit fact queries**: Explicit fact queries are the most basic and straightforward type, which directly request specific, known facts, with answers readily available in the provided data, requiring no additional reasoning processes. For instance, the query *Who invented the telephone?*, its answer, *Alexander Graham Bell invented the telephone* is directly retrieved from external data.
+
+**Implicit fact queries**:  Implicit fact queries are more complex than explicit ones, requiring the model to reveal hidden facts within the data. The required information might be scattered across multiple data fragments or need to be obtained through simple reasoning processes. For example, the question, *Which country won the most gold medals in the 2020 Olympics?* requires retrieving data on multiple countries' gold medals and comparing them.
+
+**Interpretable rationale queries**: Interpretable rationale queries further enhance the complexity of the RAG architecture, requiring not only the mastery of facts but also the ability to understand and apply domain-specific reasoning justifications closely related to the data context. These queries demand both factual knowledge and the ability to interpret domain-specific rules, often sourced from external resources and rarely encountered in the initial pre-training of general language models.
+
+For instance, in financial auditing, language models need to follow regulatory compliance guidelines to assess whether a company's financial statements meet standards; in technical support scenarios, they must adhere to predefined troubleshooting workflows to effectively respond to user queries. These applications require the RAG architecture to provide precise and compliant responses while generating clear, understandable reasoning process explanations.
+
+**Hidden Rationale Queries**: Hidden rationale queries represent the highest level and most challenging category within the RAG task classification. These queries require AI models to infer complex, unrecorded reasoning justifications relying on patterns and outcome analysis within the data. For example, in IT operations, language models need to mine implicit knowledge from historical events resolved by cloud operations teams, identifying successful strategies and decision-making processes; in software development, they must extract guiding principles from past debugging error records.
+
+<!-- In handling explicit fact queries, the key to the RAG architecture lies in efficient retrieval and accurate matching. Microsoft leverages models like BERT to encode queries and documents into dense vectors for similarity matching, enabling rapid location and extraction of required information from vast datasets. Additionally, classic retrieval algorithms like BM25 play a crucial role, ranking relevance based on term frequency and document frequency to ensure the retrieved information highly matches the user's query.
+
+The application scenarios of explicit fact queries are extensive, including knowledge-based question answering and information retrieval. At this level, the RAG architecture primarily relies on vector space and semantic similarity calculations to achieve fast and accurate answer extraction.
+
+In implicit fact queries, the RAG architecture introduces reasoning and action elements, necessitating a more agentic approach. Microsoft employs multi-hop reasoning and information aggregation techniques at this level, constructing relationship graphs among documents for multi-round retrieval and gradually collecting required information. Additionally, graph neural networks and iterative retrieval methods are used to effectively combine information from different sources, generating comprehensive and accurate answers.
+
+The application scenarios of implicit fact queries are equally broad, including but not limited to data analysis and decision support. At this level, the RAG architecture not only requires retrieval capabilities but also a certain degree of reasoning to reveal hidden patterns and regularities in the data.
+
+Interpretable Rationale Queries: The Combination of Domain Knowledge and Logical Reasoning
+
+Interpretable rationale queries further enhance the complexity of the RAG architecture, requiring not only the mastery of facts but also the ability to understand and apply domain-specific reasoning justifications closely related to the data context. These queries demand both factual knowledge and the ability to interpret domain-specific rules, often sourced from external resources and rarely encountered in the initial pre-training of general language models.
+
+For instance, in financial auditing, language models need to follow regulatory compliance guidelines to assess whether a company's financial statements meet standards; in technical support scenarios, they must adhere to predefined troubleshooting workflows to effectively respond to user queries. These applications require the RAG architecture to provide precise and compliant responses while generating clear, understandable reasoning process explanations.
+
+To achieve this, Microsoft integrates neural-symbolic methods in the RAG architecture, combining neural networks with symbolic reasoning systems, and uses Chain-of-Thought prompting techniques to guide language models through step-by-step reasoning. These technologies enable the RAG architecture to excel in specific domains while providing interpretable reasoning processes, enhancing user trust in the answers.
+
+### 4. Hidden Rationale Queries: Uncovering Deep-Level Patterns and Meanings
+
+Hidden rationale queries represent the highest level and most challenging category within the RAG task classification. These queries require AI models to infer complex, unrecorded reasoning justifications relying on patterns and outcome analysis within the data. For example, in IT operations, language models need to mine implicit knowledge from historical events resolved by cloud operations teams, identifying successful strategies and decision-making processes; in software development, they must extract guiding principles from past debugging error records.
+
+In handling hidden rationale queries, the RAG architecture relies on robust global retrieval capabilities and deep-level understanding. Microsoft introduces knowledge graphs and community detection mechanisms to achieve deep mining and comprehensive grasp of information structures. GraphRAG, as an innovative achievement in this field, leverages large language models to extract entities, relationships, and attributes from source documents, constructing structured knowledge graphs. Community detection algorithms identify closely related entity groups (communities) and generate summaries for each community, enabling comprehensive and accurate answers to complex, multi-topic questions.
+
+The application scenarios of hidden rationale queries include but are not limited to strategic decision-making and market analysis. At this level, the RAG architecture not only provides answers but also reveals the deep-level patterns and meanings behind them, offering strong support for decision-making. -->
 
 ## RAG Optimization: Retriever and ReRanker
 
@@ -458,67 +564,6 @@ name: chapter_rag_fig_rag_demo
 ---
 omparison between two responses given by InstructGPT. The retrieved passages are relevant but not particularly helpful for solving the question, which influences the model’s judgment and leads to incorrect answers. Image from {cite:p}`wang2023self`.
 ``` -->
-
-## Advanced RAG
-
-
-
-### Agentic RAG
-
-Based on the image, I'll explain the concept of Agentic RAG (Retrieval-Augmented Generation):
-
-Agentic RAG represents an evolution of traditional RAG systems by incorporating multiple specialized agents that work together to produce more accurate and reliable responses. The diagram shows multiple agents then work collaboratively within a structured framework:
-- The Planning Agent determines the strategy for answering the question
-- The Synthesis Agent processes and combines information
-- These agents interact with the search service to gather necessary information
-
-```{figure} ../img/chapter_rag/advanced_rag/agentic_rag/agentic_rag_introduction.png
----
-scale: 30%
-name: chapter_rag_fig_rag_agent_rag
----
-Illustration of agentic RAG, in which multiple agents work collaboratively to provide grounding.
-```
-
-What makes this "agentic" is the way it delegates different aspects of the task to specialized agents that each handle specific parts of the process - planning, searching, and synthesizing. This division of labor allows for more sophisticated reasoning and better accuracy compared to simple RAG systems that just retrieve and generate without this structured agency approach.
-
-As shown in {numref}`chapter_rag_fig_rag_agent_rag_example`, the key innovation here appears to be the coordination between these different agents, allowing them to work together to break down complex queries into manageable steps and cross-validate information before producing a final response. This cooperative approach helps reduce errors and provides more reliable answers by combining multiple perspectives and verification steps.
-
-
-```{figure} ../img/chapter_rag/advanced_rag/agentic_rag/agentic_rag_examples.png
----
-scale: 45%
-name: chapter_rag_fig_rag_agent_rag_example
----
-Agentic RAG example in breaking down a complex query into smaller manageable steps.
-```
-
-
-While agentic RAG can improve the success on complex and reasoning-demanding queries, but it often comes at the cost of increased latency, higher resource usage, and potential reliability issues.
-* **High latency**: reasoning steps are lengthy, multiple calls to LLM are required; diffcult to manage and control the response time.
-* **High cost**: Multiple reasoning and search steps result in high GPU serving costs
-* **Error prone reasoning**: As there are multiple reasoning steps and each steps can cause error, the final reasoning outcome is error-prone. Reasoning steps might mistakenly reject correct answers.
-
-### GraphRAG
-
-Baseline RAG was created to help solve this problem, but we observe situations where baseline RAG performs very poorly. For example:
-* Baseline RAG struggles to connect the dots. This happens when answering a question requires traversing disparate pieces of information through their shared attributes in order to provide new synthesized insights.
-* Baseline RAG performs poorly when being asked to holistically understand summarized semantic concepts over large data collections or even singular large documents.
-
-To tackle these challenges for baseline RAG, **GraphRAG** [{cite:p}`edge2024local`] was proposed by Microsoft to use knowledge graphs to aid question-and-answer when reasoning about complex information.
-
-The GraphRAG process involves the following steps:
-* Extracting a knowledge graph out of raw text, usually using a LLM, 
-* Building a community hierarchy for nodes in the knowledge graph, 
-* Generating summaries or other meta-data for these communities, 
-* Leveraging these structures when perform RAG-based tasks.
-
-Compared with Baseline RAG, which finds the top-k semantically related document chunks to use as context for synthesizing the answer, GraphRAG uses subGraphs related to entities in the task or question as context. More specifically, GraphRAG will have the following online querying process:
-* Search related **entities** of the quesion/task (the search could be keyword extraction based or embedding based)
-* Get subGraph of those entities ($k$-depth) from the **knowledge graph**
-* Build context based on the subGraph
-
-
 
 
 ## Further RAG Discussion
