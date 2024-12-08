@@ -506,6 +506,59 @@ DPOP [4]：由于LLM model很难区分编辑距离较小的pair，那么当持�
 
 [4] Pal A, Karkhanis D, Dooley S, et al. g: Fixing Failure Modes of Preference Optimisation with DPO-Positive[J]. arXiv preprint arXiv:2402.13228, 2024. -->
 
+## LLama-2 Alignment in Practice
+
+
+### Overview
+
+In the following, we review key process for aligning LLama2 model to human preference [{numref}`chapter_training_fig_alignmenet_llama2_alignment`]. Specifially, LLama2 alignment consists of the following iterative steps:
+* Collecting human preference data
+* Training reward model to predict human preference
+* Using reward model to guide model improvement via rejection sampleing SFT and RLHF
+
+```{figure} ../img/chapter_training/alignment/llama2/llama2_alignment.png
+---
+scale: 70%
+name: chapter_training_fig_alignmenet_llama2_alignment
+---
+Overview of iterative alignment process in LLama2 after pretraining and supervised fine-tuning. Note that reward model is also iteratively updated the ensure the reward modeling remain within distribution. Image from {cite:p}`touvron2023llama`.
+```
+
+### Preference Data Collection
+
+
+To collect comprehensive human feedback data, Meta AI {cite:p}`touvron2023llama` considered both **open-source** and **in-house** data. 
+
+For open-source data, they used datasets from Anthropic, OpenAI, etc., containing approximately 1.50M human preference data points. These data primarily focused on two aspects: safety and usefulness, where safety refers to whether the model produces unsafe outputs, and usefulness refers to the extent to which the model's outputs can address human requests. 
+
+For in-house data, they hired human annotator to produce both safety and usefulness labels on about ~1.4M data points. Annotators first wrote an input prompt, then selected outputs from two models based on corresponding criteria to serve as positive and negative examples. 
+
+Note that these preference data is used in reward model training. In the iterative alignment process of LLaMA-2, the distribution of model-generated content would change, leading to degradation of the reward model. To prevent this phenomenon, **new annotated data needed to be collected during the training process to retrain the reward model.**
+
+
+### Reward Modeling
+
+After collecting human feedback data, reward models are trained based on the collected data, which are then used to provide on-the-fly feedback signal in subsequent training processes. To obtain more detailed reward signals, data related to safety tasks and usefulness tasks are used separately to train two reward models. 
+
+To better help reward models distinguish the differences between positive and negative examples, a margin $m(y^+, y^-)$ is added between human preference between positive and negative examples. The optimized training objective for the reward model is shown in the following equation:
+
+$$
+\mathcal{L}_{\text{ranking}} = -\log(\sigma(r_\theta(x, y^+) - r_\theta(x, y^-) - m(y^+, y^-)))
+$$
+
+where $x$, $y^+$, and $y^-$ represent the model input, positive example, and negative example respectively. Naturally, we use a large margin for pairs with distinct responses, and a smaller one for those with similar responses
+
+
+
+### Iterative Alignment
+
+LLama-2 took a iterative approch to align the LLM to human preference. As the alignment progresses, we are able to train better reward models and collect more prompts. We therefore can train successive versions for RLHF models, referred to here as RLHF-V1, ..., RLHF-V5.
+Two alignment algorithms are explored:
+- **SFT with Rejection Sampling**. $K$ outputs from the model (might include previous version model) and select the best candidate with the reward model. The highest rewarded output is collected to perform SFT.
+- **Proximal Policy Optimization (PPO)** as in the standard RLHF literature.
+
+Until RLHF (V4), only Rejection Sampling SFT is only used, and after that, two algorithms were combined sequentially - applying PPO on top of the resulted Rejection Sampling checkpoint before sampling again.
+
 ## Bibliography
 
 ```{bibliography} ../../_bibliography/references.bib

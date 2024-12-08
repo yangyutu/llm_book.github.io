@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=ca93fcec" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -608,8 +608,8 @@ The selection of low rank matrices
 <section id="study-results">
 <h4><span class="section-number">13.3.5.2. </span>Study Results<a class="headerlink" href="#study-results" title="Link to this heading">#</a></h4>
 <p>As shown in the following, LoRA has been successfully applied to various models, including RoBERT and GPT-3, showing competitive performance with full finetuning while using only 0.01% of the trainable parameters.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1568">
-<caption><span class="caption-number">Table 13.1 </span><span class="caption-text">RoBERT with different adaptation methods on the language understanding GLUE benchmark.</span><a class="headerlink" href="#id1568" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1569">
+<caption><span class="caption-number">Table 13.1 </span><span class="caption-text">RoBERT with different adaptation methods on the language understanding GLUE benchmark.</span><a class="headerlink" href="#id1569" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Model &amp; Method</p></th>
 <th class="head"><p># Trainable Parameters</p></th>
@@ -632,8 +632,8 @@ The selection of low rank matrices
 </tbody>
 </table>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id1569">
-<caption><span class="caption-number">Table 13.2 </span><span class="caption-text">GPT-3-175B with different adaptation methods on the language understanding benchmark.</span><a class="headerlink" href="#id1569" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1570">
+<caption><span class="caption-number">Table 13.2 </span><span class="caption-text">GPT-3-175B with different adaptation methods on the language understanding benchmark.</span><a class="headerlink" href="#id1570" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Model&amp;Method</p></th>
 <th class="head text-center"><p># Trainable Parameters</p></th>
@@ -676,8 +676,8 @@ The selection of low rank matrices
 <li><p><span class="math notranslate nohighlight">\(r\)</span> as small as one suffices for adapting both <span class="math notranslate nohighlight">\(W^Q\)</span> and <span class="math notranslate nohighlight">\(W^V\)</span> on these datasets while training <span class="math notranslate nohighlight">\(W^Q\)</span> alone needs a larger <span class="math notranslate nohighlight">\(r\)</span>.</p></li>
 <li><p>Adapting more matrices will improve model performance but has marginal gain when adapting all matrices.</p></li>
 </ul>
-<div class="pst-scrollable-table-container"><table class="table" id="id1570">
-<caption><span class="caption-number">Table 13.3 </span><span class="caption-text">Validation accuracy on WikiSQL and MultiNLI with different rank <span class="math notranslate nohighlight">\(r\)</span>.</span><a class="headerlink" href="#id1570" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1571">
+<caption><span class="caption-number">Table 13.3 </span><span class="caption-text">Validation accuracy on WikiSQL and MultiNLI with different rank <span class="math notranslate nohighlight">\(r\)</span>.</span><a class="headerlink" href="#id1571" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-center"><p></p></th>
 <th class="head text-center"><p>Weight Type</p></th>

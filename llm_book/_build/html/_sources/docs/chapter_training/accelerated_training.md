@@ -1,4 +1,4 @@
-# LLM Training Acceleration
+# LLM Training Acceleration (WIP)
 
 ## The Memory Requirement For Training LLM
 <!-- % https://medium.com/@maxshapp/understanding-and-estimating-gpu-memory-demands-for-training-llms-in-practise-c5ef20a4baff -->
