@@ -4,7 +4,7 @@
 LLMs have revolutionized natural language processing, but they still face several significant challenges, particularly in **knowledge intensive tasks**:
 
 * **Hallucination**: LLMs can generate plausible-sounding but factually incorrect information when they are prompted with rare or ambiguous queries, e.g., what is kuula? (a fishing god). And there lacks an intrinsic way of detecting when LLM is making up facts.
-* **Outdated knowledge**: The knowledge of LLMs is limited to their pre-training data, which can quickly become obsolete. LLM cannot answer questions like stock market values, weather forecast, news, etc. that require access to dynamic, ever-changing knowledge.
+* **Outdated and publically-sourced knowledge**: The knowledge of off-the-shelf LLMs is usually limited to their publically-sourced pre-training data, which can quickly become obsolete. LLM cannot answer questions like stock market values, weather forecast, news, etc. that require access to dynamic, ever-changing knowledge; neither can LLM answer questions related to private company documents not used in training data.
 * **Untraceable reasoning**: The decision-making process of LLMs is often unclear, making it difficult to verify or understand their outputs.
 * **Expensive cost to inject knowledge**: Although one can inject domain knowledge or updated knowledge via continuous pretraining or finetining, the cost of data collections and training is very high.
 
@@ -129,24 +129,27 @@ Following table summarize practical challenges and possible causes when applying
 Evaluation and benchmarking are crucial steps for RAG development. You cannot improve something you cannot measure it. 
 
 RAG application evaluation consists of two facets:
-* **Retrieval Evaluation**, which evaluates if the retrieved sources are relevant to the query, which can be further measured by recall and precision. 
+* **Retrieval Evaluation**, which evaluates
+  * **Context relevance** between the retrieved sources and the query, which can be further measured by ranking metrics like recall, precision, and nDCG. 
+  * **Diversity** of retrieved sources.
 * **Response Evaluation**, which evaluates if the final LLM response:
-  * (Consistence & faithfulness) Be consistent with retrieved context, 
-  * (Relevance & Usefulness) Addresses the information need of the query (if the query is an information seeking query)
-  * (Expected Style) has expected style (like conciseness, clarity for summary type applications)
-  * (Insturction following) Follows additional guidelines if any (specified by the user).
-
-
-Evaluting the response quality is not a straight forward task and could be subjective. One popular way is to use a powerful LLM (e.g. GPT-4) to decide the response quality from different aspects. For example,
-* **Correctness**: Whether the generated answer matches that of the reference answer given the query (requires labels). Or whether the predicted answer is semantically similar to the reference answer.
-* **Faithfulness**: Evaluates if the answer is faithful to the retrieved contexts (in other words, whether if there's hallucination).
-* **Relevance & Usefulness**: Whether the generated answer is relevant to the query and address the information need of the query.
-* **Instruction Following**: Whether additional instructions are followed.
-* **Alignment with Reference Answer**: If there are high quality reference answer, we can use it to compare the alignment of generated response and reference answer. 
+  * **Consistence & faithfulness**: Be consistent with retrieved context - if the answer is faithful to the retrieved contexts (in other words, whether if there's hallucination).
+  * **Relevance** Whether the generated answer is relevant to the query.
+  * **Correctness & usefulness** Addresses the information need of the query and being useful (if the query is an information seeking query).
+  * Other dimensions
+    * (Expected Style) has expected style (like conciseness, clarity for summary type applications)
+    * (Insturction following) Follows additional guidelines if any (specified by the user).
 
 We can leverage established relevance and ranking quality metrics to evaluating the **retrieval quality**. For example
 * One can use LLM as query-document relevance labeler, and compute precision and nDCG metrics. When we adopt RAG to a new domain, we might not have enough test data to evaluate how the system works. We can leverage LLM to generate synthetic (question, answer) pairs.
-* Diversity of retrieved results might also play an important role in tasks that require LLM to generate complete and comprehensive results. As typical ranking metrics does not penalize duplicate results, one might need to develop alternative diversity metrics.
+* **Diversity** of retrieved results might also play an important role in tasks that require LLM to generate **complete and comprehensive results**. As typical ranking metrics does not penalize duplicate results, one might need to develop alternative diversity metrics.
+
+Evaluting the response quality is not a straight forward task and could be subjective. One cose-effective way is to use a powerful LLM (e.g. GPT-4) or text encoder model to decide the response quality from different aspects. For example,
+* **Consistence & Faithfulness**: One can use LLM to validate if claims in the generated output is consistent with the claims in the retrieved context.
+* **Relevance**: One can use text encoder to measure the semantic similarity between the query and the answer in the embedding space.
+* **Correctness & usefulness**: If one has the reference answer, one can use string matching approach like BLEU score to check if the generated answer matches that of the reference answer. Checking usefulness will be dependent on user scenarios.
+
+
 
 There are also efforts to automate the RAG evaluation process, as shown in the following [{numref}`chapter_rag_fig_rag_rag_checker`] from **RAGChecker** {cite:p}`ru2024ragchecker`.
 
@@ -157,16 +160,16 @@ Ideally, a **perfect retriever** returns precisely all claims needed to generate
 * One can use **claim recall** to measure how many claims made in the ground-truth answer are covered by retrieved chunks. 
 
 Given retrieved chunks (possibly mixing relevant and irrelevant information), a **perfect generator** would identify and include all ground-truth-relevant claims and ignore any that are not. Because the generator's results have dependency on retrieved chunks, we use the following metrics to capture different aspects of its performance.
-* Context utilization, which captures percentage of correct claims in the final output over the correct claims in the retrieved chunks.
-* Noise sensitivity, which is the percentage of incorrect claims arising from retrieved chunks over the total number of output claims. A generator with high noise tolerance is expected to have lower number of incorrect claims arsing from retrieved chunks.
-* Hallucination, which is the percentage of made-up, incorrect claims over the total number of output claims. The made-up claims here refers to claims not coming from retrieved chunks.
-* Self-knowledge, which is the percentage of correct claims not coming from retrieved chunks over the total number of output claims. This captures the ability to utilize its own knowledge.
-* Faithfulness, which is the percentage of claims coming from retrieved chunks over the total number of output claims. A perfectly failthful generator will have every output claims originated from retrieved chunks; In other words, its hallucination and self-knowledge metrics are zero.
+* **Context utilization**, which captures percentage of correct claims in the final output over the correct claims in the retrieved chunks.
+* **Noise sensitivity**, which is the percentage of incorrect claims arising from retrieved chunks over the total number of output claims. A generator with high noise tolerance is expected to have lower number of incorrect claims arsing from retrieved chunks.
+* **Hallucination**, which is the percentage of made-up, incorrect claims over the total number of output claims. The made-up claims here refers to claims not coming from retrieved chunks.
+* **Self-knowledge**, which is the percentage of correct claims not coming from retrieved chunks over the total number of output claims. This captures the ability to utilize its own knowledge.
+* **Faithfulness**, which is the percentage of claims coming from retrieved chunks over the total number of output claims. A perfectly failthful generator will have every output claims originated from retrieved chunks; In other words, its hallucination and self-knowledge metrics are zero.
 
 
 ```{figure} ../img/chapter_rag/rag_evaluation/rag_checker_demo.png
 ---
-scale: 60%
+scale: 65%
 name: chapter_rag_fig_rag_rag_checker
 ---
 llustration of the proposed metrics in RAGChecker. Image from {cite:p}`ru2024ragchecker`.
@@ -200,18 +203,37 @@ Comparison between retrieval results from document corpus and knowledge bases. R
 base (based on key phrases extracted by LLM) could avoid concept/entity missing issue. Image from {cite:p}`wang2023knowledgpt`.
 ```
 
+### Document Parsing
+
+Depending on the type document sources, we need to use different tools to extract text, image, etc from the document. 
+
+For html webpage and markdown files, which use tags or specific syntax to organize texts, there are [available tools](https://docs.llamaindex.ai/en/stable/api_reference/node_parsers/) to extract texts from tags like headings, body, etc. 
+
+Parsing PDFS is more challenging due to its large variation of layout and organization. For relatively simple PDF, one can use rule-based method to extract layout and structure based on pre-defined patterns. However, rule-based methods are less useful for PDFs with complex layouts.
+
+A more advanced approach will leverage OCR (Optical Character Recognition), which treat each page as an image and extract elements from the image. It also leverage advanced LLMs (e.g., multi-modality LLM) to extract and separate distinct elements like code, image, table. There are many available online services in this line of approach.
+
+
 ### Data Source Augmentation 
 
 For unstructured data sources, it can improve document understanding and feature derivation by augmenting the data source with additional information. 
 
-For example, chunks can be enriched with metadata information such as page number, file name, author,category timestamp. Timestamp can be used to improve time-aware retrieval model, ensuring the fresh knowledge are ranked higher and avoiding outdated information.
+For example, chunks can be enriched with metadata information such as page number, file name, author, location, category, key entities, timestamp. Augmented data can also be artificially constructed. For example, adding summaries of paragraph, as well as introducing queries can be answered by the paragraphs (known as doc2query {numref}`chapter_rag_fig_rag_doc2_query` {cite:p}`nogueira2019document`).Metadata are useful matching signal for retrieval stage. For example,
+* Location can be used to improve the retrieval results for location sensitive query.
+* Timestamp can be used to improve time-aware retrieval model, ensuring the fresh knowledge are ranked higher and avoiding outdated information.
+* Key entities in metadata can help retrieval of documents mentioning particular people, location, etc.
 
-Augmented data can also be artificially constructed. For example, adding summaries of paragraph, as well as introducing queries can be answered by the paragraphs (known as doc2query {cite:p}`nogueira2019document`).
+For multi-modality elements like tables, images, and codes, it is critical to add metatable to make them searchable. For example
+* Add titles and key summary for table
+* Add captions for images using text to image encoder-decoder models
+* Add code description for code snippet   
+
+A key consideration when enrish documents with the various metadata is the associated compute costs, as nowadays many metadata are extracted using LLMs. One can optimize the cost by using cheaper LLM models or only selecting critical documents for enrishment. 
 
 ```{figure} ../img/chapter_rag/data_source/doc_2_query.png
 ---
 scale: 60%
-name: chapter_rag_fig_rag_knowledge_base_demo
+name: chapter_rag_fig_rag_doc2_query
 ---
 Use doc2query to enhance retrieval performance. Image from {cite:p}`nogueira2019document`.
 ```
@@ -221,19 +243,19 @@ Use doc2query to enhance retrieval performance. Image from {cite:p}`nogueira2019
 During document indexing stage, we need to split documents into different **chunks**. The goal is to break down a full-length documents into smaller, more manageable pieces of text. This serves a few purposes:
 - Creating semantic units of data centered around specific information: This can make it easier to retrieve and use the data, as it is organized into smaller, more focused units.
 - Allowing knowledge to fit within the model's prompt limits: If we feed a full-length document into the prompt, we would be likely to run into size limit problems.
-- Allowing the creation of relationships between chunks: This means that chunks can be linked together based on their relationships (the relationship can be as simple as preceding and subsequent chunks), creating a network of interconnected data. This can be useful to derive structures within the documents.
+- Allowing the creation of relationships between chunks: This means that chunks can be linked together based on their relationships (the relationship can be as simple as preceding or next chunks), creating a network of interconnected data. This can be useful to derive structures within the documents. See {ref}`chapter_rag_sec_basic_rag_chunk_relationship`.
 
 ```{figure} ../img/chapter_rag/data_source/document_spliting.png
 ---
-scale: 60%
-name: chapter_rag_fig_rag_knowledge_base_demo
+scale: 45%
+name: chapter_rag_fig_rag_document_spliting
 ---
 Documents are splitted into inter-connected chunks.
 ```
   
 The size of chunks ranges from fine to coarse, including phrases, sentence, paragrpahs.  From retrieval perspective, coarse-grained retrieval units fundamentally improve the **recall at the cost of precision**; that is, it can provide more relevant information for the problem, but they may also contain redundant, verbose content, which could distract the retriever and language models in downstream tasks. Intutively, encoding a large chunk of text into a single vector will have information loss, leading to poor retriever performance.
 
-On the other hand, fine-grained retrieval unit increases the burden of retrieval - it increases the number of chunks needed for offline indexing and requires retrieving more chunks for online querying stage. Despite its higher cost, fine-grained retrieval unit does not guarantee content completeness and semantic integrity (i.e., not enough context). As a result, the quality of LLM response will be affected negatively.
+On the other hand, fine-grained retrieval unit increases the burden of retrieval - it increases the number of chunks needed for offline indexing and requires retrieving more chunks for online querying stage. Despite its higher cost, **fine-grained retrieval unit does not guarantee context completeness and semantic integrity** (i.e., not enough context). As a result, the quality of LLM response will be affected negatively.
 
 From a high level, an ideal splitting should consider the following factors:
 * **Semantic coherence**: Chunks should maintain semantic coherence - split boundaries should respect natural semantic units and closely related information should stay in the same chunk.
@@ -244,6 +266,35 @@ There are different approaches to splitting:
 * **Mechanical splitting** based on a fixed window size. This has the lowest processing cost, but there is no guaratee on maintaining semantic completeness for each chunk - it can create arbitrary breakpoints in the middle of sentences. **One mitigation is to use overlapping sliding windows during splitting.**
 * **Structure-aware splitting** by leveraging document structures (headers, sections). This also has low processing cost and it respect the hierachical organization of the docuemnt. However, **the chunk size can vary a lot as different documents can organize differently**. Also, this method can only apply to relatively formal text data with such structural annotations.
 * **Semantic-based splitting.** This method invovles using language understanding model to predict the semantic relationship between sentences and paragraphs. For example, we can use BERT to predict if two sentences are sementically close via the next sentence prediction task.  Consecutive sentences and paragraphs that are closely related to each other will be grouped into the same chunk. This method is much costly compared to previously two approaches, but it preserves topic coherence within the chunk.
+
+(chapter_rag_sec_basic_rag_chunk_relationship)=
+### Document Chunk Relationship
+
+Creating relationships between chunks can be useful for several reasons:
+- Enables more contextual querying: By linking chunks together, you can leverage their relationships during querying to retrieve additional relevant context. For example, when querying a node, you could also return the previous or next chunk to provide more context.
+- Allows source tracking: Relationships encode where chunks originated and how they are connected. This is useful when you need to identify the original source of a chunk.
+- Enables navigation through nodes: Traversing Nodes by their relationships enables new types of queries. For example, finding the next chunk that contains some keyword. Navigation along relationships provides another dimension for searching.
+- Supports the construction of knowledge graphs: Chunks and relationships are the building blocks of knowledge graphs. Linking chunks into a graph structure allows for constructing knowledge graphs from text 
+- Improves the index structure: Some more complex indexes, such as trees and graphs, utilize chunk relationships to build their internal structure. Relationships allow the construction of more complex and expressive index topologies. 
+
+In summary, relationships augment the chunk with additional contextual connections. This supports more expressive querying, source-tracking knowledge graph construction, and complex index structures.
+
+The most basic relationship between chunks are a previous or next relationship between them. The relationship tracks the order of chunks within the original Document. 
+
+There are other types of relationships that we could define.
+- SOURCE: The source relationship represents the original source Document that a chunk was extracted or parsed from. 
+- PARENT: The parent relationship indicates a hierarchical structure where the chunk with this relationship is one level higher than the associated chunk. In a tree structure, a parent chunk would have one or more children. This relationship is used to navigate or manage nested data structures where you might have a main chunk and subordinate chunks representing sections, paragraphs, or other subdivisions of the main chunk.
+- CHILD: This is the opposite of PARENT. Child chunk can be seen as the leaves or branches in a tree structure stemming from their parent chunk.
+
+In this way, the different levels can be used to adjust the accuracy and depth of search results, allowing users to find information at different granularity levels.
+
+```{figure} ../img/chapter_rag/data_source/hiercharical_document_spliting.png
+---
+scale: 45%
+name: chapter_rag_fig_rag_hiercharical_document_spliting
+---
+Documents are organized hierarchical chunks.
+```
 
 ### Utilizing Knowledge Graph
 
@@ -437,7 +488,39 @@ The application scenarios of hidden rationale queries include but are not limite
 
 ### Retrieval Model Enhancement
 
-In the basic RAG system, only a dense retrieval model based on vector embedding is used. In general, dense embeddings has good performance on recall as fundamentally it is an inexact, semantically based approach. On the other hand, sparse retrieval (e.g., inverted index plus BM25), which relies on exact tem matching, has good performance on precision, particularly for queries with low level details (e.g., specific number, year, name) and rare entities. 
+In the basic RAG system, only a dense retrieval model based on vector embedding is used. In general, dense embeddings has good performance on recall as fundamentally it is an inexact, semantically based approach. On the other hand, sparse retrieval (e.g., inverted index plus BM25), which relies on exact tem matching, has good performance on precision, particularly for queries with low level details (e.g., specific number, year, name) and rare entities. In practice, it is beneficial to combine sparse and dense retrievers and form a **hybrid retriever**.
+
+%% Need to rewrite
+Specifically, there are several drawbacks associated with dense retriever:
+* Computational cost: Embedding and indexing large volumes of data can be computationally expensive and time-consuming.
+* More focus on recall: Dense retrieval systems can sometimes favor recall over precision.
+* Difficulty in encoding long documents: Dense models that encode very long content into a  fixed-length vectors can run into information loss issue, where important information can be diluted or lost in the embedding process.
+* Logical reasoning gaps: While dense model are excellent at capturing semantic similarity, they typically lack logical reasoning capabilities. This means that they can identify documents that are semantically similar to the query but may struggle to understand context or logical relationships that require reasoning beyond this pattern matching. As a result, they may retrieve documents that are superficially related to the query but not truly relevant to the user’s intent, especially in cases where the query requires an understanding of complex relationships or nuanced reasoning.
+
+````{prf:example} Challenging reasoning queries for dense retriever
+* *Which programming languages are easier to learn than Python but more powerful for data analysis?*
+Dense retrieval might find documents about programming language learning curves and data analysis capabilities, but struggle with the comparative reasoning needed to identify languages meeting both criteria.
+* *Movies inspired by 1984 but with happy endings* Dense retrievers would likely match the semantic similarity to "Movies inspired by 1984" well, but has difficulty to retrieve documents also meeting the *happy ending* condition. One reason is *happy ending* is rarely associated with concepts like *1984*, the model is hard to identify documents with rare co-occurring concepts using simple semantic matching. 
+````
+
+
+On the other hand, sparse retrieval, despite its inherent vocalbulary mismatch issue,  have several advantages compared to dense retrieval:
+- Efficient handling of large datasets: Sparse retrieval methods, such as BM25, requiring no model and are generally much efficient at handling large datasets. 
+- High precision: Sparse methods often provide high accuracy in scenarios where the exact matching of terms is critical. They excel at retrieving documents that contain specific keywords present in the user's query, which is beneficial in applications where keyword specificity is essential.
+- Simplicity and interpretability: Sparse retrieval methods are conceptually simpler and more interpretable than dense methods. The fact that they rely on explicit keyword frequencies makes it easier to understand why certain documents are retrieved in response to a query.
+
+
+````{prf:example} sparse retrieval vs dense retrieval for legal documents
+Suppose we've built a system for retrieving legal documents. In this scenario, user queries would likely include precise legal terms, citations, or specific phrases found in legal texts. Let's assume a user inputs a query such as, *Article 45 of the GDPR regarding personal data transfers on the basis of an adequacy decision*. This query contains specific phrases, such as *Article 45* and *GDPR*, which are likely to be found in relevant legal documents exactly in this form.
+
+Sparse search is likely to provide very accurate results for such a query. It will accurately locate documents that contain the specific article from the GDPR, reducing noise and irrelevant retrievals. Given that legal documents often have a structured format, with different sections and articles, sparse retrieval methods can efficiently parse through this structured data and retrieve nodes based on direct references found in the query.
+
+Because dense retrieval methods tend to prioritize general meaning over exact term matching, they may produce less accurate results in such a specialized, keyword-specific query.
+
+Unless trained specifically on legal texts, an embedding model used for dense retrieval might struggle to accurately interpret and match the complex legal jargon and specific citation styles used in legal queries.
+
+
+````
 
 Combining both sparse and dense approaches can capture different relevance features and can benefit from each other by leveraging complementary relevance information. For instance, both retrieval approaches can be used to generate initial recalled results and send to the next stage for re-ranking. 
 
@@ -524,7 +607,43 @@ The data preparation consists of the four key steps [{numref}`chapter_rag_fig_ra
   - Output style and formats are adjusted to maintain consistence.
 * Data selection and refinement - additional data filtering and refinement steps, including balanced mixing of training data of different characteristics, quality control via LLM and heuristic rules. 
 
+```{figure} ../img/chapter_rag/generator_model/LLM_FT_data_source.png
+---
+scale: 70%
+name: chapter_rag_fig_rag_LLM_FT_data_source
+---
+Illustration of four key steps in preparing generator fine-tuning data sources.
+```
+
 Training data prepared this way ensures that the resulting model will learn to not only generates high-quality responses but also knows when and how to reject queries appropriately. 
+
+### RAFT: Retrieval Augmented Fine Tuning 
+
+
+RAFT {cite:p}`zhang2024raft` is a fine-tuning approach aiming to enhance the LLM's robustness to irrelevant information during a basic RAG process.
+
+In a basic RAG process, the quality of retrieved document plays a key role in determining the output relevance and correctness of the LLM generator: Incomplete, irrelvance, or incorrect retrieved documents can lead to hallucination or non-factual statements.
+
+RAFT addresses this issue by incoporating the imperfect retrieved sources in the generator fine-tuning process, with the objective of **training the LLM to generate correct responses based on the relevant document while minimizing the negative impact from irrelevant (or distractor) document.** 
+
+In RAFT {numref}`chapter_rag_fig_rag_LLM_FT_RAFT`, we prepare the training data such that each data point contains a question (Q), a set of documents $\left(D_k\right)$, and a corresponding Chain-of-thought (CoT) style answer $\left(A^*\right)$ generated from one of the document $D^*$. We differentiate between two types of documents: **golden** documents $(D^*)$ i.e. the documents from which the answer to the question can be deduced, and **distractor** documents $\left(D_i\right)$ that do not contain answer relevant information. 
+
+```{figure} ../img/chapter_rag/generator_model/RAFT/RAFT_demo.png
+---
+scale: 70%
+name: chapter_rag_fig_rag_LLM_FT_RAFT
+---
+Overview of our RAFT method. The top-left figure depicts the RAFT training approach of
+adapting LLMs to generate solution from a set of positive and distractor documents. Compared to training with only gold documents, RAFT will enhance model's robustness to negative documents. At test time, all methods follow the standard RAG setting, provided with a top-k retrieved documents in the context. Image from {cite:p}`zhang2024raft`.
+```
+
+RAFT fine-tune the language model using standard supervised training based on the following mixture settings.
+* For $P$ fraction of the questions in the dataset, we retain the golden document along with distractor documents. 
+* For $(1 − P)$ fraction of the questions in the dataset, we include no golden document and only include distractor documents. The motivation is when there are only distractor documents, we are compelling the model to generate answers using its own knowledge instead of deriving them fromthe context.
+
+Note that CoT technique is used to create a full reasoning chain, with clear cited sources. CoT technique is shown to improve model performance in RAFT. 
+
+In the test time, the model is provided with the Q and top-k documents retrieved by the RAG pipeline. Note that RAFT is independent of the retriever used.
 
 <!-- ### Self-Aware LLM
 However, we find that the retrieved knowledge does not always help and even has a
@@ -572,9 +691,17 @@ omparison between two responses given by InstructGPT. The retrieved passages are
 
 When adapt an generalist LLM to different usage scenarios, there are different approaches, including direct prompting, fine-tuning, and RAG.
 
-Each method has distinct characteristics as illustrated in {numref}`chapter_rag_fig_rag_vs_prompt_FT`. We used a quadrant chart to illustrate the differences among three methods in two dimensions: external knowledge requirements and model adaption requirements. Prompt engineering leverages a model's inherent capabilities with minimum necessity for external knowledge and model adaption. RAG can leverage external knowledge via information retrieval, making it excellet for knowledge intentsive tasks. In contrast, FT is suitable for customizing models to specific structures, styles, or formats.
+Each method has distinct characteristics as illustrated in {numref}`chapter_rag_fig_rag_vs_prompt_FT`. We used a quadrant chart to illustrate the differences among three methods in two dimensions: **external knowledge requirements and model adaptation requirements**. 
 
-Prompt Engineering requires low modifications to the model. It is suitable for relative simple tasks without intensive external knowledge. RAG is particularly suitable dealing with dynamic knowledge tasks. For these tasks, indexing stage in RAG often has auto-refresh ability, enabling RAG to provide realtime knowledge updates and effective utilization of external knowledge sources with high interpretability. However, it comes with low latency scenarios, RAG has to spend extra time (~200-500ms) to perform retrieval. On the other hand, FT is more static, requiring retraining for knowledge updates and instruction following. It often demands significant computational resources for dataset preparation and training.
+From the external knowledge requirement perspective:
+* Prompt engineering leverages a model's inherent capabilities with minimum necessity for external knowledge and model adaption. 
+* RAG can leverage external knowledge via information retrieval, making it excellet for knowledge intentsive tasks. For these tasks, indexing stage in RAG often has auto-refresh ability, enabling RAG to provide realtime knowledge updates and effective utilization of external knowledge sources with high interpretability. However, it comes with low latency scenarios, RAG has to spend extra time (~200-500ms) to perform retrieval.
+* FT can also be used to inject knowledge. However, the process is expensive in terms of collecting data and conducting training.
+
+From the model adaptation perspective:
+* Prompt Engineering requires lowest modifications to the model. It is suitable for relative simple tasks without intensive external knowledge. However, the abiity to adapt model is limited to effectiveness of prompt engineering, which is not trivial for some tasks.
+* FT is suitable for customizing models to specific structures, styles, or formats. FT allows the model to generate responses to tailored to specific domains; Further, FT on speclialized labeled data can usually further enhance the model performance.
+* RAG enjoys the same model adaption flexibility like FT. Specifically, the retriever and generator can be both adapted to specific use cases.  
 
 ```{figure} ../img/chapter_rag/RAG_vs_FT_vs_prompt.png
 ---
@@ -590,13 +717,13 @@ In the following, we also summarize different factors to consider when choosing 
 ```{table} Different factors to consider when choosing among prompting, fine-tuning, and RAG.
 | Factors | Prompting | Fine-tuning | RAG|
 | :--- | :--- | :--- | :--- | 
-| Dynamic/up-to-date knowledge| ❌ | ✅ | ✅ |
+| Dynamic/up-to-date/private-sourced knowledge| ❌ | ✅ | ✅ |
 | Reduce hullucilation | ❌ | ❌ | ✅ |
-| Model behavior customizatio | ❌|✅|❌| 
-| Training cost| ✅ |❌| ✅|
+| Model behavior customization | ❌|✅|✅| 
+| Training cost|❌|✅| ✅|
 | Explanability| ❌ | ❌ | ✅ |
 | General ability| ✅ |❌| ✅|
-| Low latency | ✅ |❌| ✅|
+| Low latency | ✅ |✅|❌|
 ```
 
 

@@ -1,4 +1,4 @@
-# Advanced RAG
+# Advanced RAG (WIP)
 
 ## Corrective RAG (CRAG)
 
@@ -72,7 +72,7 @@ collection of text interleaved with reflection tokens and retrieved passages. Th
 
 ```{figure} ../img/chapter_rag/advanced_rag/self_rag/self_rag_training_examples.png
 ---
-scale: 70%
+scale: 40%
 name: chapter_rag_fig_self_rag_training_example_demo
 ---
 SELF-RAG training examples. The left example does not require retrieval while the right one requires retrieval; thus, passages are inserted. Image from {cite:p}`asai2023self`.

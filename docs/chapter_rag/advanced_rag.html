@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>22. Advanced RAG &#8212; LLM Foundations</title>
+    <title>22. Advanced RAG (WIP) &#8212; LLM Foundations</title>
   
   
   
@@ -200,12 +200,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">13. LLM Finetuning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">14. LLM Alignement and Preference Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">17. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">18. Inference Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">18. Inference Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
@@ -215,7 +215,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="basic_rag.html">21. RAG</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">22. Advanced RAG</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">22. Advanced RAG (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
@@ -311,7 +311,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Advanced RAG</h1>
+    <h1>Advanced RAG (WIP)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -341,8 +341,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="advanced-rag">
-<h1><span class="section-number">22. </span>Advanced RAG<a class="headerlink" href="#advanced-rag" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="advanced-rag-wip">
+<h1><span class="section-number">22. </span>Advanced RAG (WIP)<a class="headerlink" href="#advanced-rag-wip" title="Link to this heading">#</a></h1>
 <section id="corrective-rag-crag">
 <h2><span class="section-number">22.1. </span>Corrective RAG (CRAG)<a class="headerlink" href="#corrective-rag-crag" title="Link to this heading">#</a></h2>
 <p>CRAG aims to address the concerns that low-quality retrieved results can mislead the generator to produce non-factual and hallucinated results.</p>
@@ -447,7 +447,7 @@ Finally, the refined/combined knowledge will be used in the generator to produce
 <p>Central to SELF-RAG is a LLM that can generate self-reflection tokens. Such a self-reflective LLM is trained end-to-end with next token prediction task on a diverse
 collection of text interleaved with reflection tokens and retrieved passages. The most straightforward way to create the annotated training data is to leverage a critic LM to annotated raw training data. For example, the retrieve token can be produced by prompting GPT-4 with a type-specific instruction <em>Given an instruction, make a judgment on whether finding some external documents from the web helps to generate a better response.</em></p>
 <figure class="align-default" id="chapter-rag-fig-self-rag-training-example-demo">
-<a class="reference internal image-reference" href="../../_images/self_rag_training_examples.png"><img alt="../../_images/self_rag_training_examples.png" src="../../_images/self_rag_training_examples.png" style="width: 1355.1999999999998px; height: 307.29999999999995px;" />
+<a class="reference internal image-reference" href="../../_images/self_rag_training_examples.png"><img alt="../../_images/self_rag_training_examples.png" src="../../_images/self_rag_training_examples.png" style="width: 774.4000000000001px; height: 175.60000000000002px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 22.3 </span><span class="caption-text">SELF-RAG training examples. The left example does not require retrieval while the right one requires retrieval; thus, passages are inserted. Image from <span id="id3">[<a class="reference internal" href="#id1552" title="Akari Asai, Zeqiu Wu, Yizhong Wang, Avirup Sil, and Hannaneh Hajishirzi. Self-rag: learning to retrieve, generate, and critique through self-reflection. arXiv preprint arXiv:2310.11511, 2023.">AWW+23</a>]</span>.</span><a class="headerlink" href="#chapter-rag-fig-self-rag-training-example-demo" title="Link to this image">#</a></p>
