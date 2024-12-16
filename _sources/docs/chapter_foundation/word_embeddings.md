@@ -160,9 +160,9 @@ $$M_{ij} = \frac{\#(w_i, w_j)/n_{pair}}{\#(w_i)/n_{words}\cdot \#(w_j)/n_{words}
 where $\#(w_i, w_j)$ is the number of co-occurrence of words $w_i$ and $w_j$ within a context window, $n_{pair}$ is the total number pairs, $n_{words}$ is the total number of words. 
 
 
-```{figure} ../img/chapter_foundation/wordEmbedding/SVDCooccurenceMatrix.png
+```{figure} ../img/chapter_foundation/wordEmbedding/SVDCooccurenceMatrix.jpg
 ---
-scale: 30%
+scale: 25%
 name: chapter_foundation_fig_word_embedding_svdcooccurencematrix
 ---
 (left) Example of co-occurrence matrix constructed from corpus "I love math" and "I like NLP". The context window size of 2. (right) We can obtain lower-dimensional word embeddings from  SVD truncated factorization of the co-occurrence matrix. Such low-dimensional embeddings captures important semantic and syntactic information in the co-occurrence matrix.
