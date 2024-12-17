@@ -295,7 +295,7 @@ As shown in the following, LoRA has been successfully applied to various models,
 | Model&Method | # Trainable Parameters | WikiSQL Acc. (%) | MNLI-m Acc. (%)| SAMSum R1/R2/RL|
 | :---: | :---: | :---: | :---: | :---: |
 | GPT-3 (FT) | $175,255.8 \mathrm{M}$ | $73.8$ | 89.5 | $52.0 / 28.0 / 44.5$ |
-| GPT-3 (Adapter $^{\mathrm{H}}$ ) | 40.1 M | 73.2 | 91.5 | $53.2 / 29.0 / 45.1$ |
+| GPT-3 (Adapter ) | 40.1 M | 73.2 | 91.5 | $53.2 / 29.0 / 45.1$ |
 | GPT-3 (LoRA) | 4.7 M | 73.4 | $\mathbf{91.7}$ | 53.8/29.8 /45.9 |
 | GPT-3 (LoRA) | 37.7 M | $\mathbf{7 4 . 0}$ | $\mathbf{9 1 . 6}$ | $53.4 / 29.2 / 45.1$ |
 ```
@@ -312,7 +312,7 @@ As shown in the following table,
 | WikiSQL | $W^Q$ | 68.8 | 69.6 | 70.5 | 70.4 | 70.0 |
 |  | $W^Q, W^V$ | 73.4 | 73.3 | 73.7 | 73.8 | 73.5 |
 |  | $W^Q, W^K, W^V, W^O$ | 74.1 | 73.7 | 74.0 | 74.0 | 73.9 |
-| MultiNLI | $W_q$ | 90.7 | 90.9 | 91.1 | 90.7 | 90.7 |
+| MultiNLI | $W^Q$ | 90.7 | 90.9 | 91.1 | 90.7 | 90.7 |
 |  | $W^Q, W^V$ | 91.3 | 91.4 | 91.3 | 91.6 | 91.4 |
 |  | $W^Q, W^K, W^V, W^O$ | 91.2 | 91.7 | 91.7 | 91.5 | 91.4 |
 ```
@@ -361,7 +361,7 @@ $$
 where $\{A, E, \alpha, \beta\}$ are data-specific parameters to be fitted, $D_f$ denotes finetuning data size, and $X$ refer to other scaling factors (like model size, and tuning parameter size) and $L$ is perplexity. After fitting to scaling experiments, larger $\alpha$ or $\beta$ means the bigger contribution from these factors. 
 
 The key findings are
-* Finetuning model performance scales better on model size than fine-tuning data size, as indicated by larger $\alpha$ then $\beta$ in {numref}`chapter_training_fig_finetuning_ft_scaling_on_translation_task`,{numref}`chapter_training_fig_finetuning_ft_scaling_on_summary_task`. This suggests that using a **larger LLM model is preferred over finetuning over larger data.**
+* Finetuning model performance scales better on model size than fine-tuning data size, as indicated by larger $\alpha$ then $\beta$ in {numref}`chapter_training_fig_finetuning_ft_scaling_on_translation_task`,{numref}`chapter_training_fig_finetuning_ft_scaling_on_summary_task`. This suggests that using a **larger LLM model is preferred for finetuning over larger data.**
 * Finetuning data size have more pronounced influence on FMT than PET (much larger $\beta$ in FMT), where LoRA scales better than Prompt. In other words, **FMT is more data hungary and also benefits more from increasing finetuning data.**
 * Compared across different **PEFT approach, scaling tuning parameters is ineffective,** delivering limited gains for both LoRA and Prompt. At the end of day, the amount of newly added trainable parameters often forms a bottleneck for the expressivity of the model.
 
