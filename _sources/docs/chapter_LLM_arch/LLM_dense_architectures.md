@@ -45,8 +45,8 @@ Finally, we examining the intricate details of LLM structure and function. We br
 The LayerNorm was originally proposed to overcome the  in combating the internal covariate shift issue {cite:p}`ioffe2015batchnormalizationacceleratingdeep`, where a layer’s input distribution changes as previous layers are updated, causing the difficulty of traning deep models.
 
 The key idea in LayerNorm is to normalize the input to the neural network layer via
-* re-centering by subtracting the mean
-* re-scaling by dividing the standard deviation.
+* **re-centering** by subtracting the mean
+* **re-scaling** by dividing the standard deviation.
   
 The calculation formula for an input vector $x$ with $H$ feature dimension is given by
 
@@ -62,14 +62,14 @@ $\sigma =\sqrt{\frac{1}{H} \sum_{i=1}^H\left(x_i-\mu\right)^2+\epsilon}$.
 * $\gamma$ and $\beta$ are learnable scaling and shifting parameters.
 
 ````{prf:remark} Why we need $\gamma$ and $\beta$
-$\gamma$ and $\beta$ are parameters used to enhance the model's learning capacity. As the normalization operation is used to stablize the learning by standardizing the data distribution, it also remove useful feature distributions and decrease the model's learning capacity. With learnable shift and scaling parameter, we offset the negative impact of normalization. 
+$\gamma$ and $\beta$ are parameters used to enhance the model's learning capacity. As the normalization operation is used to stablize the learning by standardizing the data distribution, it also removes useful feature distributions and decreases the model's learning capacity. With learnable shift and scaling parameters, we offset these negative impacts of normalization. 
 ````
 
 
 
 ### RMS Norm (Root Mean Square Norm)
 
-A common hypothesis on why layer normalization can help stalize training and boost model convergence is the capability in  handling re-centering and re-scaling of both inputs and weight matrix. RMSNorm {cite:p}`zhang2019rootmeansquarelayer` is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. RMSNorm hypothesizes that only the re-scaling component is necessary and proposes the following simplified normalization formula
+A common hypothesis on why layer normalization can help stalize training and boost model convergence is because of the re-centering and re-scaling of both inputs and weight matrix. **RMSNorm** {cite:p}`zhang2019rootmeansquarelayer` is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. RMSNorm hypothesizes that only the re-scaling component is necessary and proposes the following simplified normalization formula
 
 $$
 \operatorname{RMSNorm}(x)=\frac{x}{\sqrt{\frac{1}{H} \sum_{i=1}^H x_i^2}} \cdot \gamma
@@ -100,32 +100,32 @@ See {cite:p}`zhang2019rootmeansquarelayer` for math derivation
 
 ### Layer normalization position
 
-It has been shown that {cite:p}`xiong2020layer` where to replace the normalization layer has an impact on model training, covergence, and final performance.
+It has been shown that {cite:p}`xiong2020layer` the position of normalization layer has an impact on model training, covergence, and final performance.
 
-The Post-Norm (as in the vanilla Transformer architecture) has can stablize the variance of the output by applying the LayerNorm after the residual connection, which is given by 
+The **Post-Norm** (as in the vanilla Transformer architecture) can stablize the variance of the output by applying the LayerNorm after the residual connection, which is given by 
 
 $$\operatorname{PostNorm Output} = \operatorname{LayerNorm}(X + \operatorname{SubLayer}(X))$$
 
 Here the SubLayer could be the FeedForward Layer or the Attention Layer.
 
-The Pre-Norm normalize the input to SubLayers, which is given by
+The **Pre-Norm** normalize the input to SubLayers, which is given by
 
 $$\operatorname{PreNorm Output} = X + \operatorname{SubLayer}(\operatorname{LayerNorm}(X)).$$
 
-It is shown in {cite:p}`xiong2020layer` that the gradients at last layer $L$ satisfy the following condition:
+It is shown in {cite:p}`xiong2020layer` that the gradients at the last layer $L$ satisfy the following condition:
 
 $$||G_{PostNorm,L}||_F \leq \mathcal{O}(d \sqrt{\ln d}), ||G_{PreNorm,L}||_F \leq \mathcal{O}\left(d \sqrt{\frac{\ln d}{L}}\right)
 .$$
 
 which intuitively implies the following
 * The gradient norm magnitude in the Pre-Norm Transformer will be likely to stay the same for any layer index $l$
-* Gradient norm in the Post-LN Transformer will likely increase as layer index $l$ and be very large at the last layer $L$.
+* Gradient norm in the Post-Norm Transformer will likely increase as layer index $l$ and be very large at the last layer $L$.
 
 Such gradient norm behavior has implication on training stability. 
 * For Post-norm model, it often requires learning rate scheduling and warm up (initializing from a small vaue) to stablize training. 
 * When it comes to training very deep models, Post-norm can lead to more unstable gradients during training, especially in very deep networks. This can lead to slower convergence and increased likelihood of training failure.
 * On the other hand, Pre-Norm Transformers without the warm-up stage can reach comparable results with Post-Norm, simplifying the hyper-parameter tuning; 
-* Pre-Norm, thanks to its stable gradient, is suitable for LLM architecture, which are very deep transformers.
+* Pre-Norm, thanks to its stable gradient, is suitable for LLM architecture, which are usually very deep transformers.
 
 
 
@@ -177,7 +177,7 @@ Here $\alpha > 1$ is a constant, which up scales the residual connection (to hel
 ### Layer normalization example choices
 
 
-The core advantages of RMS Pre-Norm lie in its computational simplicity and gradient stability, making it an effective normalization choice for deep neural networks, especially large language models. This is exampified by the fact that LLaMa series started to use Pre-RMSNorm whereas GPT-3 model used Pre-LayerNorm.  
+The core advantages of **RMS Pre-Norm** lie in its computational simplicity and gradient stability, making it an effective normalization choice for deep neural networks, especially large language models. This is exampified by the fact that recent LLaMa series started to use Pre-RMSNorm whereas GPT-3 model used Pre-LayerNorm.  
 * Improved computational efficiency: As RMS Norm omits mean calculation, it reduces the computational load for each layer, which is particularly important in deep networks. Compared to traditional Layer Norm, RMS Norm can process high-dimensional inputs more efficiently.
 * Enhanced gradient stability: RMS Pre-Norm can reduce instances of vanishing gradients, especially in deep networks. This normalization method improves training efficiency by smoothing gradient flow.
 * Suitable for large-scale models: For models like LLaMA, RMS Pre-Norm supports maintaining a relatively small model size while ensuring powerful performance. This allows the model to maintain good generalization capabilities without increasing complexity.
@@ -213,7 +213,7 @@ $$(chapter_LLM_arch_eq_FFN_GLU)
 where $W_1, W_2, V$ are weight matrices. Note that the FFN layer with GLU have three weight matrices, as opposed to two for the original FFN.
 
 
-One variant of GLU is Swish {cite:p}`ramachandran2017searchingactivationfunctions`, which is given by
+One variant of GLU is **Swish** {cite:p}`ramachandran2017searchingactivationfunctions`, which is given by
 
 $$
 \operatorname{Swish}_\beta(x)=x \cdot \sigma(\beta x)
@@ -319,7 +319,7 @@ $$
 Note that we only have one group of $W^K, W^V$ matrices.
 
 
-```{figure} ../img/chapter_LLM_arch/attention/MHA.png
+```{figure} ../img/chapter_LLM_arch/attention/MQA.png
 ---
 scale: 40%
 name: chapter_LLM_arch_fig_fundamentals_attention_MQA
@@ -361,7 +361,7 @@ $$
 Here $g(i)$ is a function that maps head index to group index (e.g., $g(1): \{1, 2\} \to \{1\}$) and we have $G$ groups of $W^K,W^V$ matrices. 
 
 
-Studies [{numref}`chapter_LLM_arch_fig_fundamentals_attention_GQA`] show that GQA (with $G <=  8$) can improve latency by reduces parameters and computation compared to MHA and at the same time maintain most of the performance of MHA.
+Studies [{numref}`chapter_LLM_arch_fig_fundamentals_attention_GQA`] show that GQA (with $G <=  8$) can improve latency by reducing parameters and computation compared to MHA and at the same time maintain most of the performance of MHA.
 
 ```{figure} ../img/chapter_LLM_arch/attention/GQA_performance.png
 ---
@@ -427,7 +427,7 @@ Examples:
 
 #### Motivation
 
-Context window in LLM represents the number of input tokens the model can process simultaneously when reponding into the prompt. GPT-4 has a context window of approximately $32k$ or roughly 25,000 words. Recent advancements have extended this to more than 100k (e.g., Llama3) or even 1 million (Gemini), which is about 8 average length English novels. 
+Context window in LLM represents the number of input tokens the model can process simultaneously when responding in the prompt. GPT-4 has a context window of approximately $32k$ or roughly 25,000 words. Recent advancements have extended this to more than 100k (e.g., Llama3) or even 1 million (Gemini), which is about 8 average length English novels. 
 
 A longer context window allows the model to process and understand more information before generating a response, providing a deeper grasp of the context. This capability is especially useful when inputting a large amount of specific data into a language model and asking questions about it. For instance, when analyzing an extensive document about a particular company or issue, a larger context window enables the language model to review and retain more of this detailed information, leading to more accurate and customized responses.
 
@@ -444,10 +444,10 @@ $$
 
 where $w_j=1/10000^{j / d_{model}}$ if $j$ is even and $w_j=1/10000^{j-1 / d_{model}}$ if $j$ is odd and $j=0,...,d_{model} - 1$.
 
-While absolute position encoding has achieved success in BERT, it has several key issues when is applied in LLMs:
-* Lack of extrapolation due to limited sequence length: Models are restricted to a maximum sequence length during training (e.g., BERT 512), limiting their ability to  generalize to positions beyond the maximum length at inference time.
-* Position insensitivity: The position encoding is added on top of token embedding and go through linear projection before interacting with other tokens, instead of directly interacting with other tokens during attention score computation. 
-* Lack of invariance to shift: For two tokens with fixed relative position disance, their interaction at attention score computation layer is dependent on their absolute position. For relative position encodings, this property is by construction.
+While absolute position encoding has achieved success in BERT, it has several key issues when it is applied in LLMs:
+* **Lack of extrapolation** due to limited sequence length: Models are restricted to a maximum sequence length during training (e.g., BERT 512), limiting their ability to  generalize to positions beyond the maximum length at inference time.
+* **Position insensitivity**: The position encoding is added on top of token embedding and go through linear projection before interacting with other tokens, instead of directly interacting with other tokens during attention score computation. 
+* **Lack of invariance to shift**: For two tokens with fixed relative position disance, their interaction at attention score computation layer is dependent on their absolute position. For relative position encodings, this property is by construction.
 
 ### ALiBi
 
@@ -488,7 +488,7 @@ validation set and the sinusoidal absolute position encoding baseline. Image fro
 
 #### The mechanism
 
-Rotary Position Encoding (RoPE) {cite:p}`su2023roformerenhancedtransformerrotary` is a widely adopted and proved-effective position encoding method in latest LLM (e.g., Llama, Qwen, etc.). RoPE has ideas similar to ALiBi and sinusoid position encoding:
+**Rotary Position Encoding (RoPE)** {cite:p}`su2023roformerenhancedtransformerrotary` is a widely adopted and proved-effective position encoding method in latest LLM (e.g., Llama, Qwen, etc.). RoPE has ideas similar to ALiBi and sinusoid position encoding:
 * Like ALiBi, relative positional information is directly used in attention score computation.
 * Sinusoid functions are used in construction for their nice mathematical properties.
 
@@ -508,7 +508,9 @@ $$
 \end{array}\right)
 $$
 
-Here the rotary matrix has pre-defined parameters $\Theta=\left\{\theta_i=10000^{-2(i-1) / d}, i \in[1,2, \ldots, d_{model} / 2]\right\}$, which can be interpreted as wave length from $2\pi$ (when $i = 1$) to $10000 \cdot 2\pi$ (when $i = d_{model}/2$). **Short wave length is used capture the high-frequency, short-ranged information in positions and long wave length is used to capture low-frequency, long-range information in position.** 
+Here the rotary matrix has pre-defined parameters $\Theta=\left\{\theta_i=10000^{-2(i-1) / d}, i \in[1,2, \ldots, d_{model} / 2]\right\}$, which can be interpreted as wave length from $2\pi$ (when $i = 1$) to $10000 \cdot 2\pi$ (when $i = d_{model}/2$). Intuitively,
+* **Short wave length is used to capture the high-frequency, short-ranged information in positions.**
+* **Long wave length is used to capture low-frequency, long-range information in position.** 
 
 Pre-SoftMax input (omitting scaling) for query token at position $m$ and key token at position $n$ is given by 
 
@@ -583,7 +585,7 @@ Visualization of 2D RoPE and its mechanism in encoding context. Image from [Blog
 
 #### Position Interpolation for RoPE
 
-**Position Interpolation**{cite:p}`chen2023extending` is a cheap method to extend the context window of an existing LLM, which allows LLM to have longer context window during inference time than the context window size during training. 
+**Position Interpolation**{cite:p}`chen2023extending` is a cheap method to extend the context window of an existing LLM, which allows LLM to have longer context window during inference time than the context window size used during training. 
 
 The idea is to linearly down-scales the input position indices to match the original context window size [{numref}`chapter_LLM_arch_fig_fundamentals_RoPE_position_interpolation`].Specifically, given that the rotation matrix in RoPE is a continuous function, one can adjust the rotation matrix for large position $m$ to $m'$ as
 
@@ -647,7 +649,7 @@ Here
 
 Intutiviely, 
 * When $i$ and $j$ are within the same chunk, i.e., $|i - j| <= s$, $M(i, j) = i - j$, which recovers the original position distance.
-* When $i$ and $j$ are have distances of at least two chunks, $i$ is capped at the value of $L - 1$ and $j = j \bmod s$. 
+* When $i$ and $j$ have a distance of at least two chunks, $i$ is capped at the value of $L - 1$ and $j = j \bmod s$. 
 * When $i$ and $j$ are within two consecutive chunks separately, a smoothed mapping is used to preverse locality.
 
 To summarize, DCA consists of three components: (1) intra-chunk attention, which recover the same attention when two positions are within the same chunk; (2) inter-chunk attention for tokens between distinct chunks; and (3) successive chunk attention for processing tokens residing in two consecutive distinct chunks. 
@@ -682,7 +684,7 @@ GPT-2's vocabulary size is 50,257, corresponding to 256 basic byte tokens, a spe
 
 BPE (Byte Pair Encoding) and BBPE (Byte-level BPE) are both subword tokenization following the same idea of merging algorithm {prf:ref}`BPE-algorithm` but operating on different granularities. 
 
-In short, BPE Works on character or unicode level whereas BBPE works on byte level of UTF-8 representation. Their comparison is summarized as the following.
+In short, **BPE works on character or unicode level whereas BBPE works on byte level of UTF-8 representation**. Their comparison is summarized as the following.
 
 ::::{grid}
 :gutter: 2
@@ -699,7 +701,7 @@ BBPE has following advantages:
 - It can process all character sets (including Unicode characters), making it suitable for multilingual scenarios.
 - It provides good support for unconventional symbols and emojis.
 
-However, as BBPE is working on smaller granularity level than characters, it might result in larger vocabulary size (i.e., larger embedding layers) and unnatural subword units.
+However, as BBPE is working on smaller granularity level than characters, it might result in larger vocabulary size (i.e., larger embedding layers) and **unnatural subword units**.
 :::
 ::::
 
@@ -818,7 +820,7 @@ Let $V$ be the vocabulary size, $b$ be the batch size, $s$ be sequence length, $
 
 The **key scaling properties** from this table are:
 * The total compute scales linearly with number of layers $L$, and number of batch size $b$
-* The total compute scales quadratically with model hidden dimensionality $d$ and $s$.
+* The total compute scales quadratically with model hidden dimensionality $d$ and input sequence length $s$.
 
 
 

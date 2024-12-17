@@ -826,9 +826,9 @@ Visualization of the learning process in the embedding space is shown in {numref
 
 The loss function is given by
 
-$$L =- \sum_{\left\langle q_{i}, d_{i}^{+}, d_{i}^{-}\right\rangle}\max(0, m - \operatorname{Sim}(q_i, d_i^+) + \operatorname{Sim}(q_i, d^-_i))$$
+$$L =- \sum_{\left\langle q_{i}, d_{i}^{+}, d_{i}^{-}\right\rangle}\max(0,  (\operatorname{Sim}(q_i, d_i^+) - \operatorname{Sim}(q_i, d^-_i)) - m)$$
 
-where $\operatorname{Sim}(q, d)$ is the similarity score produced by the network between the query and the document and $m$ is a hyper-parameter adjusting the margin. Clearly, only when $\operatorname{Sim}(q_i, d_i^+) - \operatorname{Sim}(q_i, d^-_i) > m$ there will be no loss incurred. Commonly used $\operatorname{Sim}$ functions include **dot product** or **Cosine similarity** (i.e., length-normalized dot product), which are related to distance calculation in the Euclidean space and hyperspherical surface. 
+where $\operatorname{Sim}(q, d)$ is the similarity score produced by the network between the query and the document and $m$ is a hyper-parameter adjusting the margin. Clearly, if we would like to make $L$ small, we need to make  $\operatorname{Sim}(q_i, d_i^+) - \operatorname{Sim}(q_i, d^-_i) > m$. Commonly used $\operatorname{Sim}$ functions include **dot product** or **Cosine similarity** (i.e., length-normalized dot product), which are related to distance calculation in the Euclidean space and hyperspherical surface. 
 
 ```{figure} ../img/chapter_application_IR/ApplicationIRSearch/TrainingLoss/triplet.png
 :name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:triplet
@@ -844,7 +844,7 @@ $$
 As illustrated in Figure 1, the training objective is to score the positive example $d^{+}$by at least the margin $\mu$ higher than the negative one $d^{-}$. As part of our loss function, we use the triplet margin objective:
 
 $$
-l\left(q, d^{+}, d^{-}\right):=\max \left(0, \operatorname{sim}\left(q, d^{-}\right)-\operatorname{sim}\left(q, d^{+}\right)+\mu\right)
+l\left(q, d^{+}, d^{-}\right):=-\max \left(0, \operatorname{sim}\left(q, d^{+}\right)-\operatorname{sim}\left(q, d^{-}\right)-\mu\right)
 $$
 
 (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:N_pair_loss)=

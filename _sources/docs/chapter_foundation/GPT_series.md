@@ -9,7 +9,7 @@ GPT-1 {cite:p}`radford2018improving` and its successors (GPT-2 and GPT-3) are a 
 
 At that time, specific NLP tasks requires the collection of a massive amount of task-specific labeled data as well as the design of task-specific architectures that learns best from it. Given the broad range of NLP tasks, this paradigm does not scale well and model learning cannot be shared across different tasks. 
 
-One of the major contributions of the GPT-1 study is the introduction of a two-stage paradigm to NLP tasks, including an unsupervised pretraining stage and a supervised fine-tuning stage. They demonstrates that a pre-trained model with a small scale fine-tuning can achieve satisfactory results over a range of diverse tasks, not just for a single task. 
+One of the major contributions of the GPT-1 study is the **introduction of a two-stage paradigm to NLP tasks, including an unsupervised pretraining stage and a supervised fine-tuning stage**. They demonstrates that a pre-trained model with a small scale fine-tuning can achieve satisfactory results over a range of diverse tasks, not just for a single task. 
 
 GPT-1 model consists of multiple transformer decoder layers [{ref}`content:chapter_foundation:transformers:transformers`]. The pretraining task is auto-regression language modeling, that it, predicting the next word given the preceding word sequence. In the Transformer architecture, the activation in the final transformer block is fed into a Softmax function that produces the word probability distributions over an entire vocabulary of words to predict the next word.
 
@@ -28,7 +28,7 @@ GPT uses the decoder component in the Transformer for language modeling.
 
 The pretraining task of GPT-1 is auto-regressive language modeling, which predict the next words given preceding word sequence. Given an input sequence $\mathbf{x} = (x_1,...,x_T)$, auto-regressive language modeling maximizes the log likelihood given by
 
-$$\sum_{t=1}^{T} \log p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1},\theta\right)$$
+$$\sum_{t=1}^{T} \log p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1},\theta\right),$$
 
 where $p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1}\right)$ is the predicted probability distribution for token $x_t$ given preceding token sequence $\mathbf{x}_{t-k-1:t-1}$ with a context window size $k$ ($k$ can range from hundreds to tens of thousands, depending on the model configuration).
 
@@ -48,8 +48,8 @@ GPT-1 uses the BooksCorpus dataset for pretraining. BooksCorpus is a large colle
 
 ### GPT-1 Fine Tuning
 
-To pretrained GPT model can be adopted for different downstream tasks by modifying the inputs format or adding minimal component accordingly.  a task-specific format and then adding minimal component to process the output to get task-specific predictions. As summarized in {numref}`chapter_foundation_fig_gpt_gpt_architecture`,
-* For **sequence tasks** such as text classification, the input is passed through the network as-is, and the output linear layer takes the last activation to make a classification decision.
+The pretrained GPT model can be adopted for different downstream tasks by modifying the inputs format or adding minimal component accordingly. As summarized in {numref}`chapter_foundation_fig_gpt_gpt_architecture`,
+* For **sequence tasks** such as text classification, the input is passed through the network as-is, and an added the output linear layer takes the last activation to make a classification decision.
 * For **sentence-pair tasks** such as textual entailment, the input that is made up of two sequences is marked with a delimiter, which helps the pre-trained model to know which part is premise or hypothesis in the case of textual entailment. Finally, the output linear layer takes the last activation to make a classification decision.
 * For **sentence vector similarity tasks**, we use the model to encode the two differently-ordered sentence pairs separately into two sequence representations, which are added element-wise before being fed into the linear output layer.
 * For tasks like **Question Answering** and **Commonsense Reasoning**, in which we are given a context document $z$, a question $q$, and a set of possible answers $\left\{a_{k}\right\}$, we can concatenate the document context and question with each possible answer. Each of these sequences are processed independently with our model and then normalized via a Softmax layer to produce an output distribution over possible answers.
@@ -69,7 +69,7 @@ The fine-tuning process involves continuing the model training over a labeled da
 ## GPT-2
 
 GPT-2 {cite:p}`radford2019language`, a successor to the original GPT-1, is a larger model trained on much more training data, called WebText, than the original one. It achieved state-of-the-art results on seven out of the eight tasks in a zero-shot setting in which there is no fine-tuning applied but had limited success in some tasks. 
-The key contribution of GPT-2 is not about further refining the two-stage pretraining-fine-tuning paradigm in GPT-1, but about investigating the capability of zero-shot learning with extensively pretrained language model alone. In other words, it aims to answer whether language modeling is a universal task that can help the model to gain universal knowledge that can accomplish other language tasks without subsequent supervised learning.
+The key contribution of GPT-2 is not about further refining the two-stage pretraining-fine-tuning paradigm in GPT-1, but about investigating **the capability of zero-shot learning with extensively pretrained language model alone.** In other words, it aims to answer whether language modeling is a universal task that can help the model to gain universal knowledge that can accomplish other language tasks without subsequent supervised learning.
 
 The intuition is that a model can be very skilled in the sense that it can learn much of the information about a language during the pre-training phase, there will be no need to learn extra information through fine-tuning phase. Take machine translation in the following box as an example, which contains examples of naturally occurring demonstrations of English to French and French to English translation found throughout the WebText training set. By learning to predict future words in the language modeling task, we expect the model to automatically acquire the ability to translate when we can provide the right prompt (e.g., *translate from English to French*) to the model.
 
@@ -210,7 +210,9 @@ Performance on SuperGLUE increases with model size and number of examples in con
 
 #### Closed-book question answering
 
-Closed-book question answering is used to examine GPT-3’s ability to answer questions about broad factual knowledge. Contrast with open-book question answering, in which 1) an information retrieval module is first used to retrieve question-relevant paragraphs and then 2) the model is perform reading comprehension on the retrieved text to extract or produce the answers.  
+Closed-book question answering is used to examine GPT-3’s ability to answer questions about broad factual knowledge. Contrast with open-book question answering, in which 
+* An information retrieval module is first used to retrieve question-relevant paragraphs 
+* The model is perform reading comprehension on the retrieved text to extract or produce the answers.  
 
 The GPT-3 model was tested on Natural Questions, WebQuestions, and TriviaQA datasets, and the results are the following. The performance of GPT-3 improves as the model size increases, for both zero shot and few shots.  At its largest size (175B), few-shot GPT-3 outperforms the fine-tuned SOTA.
 

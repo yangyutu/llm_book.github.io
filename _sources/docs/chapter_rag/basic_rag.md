@@ -609,7 +609,7 @@ The data preparation consists of the four key steps [{numref}`chapter_rag_fig_ra
 
 ```{figure} ../img/chapter_rag/generator_model/LLM_FT_data_source.png
 ---
-scale: 70%
+scale: 30%
 name: chapter_rag_fig_rag_LLM_FT_data_source
 ---
 Illustration of four key steps in preparing generator fine-tuning data sources.

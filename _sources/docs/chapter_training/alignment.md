@@ -3,7 +3,7 @@
 
 ## Motivation and Overview
 
-The objective function in LLM pretraining is predicting the next token in the training corpus. When the trained model is properly and carefully prompted as demonstration (i.e., in-context learning as in {ref}`content:chapter_foundation:GPT_series:GPT_3`), the model can largely accomplish useful tasks by following these demonstrations. However, these model can often generate un-desired outputs, including un-factual content, biased and harmful text, or simply do not follow the instructions in the prompt. 
+The objective function in LLM pretraining is predicting the next token in the training corpus. When the trained model is properly and carefully prompted with demonstrations (i.e., in-context learning as in {ref}`content:chapter_foundation:GPT_series:GPT_3`), the model can largely accomplish useful tasks by following these demonstrations. However, these model can often generate un-desired outputs, including un-factual content, biased and harmful text, or simply do not follow the instructions in the prompt. 
 
 This is because the pretraining task of *predicting the next token* is inherently different from the objective of training an LLM to be an instruction-following assistant that avoids generating unintended text. Although **instruction tuning data** ({ref}`chapter_training_sec_LLM_finetuning`), which are (prompt, completion) pairs, can expose the LLM to what humans like to see for given prompts, it is often not enough to prevent model from producing unintended texts. Instead, we need a training methodology to **explicitly reward the model when it is well-behaved and penalize the model when it is mis-behaved**. Training the model to learn the human preference using rewards and penalities are the core of LLM alignment and preference learning. The pioneering approach is using reinforcement learning via the PPO algorithm {cite:p}`ouyang2022traininglanguagemodelsfollow`.
 
@@ -194,13 +194,13 @@ There are four models needed in the PPO algorithm:
 
 SFT adopts a teacher-forcing approach, which directly optimizes the likelihood of a demonstration output. Such a token-level training way essentially does **behavior cloning** to imitate the demonstrations behavior. 
 
-On the other hand, RLHF firstly learns the reward model from preference data, and then employs it to improve the LLM with RL training (e.g., PPO). **The reward model not just encourages positive behavior, but only discourages undesired responses.**
+On the other hand, RLHF firstly learns the reward model from preference data, and then employs it to improve the LLM with RL training (e.g., PPO). **The reward model not just encourages positive behavior, but also discourages undesired responses.**
 
 In terms of generating comprehensive demonstration data vs preference labeling, preference labeling is much easier than writing the demonstration data.
 
- RLHF essentially encourages LLMs to learn correct policies by contrasting the self-generated responses (**discriminating between positive and negative responses**). It no just forces the model to imitate external, **positive only** demonstration data but also forces the model to know when not to imitate or to know when to reject when there is uncertainty. 
+RLHF essentially encourages LLMs to learn correct policies by contrasting the self-generated responses (**discriminating between positive and negative responses**). It not just forces the model to imitate external, **positive only** demonstration data but also forces the model to **know when not to imitate** or to know when to reject when there is uncertainty. 
  
-These negative response can mitigate the hallucination or over-generalization issues with SFT on positive only data. 
+These negative penality signal can mitigate the hallucination or over-generalization issues associated with SFT on positive only data. 
 
 ````{prf:example} SFT on positive only data can lead to over-generalization
 Let's consider how an LLM learns about geographic facts through SFT. During training, it might see examples like:
