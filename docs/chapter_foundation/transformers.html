@@ -200,12 +200,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">13. LLM Finetuning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">14. LLM Alignement and Preference Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">17. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">18. Inference Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">18. Inference Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
@@ -215,7 +215,11 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">21. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">22. Advanced RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">22. Advanced RAG (WIP)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">Vision Language Pretraining</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
@@ -504,7 +508,17 @@ The un-normalized weight matrix is given by</p>
 \end{split}\]</div>
 <p>Here by setting un-normalized attention weight to <span class="math notranslate nohighlight">\(-\inf\)</span>, we are effectively setting the normalized attention weight to zero.</p>
 <p>At this point, it is clear that the memory and computational complexity required to compute the attention matrix is quadratic in the input sequence length <span class="math notranslate nohighlight">\(n\)</span>. This could be a bottleneck the overall utility of attention-based models in applications involving the processing of long sequences.</p>
+<div class="proof remark admonition" id="remark-1">
+<p class="admonition-title"><span class="caption-number">Remark 5.1 </span> (Dropout on attention weight)</p>
+<section class="remark-content" id="proof-content">
+<p>We also apply dropout to reduce overfitting during training. Dropout can be applied in several places:</p>
+<ul class="simple">
+<li><p>After computing the attention weight matrix <span class="math notranslate nohighlight">\(W_{att}\)</span>;</p></li>
+<li><p>After multiplying the attention weights with the value vectors</p></li>
+</ul>
+<p>More commonly, we apply the dropout mask after computing the attention weights. For each token, the Dropout will randomly pick some hidden dimensions and set them to zero. The remaining non-zero weights will be rescaled of a factor of <span class="math notranslate nohighlight">\(1/(1-p)\)</span>, where <span class="math notranslate nohighlight">\(p\)</span> is the Dropout ratio.</p>
 </section>
+</div></section>
 <section id="comparison-with-recurrent-layer-in-sequence-modeling">
 <h3><span class="section-number">5.2.5. </span>Comparison with Recurrent Layer in Sequence Modeling<a class="headerlink" href="#comparison-with-recurrent-layer-in-sequence-modeling" title="Link to this heading">#</a></h3>
 <p>This section compares self-attention layers with recurrent layers, which are commonly used in sequence modeling.</p>
@@ -582,8 +596,8 @@ The motivation of a point-wise two-layer feed-forward network is to enhance the 
 <p>with <span class="math notranslate nohighlight">\(W_1\in \mathbb{R}^{d_{model}\times d_{ff}}\)</span>, <span class="math notranslate nohighlight">\(W_2\in \mathbb{R}^{d_{ff}\times d_{model}}\)</span>, <span class="math notranslate nohighlight">\(b_1,b_2 \in \mathbb{R}^{d_{ff}}\)</span>, and the <span class="math notranslate nohighlight">\(padMask\)</span> excludes padding symbols in the sequence.</p>
 </section>
 </div><p>In a typical setting, we have <span class="math notranslate nohighlight">\(d_{\text {model }}=512\)</span>, and the inner-layer has dimensionality <span class="math notranslate nohighlight">\(d_{ff}=2048\)</span>.</p>
-<div class="proof remark admonition" id="remark-2">
-<p class="admonition-title"><span class="caption-number">Remark 5.1 </span> (Is feedforward layer necessary for Transformer?)</p>
+<div class="proof remark admonition" id="remark-3">
+<p class="admonition-title"><span class="caption-number">Remark 5.2 </span> (Is feedforward layer necessary for Transformer?)</p>
 <section class="remark-content" id="proof-content">
 <p>Feedforward layer plays a critical role in introduce non-linearity and improving model capacity for Transformers.</p>
 <p>While self-attention is powerful for capturing contextual relationships, it’s fundamentally a weighted linear sum operation.</p>
@@ -634,7 +648,7 @@ The encoder-decoder attention uses a mask that excludes padding symbol in the in
 </figcaption>
 </figure>
 <p>The whole computation in the decoder module can be summarized in the following.</p>
-<div class="proof definition admonition" id="definition-4">
+<div class="proof definition admonition" id="definition-5">
 <p class="admonition-title"><span class="caption-number">Definition 5.3 </span> (computation in decoder module)</p>
 <section class="definition-content" id="proof-content">
 <p>Given an input sequence represented by integer sequence <span class="math notranslate nohighlight">\(o = (o_1,...,o_p,...,o_n)\)</span> and its position <span class="math notranslate nohighlight">\(o^p = (1,..., p, ..., m)\)</span>. The encoder module takes <span class="math notranslate nohighlight">\(o, o^p\)</span> as inputs, combines final contextualized embedding <span class="math notranslate nohighlight">\(e_N\)</span> from the encoder, and produce <span class="math notranslate nohighlight">\(d_N \in \mathbb{R}^{n\times d_{model}}\)</span> and probabilities over the vocabulary.</p>
