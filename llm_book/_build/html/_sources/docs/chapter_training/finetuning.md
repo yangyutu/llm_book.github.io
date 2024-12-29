@@ -77,6 +77,28 @@ The following summarize the Pros and Cons of instruction finetuning.
 :::
 ::::
 
+### Insturction Finetuning Loss Functions
+
+Typical instruction finetuning follows the idea of autoregressive language modeling and optimize the prediction over the completion tokens given the instruction.
+
+Specifically, each input is a concatenation of an instruction $X$ and a completion $Y$. Let $X$ be the instruction sequence $\left\{x_1, x_2, \ldots, x_m\right\}$ and $Y$ be the completion (output) sequence $\left\{y_1, y_2, \ldots, y_n\right\}$. The model is optimized to predict each token in $Y$ given all the previous tokens in $X$ and $Y$ up to that point:
+
+$$
+P\left(y_1, y_2, \ldots, y_n \mid x_1, x_2, \ldots, x_m\right)=\prod_{j=1}^n P\left(y_j \mid x_1, x_2, \ldots, x_m, y_1, y_2, \ldots, y_{j-1}\right)
+$$
+
+The loss function, $\mathcal{L}$ is given as as follows:
+
+$$
+\mathcal{L}=-\log P\left(y_1, y_2, \ldots, y_n \mid x_1, x_2, \ldots, x_m\right)=-\sum_{j=1}^n \log P\left(y_j \mid x_1, x_2, \ldots, x_m, y_1, y_2, \ldots, y_{j-1}\right).
+$$
+
+Recent studies {cite:p}`shi2024instruction` also show that conducting language modeling on the instruction part, known as **instruction modeling**, can further help for scenarios like:
+* The ratio between instruction length and output length in the training data is large
+* Only a small amount of training examples are used for instruction tuning.
+
+Intuitively, under instruction modeling, interactions related to instructions can be better adapted to achieve better prediction on the desired output. However, there are also hypotheses that **instruction modeling can lead to overfitting**.
+
 ### Comparison with other approaches
 
 Instruction tuning represents a middle ground between the traditional **pretrain-finetune** paradigm and the **prompting** paradigm in making LLM useful for a broad range of downstream tasks[{numref}`chapter_training_fig_finetuning_instruction_finetuning_comparison`]. 
@@ -126,6 +148,38 @@ name: chapter_training_fig_finetuning_instruction_cot_data_impact
 Jointly finetuning on non-CoT and CoT data improves performance on both evaluations, compared
 to finetuning on just one or the other. Image from {cite:p}`chung2022scalinginstructionfinetunedlanguagemodels`.
 ```
+
+
+### Bootstraping Instruction Finetuning
+
+Given a base language that can mostly rely on few-shot prompting to complete tasks, we can further boostrap the model by
+* Prompt the model to generate a diverse set of instruction-completion pair data from a limited set of seed task data.
+* Fine-tuning the model on the self-generated training data. 
+
+This process is also known as **Self-Instruct** ({numref}`chapter_training_fig_finetuning_instruction_self_instruct_data`), with the following key steps:
+* The process starts with a small seed set of tasks as the task pool.
+* Random tasks are sampled from the task pool, and used to prompt an off-the-shelf LM to generate both new instructions and corresponding completions.
+* Filtering low-quality or similar generations, and then added back to the initial task pool.
+
+To ensure that diverse instruction examples are generated, the filtering steps can use ROUGE-L similarity score to remove candidates that are similar to the any existing instructions. 
+
+```{figure} ../img/chapter_training/finetuning/instruction_finetuning/bootstrap/self_instruct_data_flow.png
+---
+scale: 45%
+name: chapter_training_fig_finetuning_instruction_self_instruct_data
+---
+A high-level overview of **Self-Instruct**. Image from {cite:p}`wang2022self`.
+```
+
+As shown in the following table, Self-Instruct boosts the instruction-following ability of GPT3 by a large
+margin. The vanilla GPT3 model basically cannot follow human instructions at all. Notable, the self-instructed GPT3 nearly matches the performance of InstructGPT, which is trained with private
+user data and human-annotated labels.
+
+| Model | # Params | ROUGE-L |
+| :--- | :---: | :---: |
+| GPT3 | 175 B | 6.8 |
+| GPT3 $_{\text {Self-InsT }}$  | 175 B | 39.9 |
+| InstructGPT | 175 B | 40.8 |
 
 (chapter_training_sec_LLM_finetuning_PEFT)=
 ## Parameter-Efficient Fine Tuning (PEFT)

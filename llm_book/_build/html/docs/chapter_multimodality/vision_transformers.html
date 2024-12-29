@@ -437,7 +437,7 @@ They created a new dataset called WIT (WebImageText), containing 400M image-text
 <a class="reference internal image-reference" href="../../_images/BLIP_arch.png"><img alt="../../_images/BLIP_arch.png" src="../../_images/BLIP_arch.png" style="width: 790.8px; height: 324.59999999999997px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Pre-training model architecture and objectives of BLIP (same parameters have the same color). Image from <span id="id3">[]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip-arch" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Pre-training model architecture and objectives of BLIP (same parameters have the same color). Image from <span id="id3">[<a class="reference internal" href="#id1566" title="Junnan Li, Dongxu Li, Caiming Xiong, and Steven Hoi. Blip: bootstrapping language-image pre-training for unified vision-language understanding and generation. In International conference on machine learning, 12888–12900. PMLR, 2022.">LLXH22</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip-arch" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>There are three different loss functions to align different modules:</p>
@@ -455,7 +455,7 @@ They created a new dataset called WIT (WebImageText), containing 400M image-text
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 4 </span><span class="caption-text">Learning framework of BLIP. A captioner is used to produce synthetic captions for web images, and a filter is used to remove
-noisy image-text pairs. The resulted bootstrapped dataset is used to pre-train a new model. Image from <span id="id4">[]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip-training-strategy" title="Link to this image">#</a></p>
+noisy image-text pairs. The resulted bootstrapped dataset is used to pre-train a new model. Image from <span id="id4">[<a class="reference internal" href="#id1566" title="Junnan Li, Dongxu Li, Caiming Xiong, and Steven Hoi. Blip: bootstrapping language-image pre-training for unified vision-language understanding and generation. In International conference on machine learning, 12888–12900. PMLR, 2022.">LLXH22</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip-training-strategy" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p><strong>CapFilt consists of</strong> two modules:</p>
@@ -474,7 +474,7 @@ noisy image-text pairs. The resulted bootstrapped dataset is used to pre-train a
 <a class="reference internal image-reference" href="../../_images/BLIP_downstream.png"><img alt="../../_images/BLIP_downstream.png" src="../../_images/BLIP_downstream.png" style="width: 395.4px; height: 445.8px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Model architecture for the downstream tasks. Q: question; C: caption; QA: question-answer pair. Image from <span id="id5">[]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip-downstream" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Model architecture for the downstream tasks. Q: question; C: caption; QA: question-answer pair. Image from <span id="id5">[<a class="reference internal" href="#id1566" title="Junnan Li, Dongxu Li, Caiming Xiong, and Steven Hoi. Blip: bootstrapping language-image pre-training for unified vision-language understanding and generation. In International conference on machine learning, 12888–12900. PMLR, 2022.">LLXH22</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip-downstream" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p><strong>Visual Question Answering (VQA)</strong> requires the model to predict an answer given an image and a question. During downstream finetuning, we can first encode the image-question input into multimodal embeddings using an image encoder and a text encoder with cross-attention to image embedding. The resulted multimodal embeddings are then given to an text to produce answer. The VQA model is finetuned with the LM loss using ground-truth answers as targets.</p>
@@ -487,7 +487,7 @@ there exist two cross-attention layers to process the two input images, and thei
 <h2>BLIP-2<a class="headerlink" href="#blip-2" title="Link to this heading">#</a></h2>
 <section id="id6">
 <h3>Model Architecture<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
-<p>BLIP-2 <span id="id7">[]</span> from Saleforces, which aimed to improve multimodal performance and reduces training costs by leveraging pre-trained vision models and language models. The pre-trained vision models provide high-quality visual representations, while the pre-trained language models offer powerful language generation capabilities.</p>
+<p>BLIP-2 <span id="id7">[<a class="reference internal" href="#id1567" title="Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. Blip-2: bootstrapping language-image pre-training with frozen image encoders and large language models. In International conference on machine learning, 19730–19742. PMLR, 2023.">LLSH23</a>]</span> from Saleforces, which aimed to improve multimodal performance and reduces training costs by leveraging pre-trained vision models and language models. The pre-trained vision models provide high-quality visual representations, while the pre-trained language models offer powerful language generation capabilities.</p>
 <p>BLIP-2 consists of a pre-trained Image Encoder, a pre-trained Large Language Model, and a learnable Q-Former.</p>
 <ul class="simple">
 <li><p><strong>Image Encoder</strong>: Responsible for extracting visual features from input images. The paper experimented with two network architectures: ViT-L/14 trained with CLIP and ViT-g/14 trained with EVA-CLIP.</p></li>
@@ -503,7 +503,7 @@ there exist two cross-attention layers to process the two input images, and thei
 <a class="reference internal image-reference" href="../../_images/BLIP2_overview.png"><img alt="../../_images/BLIP2_overview.png" src="../../_images/BLIP2_overview.png" style="width: 386.09999999999997px; height: 179.1px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Overview of BLIP-2 framework. A lightweight Querying Transformer is trained via a two-stage strategy to bridge the modality gap. The first stage bootstraps vision-language representation learning from a frozen image encoder. The second stage bootstraps vision-to-language generative learning from a frozen LLM, which enables zero-shot instructed image-totext generation. Image from <span id="id8">[]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip2-blip2-overview" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Overview of BLIP-2 framework. A lightweight Querying Transformer is trained via a two-stage strategy to bridge the modality gap. The first stage bootstraps vision-language representation learning from a frozen image encoder. The second stage bootstraps vision-to-language generative learning from a frozen LLM, which enables zero-shot instructed image-totext generation. Image from <span id="id8">[<a class="reference internal" href="#id1567" title="Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. Blip-2: bootstrapping language-image pre-training with frozen image encoders and large language models. In International conference on machine learning, 19730–19742. PMLR, 2023.">LLSH23</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip2-blip2-overview" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="proof remark admonition" id="remark-0">
@@ -512,7 +512,7 @@ there exist two cross-attention layers to process the two input images, and thei
 <p>One way to fuse image understanding signal into text LLM is first going through a <strong>semantic conversion stage</strong> - using caption models to generate textual descriptions of images/videos (scenes, events, entities, etc.), then feeding these textual descriptions (or perform some preprocessing, like summarization beforehand) into the LLM.</p>
 <p>This approach involves indirectly converting visual semantics into textual semantics through a visual Captioner (<strong>semantic conversion stage</strong>), then better adapting the textual semantics through Prompt+LLM (<strong>semantic adaptation stage</strong>), and finally using this as input for the target LLM to create an MLLM (<strong>semantic fusion stage</strong>).</p>
 <p>While this approach is straightforward and easy to implement, its limitations are obvious - there is information loss at the <strong>semantic conversion stage</strong>, in which the final LLM model cannot perceive fine-grained information from the original visual input, which severely limits the MLLM’s potential.</p>
-<p>One design idea is Q-Former is to use a learnable query vector plus cross-attention mechanism to directly fuse image signals features in the semantic vector space. The usage of learnable query vector also resembles the idea of <strong>learnable soft prompt</strong> <span id="id9">[<a class="reference internal" href="#id1548" title="Brian Lester, Rami Al-Rfou, and Noah Constant. The power of scale for parameter-efficient prompt tuning. arXiv preprint arXiv:2104.08691, 2021.">LARC21</a>]</span> in LLM fine-tuning.</p>
+<p>One design idea is Q-Former is to use a learnable query vector plus cross-attention mechanism to directly fuse image signals features in the semantic vector space. The usage of learnable query vector also resembles the idea of <strong>learnable soft prompt</strong> <span id="id9">[<a class="reference internal" href="../chapter_training/finetuning.html#id1553" title="Brian Lester, Rami Al-Rfou, and Noah Constant. The power of scale for parameter-efficient prompt tuning. arXiv preprint arXiv:2104.08691, 2021.">LARC21</a>]</span> in LLM fine-tuning.</p>
 </section>
 </div></section>
 <section id="id10">
@@ -535,7 +535,7 @@ Fig.4 Model architecture of Q-Former and Vision-Language Representation Learning
 <figcaption>
 <p><span class="caption-number">Fig. 7 </span><span class="caption-text">(Left) Model architecture of Q-Former and BLIP-2’s first-stage vision-language representation learning objectives. We jointly
 optimize three objectives which enforce the queries (a set of learnable embeddings) to extract visual representation most relevant to the
-text. (Right) The self-attention masking strategy for each objective to control query-text interaction. Image from <span id="id11">[]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip2-representative-training" title="Link to this image">#</a></p>
+text. (Right) The self-attention masking strategy for each objective to control query-text interaction. Image from <span id="id11">[<a class="reference internal" href="#id1567" title="Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. Blip-2: bootstrapping language-image pre-training with frozen image encoders and large language models. In International conference on machine learning, 19730–19742. PMLR, 2023.">LLSH23</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip2-representative-training" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p><strong>Generative Learning</strong>: In the generative pre-training stage, Q-Former is connected to the frozen LLM to leverage the LLM’s language generation capabilities. Here, a fully connected layer linearly projects the output Query embeddings to the same dimension as the LLM’s text embeddings, then adds these projected Query embeddings before the input text embeddings. Since Q-Former has been pre-trained to extract visual representations containing language information, it can effectively serve as an information bottleneck, providing the most useful information to the LLM while removing irrelevant visual information, reducing the burden on the LLM to learn vision-language alignment.</p>
@@ -546,14 +546,14 @@ text. (Right) The self-attention masking strategy for each objective to control 
 <figcaption>
 <p><span class="caption-number">Fig. 8 </span><span class="caption-text">BLIP-2 second-stage vision-to-language generative pre-training, which bootstraps from frozen large language models (LLMs).
 (Top) Bootstrapping a decoder-based LLM (e.g. OPT). (Bottom) Bootstrapping an encoder-decoder-based LLM (e.g. FlanT5). The
-fully-connected layer adapts from the output dimension of the Q-Former to the input dimension of the chosen LLM. Image from <span id="id12">[]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip2-generative-training" title="Link to this image">#</a></p>
+fully-connected layer adapts from the output dimension of the Q-Former to the input dimension of the chosen LLM. Image from <span id="id12">[<a class="reference internal" href="#id1567" title="Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. Blip-2: bootstrapping language-image pre-training with frozen image encoders and large language models. In International conference on machine learning, 19730–19742. PMLR, 2023.">LLSH23</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip2-generative-training" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 </section>
 <section id="instruct-blip">
 <h2>Instruct BLIP<a class="headerlink" href="#instruct-blip" title="Link to this heading">#</a></h2>
-<p>Large-scale pre-training and instruction tuning <span id="id13">[<a class="reference internal" href="#id53" title="Renze Lou, Kai Zhang, and Wenpeng Yin. Large language model instruction following: a survey of progresses and challenges. Computational Linguistics, pages 1–10, 2024.">LZY24</a>]</span> have been successful at creating general-purpose language models. InstructBLIP <span id="id14">[]</span>, a vision-language instruction tuning framework that enables general-purpose models to solve a wide range of visuallanguage tasks through a unified natural language interface.</p>
+<p>Large-scale pre-training and instruction tuning <span id="id13">[<a class="reference internal" href="../chapter_training/finetuning.html#id58" title="Renze Lou, Kai Zhang, and Wenpeng Yin. Large language model instruction following: a survey of progresses and challenges. Computational Linguistics, pages 1–10, 2024.">LZY24</a>]</span> have been successful at creating general-purpose language models. InstructBLIP <span id="id14">[<a class="reference internal" href="#id1568" title="Haotian Liu, Chunyuan Li, Qingyang Wu, and Yong Jae Lee. Visual instruction tuning. Advances in neural information processing systems, 2024.">LLWL24</a>]</span>, a vision-language instruction tuning framework that enables general-purpose models to solve a wide range of visuallanguage tasks through a unified natural language interface.</p>
 <p>InstructBLIP adopts a model architecture similar to BLIP-2, which consists of a visual encoder, Q-Former, and LLM. The visual encoder extracts features from the input image and feeds them into the Q-Former. Q-Former’s input includes both <strong>learnable Queries</strong> and <strong>Instruction</strong>. The internal structure of Q-Former is shown in <span id="id15">[]</span>, where the learnable Queries interact with the Instruction through Self-Attention, and interact with the input image features through Cross-Attention, encouraging the extraction of task-relevant image features.</p>
 <p>Q-Former’s output is fed into the LLM through an FC layer. The pre-training process of Q-Former follows BLIP-2’s two steps:</p>
 <ul class="simple">
@@ -565,7 +565,7 @@ fully-connected layer adapts from the output dimension of the Q-Former to the in
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 9 </span><span class="caption-text">Model architecture of InstructBLIP. The Q-Former extracts instruction-aware visual features
-from the output embeddings of the frozen image encoder, and feeds the visual features as soft prompt input to the frozen LLM. We instruction-tune the model with the language modeling loss to generate the response. Image from <span id="id16">[]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-instruct-blip-demo" title="Link to this image">#</a></p>
+from the output embeddings of the frozen image encoder, and feeds the visual features as soft prompt input to the frozen LLM. We instruction-tune the model with the language modeling loss to generate the response. Image from <span id="id16">[<a class="reference internal" href="#id1568" title="Haotian Liu, Chunyuan Li, Qingyang Wu, and Yong Jae Lee. Visual instruction tuning. Advances in neural information processing systems, 2024.">LLWL24</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-instruct-blip-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -631,6 +631,21 @@ from the output embeddings of the frozen image encoder, and feeds the visual fea
 <div class="citation" id="id1548" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">LARC21</a><span class="fn-bracket">]</span></span>
 <p>Brian Lester, Rami Al-Rfou, and Noah Constant. The power of scale for parameter-efficient prompt tuning. <em>arXiv preprint arXiv:2104.08691</em>, 2021.</p>
+</div>
+<div class="citation" id="id1567" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LLSH23<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id7">1</a>,<a role="doc-backlink" href="#id8">2</a>,<a role="doc-backlink" href="#id11">3</a>,<a role="doc-backlink" href="#id12">4</a>)</span>
+<p>Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. Blip-2: bootstrapping language-image pre-training with frozen image encoders and large language models. In <em>International conference on machine learning</em>, 19730–19742. PMLR, 2023.</p>
+</div>
+<div class="citation" id="id1566" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LLXH22<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id4">2</a>,<a role="doc-backlink" href="#id5">3</a>)</span>
+<p>Junnan Li, Dongxu Li, Caiming Xiong, and Steven Hoi. Blip: bootstrapping language-image pre-training for unified vision-language understanding and generation. In <em>International conference on machine learning</em>, 12888–12900. PMLR, 2022.</p>
+</div>
+<div class="citation" id="id1568" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LLWL24<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id14">1</a>,<a role="doc-backlink" href="#id16">2</a>)</span>
+<p>Haotian Liu, Chunyuan Li, Qingyang Wu, and Yong Jae Lee. Visual instruction tuning. <em>Advances in neural information processing systems</em>, 2024.</p>
 </div>
 <div class="citation" id="id53" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">LZY24</a><span class="fn-bracket">]</span></span>

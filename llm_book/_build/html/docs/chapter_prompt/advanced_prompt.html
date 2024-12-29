@@ -347,7 +347,7 @@ document.write(`
 <h1><span class="section-number">20. </span>Advanced Prompting Techniques<a class="headerlink" href="#advanced-prompting-techniques" title="Link to this heading">#</a></h1>
 <section id="cot-with-self-consistency">
 <h2><span class="section-number">20.1. </span>CoT with Self-Consistency<a class="headerlink" href="#cot-with-self-consistency" title="Link to this heading">#</a></h2>
-<p><strong>Chain-of-thought</strong> prompting combined with pre-trained large language models has achieved encouraging results on complex reasoning tasks. <span id="id1">[<a class="reference internal" href="#id533" title="Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language models. arXiv preprint arXiv:2203.11171, 2022.">WWS+22</a>]</span> propose a <strong>self-consistency</strong> strategy to further improve the performance of chain-of-thought prompting.
+<p><strong>Chain-of-thought</strong> prompting combined with pre-trained large language models has achieved encouraging results on complex reasoning tasks. <span id="id1">[<a class="reference internal" href="../chapter_training/finetuning.html#id549" title="Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language models. arXiv preprint arXiv:2203.11171, 2022.">WWS+22</a>]</span> propose a <strong>self-consistency</strong> strategy to further improve the performance of chain-of-thought prompting.
 The key idea is that <a class="reference internal" href="#chapter-prompt-fig-advanced-prompt-cot-self-consistency"><span class="std std-numref">Fig. 20.1</span></a>:</p>
 <ol class="arabic simple">
 <li><p>First we samples a diverse set of reasoning paths</p></li>
@@ -416,8 +416,8 @@ high-level principles to guide the reasoning process [<a class="reference intern
 </figcaption>
 </figure>
 <p>The following table shows the performance on MMLU tasks, Step-Back prompting shows furhter improvement on CoT prompting.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1555">
-<caption><span class="caption-number">Table 20.1 </span><span class="caption-text">Performance of Step-Back prompting on MMLU tasks.</span><a class="headerlink" href="#id1555" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1559">
+<caption><span class="caption-number">Table 20.1 </span><span class="caption-text">Performance of Step-Back prompting on MMLU tasks.</span><a class="headerlink" href="#id1559" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Method</p></th>
 <th class="head text-center"><p>MMLU Physics</p></th>
