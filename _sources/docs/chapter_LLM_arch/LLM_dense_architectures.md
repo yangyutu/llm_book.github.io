@@ -658,7 +658,7 @@ To summarize, DCA consists of three components: (1) intra-chunk attention, which
 ## Tokenziation, vocabulary, and weight tying
 
 ### BPE Tokenization
-Byte Pair Encoding (BPE) is a commonly used subword tokenization algorithm in NLP. It starts with individual characters and iteratively merges the most frequent pairs to create new subword units, repeating this process N times to build the final subword vocabulary. The following is a summary of the algorithm.
+Byte Pair Encoding (BPE) is a commonly used subword tokenization algorithm in NLP {cite:p}`sennrich2015neural`. It starts with individual characters and iteratively merges the most frequent pairs to create new subword units, repeating this process N times to build the final subword vocabulary. The following is a summary of the algorithm.
 
 
 ```{prf:algorithm} BPE

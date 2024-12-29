@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>*Lab: Pretraining &#8212; LLM Foundations</title>
+    <title>*Lab: Instruction Finetuning &#8212; LLM Foundations</title>
   
   
   
@@ -58,7 +58,7 @@
     <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/notebooks/chapter_LLM_training/annotated_pretraining';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/notebooks/chapter_LLM_training/annotated_instruction_tuning';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -313,7 +313,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>*Lab: Pretraining</h1>
+    <h1>*Lab: Instruction Finetuning</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -344,8 +344,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="lab-pretraining">
-<h1>*Lab: Pretraining<a class="headerlink" href="#lab-pretraining" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="lab-instruction-finetuning">
+<h1>*Lab: Instruction Finetuning<a class="headerlink" href="#lab-instruction-finetuning" title="Link to this heading">#</a></h1>
 <p>Here we present a simplified llama implementation based <a class="reference external" href="https://github.com/huggingface/transformers/blob/main/src/transformers/models/llama/modeling_llama.py#L731">Huggingface implementation</a> to illustrate different components on the Llama decoder model.</p>
 <p>The key components are</p>
 <ul class="simple">
@@ -365,6 +365,8 @@ document.write(`
 <span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
 <span class="kn">from</span> <span class="nn">omegaconf</span> <span class="kn">import</span> <span class="n">OmegaConf</span>
 <span class="kn">import</span> <span class="nn">tiktoken</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 </pre></div>
 </div>
 </div>
@@ -599,42 +601,67 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
 
-<span class="k">class</span> <span class="nc">GPTPretrainDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_length</span><span class="p">,</span> <span class="n">stride</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">format_input</span><span class="p">(</span><span class="n">entry</span><span class="p">):</span>
+    <span class="n">instruction_text</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Below is an instruction that describes a task. &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;Write a response that appropriately completes the request.&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">### Instruction:</span><span class="se">\n</span><span class="si">{</span><span class="n">entry</span><span class="p">[</span><span class="s1">&#39;instruction&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">input_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">### Input:</span><span class="se">\n</span><span class="si">{</span><span class="n">entry</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">instruction_text</span> <span class="o">+</span> <span class="n">input_text</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">### Response:</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+<span class="k">class</span> <span class="nc">InstructionDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">input_ids</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">target_ids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prompt_with_completions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">completions</span> <span class="o">=</span> <span class="p">[]</span>
         
-        <span class="c1"># Tokenizer the entire text</span>
-        <span class="n">token_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">allowed_special</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;&lt;|endoftext|&gt;&quot;</span><span class="p">})</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            
+            <span class="n">instruction_plus_input</span> <span class="o">=</span> <span class="n">format_input</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+            <span class="n">completion</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;output&#39;</span><span class="p">]</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">prompt_with_completions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">instruction_plus_input</span> <span class="o">+</span> <span class="n">completion</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">completion</span><span class="p">)</span>
         
-        <span class="c1"># use a sliding window approach to chunk the input text corpus</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">token_ids</span><span class="p">)</span> <span class="o">-</span> <span class="n">max_length</span><span class="p">,</span> <span class="n">stride</span><span class="p">):</span>
-            <span class="n">input_chunk</span> <span class="o">=</span> <span class="n">token_ids</span><span class="p">[</span><span class="n">i</span><span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">max_length</span><span class="p">]</span>
-            <span class="n">target_chunk</span> <span class="o">=</span> <span class="n">token_ids</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">max_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">input_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">input_chunk</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">target_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">target_chunk</span><span class="p">))</span>
             
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_ids</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prompt_with_completions</span><span class="p">)</span>
     
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_ids</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_ids</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt_with_completions</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">completions</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">create_data_loader</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> 
-                       <span class="n">stride</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_last</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tiktoken</span><span class="o">.</span><span class="n">get_encoding</span><span class="p">(</span><span class="s1">&#39;gpt2&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">custom_collate_fn</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">ignore_idx</span><span class="o">=-</span><span class="mi">100</span><span class="p">):</span>
     
-    <span class="n">dataset</span> <span class="o">=</span> <span class="n">GPTPretrainDataset</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
-                                 <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
-                                 <span class="n">max_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span>
-                                 <span class="n">stride</span><span class="o">=</span><span class="n">stride</span><span class="p">)</span>
+    <span class="n">prompt_with_completions</span><span class="p">,</span> <span class="n">completions</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">batch</span><span class="p">)</span>
+    
+    <span class="n">padded</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">prompt_with_completions</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;longest&#39;</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s1">&#39;pt&#39;</span><span class="p">)</span>
+    <span class="n">padded</span> <span class="o">=</span> <span class="n">padded</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">padded</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">targets</span> <span class="o">=</span> <span class="n">padded</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span>
+    
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">targets</span> <span class="o">==</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token_id</span><span class="p">)</span>
+    
+    <span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span><span class="o">.</span><span class="n">masked_fill</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">ignore_idx</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span>
+    
+     
+<span class="k">def</span> <span class="nf">create_data_loader</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> 
+                       <span class="n">stride</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_last</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">InstructionDataset</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    
+    <span class="n">collate_fn</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">custom_collate_fn</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">ignore_idx</span><span class="o">=-</span><span class="mi">100</span><span class="p">)</span>
     
     <span class="n">data_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> 
                              <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
                              <span class="n">shuffle</span><span class="o">=</span><span class="n">shuffle</span><span class="p">,</span>
                              <span class="n">drop_last</span><span class="o">=</span><span class="n">drop_last</span><span class="p">,</span>
-                             <span class="n">num_workers</span><span class="o">=</span><span class="n">num_workers</span><span class="p">)</span>
+                             <span class="n">num_workers</span><span class="o">=</span><span class="n">num_workers</span><span class="p">,</span>
+                             <span class="n">collate_fn</span><span class="o">=</span><span class="n">collate_fn</span><span class="p">)</span>
     
     <span class="k">return</span> <span class="n">data_loader</span>
 </pre></div>
@@ -653,20 +680,32 @@ document.write(`
     <span class="k">else</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">text_data</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-            
-    <span class="k">return</span> <span class="n">text_data</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+          
+    <span class="k">return</span> <span class="n">data</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_data_component</span><span class="p">():</span>
-    <span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;the-verdict.txt&quot;</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/rasbt/LLMs-from-scratch/main/ch02/01_main-chapter-code/the-verdict.txt&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">transformers</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span>
+<span class="k">def</span> <span class="nf">test_data_component</span><span class="p">():</span>
+    <span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;instruction-data2.json&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;https://raw.githubusercontent.com/tatsu-lab/stanford_alpaca/refs/heads/main/alpaca_data.json&quot;</span>        
+    <span class="p">)</span>
 
     <span class="n">text_data</span> <span class="o">=</span> <span class="n">read_text_data</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
-    <span class="n">train_loader</span> <span class="o">=</span> <span class="n">create_data_loader</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text_data</span><span class="p">)</span>
+    <span class="n">tokenizer_name</span> <span class="o">=</span> <span class="s2">&quot;Qwen/Qwen2.5-0.5B&quot;</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">tokenizer_name</span><span class="p">)</span>
+    <span class="c1">#tokenizer = tiktoken.get_encoding(&#39;gpt2&#39;)</span>
+    <span class="n">train_loader</span> <span class="o">=</span> <span class="n">create_data_loader</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">text_data</span><span class="p">,</span> 
+                                      <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+                                      <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
         <span class="k">break</span>
@@ -676,13 +715,39 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[tensor([[  423,  4750,   326,  ...,   262,  8216,    13],
-        [   11,   508,   550,  ...,   526,   198,   198],
-        [  271, 10899,   550,  ..., 29543,  2745,    11],
-        [   26,   475,   314,  ...,   287,   683,   438]]), tensor([[ 4750,   326,  9074,  ...,  8216,    13,   314],
-        [  508,   550, 18459,  ...,   198,   198,  3347],
-        [10899,   550,   366,  ...,  2745,    11,   314],
-        [  475,   314,  2936,  ...,   683,   438,   273]])]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(tensor([[ 38214,    374,    458,   7600,    429,  16555,    264,   3383,     13,
+           9645,    264,   2033,    429,  34901,  44595,    279,   1681,    382,
+          14374,  29051,    510,  31115,    458,   3110,    315,    264,  15908,
+           2551,    382,  14374,   5949,    510,  30665,    508,    675,  49088,
+             40,   3900,    419,   2551,  13719,    498,   1632,     13,    358,
+           1079,   4378,    311,   6051,    498,    429,    508,  16411,    936,
+            508,   5009,    315,   8544,  29562,   2679,    498,    614,    894,
+           4755,    476,  10520,     11,   4486,    653,    537,  38566,    311,
+           5545,    700,    382,     50,  86091,   3554,     58,    675],
+        [ 38214,    374,    458,   7600,    429,  16555,    264,   3383,     13,
+           9645,    264,   2033,    429,  34901,  44595,    279,   1681,    382,
+          14374,  29051,    510,  31115,    264,  11652,   1667,    279,   2701,
+           4244,     25,  14093,  82674,     11,  18514,     11,  17788,   4145,
+            382,  14374,   5949,    510,    785,  18514,  14093,  82674,    342,
+           1607,   6758,    304,    279,  17788,   4145,     13, 151643, 151643,
+         151643, 151643, 151643, 151643, 151643, 151643, 151643, 151643, 151643,
+         151643, 151643, 151643, 151643, 151643, 151643, 151643, 151643, 151643,
+         151643, 151643, 151643, 151643, 151643, 151643, 151643, 151643]]), tensor([[  374,   458,  7600,   429, 16555,   264,  3383,    13,  9645,   264,
+          2033,   429, 34901, 44595,   279,  1681,   382, 14374, 29051,   510,
+         31115,   458,  3110,   315,   264, 15908,  2551,   382, 14374,  5949,
+           510, 30665,   508,   675, 49088,    40,  3900,   419,  2551, 13719,
+           498,  1632,    13,   358,  1079,  4378,   311,  6051,   498,   429,
+           508, 16411,   936,   508,  5009,   315,  8544, 29562,  2679,   498,
+           614,   894,  4755,   476, 10520,    11,  4486,   653,   537, 38566,
+           311,  5545,   700,   382,    50, 86091,  3554,    58,   675,    60],
+        [  374,   458,  7600,   429, 16555,   264,  3383,    13,  9645,   264,
+          2033,   429, 34901, 44595,   279,  1681,   382, 14374, 29051,   510,
+         31115,   264, 11652,  1667,   279,  2701,  4244,    25, 14093, 82674,
+            11, 18514,    11, 17788,  4145,   382, 14374,  5949,   510,   785,
+         18514, 14093, 82674,   342,  1607,  6758,   304,   279, 17788,  4145,
+            13,  -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100,
+          -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100,
+          -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100]]))
 </pre></div>
 </div>
 </div>
@@ -698,7 +763,7 @@ document.write(`
     
     <span class="n">flat_targets</span> <span class="o">=</span> <span class="n">target_batch</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> 
     <span class="n">flat_logits</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="c1"># flatten the first two dimensions </span>
-    <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">flat_logits</span><span class="p">,</span> <span class="n">flat_targets</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">flat_logits</span><span class="p">,</span> <span class="n">flat_targets</span><span class="p">)</span> <span class="c1"># tokens with ignore idx will not contribute to loss </span>
     <span class="k">return</span> <span class="n">loss</span>
 
 <span class="k">def</span> <span class="nf">train_model_epoch</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> 
@@ -768,6 +833,8 @@ document.write(`
                                       <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                         <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span>
     <span class="p">)</span>
+    
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tiktoken</span><span class="o">.</span><span class="n">get_encoding</span><span class="p">(</span><span class="s1">&#39;gpt2&#39;</span><span class="p">)</span>
     
     <span class="n">train_losses</span><span class="p">,</span> <span class="n">model</span> <span class="o">=</span> <span class="n">train_model_epoch</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
                 <span class="n">train_loader</span><span class="o">=</span><span class="n">train_loader</span><span class="p">,</span>
