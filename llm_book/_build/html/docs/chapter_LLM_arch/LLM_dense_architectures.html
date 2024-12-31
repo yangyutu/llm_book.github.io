@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_LLM_arch/LLM_dense_architectures';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="10. *Annotated LLama" href="../notebooks/chapter_LLM_arch/annotated_llama.html" />
+    <link rel="next" title="10. MoE Sparse Architectures (WIP)" href="LLM_moe_sparse_architectures.html" />
     <link rel="prev" title="8. GPT Series" href="../chapter_foundation/GPT_series.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -191,8 +191,8 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">9. LLM Architectures Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama.html">10. *Annotated LLama</a></li>
-<li class="toctree-l1"><a class="reference internal" href="LLM_moe_sparse_architectures.html">11. MOE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama_custom.html">11. *Lab: Minimal LLama</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="nav bd-sidenav">
@@ -201,21 +201,24 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">14. LLM Alignement and Preference Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Annotated Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Annotated DPO Training</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">17. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">18. Inference Acceleration (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">20. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">21. Inference Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">19. Basic Prompting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">20. Advanced Prompting Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">22. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">23. Advanced Prompting Techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">21. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">22. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">24. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">25. Advanced RAG (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
 <ul class="nav bd-sidenav">
@@ -223,8 +226,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">26. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -398,7 +401,7 @@ document.write(`
 <a class="reference internal image-reference" href="../../_images/large_langage_models_release_timeline.png"><img alt="../../_images/large_langage_models_release_timeline.png" src="../../_images/large_langage_models_release_timeline.png" style="width: 673.0px; height: 334.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.1 </span><span class="caption-text">A timeline of existing large language models (having a size larger than 10B) in recent years. We mark the open-source LLMs in yellow color. Image from <span id="id3">[<a class="reference internal" href="../chapter_training/training_fundamentals.html#id1532" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-llm-timeline" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 9.1 </span><span class="caption-text">A timeline of existing large language models (having a size larger than 10B) in recent years. We mark the open-source LLMs in yellow color. Image from <span id="id3">[<a class="reference internal" href="../chapter_training/training_fundamentals.html#id1534" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-llm-timeline" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>This chapter aims to go over the core components and architectural considerations that form the foundation of modern LLMs.</p>
@@ -757,8 +760,8 @@ key and value heads are attended to by query heads. GQA interpolats between MHA 
 </figcaption>
 </figure>
 <p>GQA is widely adopted in the latest LLM. Following shows example configurations of Qwen2 and Mistral LLM series <span id="id16">[<a class="reference internal" href="#id58" title="Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed. Mistral 7b. 2023. URL: https://arxiv.org/abs/2310.06825, arXiv:2310.06825.">JSM+23</a>, <a class="reference internal" href="../chapter_training/accelerated_training.html#id30" title="An Yang, Baosong Yang, Binyuan Hui, and et al. Bo Zheng. Qwen2 technical report. 2024. URL: https://arxiv.org/abs/2407.10671, arXiv:2407.10671.">YYHBZ24</a>]</span>.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1583">
-<caption><span class="caption-number">Table 9.1 </span><span class="caption-text">Model configuration of Qwen2 and Mistral, which uses GQA (# KV heads is number of groups )</span><a class="headerlink" href="#id1583" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1584">
+<caption><span class="caption-number">Table 9.1 </span><span class="caption-text">Model configuration of Qwen2 and Mistral, which uses GQA (# KV heads is number of groups )</span><a class="headerlink" href="#id1584" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Configuration</p></th>
 <th class="head text-center"><p>Hidden Size</p></th>
@@ -1154,8 +1157,8 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <li><p>how the total number of parameters scales when we scale up different components.</p></li>
 </ul>
 <p>Let <span class="math notranslate nohighlight">\(V\)</span> be the vocabulary size, <span class="math notranslate nohighlight">\(d\)</span> be the model hidden dimensions, <span class="math notranslate nohighlight">\(L\)</span> be the number of layer,</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1584">
-<caption><span class="caption-number">Table 9.2 </span><span class="caption-text">Parameters in a Transformer</span><a class="headerlink" href="#id1584" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1585">
+<caption><span class="caption-number">Table 9.2 </span><span class="caption-text">Parameters in a Transformer</span><a class="headerlink" href="#id1585" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Module</p></th>
 <th class="head text-left"><p>Computation</p></th>
@@ -1277,8 +1280,8 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <p>It is clear that for each <span class="math notranslate nohighlight">\(c_{ij}\)</span> there are <span class="math notranslate nohighlight">\(k\)</span> multiplications and <span class="math notranslate nohighlight">\(k\)</span> additions (technically <span class="math notranslate nohighlight">\(k-1\)</span> additions among <span class="math notranslate nohighlight">\(k\)</span> terms).</p>
 </section>
 </div><p>Let <span class="math notranslate nohighlight">\(V\)</span> be the vocabulary size, <span class="math notranslate nohighlight">\(b\)</span> be the batch size, <span class="math notranslate nohighlight">\(s\)</span> be sequence length, <span class="math notranslate nohighlight">\(d\)</span> be the model hidden dimensions, <span class="math notranslate nohighlight">\(L\)</span> be the number of layer, we have summarized the computation breakdown in the following.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1585">
-<caption><span class="caption-number">Table 9.3 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id1585" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1586">
+<caption><span class="caption-number">Table 9.3 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id1586" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Module</p></th>
 <th class="head text-left"><p>Computation</p></th>
@@ -1490,11 +1493,11 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
       </div>
     </a>
     <a class="right-next"
-       href="../notebooks/chapter_LLM_arch/annotated_llama.html"
+       href="LLM_moe_sparse_architectures.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">10. </span>*Annotated LLama</p>
+        <p class="prev-next-title"><span class="section-number">10. </span>MoE Sparse Architectures (WIP)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

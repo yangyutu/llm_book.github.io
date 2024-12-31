@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>11. MOE Sparse Architectures (WIP) &#8212; LLM Foundations</title>
+    <title>10. MoE Sparse Architectures (WIP) &#8212; LLM Foundations</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=ca93fcec" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -58,11 +58,13 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_LLM_arch/LLM_moe_sparse_architectures';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="12. LLM Training Fundamentals" href="../chapter_training/training_fundamentals.html" />
-    <link rel="prev" title="10. *Annotated LLama" href="../notebooks/chapter_LLM_arch/annotated_llama.html" />
+    <link rel="next" title="11. *Lab: Minimal LLama" href="../notebooks/chapter_LLM_arch/annotated_llama_custom.html" />
+    <link rel="prev" title="9. LLM Architectures Fundamentals" href="LLM_dense_architectures.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -189,8 +191,8 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama.html">10. *Annotated LLama</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">11. MOE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">10. MoE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama_custom.html">11. *Lab: Minimal LLama</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="nav bd-sidenav">
@@ -198,27 +200,34 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">13. LLM Finetuning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">14. LLM Alignement and Preference Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Annotated Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Annotated DPO Training</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">17. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">18. Inference Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">20. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">21. Inference Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">19. Basic Prompting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">20. Advanced Prompting Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">22. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">23. Advanced Prompting Techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">21. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">22. Advanced RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">24. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">25. Advanced RAG (WIP)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">Vision Language Pretraining</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">26. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -309,7 +318,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>MOE Sparse Architectures (WIP)</h1>
+    <h1>MoE Sparse Architectures (WIP)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -319,11 +328,29 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moe-architecture-fundamentals">11.1. MOE architecture fundamentals</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moe-llm-in-practice">11.2. MOE LLM in practice</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mistral-moe">11.2.1. Mistral MOE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moe-architecture-fundamentals">10.1. MoE architecture fundamentals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">10.1.1. Motivation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-componenents">10.1.2. Key Componenents</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-balancing">10.1.3. Load Balancing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moe-vs-dense-model">10.1.4. MoE vs Dense Model</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#switch-transformer">10.2. Switch Transformer</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-balancing-loss">10.2.1. Load Balancing Loss</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-moe">10.3. DeepSeek MoE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-balance-consideration">10.3.1. Load Balance Consideration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-v3">10.4. DeepSeek V3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">10.4.1. Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">10.4.2. Architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loss-free-load-balanace">10.4.3. Loss-Free Load Balanace</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mtp">10.4.4. MTP</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">10.5. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -336,15 +363,268 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="moe-sparse-architectures-wip">
-<h1><span class="section-number">11. </span>MOE Sparse Architectures (WIP)<a class="headerlink" href="#moe-sparse-architectures-wip" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">10. </span>MoE Sparse Architectures (WIP)<a class="headerlink" href="#moe-sparse-architectures-wip" title="Link to this heading">#</a></h1>
 <section id="moe-architecture-fundamentals">
-<h2><span class="section-number">11.1. </span>MOE architecture fundamentals<a class="headerlink" href="#moe-architecture-fundamentals" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">10.1. </span>MoE architecture fundamentals<a class="headerlink" href="#moe-architecture-fundamentals" title="Link to this heading">#</a></h2>
+<section id="motivation">
+<h3><span class="section-number">10.1.1. </span>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h3>
+<p>The MoE architecture is a type of neural network design that employs multiple experts  to solve complex problems. It incorporates multiple specialized networks, called experts, each trained to handle a specific aspect of the data or task. A gating network acts as a router, dynamically routing input data to the most relevant expert(s) for processing. This selective activation of experts leads to <strong>sparse activation</strong>, where only a subset of the model’s parameters are actively engaged at any given time, resulting in improved efficiency and reduced computational cost .</p>
+<p>The LLM scaling law indicates that larger models lead to better results - given a fixed computing budget, training a larger model for fewer steps is better than training a smaller model for more steps.</p>
+<p>Due to their sparse activation characteristics, <strong>MoE models can be pretrained with significantly less computational resources</strong>. This allows for substantial scaling of the model or dataset size within the same compute budget as a dense model. Specifically, an MoE model can achieve the same quality during pretraining compared to its dense counterpart.</p>
 </section>
-<section id="moe-llm-in-practice">
-<h2><span class="section-number">11.2. </span>MOE LLM in practice<a class="headerlink" href="#moe-llm-in-practice" title="Link to this heading">#</a></h2>
-<section id="mistral-moe">
-<h3><span class="section-number">11.2.1. </span>Mistral MOE<a class="headerlink" href="#mistral-moe" title="Link to this heading">#</a></h3>
+<section id="key-componenents">
+<h3><span class="section-number">10.1.2. </span>Key Componenents<a class="headerlink" href="#key-componenents" title="Link to this heading">#</a></h3>
+<p>The MoE architecture differentiate from dense architecture from the following two key components [<a class="reference internal" href="#chapter-llm-moe-arch-fig-switch-transfromer-arch"><span class="std std-numref">Fig. 10.1</span></a>]:</p>
+<p><strong>Experts</strong>: These are individual neural networks, each specializing in a particular domain or aspect of the problem. The number of experts can vary depending on the model’s complexity and the diversity of the data. In practice, each expert is a FFN.</p>
+<p><strong>Gating Network</strong>: This network acts as a router, evaluating the input data and determining which expert(s) are best suited to process it. The gating network assigns weights to each expert, indicating its contribution to the final output. The gating function <span class="math notranslate nohighlight">\(G\)</span> used in MoE is typically Softmax, which assigns probabilities to each expert based on the input <span class="math notranslate nohighlight">\(x\)</span>. More specifically,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+y&amp;=\sum_{i=1}^n G(x)_i E_i(x) \\
+G&amp;=\operatorname{Softmax}\left(x \cdot W_g\right)
+\end{align*}.
+\end{split}\]</div>
+<figure class="align-default" id="chapter-llm-moe-arch-fig-switch-transfromer-arch">
+<a class="reference internal image-reference" href="../../_images/encoder_block.png"><img alt="../../_images/encoder_block.png" src="../../_images/encoder_block.png" style="width: 770.5500000000001px; height: 396.55px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 10.1 </span><span class="caption-text">Illustration of a Switch Transformer encoder block. The FFN layer becomes a sparse Switch
+FFN layer (light blue), which operates independently on the tokens in the
+sequence. The Switch FFN layer consists of four FFN experts. The router independently route each token and activate a subset of FFN experts with different probabilities.   Image from <span id="id1">[<a class="reference internal" href="#id454" title="William Fedus, Barret Zoph, and Noam Shazeer. Switch transformers: scaling to trillion parameter models with simple and efficient sparsity. Journal of Machine Learning Research, 23(120):1–39, 2022.">FZS22</a>]</span></span><a class="headerlink" href="#chapter-llm-moe-arch-fig-switch-transfromer-arch" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>When an input is presented to the MoE model, the gating network analyzes it and selects the most appropriate expert(s) based on their expertise. The input is then processed by the chosen experts, and their outputs are combined using the weights assigned by the gating network to produce the final output. A crucial aspect of MoE functionality is the loss function, which is designed to optimize both the individual experts and the gating network, ensuring efficient collaboration and accurate results.</p>
 </section>
+<section id="load-balancing">
+<h3><span class="section-number">10.1.3. </span>Load Balancing<a class="headerlink" href="#load-balancing" title="Link to this heading">#</a></h3>
+<p>In MoEs models, the gating network is responsible for distributing input data to different experts [<a class="reference internal" href="#chapter-llm-moe-arch-fig-token-dynamics"><span class="std std-numref">Fig. 10.2</span></a>]. However, this distribution can become uneven, leading to a <strong>load imbalance challenge</strong>. This means some experts might be overloaded with data while others remain idle. This imbalance can hinder the model’s performance and efficiency.</p>
+<figure class="align-default" id="chapter-llm-moe-arch-fig-token-dynamics">
+<a class="reference internal image-reference" href="../../_images/token_dynamics.png"><img alt="../../_images/token_dynamics.png" src="../../_images/token_dynamics.png" style="width: 573.6500000000001px; height: 309.65000000000003px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 10.2 </span><span class="caption-text">Illustration of token routing dynamics for MoE architecture. Each token is routed to the expert with the highest router probability.  Image from <span id="id2">[<a class="reference internal" href="#id454" title="William Fedus, Barret Zoph, and Noam Shazeer. Switch transformers: scaling to trillion parameter models with simple and efficient sparsity. Journal of Machine Learning Research, 23(120):1–39, 2022.">FZS22</a>]</span></span><a class="headerlink" href="#chapter-llm-moe-arch-fig-token-dynamics" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Note that each expert has a fixed capacity given by</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{Capacity} = (\text{total tokens} / \text{num experts}) \times \text{capacity factor}\]</div>
+<p>If the tokens are unevenly dispatched then certain experts will overflow, resulting
+in these tokens not being processed by this layer. Setting a larger capacity factor alleviates this overflow issue, but also increases computation and communication costs.</p>
+<p>In summary, key problems associated with load imbalance:</p>
+<ul class="simple">
+<li><p><strong>Token dropping:</strong> Some tokens might not be processed by any expert due capacity limit, leading to information loss.</p></li>
+<li><p><strong>Model collapse:</strong> Most tokens might be routed to only a few experts, effectively reducing the model’s capacity and hindering its ability to learn diverse patterns.</p></li>
+</ul>
+<p>To address this challenge, researchers have developed various load balancing solutions. These solutions aim to ensure a more even distribution of tokens among experts, improving the model’s overall performance and efficiency.</p>
+<ul class="simple">
+<li><p><strong>Auxiliary Loss:</strong> This method introduces an additional loss term during training that penalizes uneven expert utilization. This encourages the gating network to distribute tokens more evenly.</p></li>
+<li><p>**Loss-Free Balancing:**This approach include</p>
+<ul>
+<li><p>Dynamically adjusts expert biases based on their recent load without relying on auxiliary losses.</p></li>
+<li><p>Iteratively adjusts routing probabilities to achieve a more balanced distribution of tokens.</p></li>
+<li><p>Exchanging experts between different devices or nodes in a distributed training setup to balance the load.</p></li>
+</ul>
+</li>
+</ul>
+<p>These solutions aim to mitigate the load imbalance challenge in MoE models, ensuring that all experts are effectively utilized and contribute to the model’s overall performance. As research in this area continues, we can expect further advancements in load balancing techniques, leading to more efficient and robust MoE models.</p>
+</section>
+<section id="moe-vs-dense-model">
+<h3><span class="section-number">10.1.4. </span>MoE vs Dense Model<a class="headerlink" href="#moe-vs-dense-model" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Feature</p></th>
+<th class="head text-left"><p>MoE</p></th>
+<th class="head text-left"><p>Dense</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Structure</p></td>
+<td class="text-left"><p>Multiple experts and a gating network</p></td>
+<td class="text-left"><p>Fully connected layers</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Functionality</p></td>
+<td class="text-left"><p>Selective activation of experts based on input</p></td>
+<td class="text-left"><p>Sequential processing of data through all layers</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Scalability</p></td>
+<td class="text-left"><p>More scalable due to sparse activation</p></td>
+<td class="text-left"><p>Less scalable due to computational cost</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Efficiency</p></td>
+<td class="text-left"><p>More efficient due to reduced computation</p></td>
+<td class="text-left"><p>Less efficient due to processing all parameters</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Specialization</p></td>
+<td class="text-left"><p>Experts specialize in specific domains</p></td>
+<td class="text-left"><p>All neurons contribute to general understanding</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Complexity</p></td>
+<td class="text-left"><p>More complex to implement and train</p></td>
+<td class="text-left"><p>Simpler to implement and train</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Memory Requirement</p></td>
+<td class="text-left"><p>High memory requirements to load all experts</p></td>
+<td class="text-left"><p>Moderate memory requirements</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="switch-transformer">
+<h2><span class="section-number">10.2. </span>Switch Transformer<a class="headerlink" href="#switch-transformer" title="Link to this heading">#</a></h2>
+<section id="load-balancing-loss">
+<h3><span class="section-number">10.2.1. </span>Load Balancing Loss<a class="headerlink" href="#load-balancing-loss" title="Link to this heading">#</a></h3>
+<p>To encourage a balanced load across experts we add an auxiliary loss. For each Switch layer, this auxiliary loss is added to the total model loss during training. Given <span class="math notranslate nohighlight">\(N\)</span> experts indexed by <span class="math notranslate nohighlight">\(i=1\)</span> to <span class="math notranslate nohighlight">\(N\)</span> and a batch <span class="math notranslate nohighlight">\(\mathcal{B}\)</span> with <span class="math notranslate nohighlight">\(T\)</span> tokens, the auxiliary loss is computed as the scaled dot-product between vectors <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(P\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{loss}=\alpha \cdot N \cdot \sum_{i=1}^N f_i \cdot P_i
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(f_i\)</span> is the fraction of tokens dispatched to expert <span class="math notranslate nohighlight">\(i\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+f_i=\frac{1}{T} \sum_{x \in \mathcal{B}} \mathbb{1}\{\operatorname{argmax} p(x)=i\}
+\]</div>
+<p>and <span class="math notranslate nohighlight">\(P_i\)</span> is the fraction of the router probability allocated for expert <span class="math notranslate nohighlight">\(i,{ }^2\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+P_i=\frac{1}{T} \sum_{x \in \mathcal{B}} p_i(x)
+\]</div>
+<p>Since we seek uniform routing of the batch of tokens across the <span class="math notranslate nohighlight">\(N\)</span> experts, we desire both vectors to have values of <span class="math notranslate nohighlight">\(1 / N\)</span>. The auxiliary loss of encourages uniform routing since it is minimized under a uniform distribution.</p>
+<p>Note that the strength parameter <span class="math notranslate nohighlight">\(\alpha\)</span> needs careful tuning - too large an auxiliary loss can disturb the normal gradient and eventually impair the model performance.</p>
+</section>
+</section>
+<section id="deepseek-moe">
+<h2><span class="section-number">10.3. </span>DeepSeek MoE<a class="headerlink" href="#deepseek-moe" title="Link to this heading">#</a></h2>
+<figure class="align-default" id="chapter-llm-moe-arch-fig-deepseek-moe-arch">
+<a class="reference internal image-reference" href="../../_images/arch.png"><img alt="../../_images/arch.png" src="../../_images/arch.png" style="width: 698.5px; height: 353.65000000000003px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 10.3 </span><span class="caption-text">Illustration of a Switch Transformer encoder block. The FFN layer becomes a sparse Switch
+FFN layer (light blue), which operates independently on the tokens in the
+sequence. The Switch FFN layer consists of four FFN experts. The router independently route each token and activate a subset of FFN experts with different probabilities.   Image from <span id="id3">[]</span></span><a class="headerlink" href="#chapter-llm-moe-arch-fig-deepseek-moe-arch" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="load-balance-consideration">
+<h3><span class="section-number">10.3.1. </span>Load Balance Consideration<a class="headerlink" href="#load-balance-consideration" title="Link to this heading">#</a></h3>
+<p>Two level of load balance strategies are considered in DeepSeek-MoE:</p>
+<ul class="simple">
+<li><p><strong>Expert-level balance</strong>, which encourages that every expert to receive sufficient tokens and training.</p></li>
+<li><p><strong>Device-level balance</strong>, which ensure every device (i.e., each device has multiple experts in distributed training) to have balanced computational load, therefore alleviating computation bottlenecks.</p></li>
+</ul>
+<p>The expert-level balance is realized via the expert-level balance loss, given as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\mathcal{L}_{\text {ExpBal }} &amp; =\alpha_1 \sum_{i=1}^{N^{\prime}} f_i P_i \\
+f_i &amp; =\frac{N^{\prime}}{K^{\prime} T} \sum_{t=1}^T \mathbb{1}(\text { Token } t \text { selects Expert } i), \\
+P_i &amp; =\frac{1}{T} \sum_{t=1}^T s_{i, t}
+\end{aligned}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha_1\)</span> is a hyper-parameter called expert-level balance factor, <span class="math notranslate nohighlight">\(N^{\prime}\)</span> is equal to ( <span class="math notranslate nohighlight">\(m N-K_s\)</span> ) and <span class="math notranslate nohighlight">\(K^{\prime}\)</span> is equal to ( <span class="math notranslate nohighlight">\(m K-K_s\)</span> ) for brevity. <span class="math notranslate nohighlight">\(\mathbb{1}(\cdot)\)</span> denotes the indicator function.</p>
+<p>Similarly, for device-level balance, if we partition all routed experts into <span class="math notranslate nohighlight">\(D\)</span> groups, and deploy each group on a single device, the device-level balance loss is computed as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}_{\text {DevBal }} &amp; =\alpha_2 \sum_{i=1}^D f_i^{\prime} P_i^{\prime} 
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha_2\)</span> is a hyper-parameter called device-level balance factor.</p></li>
+<li><p><span class="math notranslate nohighlight">\(f_i^{\prime}  =\frac{1}{\left|\mathcal{E}_i\right|} \sum_{j \in \mathcal{E}_i} f_j\)</span>, Experts are assigned to devices denoted by <span class="math notranslate nohighlight">\(\left\{\mathcal{E}_1, \mathcal{E}_2, \ldots, \mathcal{E}_D\right\}\)</span></p></li>
+<li><p>P_i^{\prime} &amp; =\sum_{j \in \mathcal{E}_i} P_j</p></li>
+</ul>
+<p>In practice, we set a small expert-level balance factor to mitigate the risk of routing collapse, and meanwhile set a larger device-level balance factor to promote balanced computation across the devices.</p>
+</section>
+</section>
+<section id="deepseek-v3">
+<h2><span class="section-number">10.4. </span>DeepSeek V3<a class="headerlink" href="#deepseek-v3" title="Link to this heading">#</a></h2>
+<section id="overview">
+<h3><span class="section-number">10.4.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
+<p>DeepSeek-V3 <span id="id4">[]</span> is a powerful Mixture-of-Experts (MoE) language model with 671 billion total parameters, of which 37 billion are activated for each token. This model builds upon the successes of its predecessor, DeepSeek-V2, by incorporating several architectural and training innovations to achieve state-of-the-art performance with remarkable efficiency.</p>
+<p>The key elements are:</p>
+<ul class="simple">
+<li><p><strong>Multi-head Latent Attention (MLA):</strong> This mechanism reduces the computational complexity of attention by projecting keys and values into a lower-dimensional latent space.</p></li>
+<li><p><strong>DeepSeekMoE:</strong> This architecture enhances MoE by incorporating techniques like expert choice routing and grouped query attention to improve efficiency and load balancing.</p></li>
+<li><p><strong>Auxiliary-loss-free Load Balancing:</strong> DeepSeek-V3 introduces a novel approach to load balancing that avoids the use of auxiliary losses, which can interfere with training and hinder performance. This strategy dynamically adjusts expert biases based on their recent load to ensure a more even distribution of tokens.</p></li>
+<li><p><strong>Multi-token Prediction (MTP):</strong> This training objective encourages the model to predict multiple tokens simultaneously, leading to improved performance and enabling faster inference through speculative decoding.</p></li>
+</ul>
+</section>
+<section id="architecture">
+<h3><span class="section-number">10.4.2. </span>Architecture<a class="headerlink" href="#architecture" title="Link to this heading">#</a></h3>
+<p>In response to the aforementioned issues, we introduce DeepSeekMoE, an innovative MoE architecture specifically designed towards ultimate expert specialization. Our architecture involves two principal strategies:</p>
+<ul class="simple">
+<li><p><strong>Fine-Grained Expert Segmentation</strong>: while maintaining the number of parameters constant, we segment the experts into a finer grain by splitting the FFN intermediate hidden dimension. Correspondingly, keeping a constant computational cost, we also activate more fine-grained experts to enable a more flexible and adaptable combination of activated experts. Fine-grained expert segmentation allows diverse knowledge to be decomposed more finely and be learned more precisely into different experts, where each expert will retain a higher level of specialization. In addition, the increased flexibility in combining activated experts also contributes to a more accurate and targeted knowledge acquisition.</p></li>
+<li><p><strong>Shared Expert Isolation</strong>: we isolate certain experts to serve as shared experts that are always activated, aiming at capturing and consolidating common knowledge across varying contexts. Through compressing common knowledge into these shared experts, redundancy among other routed experts will be mitigated. This can enhance the parameter efficiency and ensure that each routed expert retains specialized by focusing on distinctive aspects. These architectural innovations in DeepSeekMoE offer opportunities to train a parameter-efficient MoE language model where each expert is highly specialized.</p></li>
+</ul>
+<figure class="align-default" id="chapter-llm-moe-arch-fig-deepseek-v3-arch">
+<a class="reference internal image-reference" href="../../_images/arch1.png"><img alt="../../_images/arch1.png" src="../../_images/arch1.png" style="width: 600.5999999999999px; height: 490.7px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 10.4 </span><span class="caption-text">Illustration of a Switch Transformer encoder block. The FFN layer becomes a sparse Switch
+FFN layer (light blue), which operates independently on the tokens in the
+sequence. The Switch FFN layer consists of four FFN experts. The router independently route each token and activate a subset of FFN experts with different probabilities.   Image from <span id="id5">[]</span></span><a class="headerlink" href="#chapter-llm-moe-arch-fig-deepseek-v3-arch" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Towards this objective, in addition to the fine-grained expert segmentation strategy, we further isolate <span class="math notranslate nohighlight">\(K_s\)</span> experts to serve as shared experts. Regardless of the router module, each token will be deterministically assigned to these shared experts. In order to maintain a constant computational cost, the number of activated experts among the other routed experts will be decreased by <span class="math notranslate nohighlight">\(K_s\)</span>, as depicted in Figure 2(c). With the shared expert isolation strategy integrated, an MoE layer in the complete DeepSeekMoE architecture is formulated as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+&amp; \mathbf{h}_t^l=\sum_{i=1}^{K_s} \operatorname{FFN}_i\left(\mathbf{u}_t^l\right)+\sum_{i=K_s+1}^{m N}\left(g_{i, t} \operatorname{FFN}_i\left(\mathbf{u}_t^l\right)\right)+\mathbf{u}_t^l, \\
+&amp; g_{i, t}= \begin{cases}s_{i, t}, &amp; s_{i, t} \in \operatorname{Topk}\left(\left\{s_{j, t} \mid K_s+1 \leqslant j \leqslant m N\right\}, m K-K_s\right), \\
+0, &amp; \text { otherwise },\end{cases} \\
+&amp; s_{i, t}=\operatorname{Softmax}_i\left(\mathbf{u}_t^{l^T} \mathbf{e}_i^l\right)
+\end{aligned}
+\end{split}\]</div>
+<p>Finally, in DeepSeekMoE, the number of shared expert is <span class="math notranslate nohighlight">\(K_s\)</span>, the total number of routed experts is <span class="math notranslate nohighlight">\(m N-K_s\)</span>, and the number of nonzero gates is <span class="math notranslate nohighlight">\(m K-K_s\)</span>.</p>
+</section>
+<section id="loss-free-load-balanace">
+<h3><span class="section-number">10.4.3. </span>Loss-Free Load Balanace<a class="headerlink" href="#loss-free-load-balanace" title="Link to this heading">#</a></h3>
+<p>To achieve a better trade-off between load balance and model performance, we pioneer an auxiliary-loss-free load balancing strategy (Wang et al., 2024a) to ensure load balance. To be specific, we introduce a bias term <span class="math notranslate nohighlight">\(b_i\)</span> for each expert and add it to the corresponding affinity scores <span class="math notranslate nohighlight">\(s_{i, t}\)</span> to determine the top-K routing:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+g_{i, t}^{\prime}= \begin{cases}s_{i, t}, &amp; s_{i, t}+b_i \in \operatorname{Topk}\left(\left\{s_{j, t}+b_j \mid 1 \leqslant j \leqslant N_r\right\}, K_r\right) \\ 0, &amp; \text { otherwise }\end{cases}
+\end{split}\]</div>
+<p>Note that the bias term is only used for routing. The gating value, which will be multiplied with the FFN output, is still derived from the original affinity score <span class="math notranslate nohighlight">\(s_{i, t}\)</span>. During training, we keep monitoring the expert load on the whole batch of each training step. At the end of each step, we will decrease the bias term by <span class="math notranslate nohighlight">\(\gamma\)</span> if its corresponding expert is overloaded, and increase it by <span class="math notranslate nohighlight">\(\gamma\)</span> if its corresponding expert is underloaded, where <span class="math notranslate nohighlight">\(\gamma\)</span> is a hyper-parameter called bias update speed. Through the dynamic adjustment, DeepSeek-V3 keeps balanced expert load during training, and achieves better performance than models that encourage load balance through pure auxiliary losses.</p>
+</section>
+<section id="mtp">
+<h3><span class="section-number">10.4.4. </span>MTP<a class="headerlink" href="#mtp" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="chapter-llm-moe-arch-fig-mtp-demo">
+<a class="reference internal image-reference" href="docs/img/chapter_LLM_arch/MoEs/deepseek_v3/mtp_demo.png"><img alt="docs/img/chapter_LLM_arch/MoEs/deepseek_v3/mtp_demo.png" src="docs/img/chapter_LLM_arch/MoEs/deepseek_v3/mtp_demo.png" />
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/mnt/d/Dropbox/llm_book/llm_book_jupyterbook/llm_book/docs/chapter_LLM_arch/LLM_moe_sparse_architectures.md</span>, line 223)</p>
+<p>Cannot scale image!
+  Could not get size from &quot;docs/img/chapter_LLM_arch/MoEs/deepseek_v3/mtp_demo.png&quot;:
+  [Errno 2] No such file or directory: '/mnt/d/Dropbox/llm_book/llm_book_jupyterbook/docs/img/chapter_LLM_arch/MoEs/deepseek_v3/mtp_demo.png'</p>
+</aside>
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 10.5 </span><span class="caption-text">Illustration of MTP architecture.   Image from <span id="id6">[]</span></span><a class="headerlink" href="#chapter-llm-moe-arch-fig-mtp-demo" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>MTP Training Objective. For each prediction depth, we compute a cross-entropy loss <span class="math notranslate nohighlight">\(\mathcal{L}_{\mathrm{MTP}}^k\)</span> :</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}_{\mathrm{MTP}}^k=\operatorname{CrossEntropy}\left(P_{2+k: T+1}^k, t_{2+k: T+1}\right)=-\frac{1}{T} \sum_{i=2+k}^{T+1} \log P_i^k\left[t_i\right],
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(T\)</span> denotes the input sequence length, <span class="math notranslate nohighlight">\(t_i\)</span> denotes the ground-truth token at the <span class="math notranslate nohighlight">\(i\)</span>-th position, and <span class="math notranslate nohighlight">\(P_i^k\left[t_i\right]\)</span> denotes the corresponding prediction probability of <span class="math notranslate nohighlight">\(t_i\)</span>, given by the <span class="math notranslate nohighlight">\(k\)</span>-th MTP module. Finally, we compute the average of the MTP losses across all depths and multiply it by a weighting factor <span class="math notranslate nohighlight">\(\lambda\)</span> to obtain the overall MTP loss <span class="math notranslate nohighlight">\(\mathcal{L}_{\text {MTP, }}\)</span>, which serves as an additional training objective for DeepSeek-V3:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}_{\mathrm{MTP}}=\frac{\lambda}{D} \sum_{k=1}^D \mathcal{L}_{\mathrm{MTP}}^k
+\]</div>
+<p>MTP in Inference. Our MTP strategy mainly aims to improve the performance of the main model, so during inference, we can directly discard the MTP modules and the main model can function independently and normally. Additionally, we can also repurpose these MTP modules for speculative decoding to further improve the generation latency.</p>
+</section>
+</section>
+<section id="bibliography">
+<h2><span class="section-number">10.5. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id7">
+<div role="list" class="citation-list">
+<div class="citation" id="id454" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>FZS22<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
+<p>William Fedus, Barret Zoph, and Noam Shazeer. Switch transformers: scaling to trillion parameter models with simple and efficient sparsity. <em>Journal of Machine Learning Research</em>, 23(120):1–39, 2022.</p>
+</div>
+</div>
+</div>
 </section>
 </section>
 
@@ -379,20 +659,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../notebooks/chapter_LLM_arch/annotated_llama.html"
+       href="LLM_dense_architectures.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">10. </span>*Annotated LLama</p>
+        <p class="prev-next-title"><span class="section-number">9. </span>LLM Architectures Fundamentals</p>
       </div>
     </a>
     <a class="right-next"
-       href="../chapter_training/training_fundamentals.html"
+       href="../notebooks/chapter_LLM_arch/annotated_llama_custom.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">12. </span>LLM Training Fundamentals</p>
+        <p class="prev-next-title"><span class="section-number">11. </span>*Lab: Minimal LLama</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -412,11 +692,29 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moe-architecture-fundamentals">11.1. MOE architecture fundamentals</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moe-llm-in-practice">11.2. MOE LLM in practice</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mistral-moe">11.2.1. Mistral MOE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moe-architecture-fundamentals">10.1. MoE architecture fundamentals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">10.1.1. Motivation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-componenents">10.1.2. Key Componenents</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-balancing">10.1.3. Load Balancing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moe-vs-dense-model">10.1.4. MoE vs Dense Model</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#switch-transformer">10.2. Switch Transformer</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-balancing-loss">10.2.1. Load Balancing Loss</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-moe">10.3. DeepSeek MoE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-balance-consideration">10.3.1. Load Balance Consideration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-v3">10.4. DeepSeek V3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">10.4.1. Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">10.4.2. Architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loss-free-load-balanace">10.4.3. Loss-Free Load Balanace</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mtp">10.4.4. MTP</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">10.5. Bibliography</a></li>
 </ul>
   </nav></div>
 

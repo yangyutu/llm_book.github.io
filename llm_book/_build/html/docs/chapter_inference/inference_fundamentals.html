@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>17. Decoding &#8212; LLM Foundations</title>
+    <title>20. Decoding &#8212; LLM Foundations</title>
   
   
   
@@ -63,8 +63,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_inference/inference_fundamentals';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="18. Inference Acceleration (WIP)" href="inference_acceleration.html" />
-    <link rel="prev" title="16. LLM Training Acceleration (WIP)" href="../chapter_training/accelerated_training.html" />
+    <link rel="next" title="21. Inference Acceleration (WIP)" href="inference_acceleration.html" />
+    <link rel="prev" title="19. *Annotated DPO Training" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -191,8 +191,8 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama.html">10. *Annotated LLama</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">11. MOE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama_custom.html">11. *Lab: Minimal LLama</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="nav bd-sidenav">
@@ -201,21 +201,24 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">14. LLM Alignement and Preference Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Annotated Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Annotated DPO Training</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">17. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="inference_acceleration.html">18. Inference Acceleration (WIP)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">20. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inference_acceleration.html">21. Inference Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">19. Basic Prompting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">20. Advanced Prompting Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">22. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">23. Advanced Prompting Techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">21. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">22. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">24. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">25. Advanced RAG (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
 <ul class="nav bd-sidenav">
@@ -223,8 +226,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">26. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -325,22 +328,22 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoding-fundamentals">17.1. Decoding Fundamentals</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#greedy-decoding">17.1.1. Greedy decoding</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#beam-search-decoding">17.1.2. Beam search decoding</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#basics">17.1.2.1. Basics</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-complexity">17.1.2.2. Computational complexity</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#controling-beam-search-behavior">17.1.2.3. Controling beam search behavior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoding-fundamentals">20.1. Decoding Fundamentals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#greedy-decoding">20.1.1. Greedy decoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#beam-search-decoding">20.1.2. Beam search decoding</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#basics">20.1.2.1. Basics</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-complexity">20.1.2.2. Computational complexity</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#controling-beam-search-behavior">20.1.2.3. Controling beam search behavior</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature-controlled-sampling">17.2. Temperature-controlled sampling</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-basics">17.2.1. The basics</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-k-and-top-p-sampling">17.2.2. Top-k and top-p sampling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature-controlled-sampling">20.2. Temperature-controlled sampling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-basics">20.2.1. The basics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-k-and-top-p-sampling">20.2.2. Top-k and top-p sampling</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">17.3. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">20.3. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -353,9 +356,9 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="decoding">
-<h1><span class="section-number">17. </span>Decoding<a class="headerlink" href="#decoding" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">20. </span>Decoding<a class="headerlink" href="#decoding" title="Link to this heading">#</a></h1>
 <section id="decoding-fundamentals">
-<h2><span class="section-number">17.1. </span>Decoding Fundamentals<a class="headerlink" href="#decoding-fundamentals" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">20.1. </span>Decoding Fundamentals<a class="headerlink" href="#decoding-fundamentals" title="Link to this heading">#</a></h2>
 <p>In typical language modeling frameworks, a language model takes preceding words as context and outputs a probabilistic distribution of the next word over a pre-defined vocabulary.
 The overall goal of decoding is to convert the probabilistic outputs iteratively to generate a sequence of words that meet the requirement of intended applications.</p>
 <p>Decoding introduces a few challenges that are vastly different from typical NLU (natural language understanding) tasks:</p>
@@ -374,7 +377,7 @@ P\left(y_1, \ldots, y_t \mid \mathbf{x}\right)=\prod_{t=1}^N P\left(y_t \mid y_{
 <p>where <span class="math notranslate nohighlight">\(y_{&lt;t}\)</span> is a shorthand notation for the sequence <span class="math notranslate nohighlight">\(y_1, \ldots, y_{t-1}\)</span>. The problem of generating the most probable sequence now amounts to carefully selecting each word at each step given the preceding words in a sentence such that the probability of final sequence is maximized.</p>
 <p>The model takes the sequence <span class="math notranslate nohighlight">\(y_{&lt;t}, \mathbf{x}\)</span> as the input, and is trained to output the conditional probabilties of <span class="math notranslate nohighlight">\(P\left(y_t \mid y_{&lt;t}, \mathbf{x}\right)\)</span>.</p>
 <section id="greedy-decoding">
-<h3><span class="section-number">17.1.1. </span>Greedy decoding<a class="headerlink" href="#greedy-decoding" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">20.1.1. </span>Greedy decoding<a class="headerlink" href="#greedy-decoding" title="Link to this heading">#</a></h3>
 <p>The simplest decoding method is greedy decoding, in which we at each step greedily select the token with the highest model predicted probability:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -385,22 +388,22 @@ P\left(y_1, \ldots, y_t \mid \mathbf{x}\right)=\prod_{t=1}^N P\left(y_t \mid y_{
 <a class="reference internal image-reference" href="../../_images/greedy_decoding_demo.png"><img alt="../../_images/greedy_decoding_demo.png" src="../../_images/greedy_decoding_demo.png" style="width: 735.6px; height: 373.20000000000005px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 17.1 </span><span class="caption-text">Greedy decoding demonstrations.</span><a class="headerlink" href="#chapter-inference-fig-inference-fundamentals-greedy-decoding-demo" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 20.1 </span><span class="caption-text">Greedy decoding demonstrations.</span><a class="headerlink" href="#chapter-inference-fig-inference-fundamentals-greedy-decoding-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>While being efficient, greedy search decoding often fails to produce sequences that have high probability. The reason is that the token at each step is chosen without considering its impact on the subsequent tokens. In practice, the model may produce repetitive output sequences. In the following, we will introduce beam search and sampling methods to mitigate the drawbacks of greedy decoding.</p>
 </section>
 <section id="beam-search-decoding">
-<span id="chapter-inference-sec-deconding-beam-search"></span><h3><span class="section-number">17.1.2. </span>Beam search decoding<a class="headerlink" href="#beam-search-decoding" title="Link to this heading">#</a></h3>
+<span id="chapter-inference-sec-deconding-beam-search"></span><h3><span class="section-number">20.1.2. </span>Beam search decoding<a class="headerlink" href="#beam-search-decoding" title="Link to this heading">#</a></h3>
 <section id="basics">
-<h4><span class="section-number">17.1.2.1. </span>Basics<a class="headerlink" href="#basics" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">20.1.2.1. </span>Basics<a class="headerlink" href="#basics" title="Link to this heading">#</a></h4>
 <p>Instead of decoding the token with the highest probability at each step, beam search keeps track
 of the top <span class="math notranslate nohighlight">\(B\)</span> most probable candidate sequences or hypotheses when selecting next-tokens. Here <span class="math notranslate nohighlight">\(B\)</span> is referred to the beam width or the number of hypotheses. By selecting the <span class="math notranslate nohighlight">\(B\)</span> next tokens from the vocabulary for extensions, we form <span class="math notranslate nohighlight">\(B\)</span> most likely new sequences as the next set of beams. This process is repeated until each sequence reaches the maximum length or an EOS token.</p>
 <figure class="align-default" id="chapter-inference-fig-inference-fundamentals-beam-decoding-demo">
 <a class="reference internal image-reference" href="../../_images/beam_decoding_demo.png"><img alt="../../_images/beam_decoding_demo.png" src="../../_images/beam_decoding_demo.png" style="width: 596.4px; height: 397.20000000000005px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 17.2 </span><span class="caption-text">Beam Search decoding demonstrations.</span><a class="headerlink" href="#chapter-inference-fig-inference-fundamentals-beam-decoding-demo" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 20.2 </span><span class="caption-text">Beam Search decoding demonstrations.</span><a class="headerlink" href="#chapter-inference-fig-inference-fundamentals-beam-decoding-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Formally, we denote the set of <span class="math notranslate nohighlight">\(B\)</span> hypotheses tracked by beam search at the start of step <span class="math notranslate nohighlight">\(n\)</span> as <span class="math notranslate nohighlight">\(Y_{n-1}=\left\{\mathbf{y}_{1:n-1}^{(1)}, \ldots, \mathbf{y}_{1:n-1}^{(B)}\right\}\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{y}_{1:n-1}^{(j)}\)</span> is hypothesis <span class="math notranslate nohighlight">\(j\)</span> consisting of <span class="math notranslate nohighlight">\(n-1\)</span> tokens. At each step, all possible single token extensions of these <span class="math notranslate nohighlight">\(B\)</span> beams given by the set <span class="math notranslate nohighlight">\(\mathcal{Y}_n=Y_{n-1} \times \mathcal{V}\)</span> and selects the <span class="math notranslate nohighlight">\(B\)</span> most likely extensions. At each step, we are selecting top <span class="math notranslate nohighlight">\(B\)</span> scored candidates from all <span class="math notranslate nohighlight">\(B \times|\mathcal{V}|\)</span> members of <span class="math notranslate nohighlight">\(\mathcal{Y}_t\)</span>, given by</p>
@@ -414,7 +417,7 @@ Y_{n}=\underset{Y_{n} \in \mathcal{Y}_t}{\operatorname{argmax}} \operatorname{Sc
 <p>where <span class="math notranslate nohighlight">\(L\)</span> is the length of candidate sequence and <span class="math notranslate nohighlight">\(\alpha\)</span> is a scalar (e.g., 0.75)tuning the length discount factor. Since a longer sequence has more terms in the summation and thus tend to get higher scores, the term <span class="math notranslate nohighlight">\(L^\alpha\)</span> in the denominator penalizes long sequences.</p>
 </section>
 <section id="computational-complexity">
-<h4><span class="section-number">17.1.2.2. </span>Computational complexity<a class="headerlink" href="#computational-complexity" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">20.1.2.2. </span>Computational complexity<a class="headerlink" href="#computational-complexity" title="Link to this heading">#</a></h4>
 <p>Beam search has a computational complexity given by <span class="math notranslate nohighlight">\(O(LB|V|)\)</span>, where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(L\)</span> is the length of the sequence</p></li>
@@ -425,7 +428,7 @@ Y_{n}=\underset{Y_{n} \in \mathcal{Y}_t}{\operatorname{argmax}} \operatorname{Sc
 <p>We can tune the diversity or length of generated text by incorporating other elements into the scoring function. For example, we can penalize long sequence by multiplying by log-likelihoods by a length-dependent factor.</p>
 </section>
 <section id="controling-beam-search-behavior">
-<h4><span class="section-number">17.1.2.3. </span>Controling beam search behavior<a class="headerlink" href="#controling-beam-search-behavior" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">20.1.2.3. </span>Controling beam search behavior<a class="headerlink" href="#controling-beam-search-behavior" title="Link to this heading">#</a></h4>
 <p>Since beam-decoding is optimizing a user-defined score function, we can incorpoate various penalties or rewards into the score function to control the diversity, brevity, smoothness, etc. of the generated sequence<span id="id1">[<a class="reference internal" href="#id1496" title="Ashwin K Vijayakumar, Michael Cogswell, Ramprasath R Selvaraju, Qing Sun, Stefan Lee, David Crandall, and Dhruv Batra. Diverse beam search: decoding diverse solutions from neural sequence models. arXiv preprint arXiv:1610.02424, 2016.">VCS+16</a>]</span>.
 For example,</p>
 <ul class="simple">
@@ -444,9 +447,9 @@ p_i=\frac{\exp \left(z_i /(T \cdot I(i \in g))\right.}{\sum_j \exp \left(z_j /(T
 </section>
 </section>
 <section id="temperature-controlled-sampling">
-<h2><span class="section-number">17.2. </span>Temperature-controlled sampling<a class="headerlink" href="#temperature-controlled-sampling" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">20.2. </span>Temperature-controlled sampling<a class="headerlink" href="#temperature-controlled-sampling" title="Link to this heading">#</a></h2>
 <section id="the-basics">
-<h3><span class="section-number">17.2.1. </span>The basics<a class="headerlink" href="#the-basics" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">20.2.1. </span>The basics<a class="headerlink" href="#the-basics" title="Link to this heading">#</a></h3>
 <p>Alternatively, we can look into stochastic approaches to avoid the response being generic.
 Instead of taking the tokens that deterministic maximizes the probability from the Softmax function, we can perform randomly sample the next token from the vocabulary according to probability of each token from the Softmax function.
 The temperature-controlled sampling randomly samples from the model output’s probability distribution over the full vocabulary at each step:</p>
@@ -460,7 +463,7 @@ The temperature-controlled sampling randomly samples from the model output’s p
 <p>Setting the right temperature is critically to produce rich yet meaningful sentences. For example, a very high temperature would produce has produced mostly gibberish, including the appearance of many rare or even made-up words and uncommon grammar patterns.</p>
 </section>
 <section id="top-k-and-top-p-sampling">
-<h3><span class="section-number">17.2.2. </span>Top-k and top-p sampling<a class="headerlink" href="#top-k-and-top-p-sampling" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">20.2.2. </span>Top-k and top-p sampling<a class="headerlink" href="#top-k-and-top-p-sampling" title="Link to this heading">#</a></h3>
 <p>Top-k and top-p sampling are two common extensions to the temperature-controlled sampling. The basic idea of both approaches is to impose additional constraints on the number of possible tokens we can sample from at each step.</p>
 <p>The idea behind top-<span class="math notranslate nohighlight">\(k\)</span> sampling is used to ensure that the less probable words will not be considered at all and only top <span class="math notranslate nohighlight">\(k\)</span> probable tokens will be sampled. This imposes a fixed cut on the long tail of the word distribution and prevent the generation of rare words and going off-topic. One disadvantage of top-<span class="math notranslate nohighlight">\(k\)</span> sampling is that the number <span class="math notranslate nohighlight">\(K\)</span> need to be defined in the beginning. Selecting an universal <span class="math notranslate nohighlight">\(K\)</span> is non-trivial, as shown in the two following cases:</p>
 <ul class="simple">
@@ -471,7 +474,7 @@ The temperature-controlled sampling randomly samples from the model output’s p
 </section>
 </section>
 <section id="bibliography">
-<h2><span class="section-number">17.3. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">20.3. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id2">
 <div role="list" class="citation-list">
 <div class="citation" id="id1496" role="doc-biblioentry">
@@ -514,12 +517,12 @@ The temperature-controlled sampling randomly samples from the model output’s p
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../chapter_training/accelerated_training.html"
+       href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">16. </span>LLM Training Acceleration (WIP)</p>
+        <p class="prev-next-title"><span class="section-number">19. </span>*Annotated DPO Training</p>
       </div>
     </a>
     <a class="right-next"
@@ -527,7 +530,7 @@ The temperature-controlled sampling randomly samples from the model output’s p
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">18. </span>Inference Acceleration (WIP)</p>
+        <p class="prev-next-title"><span class="section-number">21. </span>Inference Acceleration (WIP)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -547,22 +550,22 @@ The temperature-controlled sampling randomly samples from the model output’s p
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoding-fundamentals">17.1. Decoding Fundamentals</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#greedy-decoding">17.1.1. Greedy decoding</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#beam-search-decoding">17.1.2. Beam search decoding</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#basics">17.1.2.1. Basics</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-complexity">17.1.2.2. Computational complexity</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#controling-beam-search-behavior">17.1.2.3. Controling beam search behavior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoding-fundamentals">20.1. Decoding Fundamentals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#greedy-decoding">20.1.1. Greedy decoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#beam-search-decoding">20.1.2. Beam search decoding</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#basics">20.1.2.1. Basics</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-complexity">20.1.2.2. Computational complexity</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#controling-beam-search-behavior">20.1.2.3. Controling beam search behavior</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature-controlled-sampling">17.2. Temperature-controlled sampling</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-basics">17.2.1. The basics</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-k-and-top-p-sampling">17.2.2. Top-k and top-p sampling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature-controlled-sampling">20.2. Temperature-controlled sampling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-basics">20.2.1. The basics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-k-and-top-p-sampling">20.2.2. Top-k and top-p sampling</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">17.3. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">20.3. Bibliography</a></li>
 </ul>
   </nav></div>
 

@@ -178,7 +178,7 @@ llustration of the proposed metrics in RAGChecker. Image from {cite:p}`ru2024rag
 
 
 
-## RAG Optimization: Documents
+## RAG Optimization: Document Understanding
 ### Indexing Data Sources
 
 In the indexing stage, there are different data sources, and each has its benefits and challenges.
@@ -555,6 +555,19 @@ For RAG, maintaining high-quality retrieved data is crucial for generating accur
 
 **LLM-based quality evaluator**: We can also prompt the LLM to evaluate the retrieved content before generating the final answer. This allows the LLM to filter out documents with poor relevance.
 
+### Diversity Optimization
+
+One way to reduce the redundancy of results and at the same time to preserve information-novelty and query-relevance is to use the Maximal Marginal Relevance (MMR) criterion {cite:p}`carbonell1998use`. 
+
+MMR selects the phrase in the final keyphrases list according to a combined criterion of query relevance and novelty of information.
+
+Given a set of already selected documents $S$, MMR determine the next selected document $D_i$ from the set of unselected documents $R\backslash S$ using the following criterion
+
+$$
+\operatorname{MMR} = \operatorname{argmax}_{D_i \in R \backslash S}\left[\lambda\left(\operatorname{Rel}\left(D_i, Q\right)-(1-\lambda) \max _{D_j \in S} \operatorname{Sim}\left(D_i, D_j\right)\right)\right]
+.$$
+
+Here $Q$ is the query, $\operatorname{Rel}$ is the relevance scorer, and $\operatorname{Sim}$ is the similarity scorer, $\lambda \in [0, 1]$ set the penality strength for redundant documents.
 
 ## RAG Optimization: LLM Understanding & Generation
 

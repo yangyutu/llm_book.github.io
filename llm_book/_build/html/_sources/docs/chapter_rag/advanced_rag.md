@@ -118,9 +118,9 @@ While agentic RAG can improve the success on complex and reasoning-demanding que
 
 ## GraphRAG
 
-Baseline RAG was created to help solve this problem, but we observe situations where baseline RAG performs very poorly. For example:
-* Baseline RAG struggles to connect the dots. This happens when answering a question requires traversing disparate pieces of information through their shared attributes in order to provide new synthesized insights.
-* Baseline RAG performs poorly when being asked to holistically understand summarized semantic concepts over large data collections or even singular large documents.
+Traditional vector RAG was created to help solve this problem, but we observe situations where baseline RAG performs very poorly. For example:
+* Vector RAG struggles to connect the dots. This happens when answering a question requires traversing disparate pieces of information through their shared attributes in order to provide new synthesized insights.
+* Vector RAG performs poorly when being asked to holistically understand summarized semantic concepts over large data collections or even singular large documents.
 
 To tackle these challenges for baseline RAG, **GraphRAG** [{cite:p}`edge2024local`] was proposed by Microsoft to use knowledge graphs to aid question-and-answer when reasoning about complex information.
 
@@ -130,12 +130,58 @@ The GraphRAG process involves the following steps:
 * Generating summaries or other meta-data for these communities, 
 * Leveraging these structures when perform RAG-based tasks.
 
-Compared with Baseline RAG, which finds the top-k semantically related document chunks to use as context for synthesizing the answer, GraphRAG uses subGraphs related to entities in the task or question as context. More specifically, GraphRAG will have the following online querying process:
+Compared with Vector RAG, which finds the top-k semantically related document chunks to use as context for synthesizing the answer, GraphRAG uses subGraphs related to entities in the task or question as context. More specifically, GraphRAG will have the following online querying process:
 * Search related **entities** of the quesion/task (the search could be keyword extraction based or embedding based)
 * Get subGraph of those entities ($k$-depth) from the **knowledge graph**
-* Build context based on the subGraph
+* Build context based on the subGraph.
+
+This allows GraphRAG to:
+* Capture Complex Relationships: Explicitly represent and reason over the connections between entities, enabling more accurate retrieval and deeper understanding of the knowledge base.
+* Enable Multi-hop Reasoning: Traverse the graph to connect information from different sources and answer complex questions that require multiple steps of reasoning.
+* Improve Explainability: Provide a clear path of how the system arrived at an answer by tracing the connections in the knowledge graph, increasing transparency and trust.
+
+````{prf:example}
+GraphRAG can excel at queries requiring the reasoning and summarization over multiple sources. Example queries are:
+* What are the key events of the Russo-Ukrainian War.
+  * Vector RAG might retrieve documents mentioning individual events but struggle to connect them chronologically and explain their overall impact on the conflict.
+  * GraphRAG can effectively organize events as nodes in the graph, link them based on temporal and causal relationships, and generate a concise summary highlighting the war's evolution.
+* Explain the role of Leonardo da Vinci in the Renaissance
+  * Vector RAG might retrieve documents mentioning his various achievements (art, science, engineering) but fail to capture the interconnectedness of his contributions.
+  * Graph RAG can summarize da Vinci's diverse skills and accomplishments from interconnected nodes in the graph
+
+````
+
+### Knowledge Extraction
+
+````{prf:example}
+Some text is provided below. Given the text, extract up to 2 knowledge triplets in the form of (subject, predicate, object). Avoid stopwords.
+
+Example:
+Text: Alice is Bob's mother.
+Triplets:
+(Alice, is mother of, Bob)
+
+Text: Philz is a coffee shop founded in Berkeley in 1982.
+Triplets:
+(Philz, is, coffee shop)
+(Philz, founded in, Berkeley)
+(Philz, founded in, 1982)
+
+Text: {TEXT}
+Triplets:
+````
+
+| Input | Output |  
+| :--- | :--- |
+| ... I realized something that might seem obvious, but was a big surprise to me. There, right on the wall, was something you could make that would last. **Paintings didn't become obsolete**. Some of the best ones were hundreds of years old. And moreover this was something you could make a living doing. Not as easily as you could by writing software, of course, but I thought if you were really industrious and lived really cheaply, it had to be possible to make enough to survive. **And as an artist you could be truly independent**. You wouldn't have a boss, or even need to get research funding... | (artist, could be, truly independent) (art, didn't become, obsolete) |
+| ...Interleaf had done something pretty bold. Inspired by Emacs, **they'd added a scripting language**, and even made the scripting language a dialect of Lisp. Now they wanted a Lisp hacker to write things in it. This was the closest thing I've had to a normal job, and I hereby apologize to my boss and coworkers, because I was a bad employee. Their Lisp was the thinnest icing on a giant C cake, and since I didn't know C and didn't want to learn it, I never understood most of the software. Plus I was terribly irresponsible. This was back when a programming job meant showing up every day during certain working hours. ... | (Interleaf, made, software for creating documents)  (Interleaf, added, scripting language) |
 
 
+### Graph-based Retrieval
+
+* Query Processing: The user's query is analyzed to identify key entities and relationships.
+* Graph Traversal: The knowledge graph is traversed to find relevant nodes and paths that match the query. This may involve algorithms like breadth-first search (BFS), depth-first search (DFS), or shortest path algorithms .   
+* Contextualization: The retrieved information is contextualized by considering the relationships and connections between entities in the graph. This process often involves identifying "communities," which are clusters of closely connected nodes in the graph .
 
 ## Bibliography
 

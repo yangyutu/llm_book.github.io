@@ -22,7 +22,6 @@ Pretraining has become a cornerstone in the development of LLM, which contribute
 * acquire world knowledge
 * other emergent abilities like reasoning
 
-
 The dominant LLM pretraining objective is auto-regressive language modeling, which predict the next words given preceding word sequence. Given an input sequence $\mathbf{x} = (x_1,...,x_T)$, auto-regressive language modeling minimize the negative log likelihood given by
 
 $$L = - \sum_{t=1}^{T} \log p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1},\theta\right)$$
@@ -98,8 +97,53 @@ Key technical details on the continued pretraining:
 
 **Training data composition**: The continued pretraining used hundreds of millions of high-quality public Chinese text data, including news, community Q&A, encyclopedias, literature, and scientific publications. Besides, the project incorporated 1) a large amount of Chinese-English parallel corpora in the early stages of training to help the model quickly transfer English language capabilities to Chinese and 2) English text corpus like SlimPajama and RefinedWeb to prevent the model from forgetting previously acquired knowledge. 
 
-**Training data schedual**: A curriculum learning strategy was employed. In the early stages of training, more English language materials and parallel corpora were used. As the number of training steps increased, the proportion of Chinese data was gradually increased. This helps the convergence of the model training.
+**Training data schedule**: A curriculum learning strategy was employed. In the early stages of training, more English language materials and parallel corpora were used. As the number of training steps increased, the proportion of Chinese data was gradually increased. This helps the convergence of the model training.
 
+### Multiple Token Prediction
+
+Besides training using a next-token prediction loss, there are efforts exploring training language models to predict multiple future tokens at once [{numref}`chapter_training_fig_fundamentals_multiple_token_prediction_demo`].  More specifically, at each position in the training corpus, we ask the model to predict the following $n$ tokens using $n$ independent output heads, operating on top of a shared model trunk.
+
+The advantages are:
+* in higher sample efficiency.
+* 
+
+{cite:p}`gloeckle2024better`
+During inference, we employ only the next-token output head. Optionally, the other three heads may be used to speed-up
+inference time.
+
+```{figure} ../img/chapter_training/training_fundamentals/multiple_token_prediction/mtp_demo.png
+---
+scale: 60%
+name: chapter_training_fig_fundamentals_multiple_token_prediction_demo
+---
+Overview of multi-token prediction. During training, the model predicts 4 future tokens at once, by
+means of a shared trunk and 4 dedicated output heads. Image from {cite:p}`gloeckle2024better`.
+```
+
+In this work, we generalize the above by implementing a multi-token prediction task, where at each position of the training corpus, the model is instructed to predict $n$ future tokens at once. This translates into the cross-entropy loss
+
+$$
+L_n=-\sum_t \log P_\theta\left(x_{t+n: t+1} \mid x_{t: 1}\right)
+$$
+
+
+To make matters tractable, we assume that our large language model $P_\theta$ employs a shared trunk to produce a latent representation $z_{t: 1}$ of the observed context $x_{t: 1}$, then fed into $n$ independent heads to predict in parallel each of the $n$ future tokens (see Figure 1). This leads to the following factorization of the multi-token prediction cross-entropy loss:
+
+$$
+\begin{aligned}
+L_n & =-\sum_t \log P_\theta\left(x_{t+n: t+1} \mid z_{t: 1}\right) \cdot P_\theta\left(z_{t: 1} \mid x_{t: 1}\right) \\
+& =-\sum_t \sum_{i=1}^n \log P_\theta\left(x_{t+i} \mid z_{t: 1}\right) \cdot P_\theta\left(z_{t: 1} \mid x_{t: 1}\right)
+\end{aligned}
+$$
+
+
+In practice, our architecture consists of a shared transformer trunk $f_s$ producing the hidden representation $z_{t: 1}$ from the observed context $x_{t: 1}, n$ independent output heads implemented in terms of transformer layers $f_{h_i}$, and a shared unembedding matrix $f_u$. Therefore, to predict $n$ future tokens, we compute:
+
+$$
+P_\theta\left(x_{t+i} \mid x_{t: 1}\right)=\operatorname{softmax}\left(f_u\left(f_{h_i}\left(f_s\left(x_{t: 1}\right)\right)\right)\right)
+$$
+
+for $i=1, \ldots n$, where, in particular, $P_\theta\left(x_{t+1} \mid x_{t: 1}\right)$ is our next-token prediction head. See Appendix B for other variations of multi-token prediction architectures.
 
 <!-- ## Comparison
 
