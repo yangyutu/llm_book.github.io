@@ -5,7 +5,18 @@
 
 The objective function in LLM pretraining is predicting the next token in the training corpus. When the trained model is properly and carefully prompted with demonstrations (i.e., in-context learning as in {ref}`content:chapter_foundation:GPT_series:GPT_3`), the model can largely accomplish useful tasks by following these demonstrations. However, these model can often generate un-desired outputs, including un-factual content, biased and harmful text, or simply do not follow the instructions in the prompt. 
 
-This is because the pretraining task of *predicting the next token* is inherently different from the objective of training an LLM to be an instruction-following assistant that avoids generating unintended text. Although **instruction tuning data** ({ref}`chapter_training_sec_LLM_finetuning`), which are (prompt, completion) pairs, can expose the LLM to what humans like to see for given prompts, it is often not enough to prevent model from producing unintended texts. Instead, we need a training methodology to **explicitly reward the model when it is well-behaved and penalize the model when it is mis-behaved**. Training the model to learn the human preference using rewards and penalities are the core of LLM alignment and preference learning. The pioneering approach is using reinforcement learning via the PPO algorithm {cite:p}`ouyang2022traininglanguagemodelsfollow`.
+This is because the pretraining task of *predicting the next token* is inherently different from the objective of training an LLM to be an instruction-following assistant that avoids generating unintended text. Although **instruction tuning data** ({ref}`chapter_training_sec_LLM_finetuning`), which are (prompt, completion) pairs, can expose the LLM to what humans like to see for given prompts, it is often not enough to prevent model from producing unintended texts. As shown {numref}`chapter_training_fig_alignment_SFT_drawback_empirical_data`, when SFT an LLM on prefered harmless responses in the HH-RLHF dataset {numref}`bai2022constitutional`, the log probability of preferred and unwanted responses both exhibited a simultaneous increase. This indiciates that despite the cross-entropy loss can effectively guide the model toward the intended domain (e.g., dialogue), the absence of a penalty also increases the probablity of generating unwanted responses. 
+
+```{figure} ../img/chapter_training/alignment/SFT_drawback_empirical_data.png
+---
+scale: 40%
+name: chapter_training_fig_alignment_SFT_drawback_empirical_data
+---
+Log probabilities for chosen and rejected responses during model fine-tuning on HH-RLHF dataset. Despite only chosen responses being used for SFT, rejected responses show a comparable likelihood of generation. Image from {cite:p}`hong2024reference`.
+```
+
+
+Instead, we need a training methodology to **explicitly reward the model when it is well-behaved and penalize the model when it is mis-behaved**. Training the model to learn the human preference using rewards and penalities are the core of LLM alignment and preference learning. The pioneering approach is using reinforcement learning via the PPO algorithm {cite:p}`ouyang2022traininglanguagemodelsfollow`.
 
 As shown in the {numref}`chapter_training_fig_alignment_model_alignment_motivation`, while SFT on instruction tuning dataset can improve model helpfulness and instruction following abilities, reinforcement learning can help the model achieve much larger gains than SFT.  
 
@@ -367,6 +378,13 @@ $$
 
 where for the preference completion pair $y_w \succ y_l$, as long as $\hat{p} < 1$, there will gradients to upweight the probability of generating $y_w$ and downweight the probability of generating $y_l$.
 ````
+
+````{prf:remark} Monitor DPO training process
+The DPO algorithm aims to make winning responses have higher probability and losing responses have lower probability. If the training works as expected, beside the overall loss is descreasing, we will see 
+*  $\log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}\left(y_w \mid x\right)}$ becomes larger for the same $y_w$.
+* $\log \frac{\pi_\theta\left(y_l  \mid x\right)}{\pi_{\mathrm{ref}}\left(y_l \mid x\right)}$ becomes smaller for the same $y_l$.
+````
+
 
 <!-- ### Additional remark RL vs SFT vs DPO
 

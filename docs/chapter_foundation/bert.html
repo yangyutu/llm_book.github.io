@@ -191,8 +191,8 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama.html">10. *Annotated LLama</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">11. MOE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama_custom.html">11. *Lab: Minimal LLama</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="nav bd-sidenav">
@@ -201,21 +201,24 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">14. LLM Alignement and Preference Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Annotated Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Annotated DPO Training</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">17. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">18. Inference Acceleration (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">20. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">21. Inference Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">19. Basic Prompting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">20. Advanced Prompting Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">22. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">23. Advanced Prompting Techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">21. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">22. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">24. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">25. Advanced RAG (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
 <ul class="nav bd-sidenav">
@@ -223,8 +226,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">26. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -491,8 +494,8 @@ E_{\text {word }}=\left[\begin{array}{lll}
 <li><p>BERT-BASE, <span class="math notranslate nohighlight">\(L=12, d_{model}=768, H=12\)</span>, total Parameters 110M.</p></li>
 <li><p>BERT-LARGE, <span class="math notranslate nohighlight">\(L=24, d_{model} = 1024, H=16\)</span>, total parameters 340M.</p></li>
 </ul>
-<div class="pst-scrollable-table-container"><table class="table" id="id1581">
-<caption><span class="caption-number">Table 6.1 </span><span class="caption-text">The hyperparameter settings of various pretrained BERT configurations.  BERTBase and BERTLarge are the two most commonly used configurations today;</span><a class="headerlink" href="#id1581" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1582">
+<caption><span class="caption-number">Table 6.1 </span><span class="caption-text">The hyperparameter settings of various pretrained BERT configurations.  BERTBase and BERTLarge are the two most commonly used configurations today;</span><a class="headerlink" href="#id1582" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Size</p></th>
 <th class="head text-right"><p>Layers</p></th>
@@ -678,8 +681,8 @@ The two-step projection only requires parameters <span class="math notranslate n
 <li><p><em><strong>Cross-layer parameter sharing</strong></em>. In the original BERT, each encoder sub-unit (which has an attention module and a feed-forward module) has different parameters. In ALBERT, these parameters are shared in different sub-units to reduce model size and improve parameter efficiency.  The authors also mentioned that there are alternative parameter sharing strategies: only sharing feed-forward network parameters; only sharing attention module parameters; sharing both feed-forward network and attention module.</p></li>
 </ul>
 <p>The effect of embedding factorization and parameter sharing can be illustrated in the following comparison.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1582">
-<caption><span class="caption-number">Table 6.2 </span><span class="caption-text">BERT model parameters</span><a class="headerlink" href="#id1582" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1583">
+<caption><span class="caption-number">Table 6.2 </span><span class="caption-text">BERT model parameters</span><a class="headerlink" href="#id1583" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Model</p></th>
 <th class="head text-center"><p>Parameters</p></th>

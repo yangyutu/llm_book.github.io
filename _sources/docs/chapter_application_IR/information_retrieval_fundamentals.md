@@ -321,14 +321,14 @@ $$
 
 The component value associated with term $t$ is typically the product of term frequency $tf(t)$ and inverse document frequency $idf(t)$. In addition, cosine similarity has a length normalization component that implicitly handles issues related to document length.
 
-Over the years there have been a number of popular variants for both the TF and the IDF functions have been proposed and evaluated. A basic version of $tf(t)$ is given by
+Over the years there have been a number of popular variants for both the TF and the IDF functions been proposed and evaluated. A basic version of $tf(t)$ is given by
 
 $$
 tf(t,d)= \begin{cases}\log \left(f_{t, d}\right)+1 & \text { if } f_{t, d}>0 \\ 0 & \text { otherwise. }\end{cases}
 $$
 
-where  $f_{t, d}$ is the actual term frequency count of $t$ in document $d$
-Here the basic intuition is that a term appearing many times in a document should be assigned a higher weight for that document, and the its value should not necessarily increase linearly with the actual term frequency $f_{t, d}$, hence the logarithm. Although two occurrences of a term should be given more weight than one occurrence, they shouldn't necessarily be given twice the weight.
+where  $f_{t, d}$ is the **actual** term frequency count of $t$ in document $d$.
+Here the basic intuition is that a term appearing many times in a document should be assigned a higher weight for that document, and the its value should not necessarily increase linearly with the actual term frequency $f_{t, d}$, hence the **logarithm is used to proxy the saturation effect**. Although two occurrences of a term should be given more weight than one occurrence, they shouldn't necessarily be given twice the weight.
 
 A common $idf(t)$ functions is given by
 
@@ -340,7 +340,7 @@ where $N_t$ is the number of documents in the corpus that contain the term $t$ a
 
 ### BM25
 
-One of the most widely adopted exact matching method is called BM25 (short for Okapi BM25){cite:p}`yang2018anserini, robertson2009probabilistic, croft2010search`. BM25 combines overlapping terms, term-frequency (TF), inverse document frequency (IDF), and document length into following formula
+One of the most widely adopted exact matching method is called **BM25** (short for Okapi BM25){cite:p}`yang2018anserini, robertson2009probabilistic, croft2010search`. BM25 combines overlapping terms, term-frequency (TF), inverse document frequency (IDF), and document length into following formula
 
 $$
 BM25(q, d)=\sum_{t_{q} \in q\cap d} i d f\left(t_{q}\right) \cdot \frac{t f\left(t_{q}, d\right) \cdot\left(k_{1}+1\right)}{t f\left(t_{q}, d\right)+k_{1} \cdot\left(1-b+b \cdot \frac{|d|}{a v g d l}\right)}
@@ -349,22 +349,26 @@ $$
 where $tf(t_q, d)$ is the query's term frequency in the document $d$, $|d|$ is the length (in terms of words) of document $d$, $avgdl$ is the average length of documents in the collection $D$, and $k_{1}$ and $b$ are parameters that are usually tuned on a validation dataset. In practice, $k_{1}$ is sometimes set to some default value in the range $[1.2,2.0]$ and $b$ as $0.75$. The $i d f(t)$ is computed as,
 
 $$
-idf(t)=\log \frac{N-N_t+0.5}{N_t+0.5}.
+idf(t)=\log \frac{N-N_t+0.5}{N_t+0.5} \Leftarrow \log \frac{\text{Number of documents}}{\text{Number of documents with term } t}.
 $$
 
-At first sight, BM25 looks quite like a traditional $tf\times idf$ weight - a product of two components, one based on $tf$ and one on $idf$. However, there is one significant difference. The $tf$ component in the BM25 uses some saturation mechanism to discount the impact of frequent terms in a document. 
+At first sight, BM25 looks quite like a traditional $tf\times idf$ weight - a product of two components, one based on $tf$ and one on $idf$. 
 Intuitively, a document $d$ has a higher BM25 score if 
 - Many query terms also frequently occur in the document; 
 - These frequent co-occurring terms have larger idf values (i.e., they are not common terms). 
 
-BM25 does not concerns with word semantics, that is whether the word is
-a noun or a verb, or the meaning of each word. It is only sensitive to which are common words and which are rare words, and the document length. If one query contains both common words and rare words, this method puts more weight on the rare words and returns documents with more rare words in the query. Besides, a term saturation mechanism is applied to decrease the matching signal when a matched word appears too frequently in the document. A document-length normalization mechanism is used to discount term weight when a document is longer than average documents in the collection. 
+However, there is one significant difference. The $tf$ component in the BM25 uses **some saturation mechanism to discount the impact of frequent terms in a document** when the document length is long. 
 
-Two parameters in BM25, $k_1$ and $b$, are designed to perform **term frequency saturation**
+BM25 does not concerns with word semantics, that is whether the word is
+a noun or a verb, or the meaning of each word. It is only sensitive to **word frequency** (i.e., which are common words and which are rare words), and **the document length**. If one query contains both common words and rare words, this method puts more weight on the rare words and returns documents with more rare words in the query. Besides, a term saturation mechanism is applied to decrease the matching signal when a matched word appears too frequently in the document. **A document-length normalization mechanism is used to discount term weight when a document is longer than average documents in the collection.** 
+
+More specifically, two parameters in BM25, $k_1$ and $b$, are designed to perform **term frequency saturation**
 and **document-length normalization**,respectively. 
 - The constant $k_{1}$ determines how the $tf$ component of the term weight changes as the frequency increases. If $k_{1}=0$, the term frequency component would be ignored and only term presence or absence would matter. If $k_{1}$ is large, the term weight component would increase nearly linearly with the frequency. 
 - The constant $b$ regulates the impact of the length normalization, where $b=0$ corresponds to no length normalization, and $b=1$ is full normalization. 
 
+
+````{prf:remark} Weighting scheme for long queries
 If the query is long, then we might also use similar weighting for query terms. This is appropriate if the queries are paragraph-long information needs, but unnecessary for short queries.
 
 $$
@@ -372,6 +376,22 @@ BM25(q, d)=\sum_{t_q \in q\cap d} idf(t_q) \cdot \frac{\left(k_{1}+1\right) tf(t
 $$
 
 with $tf(t_q, q)$ being the frequency of term $t$ in the query $q$, and $k_{2}$ being another positive tuning parameter that this time calibrates term frequency scaling of the query. 
+````
+
+### BM25 Implementation
+
+To efficient implementation of BM25, we can pre-compute document side term frequency and store it, which is known as **indexing** process.
+This includes:
+* Tokenize each document into tokens
+* Compute the number of documents containing each token and token frequency in each document.
+* Compute the idf for each token using the document frequencies
+* Compute the BM25 scores for each token in each document $BM25(t_i,d)$
+
+During the query process, we tokenize the query $q$ into tokens $t_i$ and compute 
+
+$$BM25(q, d) = \sum_{t_i \in q\cap d} BM25(t_i,d).$$
+
+
 
 ## Semantic Dense Models
 

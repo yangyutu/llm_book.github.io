@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>10. *Annotated Minimal LLama &#8212; LLM Foundations</title>
+    <title>11. *Lab: Minimal LLama &#8212; LLM Foundations</title>
   
   
   
@@ -63,8 +63,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/notebooks/chapter_LLM_arch/annotated_llama_custom';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="11. MOE Sparse Architectures (WIP)" href="../../chapter_LLM_arch/LLM_moe_sparse_architectures.html" />
-    <link rel="prev" title="9. LLM Architectures Fundamentals" href="../../chapter_LLM_arch/LLM_dense_architectures.html" />
+    <link rel="next" title="12. LLM Training Fundamentals" href="../../chapter_training/training_fundamentals.html" />
+    <link rel="prev" title="10. MoE Sparse Architectures (WIP)" href="../../chapter_LLM_arch/LLM_moe_sparse_architectures.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -191,8 +191,8 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">10. *Annotated Minimal LLama</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_moe_sparse_architectures.html">11. MOE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">11. *Lab: Minimal LLama</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="nav bd-sidenav">
@@ -201,21 +201,24 @@
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_training/alignment.html">14. LLM Alignement and Preference Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_training/annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Annotated Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Annotated DPO Training</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_inference/inference_fundamentals.html">17. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_inference/inference_acceleration.html">18. Inference Acceleration (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_inference/inference_fundamentals.html">20. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_inference/inference_acceleration.html">21. Inference Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/basic_prompt.html">19. Basic Prompting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/advanced_prompt.html">20. Advanced Prompting Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/basic_prompt.html">22. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/advanced_prompt.html">23. Advanced Prompting Techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/basic_rag.html">21. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/advanced_rag.html">22. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/basic_rag.html">24. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/advanced_rag.html">25. Advanced RAG (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
 <ul class="nav bd-sidenav">
@@ -223,8 +226,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/information_retrieval_fundamentals.html">23. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/application_LLM_in_IR.html">24. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/information_retrieval_fundamentals.html">26. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -315,7 +318,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>*Annotated Minimal LLama</h1>
+    <h1>*Lab: Minimal LLama</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -325,14 +328,14 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-norm">10.1. RMS Norm</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotory-embedding">10.2. Rotory Embedding</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-layer">10.3. Attention Layer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ffn-layer">10.4. FFN Layer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-decoder-layer">10.5. LLama Decoder Layer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stacked-decoder-layers">10.6. Stacked Decoder layers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoder-for-language-modeling">10.7. Decoder for language modeling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-model">10.8. Test model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-norm">11.1. RMS Norm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotory-embedding">11.2. Rotory Embedding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-layer">11.3. Attention Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ffn-layer">11.4. FFN Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-decoder-layer">11.5. LLama Decoder Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stacked-decoder-layers">11.6. Stacked Decoder layers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoder-for-language-modeling">11.7. Decoder for language modeling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-model">11.8. Test model</a></li>
 </ul>
             </nav>
         </div>
@@ -344,8 +347,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="annotated-minimal-llama">
-<h1><span class="section-number">10. </span>*Annotated Minimal LLama<a class="headerlink" href="#annotated-minimal-llama" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="lab-minimal-llama">
+<h1><span class="section-number">11. </span>*Lab: Minimal LLama<a class="headerlink" href="#lab-minimal-llama" title="Link to this heading">#</a></h1>
 <p>Here we present a simplified llama implementation based <a class="reference external" href="https://github.com/huggingface/transformers/blob/main/src/transformers/models/llama/modeling_llama.py#L731">Huggingface implementation</a> to illustrate different components on the Llama decoder model.</p>
 <p>The key components are</p>
 <ul class="simple">
@@ -368,10 +371,10 @@ document.write(`
 </div>
 </div>
 <section id="rms-norm">
-<h2><span class="section-number">10.1. </span>RMS Norm<a class="headerlink" href="#rms-norm" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">11.1. </span>RMS Norm<a class="headerlink" href="#rms-norm" title="Link to this heading">#</a></h2>
 <p>RMSNorm  is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. RMSNorm hypothesizes that only the re-scaling component is necessary and proposes the following simplified normalization formula</p>
 <div class="math notranslate nohighlight" id="equation-chapter-llm-arch-rms-nomalization-formula">
-<span class="eqno">(10.1)<a class="headerlink" href="#equation-chapter-llm-arch-rms-nomalization-formula" title="Link to this equation">#</a></span>\[
+<span class="eqno">(11.1)<a class="headerlink" href="#equation-chapter-llm-arch-rms-nomalization-formula" title="Link to this equation">#</a></span>\[
 \operatorname{RMSNorm}(x)=\frac{x}{\sqrt{\frac{1}{H} \sum_{i=1}^H x_i^2}} \cdot \gamma
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\gamma\)</span> is learnable parameter. Experiments show that RMSNorm can achieve on-par performance with LayerNorm with much reduced training cost.</p>
@@ -403,7 +406,7 @@ document.write(`
 </div>
 </section>
 <section id="rotory-embedding">
-<h2><span class="section-number">10.2. </span>Rotory Embedding<a class="headerlink" href="#rotory-embedding" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">11.2. </span>Rotory Embedding<a class="headerlink" href="#rotory-embedding" title="Link to this heading">#</a></h2>
 <p>Rotary position embedding consists of pre-computing cosine, sine at different frequences (from 0 to 1/(10000)) and different position ids (from 0 to max_seq_len - 1)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -484,7 +487,7 @@ document.write(`
 </div>
 </section>
 <section id="attention-layer">
-<h2><span class="section-number">10.3. </span>Attention Layer<a class="headerlink" href="#attention-layer" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">11.3. </span>Attention Layer<a class="headerlink" href="#attention-layer" title="Link to this heading">#</a></h2>
 <p>Attention layer implements the grouped query attention; Note that the rotary position encoding are implemented by rotating the query encoding and key encoding.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -576,7 +579,7 @@ document.write(`
 </div>
 </section>
 <section id="ffn-layer">
-<h2><span class="section-number">10.4. </span>FFN Layer<a class="headerlink" href="#ffn-layer" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">11.4. </span>FFN Layer<a class="headerlink" href="#ffn-layer" title="Link to this heading">#</a></h2>
 <p>Llama uses Swish function in the GLU, we can obtain the following variations:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -607,7 +610,7 @@ document.write(`
 </div>
 </section>
 <section id="llama-decoder-layer">
-<h2><span class="section-number">10.5. </span>LLama Decoder Layer<a class="headerlink" href="#llama-decoder-layer" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">11.5. </span>LLama Decoder Layer<a class="headerlink" href="#llama-decoder-layer" title="Link to this heading">#</a></h2>
 <p>Each decoder layer has</p>
 <ul class="simple">
 <li><p>Two Pre-RMSNorm layers, one before the self-attention sublayer and one before the FFN layer</p></li>
@@ -664,7 +667,7 @@ document.write(`
 </div>
 </section>
 <section id="stacked-decoder-layers">
-<h2><span class="section-number">10.6. </span>Stacked Decoder layers<a class="headerlink" href="#stacked-decoder-layers" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">11.6. </span>Stacked Decoder layers<a class="headerlink" href="#stacked-decoder-layers" title="Link to this heading">#</a></h2>
 <p>In the stacked decoder layer,</p>
 <ul class="simple">
 <li><p>There are L decoder layers</p></li>
@@ -730,7 +733,7 @@ document.write(`
 </div>
 </section>
 <section id="decoder-for-language-modeling">
-<h2><span class="section-number">10.7. </span>Decoder for language modeling<a class="headerlink" href="#decoder-for-language-modeling" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">11.7. </span>Decoder for language modeling<a class="headerlink" href="#decoder-for-language-modeling" title="Link to this heading">#</a></h2>
 <p>Decoder with language modeling is the previous stacked decoder layer plus a linear layer as language prediction head. The langauge prediciton head linearly transforms the hidden state into the logits distributed over the vocabulary space.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -763,7 +766,7 @@ document.write(`
 </div>
 </section>
 <section id="test-model">
-<h2><span class="section-number">10.8. </span>Test model<a class="headerlink" href="#test-model" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">11.8. </span>Test model<a class="headerlink" href="#test-model" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
@@ -848,20 +851,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../../chapter_LLM_arch/LLM_dense_architectures.html"
+       href="../../chapter_LLM_arch/LLM_moe_sparse_architectures.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">9. </span>LLM Architectures Fundamentals</p>
+        <p class="prev-next-title"><span class="section-number">10. </span>MoE Sparse Architectures (WIP)</p>
       </div>
     </a>
     <a class="right-next"
-       href="../../chapter_LLM_arch/LLM_moe_sparse_architectures.html"
+       href="../../chapter_training/training_fundamentals.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">11. </span>MOE Sparse Architectures (WIP)</p>
+        <p class="prev-next-title"><span class="section-number">12. </span>LLM Training Fundamentals</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -881,14 +884,14 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-norm">10.1. RMS Norm</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotory-embedding">10.2. Rotory Embedding</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-layer">10.3. Attention Layer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ffn-layer">10.4. FFN Layer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-decoder-layer">10.5. LLama Decoder Layer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stacked-decoder-layers">10.6. Stacked Decoder layers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoder-for-language-modeling">10.7. Decoder for language modeling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-model">10.8. Test model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-norm">11.1. RMS Norm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotory-embedding">11.2. Rotory Embedding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-layer">11.3. Attention Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ffn-layer">11.4. FFN Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-decoder-layer">11.5. LLama Decoder Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stacked-decoder-layers">11.6. Stacked Decoder layers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoder-for-language-modeling">11.7. Decoder for language modeling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-model">11.8. Test model</a></li>
 </ul>
   </nav></div>
 

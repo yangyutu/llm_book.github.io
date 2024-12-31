@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>18. *Lab: Annotated Finetuning &#8212; LLM Foundations</title>
+    <title>19. *Annotated DPO Training &#8212; LLM Foundations</title>
   
   
   
@@ -60,11 +60,11 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="19. Decoding" href="../../chapter_inference/inference_fundamentals.html" />
-    <link rel="prev" title="17. *Lab: LLM Pretraining" href="annotated_pretraining.html" />
+    <link rel="next" title="20. Decoding" href="../../chapter_inference/inference_fundamentals.html" />
+    <link rel="prev" title="18. *Lab: Annotated Finetuning" href="annotated_llama_custom_for_finetuning.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -191,8 +191,8 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MOE Sparse Architectures (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/annotated_llama_custom.html">11. *Lab: Annotated Minimal LLama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/annotated_llama_custom.html">11. *Lab: Minimal LLama</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="current nav bd-sidenav">
@@ -202,22 +202,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">18. *Lab: Annotated Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="annotated_llama_custom_for_finetuning.html">18. *Lab: Annotated Finetuning</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">19. *Annotated DPO Training</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_inference/inference_fundamentals.html">19. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_inference/inference_acceleration.html">20. Inference Acceleration (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_inference/inference_fundamentals.html">20. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_inference/inference_acceleration.html">21. Inference Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/basic_prompt.html">21. Basic Prompting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/advanced_prompt.html">22. Advanced Prompting Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/basic_prompt.html">22. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/advanced_prompt.html">23. Advanced Prompting Techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/basic_rag.html">23. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/advanced_rag.html">24. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/basic_rag.html">24. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/advanced_rag.html">25. Advanced RAG (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
 <ul class="nav bd-sidenav">
@@ -225,8 +226,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/information_retrieval_fundamentals.html">25. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/application_LLM_in_IR.html">26. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/information_retrieval_fundamentals.html">26. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -317,7 +318,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>*Lab: Annotated Finetuning</h1>
+    <h1>*Annotated DPO Training</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -327,16 +328,19 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-norm">18.1. RMS Norm</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotory-embedding">18.2. Rotory Embedding</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-layer">18.3. Attention Layer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ffn-layer">18.4. FFN Layer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-decoder-layer">18.5. LLama Decoder Layer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stacked-decoder-layers">18.6. Stacked Decoder layers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoder-for-language-modeling">18.7. Decoder for language modeling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-model">18.8. Test model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">18.9. Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">18.10. Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-norm">19.1. RMS Norm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotory-embedding">19.2. Rotory Embedding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-layer">19.3. Attention Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ffn-layer">19.4. FFN Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-decoder-layer">19.5. LLama Decoder Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stacked-decoder-layers">19.6. Stacked Decoder layers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoder-for-language-modeling">19.7. Decoder for language modeling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-model">19.8. Test model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">19.9. Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-learning">19.9.1. Preference Learning</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">19.10. Training</a></li>
 </ul>
             </nav>
         </div>
@@ -348,8 +352,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="lab-annotated-finetuning">
-<h1><span class="section-number">18. </span>*Lab: Annotated Finetuning<a class="headerlink" href="#lab-annotated-finetuning" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="annotated-dpo-training">
+<h1><span class="section-number">19. </span>*Annotated DPO Training<a class="headerlink" href="#annotated-dpo-training" title="Link to this heading">#</a></h1>
 <p>Here we present a simplified llama implementation based <a class="reference external" href="https://github.com/huggingface/transformers/blob/main/src/transformers/models/llama/modeling_llama.py#L731">Huggingface implementation</a> to illustrate different components on the Llama decoder model.</p>
 <p>The key components are</p>
 <ul class="simple">
@@ -376,10 +380,10 @@ document.write(`
 </div>
 </div>
 <section id="rms-norm">
-<h2><span class="section-number">18.1. </span>RMS Norm<a class="headerlink" href="#rms-norm" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.1. </span>RMS Norm<a class="headerlink" href="#rms-norm" title="Link to this heading">#</a></h2>
 <p>RMSNorm  is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. RMSNorm hypothesizes that only the re-scaling component is necessary and proposes the following simplified normalization formula</p>
 <div class="math notranslate nohighlight" id="equation-chapter-llm-arch-rms-nomalization-formula">
-<span class="eqno">(18.1)<a class="headerlink" href="#equation-chapter-llm-arch-rms-nomalization-formula" title="Link to this equation">#</a></span>\[
+<span class="eqno">(19.1)<a class="headerlink" href="#equation-chapter-llm-arch-rms-nomalization-formula" title="Link to this equation">#</a></span>\[
 \operatorname{RMSNorm}(x)=\frac{x}{\sqrt{\frac{1}{H} \sum_{i=1}^H x_i^2}} \cdot \gamma
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\gamma\)</span> is learnable parameter. Experiments show that RMSNorm can achieve on-par performance with LayerNorm with much reduced training cost.</p>
@@ -411,7 +415,7 @@ document.write(`
 </div>
 </section>
 <section id="rotory-embedding">
-<h2><span class="section-number">18.2. </span>Rotory Embedding<a class="headerlink" href="#rotory-embedding" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.2. </span>Rotory Embedding<a class="headerlink" href="#rotory-embedding" title="Link to this heading">#</a></h2>
 <p>Rotary position embedding consists of pre-computing cosine, sine at different frequences (from 0 to 1/(10000)) and different position ids (from 0 to max_seq_len - 1)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -492,7 +496,7 @@ document.write(`
 </div>
 </section>
 <section id="attention-layer">
-<h2><span class="section-number">18.3. </span>Attention Layer<a class="headerlink" href="#attention-layer" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.3. </span>Attention Layer<a class="headerlink" href="#attention-layer" title="Link to this heading">#</a></h2>
 <p>Attention layer implements the grouped query attention; Note that the rotary position encoding are implemented by rotating the query encoding and key encoding.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -584,7 +588,7 @@ document.write(`
 </div>
 </section>
 <section id="ffn-layer">
-<h2><span class="section-number">18.4. </span>FFN Layer<a class="headerlink" href="#ffn-layer" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.4. </span>FFN Layer<a class="headerlink" href="#ffn-layer" title="Link to this heading">#</a></h2>
 <p>Llama uses Swish function in the GLU, we can obtain the following variations:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -615,7 +619,7 @@ document.write(`
 </div>
 </section>
 <section id="llama-decoder-layer">
-<h2><span class="section-number">18.5. </span>LLama Decoder Layer<a class="headerlink" href="#llama-decoder-layer" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.5. </span>LLama Decoder Layer<a class="headerlink" href="#llama-decoder-layer" title="Link to this heading">#</a></h2>
 <p>Each decoder layer has</p>
 <ul class="simple">
 <li><p>Two Pre-RMSNorm layers, one before the self-attention sublayer and one before the FFN layer</p></li>
@@ -672,7 +676,7 @@ document.write(`
 </div>
 </section>
 <section id="stacked-decoder-layers">
-<h2><span class="section-number">18.6. </span>Stacked Decoder layers<a class="headerlink" href="#stacked-decoder-layers" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.6. </span>Stacked Decoder layers<a class="headerlink" href="#stacked-decoder-layers" title="Link to this heading">#</a></h2>
 <p>In the stacked decoder layer,</p>
 <ul class="simple">
 <li><p>There are L decoder layers</p></li>
@@ -738,7 +742,7 @@ document.write(`
 </div>
 </section>
 <section id="decoder-for-language-modeling">
-<h2><span class="section-number">18.7. </span>Decoder for language modeling<a class="headerlink" href="#decoder-for-language-modeling" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.7. </span>Decoder for language modeling<a class="headerlink" href="#decoder-for-language-modeling" title="Link to this heading">#</a></h2>
 <p>Decoder with language modeling is the previous stacked decoder layer plus a linear layer as language prediction head. The langauge prediciton head linearly transforms the hidden state into the logits distributed over the vocabulary space.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -771,7 +775,7 @@ document.write(`
 </div>
 </section>
 <section id="test-model">
-<h2><span class="section-number">18.8. </span>Test model<a class="headerlink" href="#test-model" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.8. </span>Test model<a class="headerlink" href="#test-model" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
@@ -824,7 +828,7 @@ document.write(`
 </div>
 </section>
 <section id="data">
-<h2><span class="section-number">18.9. </span>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.9. </span>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
@@ -867,8 +871,6 @@ document.write(`
     
     <span class="n">padded</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">prompt_with_completions</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;longest&#39;</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s1">&#39;pt&#39;</span><span class="p">)</span>
     <span class="n">padded</span> <span class="o">=</span> <span class="n">padded</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]</span>
-    <span class="c1"># targets are shifted by 1</span>
-    <span class="c1"># The last token in padded is not used in inputs as there is no corresponding target.</span>
     <span class="n">inputs</span> <span class="o">=</span> <span class="n">padded</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">targets</span> <span class="o">=</span> <span class="n">padded</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span>
     
@@ -1075,9 +1077,100 @@ document.write(`
 </div>
 </div>
 </div>
+<section id="preference-learning">
+<h3><span class="section-number">19.9.1. </span>Preference Learning<a class="headerlink" href="#preference-learning" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">preference_loss</span><span class="p">(</span>
+    <span class="n">policy_chosen_logps</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">,</span> 
+    <span class="n">policy_rejected_logps</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">,</span>
+    <span class="n">reference_chosen_logps</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">,</span>
+    <span class="n">reference_rejected_logps</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">,</span>
+    <span class="n">beta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">label_smoothing</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">ipo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">reference_free</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Args:</span>
+<span class="sd">        policy_chosen_logps: log probabilities of the policy model for the chosen responses, shape: (batch_size,)</span>
+<span class="sd">        </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">pi_logratios</span> <span class="o">=</span> <span class="n">policy_chosen_logps</span> <span class="o">-</span> <span class="n">policy_rejected_logps</span>
+    <span class="n">ref_logratios</span> <span class="o">=</span> <span class="n">reference_chosen_logps</span> <span class="o">-</span> <span class="n">reference_rejected_logps</span>
+    
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">pi_logratios</span> <span class="o">-</span> <span class="n">ref_logratios</span>
+    
+    <span class="k">if</span> <span class="n">reference_free</span><span class="p">:</span>
+        <span class="n">ref_logratios</span> <span class="o">=</span> <span class="mf">0.0</span>
+    
+    <span class="k">if</span> <span class="n">ipo</span><span class="p">:</span>
+        <span class="n">losses</span> <span class="o">=</span> <span class="p">(</span><span class="n">logits</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">beta</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">losses</span> <span class="o">=</span> <span class="o">-</span> <span class="n">F</span><span class="o">.</span><span class="n">logsigmoid</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">logits</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">label_smoothing</span><span class="p">)</span> <span class="o">-</span> <span class="n">F</span><span class="o">.</span><span class="n">logsigmoid</span><span class="p">(</span><span class="o">-</span><span class="n">beta</span> <span class="o">*</span> <span class="n">logits</span><span class="p">)</span> <span class="o">*</span> <span class="n">label_smoothing</span>
+        
+    
+    <span class="n">chosen_rewards</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="n">policy_chosen_logps</span> <span class="o">-</span> <span class="n">reference_chosen_logps</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+    <span class="n">rejected_rewards</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="n">policy_rejected_logps</span> <span class="o">-</span> <span class="n">reference_rejected_logps</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">losses</span><span class="p">,</span> <span class="n">chosen_rewards</span><span class="p">,</span> <span class="n">rejected_rewards</span>
+
+<span class="k">def</span> <span class="nf">_get_batch_logps</span><span class="p">(</span>
+    <span class="n">logits</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">,</span>
+    <span class="n">labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">,</span>
+    <span class="n">loss_mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">,</span>
+    <span class="n">average_log_prob</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">:</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Args:</span>
+<span class="sd">        logits: logits of the model output. Shape: (batch_size, seq_length, vocab_size)</span>
+<span class="sd">        labels: labels for which token&#39;s log probability; label = -100 indicates ignore. Shape (batch_size, seq_length)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    
+    <span class="k">assert</span> <span class="n">logits</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">labels</span><span class="o">.</span><span class="n">shape</span>
+    <span class="c1"># let the sequence be A, B, C, D</span>
+    <span class="c1"># labels[:,1：] are B, C, D</span>
+    <span class="c1"># logits corresponds to B, C, D, X</span>
+    <span class="c1"># logits[:,:-1,:] corresponds to B, C, D</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="c1"># labels </span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">logits</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span>
+    
+    <span class="n">loss_mark</span> <span class="o">=</span> <span class="n">loss_mask</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
+    
+    <span class="c1"># shape (batch_size, seq_len - 1)</span>
+    <span class="n">per_token_logps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">logits</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">labels</span><span class="o">.</span><span class="n">unsequeeze</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">average_log_prob</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">per_token_logps</span> <span class="o">*</span> <span class="n">loss_mark</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">loss_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">per_token_logps</span> <span class="o">*</span> <span class="n">loss_mask</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    
+<span class="k">def</span> <span class="nf">get_logps</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">input_mask</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]:</span>
+    
+    <span class="n">all_logits</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">logits</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">all_logps</span> <span class="o">=</span> <span class="n">_get_batch_logps</span><span class="p">(</span><span class="n">all_logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">input_mask</span><span class="p">,</span> <span class="n">average_log_prob</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">all_logps</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="n">chosen_logps</span> <span class="o">=</span> <span class="n">all_logps</span><span class="p">[:</span> <span class="n">batch_size</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">rejected_logps</span> <span class="o">=</span> <span class="n">all_logps</span><span class="p">[</span><span class="n">batch_size</span><span class="o">//</span><span class="mi">2</span><span class="p">:]</span>
+    
+    <span class="k">return</span> <span class="n">chosen_logps</span><span class="p">,</span> <span class="n">rejected_logps</span>
+    
+        
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 <section id="training">
-<h2><span class="section-number">18.10. </span>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.10. </span>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_batch_loss</span><span class="p">(</span><span class="n">input_batch</span><span class="p">,</span> <span class="n">target_batch</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
@@ -1113,6 +1206,42 @@ document.write(`
             <span class="nb">print</span><span class="p">(</span><span class="n">train_losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
         
     <span class="k">return</span> <span class="n">train_losses</span><span class="p">,</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train_dpo</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ref_model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">train_settings</span><span class="p">):</span>
+    
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">train_settings</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">):</span>
+        
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_loader</span><span class="p">):</span>
+            
+            <span class="n">model_outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+            
+            <span class="n">reference_outputs</span> <span class="o">=</span> <span class="n">ref_model</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+            
+            <span class="n">policy_chosen_logps</span><span class="p">,</span> <span class="n">policy_rejected_logps</span> <span class="o">=</span> <span class="n">get_logps</span><span class="p">(</span><span class="n">model_outputs</span><span class="p">,</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">])</span>
+            
+            <span class="n">reference_chosen_logps</span><span class="p">,</span> <span class="n">reference_rejected_logps</span> <span class="o">=</span> <span class="n">get_logps</span><span class="p">(</span><span class="n">reference_outputs</span><span class="p">,</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">])</span>
+            
+            <span class="n">loss_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;beta&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;reference_free&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+            
+            <span class="n">losses</span><span class="p">,</span> <span class="n">chosen_rewards</span><span class="p">,</span> <span class="n">rejected_rewards</span> <span class="o">=</span> <span class="n">preference_loss</span><span class="p">(</span>
+                <span class="n">policy_chosen_logps</span><span class="o">=</span><span class="n">policy_chosen_logps</span><span class="p">,</span>
+                <span class="n">policy_rejected_logps</span><span class="o">=</span><span class="n">policy_rejected_logps</span><span class="p">,</span>
+                <span class="n">reference_chosen_logps</span><span class="o">=</span><span class="n">reference_chosen_logps</span><span class="p">,</span>
+                <span class="n">reference_rejected_logps</span><span class="o">=</span><span class="n">reference_rejected_logps</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">loss_kwargs</span>
+            <span class="p">)</span>
+    
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">losses</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    
 </pre></div>
 </div>
 </div>
@@ -1245,1838 +1374,6 @@ document.write(`
 10.557378768920898
 10.630148887634277
 10.455920219421387
-10.409931182861328
-10.108236312866211
-10.182458877563477
-9.501925468444824
-10.636826515197754
-10.441350936889648
-9.442732810974121
-10.65182113647461
-9.005826950073242
-10.056744575500488
-9.071742057800293
-9.719274520874023
-10.539457321166992
-8.109013557434082
-9.988809585571289
-9.503620147705078
-8.56149673461914
-8.963241577148438
-9.929883003234863
-9.429275512695312
-9.508111953735352
-9.378183364868164
-8.728569984436035
-10.021723747253418
-8.781039237976074
-9.219264030456543
-8.941544532775879
-9.30162525177002
-9.398658752441406
-8.79794979095459
-8.475982666015625
-8.320345878601074
-8.690967559814453
-8.79287338256836
-8.732223510742188
-9.572741508483887
-9.09702205657959
-9.091935157775879
-9.1818265914917
-9.378776550292969
-8.197397232055664
-8.443197250366211
-8.796965599060059
-8.650116920471191
-9.56566047668457
-9.037643432617188
-9.316316604614258
-9.480766296386719
-8.105834007263184
-7.8174004554748535
-8.75154972076416
-8.871994972229004
-7.084001064300537
-6.267117977142334
-8.413370132446289
-8.928682327270508
-8.569966316223145
-8.723995208740234
-7.712878227233887
-8.335203170776367
-8.576348304748535
-9.202093124389648
-8.326104164123535
-8.715723037719727
-8.051654815673828
-7.702801704406738
-7.767918109893799
-7.44614315032959
-8.499092102050781
-6.835850715637207
-8.17809009552002
-8.459793090820312
-8.364670753479004
-7.678229808807373
-8.883283615112305
-8.294384956359863
-7.772454738616943
-8.872432708740234
-8.260662078857422
-8.852313041687012
-9.336148262023926
-8.217145919799805
-8.837427139282227
-7.094305515289307
-8.249174118041992
-6.225741386413574
-7.286722183227539
-8.037725448608398
-8.328179359436035
-7.948586463928223
-6.679088592529297
-8.223731994628906
-8.198479652404785
-8.246973991394043
-7.424270153045654
-8.886054039001465
-8.324112892150879
-8.785794258117676
-8.4138765335083
-8.507905960083008
-8.868498802185059
-7.550424575805664
-8.014437675476074
-8.699291229248047
-7.966353416442871
-9.073481559753418
-6.768507957458496
-7.203961372375488
-7.526586055755615
-8.272527694702148
-8.836536407470703
-7.6048583984375
-6.950989246368408
-7.622305870056152
-8.43606948852539
-8.453845024108887
-8.930305480957031
-7.952410697937012
-8.807299613952637
-8.922638893127441
-8.14686393737793
-7.115427494049072
-7.830827236175537
-8.790492057800293
-8.53681755065918
-7.681835651397705
-7.839694976806641
-7.047902584075928
-7.7306365966796875
-7.827072620391846
-8.690933227539062
-8.336493492126465
-7.476668834686279
-9.079100608825684
-7.954265594482422
-7.466475486755371
-8.256246566772461
-7.341320037841797
-6.160398006439209
-8.395797729492188
-6.977738380432129
-8.152826309204102
-7.279878616333008
-7.9665141105651855
-7.751248836517334
-7.755195617675781
-8.081643104553223
-8.407286643981934
-7.913785934448242
-6.948304653167725
-7.02336311340332
-7.258242607116699
-8.707741737365723
-5.176688194274902
-7.005913734436035
-8.04478645324707
-7.365195274353027
-6.96026611328125
-7.431405067443848
-6.723588466644287
-8.396443367004395
-8.315401077270508
-8.87647533416748
-7.090518951416016
-6.729640483856201
-7.5797553062438965
-7.677322864532471
-8.530302047729492
-5.831056118011475
-8.948013305664062
-8.121613502502441
-7.95388650894165
-5.317086696624756
-5.587782382965088
-7.112850666046143
-7.076551914215088
-8.187629699707031
-5.603550434112549
-7.574467658996582
-7.634267807006836
-7.89480447769165
-7.144584655761719
-6.720107078552246
-7.302224636077881
-7.600544452667236
-7.489965438842773
-8.439957618713379
-6.317536354064941
-7.296192169189453
-7.806612491607666
-6.755681991577148
-7.698017597198486
-7.634511470794678
-7.9502949714660645
-5.371891021728516
-5.99277925491333
-7.765937805175781
-7.635364055633545
-5.691554069519043
-7.497350692749023
-8.27408504486084
-7.323247909545898
-7.470743179321289
-7.872669696807861
-7.903525352478027
-7.573783874511719
-7.304293155670166
-7.692304611206055
-6.821817398071289
-7.150716781616211
-8.094555854797363
-7.496853351593018
-7.204647064208984
-6.9287333488464355
-7.656194686889648
-6.684568405151367
-8.101051330566406
-6.001102447509766
-6.5603532791137695
-7.81414794921875
-7.483189582824707
-7.4107441902160645
-7.123326778411865
-7.163662910461426
-7.600272178649902
-7.92359733581543
-6.966070652008057
-6.676620960235596
-6.071258068084717
-5.694700717926025
-8.357487678527832
-7.621312618255615
-7.154609680175781
-8.327323913574219
-6.954722881317139
-5.917107582092285
-7.6910786628723145
-6.665449619293213
-6.7606987953186035
-8.196247100830078
-7.23905086517334
-5.622346878051758
-8.084579467773438
-7.474020481109619
-6.9481024742126465
-6.517650604248047
-7.622471332550049
-6.6400299072265625
-7.146424770355225
-8.000862121582031
-7.315019607543945
-7.4658331871032715
-7.999532699584961
-6.73932409286499
-6.784018039703369
-7.335762023925781
-6.795717716217041
-7.183656692504883
-6.980317115783691
-6.3821120262146
-7.172737121582031
-6.515994071960449
-8.037397384643555
-6.697264671325684
-6.97719144821167
-6.995906829833984
-7.219350337982178
-7.621826648712158
-6.60056209564209
-6.303577899932861
-6.741073131561279
-6.910447120666504
-5.5270466804504395
-7.173192501068115
-7.292308330535889
-7.583615779876709
-6.667201995849609
-7.151587963104248
-7.602296352386475
-7.106971740722656
-7.574258804321289
-7.1769914627075195
-5.854578495025635
-7.636929512023926
-8.061482429504395
-7.62721586227417
-7.101871013641357
-7.244905471801758
-6.899890422821045
-6.74027681350708
-7.143261909484863
-7.437134265899658
-7.466038227081299
-6.8156819343566895
-7.31174373626709
-6.805547714233398
-7.186622142791748
-7.483814716339111
-6.559063911437988
-5.888976573944092
-7.138240814208984
-7.423436641693115
-7.507336616516113
-7.050281047821045
-5.500576972961426
-7.398224353790283
-7.023150444030762
-6.995843887329102
-7.583437442779541
-7.764934539794922
-6.284381866455078
-6.54485559463501
-7.271533966064453
-6.747768878936768
-5.4070963859558105
-7.711648464202881
-6.8751044273376465
-4.873578071594238
-5.798689842224121
-8.163131713867188
-6.023693561553955
-6.624054431915283
-7.368297576904297
-6.57619571685791
-7.637344837188721
-6.854536056518555
-6.881252765655518
-6.129610061645508
-7.047771453857422
-7.673618316650391
-7.853394985198975
-7.695700645446777
-6.286881446838379
-4.918391704559326
-6.60928201675415
-7.443287372589111
-7.012099266052246
-6.712862968444824
-6.353724956512451
-6.589232444763184
-7.810102939605713
-6.120845317840576
-7.180410385131836
-5.988944053649902
-7.331676006317139
-7.220089912414551
-7.535629749298096
-6.000095367431641
-7.269332408905029
-6.273829936981201
-6.7589945793151855
-6.78818941116333
-7.716200351715088
-6.104673862457275
-7.209777355194092
-6.009293556213379
-6.337612152099609
-7.183322906494141
-6.3463053703308105
-8.53585433959961
-6.489135265350342
-6.748711585998535
-5.630690574645996
-6.174975395202637
-6.681833744049072
-6.685907363891602
-6.3267621994018555
-6.549046039581299
-7.512974739074707
-6.26035213470459
-6.584530353546143
-6.311887741088867
-5.779975414276123
-6.518989562988281
-6.98706579208374
-7.305261135101318
-5.529804706573486
-6.763954162597656
-6.788674831390381
-7.4324140548706055
-7.752645969390869
-6.385810375213623
-7.1607208251953125
-7.199484825134277
-6.8876633644104
-7.428523063659668
-7.391116142272949
-7.399779796600342
-6.628757476806641
-6.763996601104736
-6.302529811859131
-6.880929946899414
-7.014496803283691
-5.598532199859619
-6.9200592041015625
-7.126089096069336
-6.731667518615723
-6.363903999328613
-6.017136573791504
-6.837329864501953
-6.472388744354248
-5.30039644241333
-7.211876392364502
-6.566425323486328
-6.906378746032715
-7.059329509735107
-5.300551414489746
-6.950073719024658
-7.633367538452148
-6.883755207061768
-5.330907344818115
-5.959106922149658
-6.559053421020508
-7.327077388763428
-6.252851486206055
-6.105184078216553
-6.396198272705078
-6.692835807800293
-7.1359076499938965
-7.052042007446289
-7.576384544372559
-6.252415657043457
-6.510921478271484
-6.675665378570557
-4.823562145233154
-6.835978031158447
-6.80307149887085
-7.005776882171631
-6.290078163146973
-5.8772687911987305
-6.2689290046691895
-6.407567024230957
-4.917119979858398
-5.427750110626221
-5.4736328125
-7.155660629272461
-6.854784965515137
-7.569583892822266
-6.052281379699707
-7.647436618804932
-6.95413064956665
-7.043063640594482
-6.3223795890808105
-7.029530048370361
-6.009037494659424
-5.369438171386719
-6.471277713775635
-5.596868991851807
-5.728212833404541
-6.57578182220459
-6.205798625946045
-7.723975658416748
-6.969112873077393
-6.523230075836182
-7.158575057983398
-6.533547401428223
-6.217704772949219
-4.9049072265625
-7.263994216918945
-6.208010673522949
-6.861074447631836
-6.295699119567871
-6.602899551391602
-6.556525230407715
-6.597959041595459
-6.1291351318359375
-6.438089370727539
-6.826323509216309
-6.69783878326416
-6.3540425300598145
-7.287336826324463
-4.87325382232666
-7.027651309967041
-5.817617416381836
-6.585550308227539
-5.752303123474121
-5.535881042480469
-6.355349540710449
-5.66028356552124
-4.829235553741455
-6.75210428237915
-6.757355690002441
-6.3517656326293945
-6.707007884979248
-5.924886226654053
-6.391934394836426
-4.579033374786377
-6.863368034362793
-6.487936019897461
-6.390007495880127
-6.895957946777344
-6.898429870605469
-6.337359428405762
-6.9140095710754395
-6.807152271270752
-6.988922595977783
-7.189905166625977
-6.269647121429443
-6.8126726150512695
-4.816813945770264
-5.724527359008789
-7.713352203369141
-5.766097545623779
-6.72987174987793
-6.434146881103516
-6.73057746887207
-7.03439474105835
-5.549989223480225
-6.1966233253479
-6.8368377685546875
-7.853939533233643
-6.491785049438477
-6.493218898773193
-5.554964065551758
-5.743686199188232
-7.60521936416626
-6.051425457000732
-5.890924453735352
-6.29083251953125
-6.18527889251709
-6.9394731521606445
-5.673720836639404
-5.949153900146484
-6.510037422180176
-6.879708290100098
-6.112819671630859
-6.374730110168457
-7.098811626434326
-5.41429328918457
-5.876171588897705
-6.408968448638916
-7.09466552734375
-6.505105972290039
-6.930153846740723
-5.188701629638672
-6.083053112030029
-6.429739475250244
-6.784379005432129
-6.117002010345459
-6.531440258026123
-6.997178077697754
-5.864298343658447
-6.955168724060059
-5.899875164031982
-6.1008782386779785
-6.774710655212402
-5.519045352935791
-5.862921714782715
-6.601291179656982
-5.76458215713501
-7.934217929840088
-6.3184404373168945
-5.798949718475342
-5.4431843757629395
-6.169183731079102
-5.487637042999268
-6.239485263824463
-6.50405740737915
-6.234323978424072
-6.967166423797607
-5.920042514801025
-4.90633487701416
-5.497448921203613
-6.810624122619629
-5.948454856872559
-5.56923770904541
-5.366409778594971
-6.629382610321045
-6.370241641998291
-5.956958293914795
-5.130191326141357
-6.562791347503662
-5.687262058258057
-4.979550361633301
-6.183032512664795
-6.493767261505127
-6.1848344802856445
-6.289977550506592
-5.878566741943359
-5.262190818786621
-6.668609619140625
-6.653968811035156
-6.002604961395264
-5.90189790725708
-6.340113162994385
-5.9966230392456055
-5.680359840393066
-5.483484745025635
-6.6956562995910645
-6.696816921234131
-6.163222789764404
-6.37417459487915
-6.459051609039307
-6.055540084838867
-6.523402214050293
-6.372015953063965
-6.172832489013672
-5.614804267883301
-6.371455669403076
-6.445786476135254
-6.082972049713135
-5.580028533935547
-4.932221412658691
-6.254146099090576
-5.9570159912109375
-7.014609336853027
-7.235097408294678
-5.052845001220703
-5.747809410095215
-5.098481178283691
-7.14454984664917
-6.109280109405518
-5.398374557495117
-4.213296890258789
-5.434049606323242
-5.272828102111816
-7.0189290046691895
-6.264615058898926
-5.432180404663086
-5.706062316894531
-5.067690849304199
-5.473038673400879
-7.232213497161865
-5.500061988830566
-5.305816173553467
-5.634389877319336
-5.7206292152404785
-6.477426528930664
-5.866785049438477
-6.254941940307617
-6.022000789642334
-6.145068168640137
-6.892409324645996
-6.718930721282959
-6.42185115814209
-7.1081318855285645
-6.033673286437988
-5.882725715637207
-6.184030055999756
-6.220764636993408
-5.509552001953125
-5.992305278778076
-6.082344055175781
-6.490474700927734
-6.823636054992676
-5.924805164337158
-6.592731475830078
-6.081788539886475
-5.7530999183654785
-5.421682357788086
-5.761895179748535
-6.41145658493042
-5.259069442749023
-6.91668176651001
-5.9712347984313965
-4.9838547706604
-5.8265886306762695
-5.741562366485596
-5.678469657897949
-6.087961673736572
-6.12254524230957
-6.6356282234191895
-5.999855995178223
-5.242163181304932
-5.566010475158691
-6.29323148727417
-6.052127838134766
-6.39547872543335
-5.888261795043945
-6.235403537750244
-6.532500267028809
-6.24505090713501
-5.629907608032227
-6.488248825073242
-7.229555606842041
-6.516720771789551
-6.067878723144531
-5.0529069900512695
-5.704999923706055
-6.138185024261475
-5.723733425140381
-6.492624759674072
-6.21068000793457
-5.799619197845459
-5.321924686431885
-5.703210353851318
-6.221750259399414
-6.257620811462402
-5.067604064941406
-5.78139591217041
-6.810388565063477
-6.10854959487915
-5.632315635681152
-6.442394733428955
-5.245612621307373
-6.078483581542969
-5.893668174743652
-6.5216474533081055
-6.554015159606934
-6.825289726257324
-6.4750823974609375
-6.112430095672607
-4.616897106170654
-5.479202747344971
-5.688720703125
-6.061813831329346
-4.848109722137451
-5.831615447998047
-5.852490425109863
-6.025716781616211
-6.123955249786377
-5.684447288513184
-5.867308616638184
-5.07834529876709
-4.90164852142334
-5.524458408355713
-5.9056620597839355
-6.2032294273376465
-5.065298080444336
-6.184986114501953
-6.666153430938721
-6.254053115844727
-4.970147609710693
-6.205985069274902
-7.008021831512451
-4.247925281524658
-6.835949420928955
-6.042531490325928
-6.213634490966797
-5.94294548034668
-6.186612129211426
-4.406094074249268
-5.199366569519043
-5.122321128845215
-5.584754943847656
-5.180679798126221
-6.580134868621826
-6.852870941162109
-5.759560585021973
-5.577573776245117
-6.284355640411377
-5.7807536125183105
-4.727319717407227
-5.722000598907471
-6.277144908905029
-6.57779598236084
-5.90477180480957
-6.326879024505615
-4.294795036315918
-5.40275764465332
-5.876376628875732
-6.609960079193115
-5.141951084136963
-6.104902744293213
-6.284786701202393
-6.333367824554443
-6.107256889343262
-5.362699031829834
-5.961429595947266
-5.0032548904418945
-5.892342567443848
-6.109997272491455
-5.71601676940918
-5.278239727020264
-5.517978191375732
-5.3576202392578125
-6.091977119445801
-5.373385906219482
-5.846373081207275
-6.528918743133545
-5.745575428009033
-6.333774089813232
-5.838168621063232
-5.9162068367004395
-5.3981733322143555
-5.436718463897705
-5.078586578369141
-5.785589694976807
-4.8114094734191895
-5.154354572296143
-5.741503715515137
-6.176111221313477
-5.606869220733643
-5.833148002624512
-6.833350658416748
-5.255387783050537
-3.988438606262207
-5.452328205108643
-6.673221111297607
-6.423011779785156
-5.384125709533691
-5.643775939941406
-6.828341007232666
-4.667187213897705
-4.4618144035339355
-6.1435980796813965
-6.366528511047363
-6.081357955932617
-5.075766086578369
-5.480937957763672
-5.268439769744873
-4.674612998962402
-5.6378068923950195
-5.315445423126221
-5.300681114196777
-4.9949235916137695
-5.961142539978027
-5.220792770385742
-5.820557594299316
-5.383841037750244
-4.481714248657227
-6.074995517730713
-6.0024333000183105
-4.333754062652588
-5.863290309906006
-5.75282621383667
-5.2128376960754395
-4.999240875244141
-4.917527198791504
-6.363485336303711
-4.912549018859863
-5.236627101898193
-5.727591514587402
-4.884681701660156
-5.498530387878418
-5.64660120010376
-6.371853351593018
-5.769754409790039
-4.753459453582764
-5.481202602386475
-5.8541741371154785
-5.7227935791015625
-6.016483306884766
-5.684218883514404
-5.422640323638916
-5.581953048706055
-6.139718532562256
-6.288344383239746
-6.271264553070068
-6.095365524291992
-5.580507755279541
-5.741294860839844
-5.82970666885376
-5.041816234588623
-5.605682849884033
-5.488674640655518
-5.9869866371154785
-4.876048564910889
-5.183134078979492
-6.44551944732666
-5.580467224121094
-5.336531639099121
-5.30568265914917
-5.528031826019287
-5.766164302825928
-5.580226898193359
-5.539986610412598
-6.154237747192383
-6.221808910369873
-6.68833065032959
-5.206247806549072
-5.393226623535156
-5.483890056610107
-5.020560264587402
-4.415234088897705
-5.692431449890137
-5.725409030914307
-6.487700462341309
-6.484647274017334
-5.3354811668396
-6.387298583984375
-5.872298240661621
-5.732889175415039
-5.9597320556640625
-6.123317718505859
-6.047027587890625
-6.713091850280762
-5.43989896774292
-5.4997334480285645
-4.09600830078125
-4.456425189971924
-6.081859588623047
-6.143166542053223
-5.537712097167969
-5.485445499420166
-4.451141357421875
-4.85955286026001
-5.603623867034912
-5.343040943145752
-4.895185947418213
-4.088583946228027
-6.178514003753662
-5.150128364562988
-4.811209678649902
-5.331404685974121
-5.5498576164245605
-5.18892765045166
-6.646106719970703
-4.1795573234558105
-6.519378185272217
-5.144201278686523
-6.021180152893066
-5.035079002380371
-5.4208574295043945
-4.481831073760986
-5.347463607788086
-5.000537395477295
-5.070650100708008
-5.531777381896973
-6.393858432769775
-5.812191009521484
-4.502859115600586
-5.52064323425293
-4.393649101257324
-5.5129594802856445
-6.0064697265625
-6.120830535888672
-5.94623327255249
-5.661935806274414
-5.367886066436768
-5.446750640869141
-5.837181568145752
-4.475765228271484
-5.495880603790283
-6.333951950073242
-5.231400489807129
-4.890717029571533
-5.500189781188965
-4.826181888580322
-5.315254211425781
-5.590473175048828
-5.152644634246826
-5.569487571716309
-4.952450275421143
-5.208878993988037
-5.6105570793151855
-5.393913745880127
-5.2702107429504395
-4.821797847747803
-4.272322654724121
-6.007287502288818
-4.845762729644775
-6.0829901695251465
-5.326286792755127
-5.137276649475098
-5.797081470489502
-6.583113193511963
-5.723069190979004
-4.9189252853393555
-4.666990756988525
-6.260522842407227
-3.943296194076538
-5.16051721572876
-4.418442249298096
-6.377189636230469
-5.632775783538818
-4.806467056274414
-5.3496479988098145
-4.914324760437012
-4.750854969024658
-6.281500816345215
-6.332863807678223
-6.1956353187561035
-5.598954200744629
-5.23215913772583
-6.006951332092285
-4.892027854919434
-5.189830780029297
-6.273373603820801
-6.675600528717041
-5.774920463562012
-6.101280689239502
-5.426880836486816
-4.9738078117370605
-5.162805080413818
-5.998691082000732
-7.236884117126465
-5.372688293457031
-5.440547466278076
-5.061509609222412
-4.496494293212891
-4.642920017242432
-4.741084098815918
-6.167695999145508
-6.227993965148926
-5.357344627380371
-5.5911970138549805
-5.26072883605957
-5.713385581970215
-5.094918251037598
-4.06983757019043
-6.055233478546143
-4.5529890060424805
-5.663405895233154
-4.537608623504639
-4.568994998931885
-5.071442127227783
-5.107507228851318
-4.914765357971191
-5.529574394226074
-6.10886287689209
-5.124289035797119
-5.114251136779785
-4.528431415557861
-5.219285011291504
-4.504852771759033
-4.710177421569824
-5.006173133850098
-5.444087982177734
-4.8146843910217285
-4.098686695098877
-5.489388465881348
-5.107565879821777
-5.020852088928223
-3.529670000076294
-5.425512790679932
-4.462956428527832
-5.309920787811279
-5.3796772956848145
-3.767960786819458
-5.664869785308838
-5.2069501876831055
-5.6382832527160645
-6.12039041519165
-6.074522972106934
-5.202847957611084
-4.132767200469971
-4.948268890380859
-5.068182945251465
-4.452475070953369
-5.550425052642822
-4.85136079788208
-5.359533786773682
-5.44975471496582
-4.219789028167725
-4.911383628845215
-6.371190547943115
-5.459372520446777
-3.7417104244232178
-4.802001953125
-5.5048041343688965
-4.0523810386657715
-5.197486877441406
-4.78045129776001
-5.151343822479248
-4.98590087890625
-5.458860397338867
-4.499148368835449
-5.1656084060668945
-3.8167617321014404
-4.208345413208008
-5.477724552154541
-5.438752174377441
-5.872332572937012
-5.432761192321777
-5.280029296875
-4.3968892097473145
-5.592565059661865
-4.774909019470215
-4.747305393218994
-3.8931796550750732
-4.775512218475342
-5.37682580947876
-4.683590888977051
-5.429806232452393
-6.472513198852539
-5.522157669067383
-5.326934814453125
-4.349497318267822
-5.28593635559082
-5.402266025543213
-3.525822639465332
-4.730113983154297
-4.715023994445801
-5.692702293395996
-5.210110664367676
-5.010351657867432
-4.959136009216309
-4.635852336883545
-5.019588947296143
-4.4624552726745605
-6.184566020965576
-5.18332052230835
-5.158417224884033
-5.001770973205566
-4.680325984954834
-4.394460201263428
-5.366771697998047
-5.110700607299805
-5.0587334632873535
-5.516447067260742
-4.91188907623291
-4.885791301727295
-5.2201690673828125
-5.558029651641846
-4.269782066345215
-4.678136348724365
-5.334537982940674
-5.081141948699951
-5.799370288848877
-4.1246867179870605
-5.551836967468262
-5.251805305480957
-4.931658744812012
-5.085419178009033
-6.518763065338135
-6.023902416229248
-4.544711589813232
-4.4774370193481445
-4.468654155731201
-5.238506317138672
-4.671813488006592
-5.610466957092285
-4.850610256195068
-5.452916622161865
-4.79330587387085
-5.692015171051025
-5.050431728363037
-4.477248191833496
-4.8953351974487305
-4.819911003112793
-4.681352615356445
-4.495570659637451
-5.924680709838867
-5.041174411773682
-5.597620487213135
-5.588257312774658
-5.310380458831787
-5.292008399963379
-4.303918361663818
-5.013998031616211
-4.741250038146973
-4.334575653076172
-5.401310443878174
-4.825384616851807
-5.175565719604492
-4.432821750640869
-4.833383560180664
-4.086000442504883
-4.312560081481934
-3.37199068069458
-5.275448322296143
-4.90108060836792
-5.0184197425842285
-4.760083198547363
-4.162322044372559
-4.785065174102783
-4.9133124351501465
-5.1294450759887695
-3.858340263366699
-4.199103832244873
-4.309408664703369
-4.076613426208496
-5.038869857788086
-5.431438446044922
-5.92586088180542
-5.584958076477051
-5.190706729888916
-5.179817199707031
-4.977041721343994
-4.552811145782471
-4.489042282104492
-4.988609313964844
-4.906666278839111
-5.3543524742126465
-4.681512355804443
-4.897405624389648
-4.640043258666992
-4.832583427429199
-4.539644241333008
-5.7093892097473145
-4.4353928565979
-4.786230087280273
-4.885951042175293
-4.253942489624023
-4.543970584869385
-4.708553314208984
-4.371676445007324
-4.889729976654053
-4.47752046585083
-4.298480033874512
-5.192046165466309
-4.267175197601318
-4.079553604125977
-4.766860485076904
-3.992218255996704
-3.896338701248169
-5.822120189666748
-5.127451419830322
-4.312523365020752
-4.221405029296875
-4.093663692474365
-4.254385948181152
-5.113960266113281
-5.5514726638793945
-4.9142746925354
-4.505090713500977
-4.273721694946289
-4.132808685302734
-4.226304531097412
-3.9441943168640137
-3.3724923133850098
-5.139926910400391
-4.861825942993164
-5.884730815887451
-4.888372898101807
-3.8482837677001953
-4.29171895980835
-5.491201877593994
-5.071336269378662
-4.183904647827148
-5.213995456695557
-5.0411882400512695
-4.471054553985596
-5.093935012817383
-5.739846706390381
-3.727088212966919
-5.26678991317749
-4.275712490081787
-4.569152355194092
-3.9288668632507324
-4.704917907714844
-5.048269271850586
-5.00111198425293
-4.64829683303833
-5.233859062194824
-3.707916498184204
-4.80978536605835
-4.704864501953125
-4.434628486633301
-3.939565896987915
-4.4315948486328125
-4.682058334350586
-4.8262834548950195
-4.646474838256836
-4.5544586181640625
-4.918045997619629
-4.438453674316406
-4.848433494567871
-4.662009239196777
-4.134390830993652
-3.9410641193389893
-4.932360649108887
-4.71079158782959
-4.601119041442871
-4.814231872558594
-4.428111553192139
-4.458085536956787
-3.331404447555542
-4.60315465927124
-5.226582050323486
-4.4721360206604
-3.9737207889556885
-5.586897850036621
-4.276309013366699
-5.122282028198242
-3.927736759185791
-4.7702178955078125
-4.311150074005127
-4.297110557556152
-5.103277206420898
-3.9419379234313965
-7.372903347015381
-4.102071762084961
-4.7880635261535645
-4.203221321105957
-4.306757926940918
-4.7493696212768555
-5.061917304992676
-4.281369686126709
-4.243719577789307
-4.889030933380127
-5.008838176727295
-4.624549865722656
-4.673074245452881
-4.151601791381836
-4.921731472015381
-4.423229217529297
-4.706840991973877
-4.387340068817139
-4.423009395599365
-4.6462178230285645
-5.667232513427734
-4.819949626922607
-5.093469619750977
-4.925262928009033
-4.259034156799316
-4.703780651092529
-5.020669937133789
-4.509369850158691
-3.062737226486206
-4.142984390258789
-3.0959885120391846
-4.622593879699707
-4.393157005310059
-3.985677719116211
-4.704891681671143
-4.81308650970459
-4.951192378997803
-3.4936649799346924
-4.268042087554932
-4.648794651031494
-4.741124629974365
-5.719524383544922
-4.132901668548584
-3.6371138095855713
-5.121431827545166
-4.394814491271973
-4.495635032653809
-4.504574775695801
-4.935726165771484
-5.019296646118164
-4.411169052124023
-4.481995105743408
-4.133650779724121
-4.87380313873291
-4.370524883270264
-4.176878452301025
-4.607332706451416
-3.8344197273254395
-4.280559539794922
-3.755044937133789
-5.670968532562256
-5.552657604217529
-4.183326244354248
-4.28824520111084
-5.536715030670166
-4.266002655029297
-4.19411039352417
-6.059132099151611
-4.332251071929932
-3.9927866458892822
-4.1863226890563965
-4.6914448738098145
-4.380285739898682
-3.6727049350738525
-3.2017765045166016
-4.617480754852295
-4.1258463859558105
-4.2450714111328125
-3.4287636280059814
-4.3055548667907715
-3.532714605331421
-4.76379919052124
-4.456601619720459
-3.968337297439575
-3.906172513961792
-3.850433349609375
-5.110368728637695
-4.797332763671875
-5.18759298324585
-4.007312297821045
-3.3863539695739746
-4.900402545928955
-3.734208822250366
-3.912365198135376
-3.8225502967834473
-4.254650115966797
-4.476725101470947
-3.6067054271698
-4.895663738250732
-3.6485166549682617
-4.374007225036621
-4.714572906494141
-3.2213757038116455
-4.3936262130737305
-4.517505168914795
-3.3818368911743164
-5.01047420501709
-4.494001865386963
-4.924842834472656
-3.715595006942749
-4.745245933532715
-4.659289360046387
-4.77386999130249
-4.17119836807251
-4.332029819488525
-4.262142658233643
-4.754348278045654
-4.33411979675293
-4.801295280456543
-4.379730224609375
-3.73159122467041
-4.242073059082031
-4.03422737121582
-4.425178527832031
-4.544000625610352
-4.122198581695557
-4.641853332519531
-4.717043399810791
-3.0109546184539795
-3.969647169113159
-4.815140247344971
-4.5420756340026855
-3.978025436401367
-4.479019641876221
-3.8648743629455566
-4.6873087882995605
-4.293612957000732
-4.803051471710205
-3.643113613128662
-4.286657810211182
-4.579311370849609
-4.196491241455078
-5.375204563140869
-3.5504891872406006
-4.26226806640625
-4.092382431030273
-4.8105340003967285
-4.851036548614502
-4.675980091094971
-3.999742269515991
-3.14591908454895
-4.148385047912598
-4.4789605140686035
-4.4044294357299805
-3.9658665657043457
-3.975719928741455
-4.636819839477539
-4.951941967010498
-4.250294208526611
-4.918561935424805
-4.413440227508545
-4.668902397155762
-3.604459285736084
-3.9863040447235107
-4.9204912185668945
-5.125601768493652
-4.1385064125061035
-3.3524281978607178
-4.106828689575195
-5.014990329742432
-4.262915134429932
-4.117216110229492
-3.8983609676361084
-5.001513957977295
-5.085297107696533
-4.498516082763672
-4.717501163482666
-3.5628833770751953
-4.373404502868652
-4.195936679840088
-3.9484546184539795
-3.638418674468994
-3.277264356613159
-4.325492858886719
-4.059300899505615
-5.1374053955078125
-3.18074893951416
-4.633436679840088
-4.509119033813477
-4.701747894287109
-3.9330551624298096
-4.1986823081970215
-4.333590984344482
-4.343361854553223
-3.7630279064178467
-3.485818862915039
-4.800738334655762
-3.7111575603485107
-3.2779080867767334
-3.9543941020965576
-4.173440456390381
-4.221652030944824
-3.7074978351593018
-5.0278215408325195
-5.362935543060303
-2.5303852558135986
-4.012027263641357
-3.56008243560791
-4.288504600524902
-4.370950222015381
-2.7802093029022217
-3.4517886638641357
-3.604100227355957
-3.3380939960479736
-4.465144634246826
-4.477256774902344
-3.9412453174591064
-4.64230489730835
-3.831080675125122
-4.16613245010376
-4.270448684692383
-3.0578880310058594
-4.9703688621521
-4.756224632263184
-4.535632133483887
-4.590230464935303
-3.9840877056121826
-4.123189926147461
-4.238468647003174
-4.290414333343506
-3.093731641769409
-4.1509199142456055
-4.418704986572266
-4.327679634094238
-4.036285400390625
-4.836061954498291
-2.9022767543792725
-4.3313188552856445
-4.571550369262695
-4.4728546142578125
-4.236362934112549
-3.199112892150879
-3.9241669178009033
-3.897386074066162
-4.613434791564941
-4.185161113739014
-3.925065279006958
-4.988377571105957
-4.461446285247803
-4.10345983505249
-3.785893201828003
-4.052631378173828
-5.360662937164307
-4.0443267822265625
-4.380952835083008
-4.628726005554199
-4.342960357666016
-4.625117301940918
-3.970599412918091
-4.483315467834473
-3.3481526374816895
-4.343332290649414
-4.479838848114014
-3.722191333770752
-3.8040966987609863
-3.4496119022369385
-4.264111042022705
-4.42734432220459
-4.498323440551758
-4.079935073852539
-4.485343933105469
-4.102511882781982
-4.7311224937438965
-4.428226947784424
-4.183049201965332
-4.244636058807373
-5.250489711761475
-4.576030731201172
-3.8292932510375977
-4.445369243621826
-4.169384956359863
-3.799320697784424
-4.040163993835449
-3.5231332778930664
-3.967503786087036
-4.403815269470215
-3.8736047744750977
-3.230792760848999
-3.726780652999878
-4.437107086181641
-3.772399663925171
-4.194373607635498
-4.763137340545654
-3.6505937576293945
-3.4628641605377197
-3.69024658203125
-4.0175909996032715
-3.5197012424468994
-4.466663837432861
-4.326220512390137
-4.175256252288818
-4.307093143463135
-3.9244496822357178
-3.7712979316711426
-5.011043071746826
-4.741174697875977
-3.6721017360687256
-3.985239267349243
-3.6444194316864014
-4.301499366760254
-4.2039031982421875
-4.591366767883301
-3.5909385681152344
-3.7861552238464355
-5.076148509979248
-4.093860149383545
-4.1424946784973145
-2.7789058685302734
-3.8128983974456787
-4.144306182861328
-4.5297532081604
-4.436637878417969
-4.79390287399292
-4.35969877243042
-4.2175068855285645
-4.142255783081055
-2.4797074794769287
-3.424302339553833
-4.055841445922852
-3.811124563217163
-3.865966796875
-4.39061975479126
-4.220418930053711
-3.8117189407348633
-3.9197351932525635
-4.392367839813232
-3.325699806213379
-4.510807991027832
-3.6119120121002197
-3.9340012073516846
-4.00651741027832
-5.396156311035156
-3.110491991043091
-4.188948154449463
-3.7603330612182617
-4.305967330932617
-4.488309383392334
-5.538330078125
-3.3731765747070312
-3.6834278106689453
-3.7668848037719727
-3.8177027702331543
-3.946823835372925
-4.566890716552734
-3.8390822410583496
-4.709282875061035
-4.56154203414917
-3.920564889907837
-3.241434097290039
-3.546802282333374
-3.6206157207489014
-3.7864863872528076
-3.8462512493133545
-4.223905086517334
-4.0857086181640625
-3.6958794593811035
-4.022898197174072
-3.6428487300872803
-3.697608232498169
-4.581442832946777
-4.021773338317871
-3.8372912406921387
-4.571666240692139
-3.829486131668091
-3.441150665283203
-3.6517698764801025
-4.292393684387207
-4.078139781951904
-3.1843748092651367
-3.7454066276550293
-3.6411399841308594
-4.294926166534424
-3.8582260608673096
-4.065533638000488
-4.322475433349609
-3.8876073360443115
-4.0208258628845215
-3.6522207260131836
-3.754844903945923
-3.474560022354126
-3.897862672805786
-3.6858339309692383
-4.545587062835693
-3.529696226119995
-2.8393359184265137
-3.7060208320617676
-4.399806499481201
-4.552192687988281
-4.255984306335449
-4.016759872436523
-3.625831127166748
-3.3518853187561035
-4.29353666305542
-3.2514617443084717
-3.471698522567749
-3.857684373855591
-3.778233051300049
-3.8609557151794434
-3.220532178878784
-4.027662754058838
-3.9749789237976074
-4.608859539031982
-4.066253662109375
-4.704662322998047
-4.302533149719238
-4.263815879821777
-3.557234048843384
-4.829176425933838
-3.622495174407959
-2.4797680377960205
-4.356051445007324
-3.8928182125091553
-3.6973631381988525
-3.6811306476593018
-3.018761157989502
-4.308478832244873
-3.288642406463623
-5.292236328125
-3.486827850341797
-3.7694032192230225
-4.51907205581665
-4.186308860778809
-3.453352451324463
-5.641413688659668
-2.3495795726776123
-3.8703227043151855
-3.7028074264526367
-2.5017807483673096
-4.795068740844727
-3.7880818843841553
-3.1056838035583496
-1.8197818994522095
-4.091830253601074
-4.003237247467041
-3.412205457687378
-3.2250871658325195
-4.508213996887207
-4.324937343597412
-4.12956428527832
-3.198347806930542
-4.062714576721191
-4.020719528198242
-4.229344367980957
-3.664598226547241
-3.740163803100586
-4.019469738006592
-3.9562225341796875
-3.671119213104248
-3.932027578353882
-3.6534948348999023
-4.141721725463867
-3.853605031967163
-3.4653306007385254
-4.126978397369385
-3.931668281555176
-4.3219523429870605
-3.3943068981170654
-4.1223673820495605
-3.297027826309204
-3.9820597171783447
-3.500579357147217
-3.761293649673462
-4.243106842041016
-4.091506481170654
-4.122265338897705
-3.3765709400177
-4.614431858062744
-4.184084415435791
-3.4628005027770996
-2.754215717315674
-4.568009376525879
-3.366093635559082
-3.605772018432617
-3.6651949882507324
-3.279453992843628
-3.399399518966675
-3.2980282306671143
-2.5693602561950684
-3.987048387527466
-3.667112112045288
-4.843852519989014
-3.6833784580230713
-3.264045238494873
-3.4469170570373535
-4.17556619644165
-3.9998772144317627
-3.918137550354004
-2.993241786956787
-4.472402095794678
-4.45728063583374
-3.6219611167907715
-4.032745361328125
-3.2302520275115967
-4.0369696617126465
-4.5954437255859375
-4.0077738761901855
-3.125786542892456
-3.9569365978240967
-4.275812149047852
-3.068316698074341
-3.6098673343658447
-3.2976996898651123
-4.362468719482422
-5.298332691192627
-3.916520118713379
-4.779604434967041
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">82</span><span class="p">],</span> <span class="n">line</span> <span class="mi">47</span>
-<span class="g g-Whitespace">     </span><span class="mi">44</span> <span class="n">train_settings</span> <span class="o">=</span> <span class="n">OmegaConf</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">train_settings</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">46</span> <span class="c1"># train model</span>
-<span class="ne">---&gt; </span><span class="mi">47</span> <span class="n">train_losses</span><span class="p">,</span> <span class="n">model</span> <span class="o">=</span> <span class="n">train_main</span><span class="p">(</span><span class="n">model_config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">48</span>                    <span class="n">train_settings</span><span class="o">=</span><span class="n">train_settings</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">50</span> <span class="nb">print</span><span class="p">(</span><span class="n">train_losses</span><span class="p">)</span>
-
-<span class="nn">Cell In [79], line 30,</span> in <span class="ni">train_main</span><span class="nt">(model_config, train_settings)</span>
-<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="n">train_loader</span> <span class="o">=</span> <span class="n">create_data_loader</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">text_data</span><span class="p">,</span> 
-<span class="g g-Whitespace">     </span><span class="mi">19</span>                                   <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="n">train_loader</span> <span class="o">=</span> <span class="n">create_data_loader</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">text_data</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">23</span>                                   <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span>                                   <span class="n">batch_size</span><span class="o">=</span><span class="n">train_settings</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">27</span>                                     <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span>
-<span class="g g-Whitespace">     </span><span class="mi">28</span> <span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">30</span> <span class="n">train_losses</span><span class="p">,</span> <span class="n">model</span> <span class="o">=</span> <span class="n">train_model_epoch</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">31</span>             <span class="n">train_loader</span><span class="o">=</span><span class="n">train_loader</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">32</span>             <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">33</span>             <span class="n">num_epochs</span><span class="o">=</span><span class="n">train_settings</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">34</span>             <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">36</span> <span class="k">return</span> <span class="n">train_losses</span><span class="p">,</span> <span class="n">model</span>
-
-<span class="nn">Cell In [78], line 26,</span> in <span class="ni">train_model_epoch</span><span class="nt">(model, train_loader, optimizer, device, num_epochs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="n">loss</span> <span class="o">=</span> <span class="n">compute_batch_loss</span><span class="p">(</span><span class="n">input_batch</span><span class="p">,</span> <span class="n">target_batch</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">26</span> <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">28</span> <span class="n">tokens_seen</span> <span class="o">+=</span> <span class="n">input_batch</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span>
-
-<span class="nn">File c:\Users\yangy\anaconda3\envs\pytorch_latest\lib\site-packages\torch\_tensor.py:396,</span> in <span class="ni">Tensor.backward</span><span class="nt">(self, gradient, retain_graph, create_graph, inputs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">387</span> <span class="k">if</span> <span class="n">has_torch_function_unary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">388</span>     <span class="k">return</span> <span class="n">handle_torch_function</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">389</span>         <span class="n">Tensor</span><span class="o">.</span><span class="n">backward</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">390</span>         <span class="p">(</span><span class="bp">self</span><span class="p">,),</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">394</span>         <span class="n">create_graph</span><span class="o">=</span><span class="n">create_graph</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">395</span>         <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">396</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">retain_graph</span><span class="p">,</span> <span class="n">create_graph</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">)</span>
-
-<span class="nn">File c:\Users\yangy\anaconda3\envs\pytorch_latest\lib\site-packages\torch\autograd\__init__.py:173,</span> in <span class="ni">backward</span><span class="nt">(tensors, grad_tensors, retain_graph, create_graph, grad_variables, inputs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">168</span>     <span class="n">retain_graph</span> <span class="o">=</span> <span class="n">create_graph</span>
-<span class="g g-Whitespace">    </span><span class="mi">170</span> <span class="c1"># The reason we repeat same the comment below is that</span>
-<span class="g g-Whitespace">    </span><span class="mi">171</span> <span class="c1"># some Python versions print out the first line of a multi-line function</span>
-<span class="g g-Whitespace">    </span><span class="mi">172</span> <span class="c1"># calls in the traceback and some print out the last line</span>
-<span class="ne">--&gt; </span><span class="mi">173</span> <span class="n">Variable</span><span class="o">.</span><span class="n">_execution_engine</span><span class="o">.</span><span class="n">run_backward</span><span class="p">(</span>  <span class="c1"># Calls into the C++ engine to run the backward pass</span>
-<span class="g g-Whitespace">    </span><span class="mi">174</span>     <span class="n">tensors</span><span class="p">,</span> <span class="n">grad_tensors_</span><span class="p">,</span> <span class="n">retain_graph</span><span class="p">,</span> <span class="n">create_graph</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">175</span>     <span class="n">allow_unreachable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">accumulate_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
 </div>
 </div>
@@ -3115,12 +1412,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="annotated_pretraining.html"
+       href="annotated_llama_custom_for_finetuning.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">17. </span>*Lab: LLM Pretraining</p>
+        <p class="prev-next-title"><span class="section-number">18. </span>*Lab: Annotated Finetuning</p>
       </div>
     </a>
     <a class="right-next"
@@ -3128,7 +1425,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">19. </span>Decoding</p>
+        <p class="prev-next-title"><span class="section-number">20. </span>Decoding</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -3148,16 +1445,19 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-norm">18.1. RMS Norm</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotory-embedding">18.2. Rotory Embedding</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-layer">18.3. Attention Layer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ffn-layer">18.4. FFN Layer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-decoder-layer">18.5. LLama Decoder Layer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stacked-decoder-layers">18.6. Stacked Decoder layers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoder-for-language-modeling">18.7. Decoder for language modeling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-model">18.8. Test model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">18.9. Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">18.10. Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-norm">19.1. RMS Norm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotory-embedding">19.2. Rotory Embedding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-layer">19.3. Attention Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ffn-layer">19.4. FFN Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-decoder-layer">19.5. LLama Decoder Layer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stacked-decoder-layers">19.6. Stacked Decoder layers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoder-for-language-modeling">19.7. Decoder for language modeling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-model">19.8. Test model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">19.9. Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-learning">19.9.1. Preference Learning</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">19.10. Training</a></li>
 </ul>
   </nav></div>
 

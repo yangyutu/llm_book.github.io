@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>24. Application of LLM in IR (WIP) &#8212; LLM Foundations</title>
+    <title>27. Application of LLM in IR (WIP) &#8212; LLM Foundations</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=ca93fcec" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -58,10 +58,12 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_application_IR/application_LLM_in_IR';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="23. Information Retrieval and Text Ranking" href="information_retrieval_fundamentals.html" />
+    <link rel="prev" title="26. Information Retrieval and Text Ranking" href="information_retrieval_fundamentals.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -188,8 +190,8 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama.html">10. *Annotated LLama</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">11. MOE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama_custom.html">11. *Lab: Minimal LLama</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="nav bd-sidenav">
@@ -197,27 +199,34 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">13. LLM Finetuning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">14. LLM Alignement and Preference Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Annotated Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Annotated DPO Training</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">17. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">18. Inference Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">20. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">21. Inference Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">19. Basic Prompting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">20. Advanced Prompting Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">22. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">23. Advanced Prompting Techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">21. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">22. Advanced RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">24. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">25. Advanced RAG (WIP)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">Vision Language Pretraining</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="information_retrieval_fundamentals.html">23. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">24. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="information_retrieval_fundamentals.html">26. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">27. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -318,12 +327,15 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-understanding-rewriting">24.1. Query Understanding &amp; Rewriting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-doc-ranking">24.2. Query-Doc Ranking</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-model">24.3. LLM Embedding Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-in-rag">24.4. Application in RAG</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-serp">24.5. Generative SERP</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collections">24.6. Collections</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-understanding-rewriting">27.1. Query Understanding &amp; Rewriting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#natural-language-queries">27.1.1. Natural Language Queries</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-doc-ranking">27.2. Query-Doc Ranking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-model">27.3. LLM Embedding Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-in-rag">27.4. Application in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-serp">27.5. Generative SERP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collections">27.6. Collections</a></li>
 </ul>
             </nav>
         </div>
@@ -336,35 +348,95 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="application-of-llm-in-ir-wip">
-<h1><span class="section-number">24. </span>Application of LLM in IR (WIP)<a class="headerlink" href="#application-of-llm-in-ir-wip" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">27. </span>Application of LLM in IR (WIP)<a class="headerlink" href="#application-of-llm-in-ir-wip" title="Link to this heading">#</a></h1>
 <section id="query-understanding-rewriting">
-<h2><span class="section-number">24.1. </span>Query Understanding &amp; Rewriting<a class="headerlink" href="#query-understanding-rewriting" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">27.1. </span>Query Understanding &amp; Rewriting<a class="headerlink" href="#query-understanding-rewriting" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://arxiv.org/pdf/2305.14283">Query Rewriting for Retrieval-Augmented Large Language Models</a></p>
 <p><a class="reference external" href="https://arxiv.org/pdf/2402.11129">BlendFilter: Advancing Retrieval-Augmented Large Language Models via Query Generation Blending and Knowledge Filtering</a></p>
+<section id="natural-language-queries">
+<h3><span class="section-number">27.1.1. </span>Natural Language Queries<a class="headerlink" href="#natural-language-queries" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Question Type</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Fact-based</p></td>
+<td class="text-left"><p>Questions that seek specific facts or information.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Multi-hop</p></td>
+<td class="text-left"><p>Questions that require reasoning over multiple pieces of information or relationships.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Numerical</p></td>
+<td class="text-left"><p>Questions that involve numerical values or calculations.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Tabular</p></td>
+<td class="text-left"><p>Questions that relate to data presented in tables.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Temporal</p></td>
+<td class="text-left"><p>Questions that involve time-related information or events.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Multi-constraint</p></td>
+<td class="text-left"><p>Questions that involve multiple constraints or conditions.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Examples</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Question Type</p></th>
+<th class="head text-left"><p>Query Examples</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>Fact-based</p></td>
+<td class="text-left"><p>What is the capital of France? <br> Who invented the telephone? <br> What is the population of Tokyo?</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Multi-hop</p></td>
+<td class="text-left"><p>Who is the CEO of the company that manufactures the iPhone? <br> What is the name of the river that flows through London? <br> What is the highest mountain in the country where the Taj Mahal is located?</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Numerical</p></td>
+<td class="text-left"><p>What is the average temperature in July in London? <br> What is the distance between New York and Los Angeles? <br> What is the GDP of Japan?</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Tabular</p></td>
+<td class="text-left"><p>Which country has the highest population density? <br> What is the average number of mobile phones sold by all the showrooms in the year 2007 ? <br> How many restaurants are in the American cuisine type?</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Temporal</p></td>
+<td class="text-left"><p>When did World War II end? <br> Who was the president of the United States in 1963? <br> What was the price of gold in 2008?</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Multi-constraint</p></td>
+<td class="text-left"><p>Find a hotel in Paris that has a swimming pool and is within walking distance of the Eiffel Tower. <br> What are some laptops that have a 15 -inch screen, 16 GB of RAM, and cost less than <span class="math notranslate nohighlight">\(\$ 1,000\)</span> ? <br> Is it possible to constrain the flat face of a say 6 countersunk screws to a single face?</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 </section>
 <section id="query-doc-ranking">
-<h2><span class="section-number">24.2. </span>Query-Doc Ranking<a class="headerlink" href="#query-doc-ranking" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">27.2. </span>Query-Doc Ranking<a class="headerlink" href="#query-doc-ranking" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://arxiv.org/pdf/2304.09542v2">Is ChatGPT Good at Search? Investigating Large Language Models as Re-Ranking Agents</a></p>
 <p><a class="reference external" href="https://arxiv.org/abs/2310.09497">A Setwise Approach for Effective and Highly Efficient Zero-shot Ranking with Large Language Models</a></p>
 <p><a class="reference external" href="https://aclanthology.org/2024.findings-naacl.97/">Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting</a></p>
 <p><a class="reference external" href="https://arxiv.org/abs/2305.02156">Zero-Shot Listwise Document Reranking with a Large Language Model</a></p>
 </section>
 <section id="llm-embedding-model">
-<h2><span class="section-number">24.3. </span>LLM Embedding Model<a class="headerlink" href="#llm-embedding-model" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">27.3. </span>LLM Embedding Model<a class="headerlink" href="#llm-embedding-model" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://arxiv.org/pdf/2401.00368">Improving text embeddings with large language models</a>
 <a class="reference external" href="https://arxiv.org/pdf/2405.17428">NV-Embed: Improved Techniques for Training LLMs as Generalist Embedding Models.</a></p>
 </section>
 <section id="application-in-rag">
-<h2><span class="section-number">24.4. </span>Application in RAG<a class="headerlink" href="#application-in-rag" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">27.4. </span>Application in RAG<a class="headerlink" href="#application-in-rag" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://aclanthology.org/2024.acl-long.242.pdf">Small Models, Big Insights: Leveraging Slim Proxy Models to Decide When
 and What to Retrieve for LLMs</a></p>
 </section>
 <section id="generative-serp">
-<h2><span class="section-number">24.5. </span>Generative SERP<a class="headerlink" href="#generative-serp" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">27.5. </span>Generative SERP<a class="headerlink" href="#generative-serp" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://arxiv.org/abs/2402.14301">GenSERP: Large Language Models for Whole Page Presentation</a></p>
 </section>
 <section id="collections">
-<h2><span class="section-number">24.6. </span>Collections<a class="headerlink" href="#collections" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">27.6. </span>Collections<a class="headerlink" href="#collections" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://github.com/IR-LLM/Awesome-Information-Retrieval-in-the-Age-of-Large-Language-Model">Awesome Information Retrieval in the Age of Large Language Model</a></p>
 </section>
 </section>
@@ -405,7 +477,7 @@ and What to Retrieve for LLMs</a></p>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">23. </span>Information Retrieval and Text Ranking</p>
+        <p class="prev-next-title"><span class="section-number">26. </span>Information Retrieval and Text Ranking</p>
       </div>
     </a>
 </div>
@@ -424,12 +496,15 @@ and What to Retrieve for LLMs</a></p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-understanding-rewriting">24.1. Query Understanding &amp; Rewriting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-doc-ranking">24.2. Query-Doc Ranking</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-model">24.3. LLM Embedding Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-in-rag">24.4. Application in RAG</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-serp">24.5. Generative SERP</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collections">24.6. Collections</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-understanding-rewriting">27.1. Query Understanding &amp; Rewriting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#natural-language-queries">27.1.1. Natural Language Queries</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-doc-ranking">27.2. Query-Doc Ranking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-model">27.3. LLM Embedding Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-in-rag">27.4. Application in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-serp">27.5. Generative SERP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collections">27.6. Collections</a></li>
 </ul>
   </nav></div>
 
