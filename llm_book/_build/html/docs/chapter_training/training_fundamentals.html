@@ -469,7 +469,7 @@ It improve LLM’s performance in the target domain by enhance language understa
 <li><p>in higher sample efficiency.</p></li>
 <li></li>
 </ul>
-<p><span id="id5">[]</span>
+<p><span id="id5">[<a class="reference internal" href="#id1569" title="Fabian Gloeckle, Badr Youbi Idrissi, Baptiste Rozière, David Lopez-Paz, and Gabriel Synnaeve. Better &amp; faster large language models via multi-token prediction. arXiv preprint arXiv:2404.19737, 2024.">GIRoziere+24</a>]</span>
 During inference, we employ only the next-token output head. Optionally, the other three heads may be used to speed-up
 inference time.</p>
 <figure class="align-default" id="chapter-training-fig-fundamentals-multiple-token-prediction-demo">
@@ -477,7 +477,7 @@ inference time.</p>
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 12.3 </span><span class="caption-text">Overview of multi-token prediction. During training, the model predicts 4 future tokens at once, by
-means of a shared trunk and 4 dedicated output heads. Image from <span id="id6">[]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-multiple-token-prediction-demo" title="Link to this image">#</a></p>
+means of a shared trunk and 4 dedicated output heads. Image from <span id="id6">[<a class="reference internal" href="#id1569" title="Fabian Gloeckle, Badr Youbi Idrissi, Baptiste Rozière, David Lopez-Paz, and Gabriel Synnaeve. Better &amp; faster large language models via multi-token prediction. arXiv preprint arXiv:2404.19737, 2024.">GIRoziere+24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-multiple-token-prediction-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>In this work, we generalize the above by implementing a multi-token prediction task, where at each position of the training corpus, the model is instructed to predict <span class="math notranslate nohighlight">\(n\)</span> future tokens at once. This translates into the cross-entropy loss</p>
@@ -731,6 +731,11 @@ G_k &amp;= \rho_2 G_{k-1} + (1-\rho_2)\hat{g}_k \odot \hat{g}_k \\
 <div class="citation" id="id1126" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">DHS11</a><span class="fn-bracket">]</span></span>
 <p>John Duchi, Elad Hazan, and Yoram Singer. Adaptive subgradient methods for online learning and stochastic optimization. <em>Journal of Machine Learning Research</em>, 12(Jul):2121–2159, 2011.</p>
+</div>
+<div class="citation" id="id1569" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>GIRoziere+24<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id5">1</a>,<a role="doc-backlink" href="#id6">2</a>)</span>
+<p>Fabian Gloeckle, Badr Youbi Idrissi, Baptiste Rozière, David Lopez-Paz, and Gabriel Synnaeve. Better &amp; faster large language models via multi-token prediction. <em>arXiv preprint arXiv:2404.19737</em>, 2024.</p>
 </div>
 <div class="citation" id="id1127" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">GDollarG+17</a><span class="fn-bracket">]</span></span>
