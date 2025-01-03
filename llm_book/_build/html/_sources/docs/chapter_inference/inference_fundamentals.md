@@ -44,7 +44,9 @@ Greedy decoding demonstrations.
 ```
 
 
-While being efficient, greedy search decoding often fails to produce sequences that have high probability. The reason is that the token at each step is chosen without considering its impact on the subsequent tokens. In practice, the model may produce repetitive output sequences. In the following, we will introduce beam search and sampling methods to mitigate the drawbacks of greedy decoding.
+While being efficient, greedy search decoding often fails to produce sequences that have high probability. The reason is that the token at each step is chosen without considering its impact on the subsequent tokens. In practice, the model may produce repetitive output sequences. This happens when the model identifies that certain words following each other with high probability. The root cause could be similar patterns are seen frequently during the pretraining stage.
+
+In the following, we will introduce beam search and sampling methods to mitigate the drawbacks of greedy decoding.
 
 (chapter_inference_sec_deconding_beam_search)=
 ### Beam search decoding
@@ -131,6 +133,15 @@ The idea behind top-$k$ sampling is used to ensure that the less probable words 
 
 The top-$p$ approach aims to adapt $k$ heuristically based on the distribution shape. Let token $i=1,...,|V|$ be sorted descendingly according to its probability $p_i$. The top-p sampling approach chooses a probability threshold $p_0$ and sets k to be the lowest value such that $\sum_i (p_i) > p_0$. If the next word distribution is narrow (i.e., the model is confident in its next-word prediction), then k will be lower and vice versa.
 
+## Multi-step Decoding
+
+### Speculative Decoding
+
+{cite:p}`leviathan2023fast,chen2023accelerating,miao2023specinfer`
+
+### Multihead Decoding (Medusa)
+
+{cite:p}`cai2024medusa`
 
 ## Bibliography
 

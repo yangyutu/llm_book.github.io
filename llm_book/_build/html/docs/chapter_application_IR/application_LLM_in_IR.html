@@ -201,8 +201,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Annotated Finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Annotated DPO Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Lab DPO Training</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -348,6 +348,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-in-rag">27.4. Application in RAG</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-serp">27.5. Generative SERP</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collections">27.6. Collections</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">27.7. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -438,11 +439,11 @@ document.write(`
 </section>
 <section id="gefeed-retrieval-feedback">
 <h3><span class="section-number">27.1.3. </span>GEFEED (Retrieval Feedback)<a class="headerlink" href="#gefeed-retrieval-feedback" title="Link to this heading">#</a></h3>
-<p>When using LLM to optimize query and retrievel processes, there has been efforts on using LLM to generate relevent context for the query <span id="id1">[]</span> based on the <strong>internal knowledge of LLM</strong>. These relevant context can be used to further refine the query or the retrievel process. However, there are several fundamental drawback in this approach when it comes to knowledge intensive tasks.</p>
+<p>When using LLM to optimize query and retrievel processes, there has been efforts on using LLM to generate relevent context for the query <span id="id1">[<a class="reference internal" href="#id1570" title="Liang Wang, Nan Yang, and Furu Wei. Query2doc: query expansion with large language models. arXiv preprint arXiv:2303.07678, 2023.">WYW23</a>, <a class="reference internal" href="#id1569" title="Wenhao Yu, Dan Iter, Shuohang Wang, Yichong Xu, Mingxuan Ju, Soumya Sanyal, Chenguang Zhu, Michael Zeng, and Meng Jiang. Generate rather than retrieve: large language models are strong context generators. arXiv preprint arXiv:2209.10063, 2022.">YIW+22</a>]</span> based on the <strong>internal knowledge of LLM</strong>. These relevant context can be used to further refine the query or the retrievel process. However, there are several fundamental drawback in this approach when it comes to knowledge intensive tasks.</p>
 <ul class="simple">
 <li><p>LLM has a tendency to hallucinate content, generating information not grounded
 by world knowledge, leading to untrustworthy outputs and a diminished capacity to provide accurate information.</p></li>
-<li><p>The quality and scope of the internal knowledge of LLM may be incomplete or out-of-date due to the reliability of the sources in the pre-training corpus. Moreover, due to model capacity limitation, <strong>LLMs cannot memorize all world information</strong>, particularly the long tail of knowledge from their training corpus <span id="id2">[]</span>.</p></li>
+<li><p>The quality and scope of the internal knowledge of LLM may be incomplete or out-of-date due to the reliability of the sources in the pre-training corpus. Moreover, due to model capacity limitation, <strong>LLMs cannot memorize all world information</strong>, particularly the long tail of knowledge from their training corpus <span id="id2">[<a class="reference internal" href="#id1571" title="Nikhil Kandpal, Haikang Deng, Adam Roberts, Eric Wallace, and Colin Raffel. Large language models struggle to learn long-tail knowledge. In International Conference on Machine Learning, 15696–15707. PMLR, 2023.">KDR+23</a>]</span>.</p></li>
 </ul>
 <p>The key steps in GEFEED [<a class="reference internal" href="#chapter-application-ir-llm-fig-queryunderstandingoptimization-gefeed-demo"><span class="std std-numref">Fig. 27.1</span></a>] are:</p>
 <ul class="simple">
@@ -459,14 +460,14 @@ by world knowledge, leading to untrustworthy outputs and a diminished capacity t
 <a class="reference internal image-reference" href="../../_images/GEFEED_demo.png"><img alt="../../_images/GEFEED_demo.png" src="../../_images/GEFEED_demo.png" style="width: 826.1999999999999px; height: 378.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 27.1 </span><span class="caption-text">REFEED operates by initially prompting a large language model to generate an answer in response to a given query, followed by the retrieval of documents from extensive document collections. Subsequently, the pipeline refines the initial answer by incorporating the information gleaned from the retrieved documents. Image from <span id="id3">[]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-queryunderstandingoptimization-gefeed-demo" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 27.1 </span><span class="caption-text">REFEED operates by initially prompting a large language model to generate an answer in response to a given query, followed by the retrieval of documents from extensive document collections. Subsequently, the pipeline refines the initial answer by incorporating the information gleaned from the retrieved documents. Image from <span id="id3">[<a class="reference internal" href="#id1568" title="Wenhao Yu, Zhihan Zhang, Zhenwen Liang, Meng Jiang, and Ashish Sabharwal. Improving language models via plug-and-play retrieval feedback. arXiv preprint arXiv:2305.14002, 2023.">YZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-queryunderstandingoptimization-gefeed-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-application-ir-llm-fig-queryunderstandingoptimization-gefeed-workflow">
 <a class="reference internal image-reference" href="../../_images/GEFEED_workflow.png"><img alt="../../_images/GEFEED_workflow.png" src="../../_images/GEFEED_workflow.png" style="width: 835.1999999999999px; height: 130.2px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 27.2 </span><span class="caption-text">The language model is prompted to sample multiple answers, allowing for a more comprehensive retrieval feedback based on different answers. Image from <span id="id4">[]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-queryunderstandingoptimization-gefeed-workflow" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 27.2 </span><span class="caption-text">The language model is prompted to sample multiple answers, allowing for a more comprehensive retrieval feedback based on different answers. Image from <span id="id4">[<a class="reference internal" href="#id1568" title="Wenhao Yu, Zhihan Zhang, Zhenwen Liang, Meng Jiang, and Ashish Sabharwal. Improving language models via plug-and-play retrieval feedback. arXiv preprint arXiv:2305.14002, 2023.">YZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-queryunderstandingoptimization-gefeed-workflow" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -480,16 +481,10 @@ by world knowledge, leading to untrustworthy outputs and a diminished capacity t
 <section id="rank-list-generation">
 <h3><span class="section-number">27.2.1. </span>Rank List Generation<a class="headerlink" href="#rank-list-generation" title="Link to this heading">#</a></h3>
 <figure class="align-default" id="chapter-application-ir-llm-fig-querydocranking-slidingwindow-ranklist-generation">
-<a class="reference internal image-reference" href="docs/img/chapter_application_IR/LLM_for_IR/QueryDocRanking/slidingwindow_ranklist_generation.png"><img alt="docs/img/chapter_application_IR/LLM_for_IR/QueryDocRanking/slidingwindow_ranklist_generation.png" src="docs/img/chapter_application_IR/LLM_for_IR/QueryDocRanking/slidingwindow_ranklist_generation.png" />
-<aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/mnt/d/Dropbox/llm_book/llm_book_jupyterbook/llm_book/docs/chapter_application_IR/application_LLM_in_IR.md</span>, line 97)</p>
-<p>Cannot scale image!
-  Could not get size from &quot;docs/img/chapter_application_IR/LLM_for_IR/QueryDocRanking/slidingwindow_ranklist_generation.png&quot;:
-  [Errno 2] No such file or directory: '/mnt/d/Dropbox/llm_book/llm_book_jupyterbook/docs/img/chapter_application_IR/LLM_for_IR/QueryDocRanking/slidingwindow_ranklist_generation.png'</p>
-</aside>
+<a class="reference internal image-reference" href="../../_images/slidingwindow_ranklist_generation.png"><img alt="../../_images/slidingwindow_ranklist_generation.png" src="../../_images/slidingwindow_ranklist_generation.png" style="width: 874.1999999999999px; height: 307.2px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 27.3 </span><span class="caption-text">llustration of re-ranking 8 passages using sliding windows with a window size of 4 and a step size of 2. The blue color represents the first two windows, while the yellow color represents the last window. The sliding windows are applied in back-to-first order,. Image from <span id="id5">[]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-querydocranking-slidingwindow-ranklist-generation" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 27.3 </span><span class="caption-text">llustration of re-ranking 8 passages using sliding windows with a window size of 4 and a step size of 2. The blue color represents the first two windows, while the yellow color represents the last window. The sliding windows are applied in back-to-first order,. Image from <span id="id5">[<a class="reference internal" href="#id1572" title="Weiwei Sun, Lingyong Yan, Xinyu Ma, Shuaiqiang Wang, Pengjie Ren, Zhumin Chen, Dawei Yin, and Zhaochun Ren. Is chatgpt good at search? investigating large language models as re-ranking agents. arXiv preprint arXiv:2304.09542, 2023.">SYM+23</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-querydocranking-slidingwindow-ranklist-generation" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -510,7 +505,7 @@ by world knowledge, leading to untrustworthy outputs and a diminished capacity t
 <a class="reference external" href="https://arxiv.org/pdf/2405.17428">NV-Embed: Improved Techniques for Training LLMs as Generalist Embedding Models.</a></p>
 <section id="nv-embed">
 <h3><span class="section-number">27.3.1. </span>NV-Embed<a class="headerlink" href="#nv-embed" title="Link to this heading">#</a></h3>
-<p>NV-Embed from Nvidia <span id="id6">[]</span> proposed several improvement techniques on LLM-based embedding model, which include:</p>
+<p>NV-Embed from Nvidia <span id="id6">[<a class="reference internal" href="#id1573" title="Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. arXiv preprint arXiv:2405.17428, 2024.">LRX+24</a>]</span> proposed several improvement techniques on LLM-based embedding model, which include:</p>
 <ul class="simple">
 <li><p>Model architecture improvement, which introduces a <strong>latent attention layer</strong> to obtain better pooled embeddings.</p></li>
 <li><p>Traing process improvement, which introduces a <strong>two-stage contrastive instruction-tuning method</strong>.</p></li>
@@ -527,15 +522,15 @@ by world knowledge, leading to untrustworthy outputs and a diminished capacity t
 O=\operatorname{softmax}\left(Q K^T\right) V.
 \]</div>
 <p>Intuitively, each token’s represention in <span class="math notranslate nohighlight">\(O\)</span> (which is a <span class="math notranslate nohighlight">\(d\)</span> vector) is a linear combination of the <span class="math notranslate nohighlight">\(r\)</span> row vectors in <span class="math notranslate nohighlight">\(V\)</span>(or <span class="math notranslate nohighlight">\(K\)</span>).</p>
-<p>This has the spirit of <strong>sparse dictionary learning</strong><span id="id7">[]</span>, which aims to learn a <strong>sparse set of atom vectors</strong>, such that each representation can be transformed to a linear combination of atom vectors.</p>
+<p>This has the spirit of <strong>sparse dictionary learning</strong><span id="id7">[<a class="reference internal" href="#id1093" title="Julien Mairal, Francis Bach, Jean Ponce, and Guillermo Sapiro. Online dictionary learning for sparse coding. In Proceedings of the 26th annual international conference on machine learning, 689–696. ACM, 2009.">MBPS09</a>]</span>, which aims to learn a <strong>sparse set of atom vectors</strong>, such that each representation can be transformed to a linear combination of atom vectors.</p>
 <p>An additional 2-layer MLP was added to further transfrom the <span class="math notranslate nohighlight">\(O\)</span> vectors.  Finally, a mean pooling after MLP layers to obtain the embedding of whole sequences.</p>
 <p>In the paper, authors used latent attention layer with <span class="math notranslate nohighlight">\(r\)</span> of 512 and the number of heads as 8 for multi-head attention.</p>
 <figure class="align-default" id="chapter-application-ir-llm-fig-embedding-nv-embedding-latent-attention-layer">
-<a class="reference internal image-reference" href="../../_images/latent_attention_layer.png"><img alt="../../_images/latent_attention_layer.png" src="../../_images/latent_attention_layer.png" style="width: 483.0px; height: 189.6px;" />
+<a class="reference internal image-reference" href="../../_images/latent_attention_layer.png"><img alt="../../_images/latent_attention_layer.png" src="../../_images/latent_attention_layer.png" style="width: 644.0px; height: 252.8px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 27.4 </span><span class="caption-text">The illustration of proposed architecture design comprising of decoder-only LLM followed
-by latent attention layer. Latent attention layer functions as a form of cross-attention where the decoder-only LLM output serves as queries (Q) and trainable latent array passes through the keyvalue inputs, followed by MLP. Image from <span id="id8">[]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-embedding-nv-embedding-latent-attention-layer" title="Link to this image">#</a></p>
+by latent attention layer. Latent attention layer functions as a form of cross-attention where the decoder-only LLM output serves as queries (Q) and trainable latent array passes through the keyvalue inputs, followed by MLP. Image from <span id="id8">[<a class="reference internal" href="#id1573" title="Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. arXiv preprint arXiv:2405.17428, 2024.">LRX+24</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-embedding-nv-embedding-latent-attention-layer" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The two-stage instruction tuning method include</p>
@@ -562,6 +557,43 @@ and What to Retrieve for LLMs</a></p>
 <section id="collections">
 <h2><span class="section-number">27.6. </span>Collections<a class="headerlink" href="#collections" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://github.com/IR-LLM/Awesome-Information-Retrieval-in-the-Age-of-Large-Language-Model">Awesome Information Retrieval in the Age of Large Language Model</a></p>
+</section>
+<section id="bibliography">
+<h2><span class="section-number">27.7. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id9">
+<div role="list" class="citation-list">
+<div class="citation" id="id1571" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">KDR+23</a><span class="fn-bracket">]</span></span>
+<p>Nikhil Kandpal, Haikang Deng, Adam Roberts, Eric Wallace, and Colin Raffel. Large language models struggle to learn long-tail knowledge. In <em>International Conference on Machine Learning</em>, 15696–15707. PMLR, 2023.</p>
+</div>
+<div class="citation" id="id1573" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LRX+24<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id6">1</a>,<a role="doc-backlink" href="#id8">2</a>)</span>
+<p>Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. <em>arXiv preprint arXiv:2405.17428</em>, 2024.</p>
+</div>
+<div class="citation" id="id1093" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">MBPS09</a><span class="fn-bracket">]</span></span>
+<p>Julien Mairal, Francis Bach, Jean Ponce, and Guillermo Sapiro. Online dictionary learning for sparse coding. In <em>Proceedings of the 26th annual international conference on machine learning</em>, 689–696. ACM, 2009.</p>
+</div>
+<div class="citation" id="id1572" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">SYM+23</a><span class="fn-bracket">]</span></span>
+<p>Weiwei Sun, Lingyong Yan, Xinyu Ma, Shuaiqiang Wang, Pengjie Ren, Zhumin Chen, Dawei Yin, and Zhaochun Ren. Is chatgpt good at search? investigating large language models as re-ranking agents. <em>arXiv preprint arXiv:2304.09542</em>, 2023.</p>
+</div>
+<div class="citation" id="id1570" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">WYW23</a><span class="fn-bracket">]</span></span>
+<p>Liang Wang, Nan Yang, and Furu Wei. Query2doc: query expansion with large language models. <em>arXiv preprint arXiv:2303.07678</em>, 2023.</p>
+</div>
+<div class="citation" id="id1569" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">YIW+22</a><span class="fn-bracket">]</span></span>
+<p>Wenhao Yu, Dan Iter, Shuohang Wang, Yichong Xu, Mingxuan Ju, Soumya Sanyal, Chenguang Zhu, Michael Zeng, and Meng Jiang. Generate rather than retrieve: large language models are strong context generators. <em>arXiv preprint arXiv:2209.10063</em>, 2022.</p>
+</div>
+<div class="citation" id="id1568" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>YZL+23<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id4">2</a>)</span>
+<p>Wenhao Yu, Zhihan Zhang, Zhenwen Liang, Meng Jiang, and Ashish Sabharwal. Improving language models via plug-and-play retrieval feedback. <em>arXiv preprint arXiv:2305.14002</em>, 2023.</p>
+</div>
+</div>
+</div>
 </section>
 </section>
 
@@ -641,6 +673,7 @@ and What to Retrieve for LLMs</a></p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-in-rag">27.4. Application in RAG</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-serp">27.5. Generative SERP</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collections">27.6. Collections</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">27.7. Bibliography</a></li>
 </ul>
   </nav></div>
 

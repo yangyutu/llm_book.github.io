@@ -94,7 +94,7 @@ The language model is prompted to sample multiple answers, allowing for a more c
 
 ### Rank List Generation
 
-```{figure} ../img/chapter_application_IR/LLM_for_IR/QueryDocRanking/slidingwindow_ranklist_generation.png
+```{figure} ../img/chapter_application_IR/LLM_for_IR/QueryDocRanking/RankList_permutation_generation/slidingwindow_ranklist_generation.png
 ---
 scale: 60%
 name: chapter_application_IR_LLM_fig_QueryDocRanking_slidingwindow_ranklist_generation
@@ -150,7 +150,7 @@ In the paper, authors used latent attention layer with $r$ of 512 and the number
 
 ```{figure} ../img/chapter_application_IR/LLM_for_IR/Embedding/NV_embed/latent_attention_layer.png
 ---
-scale: 60%
+scale: 80%
 name: chapter_application_IR_LLM_fig_embedding_NV_embedding_latent_attention_layer
 ---
 The illustration of proposed architecture design comprising of decoder-only LLM followed
@@ -178,3 +178,10 @@ and What to Retrieve for LLMs](https://aclanthology.org/2024.acl-long.242.pdf)
 ## Collections
 
 [Awesome Information Retrieval in the Age of Large Language Model](https://github.com/IR-LLM/Awesome-Information-Retrieval-in-the-Age-of-Large-Language-Model)
+
+
+## Bibliography
+
+```{bibliography} ../../_bibliography/references.bib
+:filter: docname in docnames
+```

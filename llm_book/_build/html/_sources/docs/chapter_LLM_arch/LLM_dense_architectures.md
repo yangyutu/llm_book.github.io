@@ -42,10 +42,10 @@ Finally, we examining the intricate details of LLM structure and function. We br
 
 ### Layer normalization basics
 
-The LayerNorm was originally proposed to overcome the  in combating the internal covariate shift issue {cite:p}`ioffe2015batchnormalizationacceleratingdeep`, where a layer’s input distribution changes as previous layers are updated, causing the difficulty of traning deep models.
+The LayerNorm was originally proposed to overcome the internal covariate shift issue {cite:p}`ioffe2015batchnormalizationacceleratingdeep`, where a layer’s input distribution changes as previous layers are updated, causing the difficulty of traning deep models.
 
-The key idea in LayerNorm is to normalize the input to the neural network layer via
-* **re-centering** by subtracting the mean
+The key idea in LayerNorm is to normalize the input distribution to the neural network layer via
+* **re-centering** by subtracting the mean;
 * **re-scaling** by dividing the standard deviation.
   
 The calculation formula for an input vector $x$ with $H$ feature dimension is given by
@@ -62,14 +62,12 @@ $\sigma =\sqrt{\frac{1}{H} \sum_{i=1}^H\left(x_i-\mu\right)^2+\epsilon}$.
 * $\gamma$ and $\beta$ are learnable scaling and shifting parameters.
 
 ````{prf:remark} Why we need $\gamma$ and $\beta$
-$\gamma$ and $\beta$ are parameters used to enhance the model's learning capacity. As the normalization operation is used to stablize the learning by standardizing the data distribution, it also removes useful feature distributions and decreases the model's learning capacity. With learnable shift and scaling parameters, we offset these negative impacts of normalization. 
+$\gamma$ and $\beta$ are parameters used to enhance the model's learning capacity. As the normalization operation is used to stablize the learning by standardizing the data distribution, it also smooths out useful feature distributions and decreases the model's learning capacity. With learnable shift and scaling parameters, we offset these negative impacts of normalization. 
 ````
-
-
 
 ### RMS Norm (Root Mean Square Norm)
 
-A common hypothesis on why layer normalization can help stalize training and boost model convergence is because of the re-centering and re-scaling of both inputs and weight matrix. **RMSNorm** {cite:p}`zhang2019rootmeansquarelayer` is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. RMSNorm hypothesizes that only the re-scaling component is necessary and proposes the following simplified normalization formula
+**RMSNorm** {cite:p}`zhang2019rootmeansquarelayer` is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. **RMSNorm hypothesizes that only the re-scaling component is necessary** and proposes the following simplified normalization formula
 
 $$
 \operatorname{RMSNorm}(x)=\frac{x}{\sqrt{\frac{1}{H} \sum_{i=1}^H x_i^2}} \cdot \gamma
@@ -85,7 +83,7 @@ In the following, we summarize the differences between RMSNorm and LayerNorm
 
 :::{grid-item-card} <p style="text-align: center;"><span style="background-color: #e4ac94">**Computational complexity**</span></p>
 **LayerNorm** involves both mean and variance calculation for each normalization layer, which brings sizable computational cost for high-dimensional inputs in LLM (e.g., GPT-3 $d_model = 12288$). 
-**RMSNorm**, on the other hand, only keeps the variance calculation, reducing the normalization cost by half and increses efficiency
+**RMSNorm**, on the other hand, only keeps the variance calculation, reducing the normalization cost by half.
 :::
 
 :::{grid-item-card} <p style="text-align: center;"><span style="background-color: #b4c9da">**Gradient propogation**</span></p>
@@ -100,15 +98,15 @@ See {cite:p}`zhang2019rootmeansquarelayer` for math derivation
 
 ### Layer normalization position
 
-It has been shown that {cite:p}`xiong2020layer` the position of normalization layer has an impact on model training, covergence, and final performance.
+It has been shown in {cite:p}`xiong2020layer` that the position of normalization layer has an impact on model training, covergence, and final performance.
 
 The **Post-Norm** (as in the vanilla Transformer architecture) can stablize the variance of the output by applying the LayerNorm after the residual connection, which is given by 
 
 $$\operatorname{PostNorm Output} = \operatorname{LayerNorm}(X + \operatorname{SubLayer}(X))$$
 
-Here the SubLayer could be the FeedForward Layer or the Attention Layer.
+Here the SubLayer refers to either the FeedForward Layer or the Attention Layer.
 
-The **Pre-Norm** normalize the input to SubLayers, which is given by
+The **Pre-Norm** normalizes the input to each SubLayers, which is given by
 
 $$\operatorname{PreNorm Output} = X + \operatorname{SubLayer}(\operatorname{LayerNorm}(X)).$$
 
@@ -184,18 +182,17 @@ The core advantages of **RMS Pre-Norm** lie in its computational simplicity and 
 
 ## Nonlinearity in FFN
 
-As introduced in {ref}`chapter_foundation_sec_pretrained_LM_transformer_arch_FFN`, FFN block plays a critical role in improving model capacity via nonlinear activations. 
+As introduced in {ref}`chapter_foundation_sec_pretrained_LM_transformer_arch_FFN`, the FFN block plays a critical role in improving model capacity via nonlinear activations. 
 
-With $x$ is the input vector, $W_1, b_1$ and $W_2, b_2$ are weight matrices and biases for the two layers, the FFN block is given by
+Let $x$ be the input vector, $W_1, b_1$ and $W_2, b_2$ be the weight matrices and biases for the two layers, the FFN block is given by
 
 $$
-\operatorname{FFN}(x)=f(xW_1+b_1)W_2+b_2
+\operatorname{FFN}(x)=f(xW_1+b_1)W_2+b_2,
 $$
 
 where $f$ is the activation function.
 
-While in the original Transformer paper ReLU is used, many other different activations are explored. In the latest LLMs, GLU activations {cite:p}`shazeer2020gluvariantsimprovetransformer` are widely adopted and its variations SwiGLU are also widely used to achieve better performance in practice. 
-
+While ReLU is used in the vanilla Transformer model, many other different nonlinear activations are explored. In the latest LLMs, GLU activations {cite:p}`shazeer2020gluvariantsimprovetransformer` are widely adopted and its variations SwiGLU are also widely used to achieve better performance in practice. 
 
 **Gated Linear Units (GLU)** is a neural network layer defined as the componentwise product of two linear transformations of the input, one of which is sigmoid-activated.
 
@@ -213,16 +210,16 @@ $$(chapter_LLM_arch_eq_FFN_GLU)
 where $W_1, W_2, V$ are weight matrices. Note that the FFN layer with GLU have three weight matrices, as opposed to two for the original FFN.
 
 
-One variant of GLU is **Swish** {cite:p}`ramachandran2017searchingactivationfunctions`, which is given by
+One important variant of GLU is **Swish** {cite:p}`ramachandran2017searchingactivationfunctions`, which is given by
 
 $$
 \operatorname{Swish}_\beta(x)=x \cdot \sigma(\beta x)
 $$(chapter_LLM_arch_eq_Swish)
 
-where $\beta$ is a hyperparameter for Swish. Compared to GLU, Swish is a self-gated activation function. As showed in {numref}`chapter_foundation_fig_pretrained_LLM_activation_swish`, Swish has the following appealing properites:
+where $\beta$ is a hyperparameter for Swish. Compared to GLU, **Swish is a self-gated activation function**. As showed in {numref}`chapter_foundation_fig_pretrained_LLM_activation_swish`, Swish has the following appealing properites:
 - Smooth derivative leading to better gradient flow, while ReLU is nonsmooth at $x=0$
 - Non-monotonicity: The non-monotonic nature of Swish allows it to capture more complex relationships in the data
-- Unbounded above and bounded below, where as GLU is bounded above and below
+- Unbounded above and bounded below, **whereas GLU is bounded above and below**
 - Non-zero gradient for negative inputs: For very negative inputs, Swish has a small but non-zero gradient, unlike ReLU which has a zero gradient. This can help mitigate the "dying ReLU" problem.
 - Self-gating property allows the network to learn when to emphasize or de-emphasize certain features.
 
@@ -235,7 +232,7 @@ name: chapter_foundation_fig_pretrained_LLM_activation_swish
 (Left) The Swish activation function. (Right)  First derivatives of Swish. Image from {cite:p}`ramachandran2017searchingactivationfunctions`.
 ```
 
-If we use Swish function in the GLU, we can obtain the following variations:
+If we use Swish function in the GLU, we can obtain the following **SwiGLU** and **SwiGLU-FFN** variations:
 
 $$
 SwiGLU=\text{Swish}_1(xW) \otimes xV \\
@@ -257,9 +254,9 @@ Example activation in recent LLMs:
 
 ### Multi-Head Attention (MHA)
 
-Multi-Head Attention [detailed in {ref}`chapter_foundation_sec_pretrained_LM_transformer_arch_MHA`] is the foundation of many transformer-based models, including the original transformer architecture.
+Multi-Head Attention [detailed in {ref}`chapter_foundation_sec_pretrained_LM_transformer_arch_MHA`] is the foundation of many Transformer-based models, including the original Transformer architecture.
 
-The computation of an $H$-headed MHA given input $X\in \mathbb{R}^{n\times d_{model}}$ matrix and $H$ projection matrices $W^Q_i, W^K_i, W^V_i \in\mathbb{R}^{d_{model}}\times d_{head}$, $i\in \{1,...,H\}$ is given by
+The computation of an $H$-headed MHA given input $X\in \mathbb{R}^{n\times d_{model}}$ matrix and $H$ projection matrices $W^Q_i, W^K_i, W^V_i \in\mathbb{R}^{d_{model}\times d_{head}}$, $i\in \{1,...,H\}$ is given by
 
 $$
 \text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_H)W^O
@@ -274,7 +271,7 @@ $$
 with the attention given by
 
 $$
-\text{Attention}(Q, K, V) = \text{Softmax}(\frac{QK^T}{\sqrt{d_k}})V.
+\text{Attention}(Q, K, V) = \text{Softmax}(\frac{QK^T}{\sqrt{d_{head}}})V.
 $$
 
 ```{figure} ../img/chapter_LLM_arch/attention/MHA.png
@@ -284,6 +281,23 @@ name: chapter_LLM_arch_fig_fundamentals_attention_MHA
 ---
 Multi-head attention has $H$ query, key, and value heads for each token.
 ```
+
+````{prf:remark} Combine to RoPE
+More recent LLMs are using Rotary Position Embedding (RoPE) (see {ref}`chapter_LLM_arch_sec_LLM_arch_fundamentals_position_embedding_RoPE`). The position information related to the query key $Q_i$ (row $i$ from $Q$)at position $i$ and the key $K_j$ at position $j$ is baked in through 
+
+$$\tilde{Q}_i = Q_i\mathcal{R}_i, \tilde{K}_j = K_j\mathcal{R}_j.$$
+
+Here $\mathcal{R}_i$ is a rotation matrix parameterized by position integer $i$. 
+
+Finally, the Attention computation is computed using the rotated query and key, given by
+
+$$
+\text{Attention}(Q, K, V) = \text{Softmax}(\frac{\tilde{Q}\tilde{K}^T}{\sqrt{d_{head}}})V.
+.$$
+
+````
+
+
 
 In the following, we summarize the advantages and drawbacks of MHA.
 ::::{grid}
@@ -297,7 +311,7 @@ In the following, we summarize the advantages and drawbacks of MHA.
 
 :::{grid-item-card} <p style="text-align: center;"><span style="background-color: #b4c9da">**Drawbacks**</span></p>
 - Computational complexity scales quadratically with sequence length (i.e., huge cost for long context applications)
-- During inference stage, each head has its own key and value to cache, bring additional memory burden to inference process.
+- During inference stage, each head has its own key and value to cache (i.e., KV cache), bring additional memory burden to inference process.
 :::
 ::::
 
@@ -306,11 +320,10 @@ In the following, we summarize the advantages and drawbacks of MHA.
 
 
 
-To reduce the inference cost from MHA, {cite:p}`shazeer2019fasttransformerdecodingwritehead` proposed **MQA**, which reduces $H$ key and value heads in MHA to a single key and value head. 
-During inference, MQA reducing the size of the key-value cache by a factor of $H$ (see {ref}`chapter_inference_sec_inference_acceleration_KV_cache`). However, larger models generally scale the number of heads (e.g., GPT-2 has 12 heads; GPT-3 has 96 heads), such that multi-query attention represents a more
-aggressive cut in both memory bandwidth and capacity footprint.
+To reduce the inference cost from MHA, {cite:p}`shazeer2019fasttransformerdecodingwritehead` proposed **MQA**, which reduces $H$ key and value heads in MHA to a single key and value shared head. 
+During inference, MQA reduces the size of the key-value cache by a factor of $H$ (see {ref}`chapter_inference_sec_inference_acceleration_KV_cache`). However, larger models generally scale up the number of heads (e.g., GPT-2 has 12 heads; GPT-3 has 96 heads), such that MQA represents a very aggressive cut in both memory bandwidth and capacity footprint.
 
-In MQA, the single head attnetion is computed as
+In MQA, the single head attention is computed as
 
 $$
 \text{head}_i = \text{Attention}(XW^Q_i, XW^K, XW^V).
@@ -347,12 +360,11 @@ MQA often comes at the cost of quality degradation. In the following, we summari
 ### Grouped Query Attention (GQA)
 
 
-GQA {cite:p}`ainslie2023gqatraininggeneralizedmultiquery` is an optimization of MHA and MQA that reduces computational complexity while maintaining performance.
+GQA {cite:p}`ainslie2023gqatraininggeneralizedmultiquery` is an optimization of MHA and MQA that aims to reduce computational complexity while maintaining performance.
 
-Unlike MQA, GQA uses an intermediate (more than one, less than number of query heads) number of key-value heads.
-GQA is shown to achieve quality close to MHA with comparable speed to MQA
+Unlike MQA, GQA uses an intermediate (more than one, less than number of query heads) number of key-value heads. GQA is shown to achieve quality close to MHA, but with comparable inference speed to MQA.
 
-In GQA, the single head attnetion is computed as
+In GQA, the single head attention is computed as
 
 $$
 \text{head}_i = \text{Attention}(QW^Q_i, KW^K_{g(i)}, VW^V_{g(i)})
@@ -384,6 +396,10 @@ GQA is widely adopted in the latest LLM. Following shows example configurations 
 | Qwen2 72B | 8,192 | 80 | 64 | 8 |
 |Mistral 7B| 4096 | 32 | 32 | 8|
 ```
+
+### Multi-Head Latent Attention (MLA)
+
+
 
 ### Sliding Window Attention
 
@@ -483,7 +499,7 @@ name: chapter_LLM_arch_fig_fundamentals_position_encoding_Alibi_comparison
 Comparision between the ALiBi models trained and evaluated on varying sequence lengths on the WikiText-103
 validation set and the sinusoidal absolute position encoding baseline. Image from {cite:p}`press2022trainshorttestlong`.
 ```
-
+(chapter_LLM_arch_sec_LLM_arch_fundamentals_position_embedding_RoPE)=
 ### Rotary Postion Embedding
 
 #### The mechanism
@@ -492,12 +508,12 @@ validation set and the sinusoidal absolute position encoding baseline. Image fro
 * Like ALiBi, relative positional information is directly used in attention score computation.
 * Sinusoid functions are used in construction for their nice mathematical properties.
 
-Specifically, the key idea of RoPE is to multiply query vector $Q_m$ (of a token at position $m$) and key vector $K_n$ (of another token at position $n$) by a rotational matrix $\boldsymbol{R}(m; \Theta)$ and $\boldsymbol{R}(n; \Theta)$ before taking the scaled doc product. Here rotational matrix $\boldsymbol{R}(\cdot; \Theta)$ is constructed a group of 2D rotational matrices, whose wave-length are specified by $\Theta$. 
+Specifically, the key idea of RoPE is to multiply query vector $Q_m$ (of a token at position $m$) and key vector $K_n$ (of another token at position $n$) by a rotational matrix $\mathcal{R}(m; \Theta)$ and $\mathcal{R}(n; \Theta)$ before taking the scaled doc product. Here rotational matrix $\mathcal{R}(\cdot; \Theta)$ is constructed a group of 2D rotational matrices, whose wave-length are specified by $\Theta$. 
 
 The $d_{model}\times d_{model}$ rotational matrix for position $m$ is given by
 
 $$
-\boldsymbol{R}_{\Theta, m}^d=\left(\begin{array}{ccccccc}
+\mathcal{R}_{\Theta, m}=\left(\begin{array}{ccccccc}
 \cos m \theta_1 & -\sin m \theta_1 & 0 & 0 & \cdots & 0 & 0 \\
 \sin m \theta_1 & \cos m \theta_1 & 0 & 0 & \cdots & 0 & 0 \\
 0 & 0 & \cos m \theta_2 & -\sin m \theta_2 & \cdots & 0 & 0 \\
@@ -515,14 +531,14 @@ Here the rotary matrix has pre-defined parameters $\Theta=\left\{\theta_i=10000^
 Pre-SoftMax input (omitting scaling) for query token at position $m$ and key token at position $n$ is given by 
 
 $$
-\operatorname{PreSoftmax}(Q_m, K_n) =\left(\boldsymbol{R}_{\Theta, m} Q_m\right) \cdot \left(\boldsymbol{R}{\Theta,n} K_n \right)
+\operatorname{PreSoftmax}(Q_m, K_n) =\left( Q_m \mathcal{R}_{\Theta, m}\right) \cdot \left( K_n \mathcal{R}_{\Theta, n} \right)
 $$
 
 ````{prf:example}
 For $d_{model} == 2$, the rotation matrix for position $m $ is:
 
 $$
-\boldsymbol{R}(m; \Theta)=\left[\begin{array}{cc}
+\mathcal{R}(m; \Theta)=\left[\begin{array}{cc}
 \cos (m\theta_1) & -\sin (m\theta_1) \\
 \sin (m\theta_1) & \cos (m\theta_1)
 \end{array}\right]
@@ -533,7 +549,7 @@ Where $\theta_1 = 1$.
 For $d_{model} == 4$, the rotation matrix for position $m $ is:
 
 $$
-\boldsymbol{R}(m; \Theta)=\left[\begin{array}{cc}
+\mathcal{R}(m; \Theta)=\left[\begin{array}{cc}
 \cos (m\theta_1) & -\sin (m\theta_1) & 0 & 0 \\
 \sin (m\theta_1) & \cos (m\theta_1) & 0 & 0 \\
 0 & 0 & \cos (m\theta_2) & -\sin (m\theta_2) \\
@@ -552,18 +568,18 @@ Now we are showing that the rotated query-key inner product is a function of the
 
 $$
 \begin{aligned}
-\left\langle R\left(\theta_q\right) Q_m, R\left(\theta_k\right) K_n\right\rangle & =Q_m^{\top} R\left(\theta_q\right)^{\top} R\left(\theta_k\right) K_n \\
-& =Q_m^{\top} R\left(\theta_k-\theta_q\right) K_n \\
-& =\left\langle R\left(\theta_q-\theta_k\right) Q_m, K_n\right\rangle \\
-& =\left\langle R\left(\theta (m-n)\right) Q_m, K_n\right\rangle 
+\left\langle \mathcal{R}\left(\theta_q\right) Q_m, \mathcal{R}\left(\theta_k\right) K_n\right\rangle & =Q_m^{\top} \mathcal{R}\left(\theta_q\right)^{\top} \mathcal{R}\left(\theta_k\right) K_n \\
+& =Q_m^{\top} \mathcal{R}\left(\theta_k-\theta_q\right) K_n \\
+& =\left\langle \mathcal{R}\left(\theta_q-\theta_k\right) Q_m, K_n\right\rangle \\
+& =\left\langle \mathcal{R}\left(\theta (m-n)\right) Q_m, K_n\right\rangle 
 \end{aligned}
 $$
 
 That is, the Pre-Softmax input of $Q_m, K_n$ is a funciton of $m - n$.
 
 We have used the following important properties of rotational matrix:
-1. The transpose of a rotation matrix is equal to its inverse: $R(\theta)^{\top}=R(-\theta)$. 
-2. The matrix multiplication of rotational matrices satisfies: $R(\theta_x)\cdot R(\theta_y) = R(\theta_x + \theta_y)$
+1. The transpose of a rotation matrix is equal to its inverse: $\mathcal{R}(\theta)^{\top}=\mathcal{R}(-\theta)$. 
+2. The matrix multiplication of rotational matrices satisfies: $\mathcal{R}(\theta_x)\cdot \mathcal{R}(\theta_y) = \mathcal{R}(\theta_x + \theta_y)$
 
 In other words, the inner product of two rotated vectors is equal to the inner product of one vector rotated by their angle difference and the other original vector.
 
@@ -589,7 +605,7 @@ Visualization of 2D RoPE and its mechanism in encoding context. Image from [Blog
 
 The idea is to linearly down-scales the input position indices to match the original context window size [{numref}`chapter_LLM_arch_fig_fundamentals_RoPE_position_interpolation`].Specifically, given that the rotation matrix in RoPE is a continuous function, one can adjust the rotation matrix for large position $m$ to $m'$ as
 
-$$R_{\Theta, m} = R_{\Theta, m'}, m' = \frac{L}{L'}$$
+$$\mathcal{R}_{\Theta, m} = \mathcal{R}_{\Theta, m'}, m' = \frac{L}{L'}$$
 
 where $L$ maximum length of context window during the training and $L' > L$ is larger context window we would like to apply during the inference stage.
 Intuitively, we reduce position indices from $\left[0, L^{\prime}\right)$ to $[0, L)$ to match the original range of indices before computing RoPE.
