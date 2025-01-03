@@ -1,0 +1,622 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>LLM Evaluation &#8212; LLM Foundations</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_LLM_eval/LLM_eval';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/qe-logo-large.png" class="logo__image only-light" alt="LLM Foundations - Home"/>
+    <script>document.write(`<img src="../../_static/qe-logo-large.png" class="logo__image only-dark" alt="LLM Foundations - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: LLM in the Age of AI</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">2. Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/neural_language_models.html">3. Early Neural Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/word_embeddings.html">4. Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers.html">5. Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/bert.html">6. BERT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/t5.html">7. Seq2Seq: T5 and BART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/GPT_series.html">8. GPT Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama_custom.html">11. *Lab: Minimal LLama</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">12. LLM Training Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">13. LLM Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">14. LLM Alignement and Preference Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Lab DPO Training</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">20. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">21. Inference Acceleration (WIP)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">22. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">23. Advanced Prompting Techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">24. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">25. Advanced RAG (WIP)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">Vision Language Pretraining</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">26. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>LLM Evaluation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-evaluation-metrics">Overview of evaluation metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#traditional-evaluation">Traditional evaluation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-specific-evaluation">Task-specific evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-sense-reasoning">Common-sense reasoning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#world-knowledge">World knowledge</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-comprehension">Reading comprehension</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-reasoning">Mathematical reasoning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-benchmarks">Composite benchmarks</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#safety-evaluation">Safety evaluation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toxicity-and-harmful-content">Toxicity and harmful content</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">Bibliography</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="llm-evaluation">
+<h1>LLM Evaluation<a class="headerlink" href="#llm-evaluation" title="Link to this heading">#</a></h1>
+<section id="overview-of-evaluation-metrics">
+<h2>Overview of evaluation metrics<a class="headerlink" href="#overview-of-evaluation-metrics" title="Link to this heading">#</a></h2>
+<p>Evaluating LLMs like ChatGPT requires more than traditional metrics such as perplexity. These models behave in complex ways and perform differently across various tasks. Therefore, we need to assess their skills in different tasks to ensure the model is both effective and safe.</p>
+<p>In this section, we evaluate our LLM from the following perspectives:</p>
+<ul class="simple">
+<li><p>Traditional evaluation</p></li>
+<li><p>Task-specific evaluation</p></li>
+<li><p>Safety evaluation</p></li>
+<li><p>Human evaluation</p></li>
+</ul>
+</section>
+<section id="traditional-evaluation">
+<h2>Traditional evaluation<a class="headerlink" href="#traditional-evaluation" title="Link to this heading">#</a></h2>
+<p>Traditional evaluation provides an initial understanding of the LLM’s performance using typical offline metrics. A common metric is perplexity, which measures how accurately the model predicts the exact sequence of tokens in the text data. A low perplexity value indicates that the model assigns higher probabilities, on average, to the tokens in the text data.</p>
+<p>While these metrics are important for initial evaluation, they do not provide insights into an LLM’s capabilities or limitations. For example, a low perplexity indicates the model is good at predicting the next tokens but does not measure its ability to understand code or solve math problems.</p>
+</section>
+<section id="task-specific-evaluation">
+<h2>Task-specific evaluation<a class="headerlink" href="#task-specific-evaluation" title="Link to this heading">#</a></h2>
+<p>To effectively evaluate an LLM, we need to assess its performance across diverse tasks such as mathematics, code generation, and common-sense reasoning. This comprehensive approach helps identify the model’s strengths and weaknesses. Commonly used tasks for evaluating LLM’s capabilities are:</p>
+<ul class="simple">
+<li><p>Common-sense reasoning</p></li>
+<li><p>World knowledge</p></li>
+<li><p>Reading comprehension</p></li>
+<li><p>Mathematical reasoning</p></li>
+<li><p>Code generation</p></li>
+<li><p>Composite benchmarks</p></li>
+</ul>
+<section id="common-sense-reasoning">
+<h3>Common-sense reasoning<a class="headerlink" href="#common-sense-reasoning" title="Link to this heading">#</a></h3>
+<p>Common-sense reasoning evaluates a model’s ability to make inferences based on everyday situations and general knowledge. It tests the model’s understanding of basic human experiences, logical connections, and assumptions that people naturally make. Examples include interpreting idioms, understanding cause and effect in typical scenarios, and predicting likely outcomes in social situations.</p>
+<p>Prompt:</p>
+<p>The trophy doesn’t fit in the brown suitcase because it is too large. What is too large?
+(a) the trophy
+(b) the suitcase</p>
+<p>Answer: the trophy</p>
+<p>[39], each of which focuses on different aspects. For example, the CommonsenseQA benchmark is a multiple-choice question dataset for which the questions require common-sense knowledge to answer. PIQA focuses on reasoning about physical interactions in everyday situations, while HellaSwag focuses on everyday events.</p>
+</section>
+<section id="world-knowledge">
+<h3>World knowledge<a class="headerlink" href="#world-knowledge" title="Link to this heading">#</a></h3>
+<p>World knowledge refers to the model’s factual knowledge about the world, including historical facts, scientific information, geography, and current events. An example would be answering questions about significant historical events or scientific principles.</p>
+<p>Prompt:</p>
+<p>Who wrote the play ‘Hamlet’?</p>
+<p>Answer:</p>
+<p>William Shakespeare</p>
+<p>Common benchmarks for this task include:</p>
+<ul class="simple">
+<li><p>TriviaQA [40]: Questions are gathered from trivia and quiz-league websites.</p></li>
+<li><p>Natural Questions (NQ) [41]: A dataset from Google that includes questions and answers found in natural web queries.</p></li>
+<li><p>SQUAD (Stanford Question Answering Dataset) [42]: Contains questions based on Wikipedia articles.</p></li>
+</ul>
+</section>
+<section id="reading-comprehension">
+<h3>Reading comprehension<a class="headerlink" href="#reading-comprehension" title="Link to this heading">#</a></h3>
+<p>Reading comprehension tasks evaluate a model’s ability to understand and interpret text passages and answer questions based on them. This is critical for assessing a model’s ability to extract information from and reason in relation to given texts.</p>
+<p>Prompt:</p>
+<p>Passage: “William Shakespeare was an English playwright, poet, and actor. He is widely regarded as the greatest writer in the English language and the world’s greatest dramatist.”</p>
+<p>Question: “What is William Shakespeare widely regarded as?”</p>
+<p>Answer:</p>
+<p>The greatest writer in the English language and the world’s greatest dramatist.</p>
+<p>Typical benchmarks for reading comprehension are SQUAD [42], QuAC [43], and BoolQ [44].</p>
+</section>
+<section id="mathematical-reasoning">
+<h3>Mathematical reasoning<a class="headerlink" href="#mathematical-reasoning" title="Link to this heading">#</a></h3>
+<p>Mathematical reasoning tasks evaluate a model’s ability to solve mathematical problems.</p>
+<p><strong>Prompt:</strong></p>
+<p>If a train travels 60 miles per hour for 3 hours, how far does it travel?</p>
+<p><strong>Answer:</strong></p>
+<p>180 miles</p>
+<p>Two common benchmarks for mathematical reasoning tasks are:</p>
+<ul class="simple">
+<li><p>MATH [46]: A dataset containing problems from high school mathematics competitions.</p></li>
+<li><p>GSM8K (Grade School Math 8K) [45]: A dataset with grade school math problems to test the model’s problem-solving skills.</p></li>
+</ul>
+<p><strong>Code generation</strong></p>
+<p>Code generation evaluates a model’s ability to write syntactically correct and functional code given a natural language prompt.</p>
+<p><strong>Prompt:</strong></p>
+<p>Write a Python function to check if a number is prime.</p>
+<p><strong>Answer:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">return</span> <span class="kc">False</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+     <span class="k">return</span> <span class="kc">False</span>
+  <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>Common benchmarks for code generation are:</p>
+<ul class="simple">
+<li><p>HumanEval [47]: Python coding tasks.</p></li>
+<li><p>MBPP (MultiPL-E Benchmarks for Programming Problems) [48]: Multiple programming language tasks to evaluate multilingual code generation capabilities.</p></li>
+</ul>
+</section>
+<section id="composite-benchmarks">
+<h3>Composite benchmarks<a class="headerlink" href="#composite-benchmarks" title="Link to this heading">#</a></h3>
+<p>In addition to specific benchmarks described above, composite benchmarks combine multiple tasks for a broader assessment. Popular composite benchmarks are:</p>
+<ul class="simple">
+<li><p>MMLU (Massive Multitask Language Understanding) [49]: Consists of multiple-choice questions from a wide range of subjects including humanities, STEM, social sciences, and more, at various difficulty levels.</p></li>
+<li><p>MMMU (Massive Multilingual Multitask Understanding) [50]: MMMU includes a wide range of multiple-choice questions covering many subjects with varying levels of difficulty. Unlike MMLU, which focuses on English, MMMU tests the models’ ability to understand and generate accurate responses across different languages, assessing not only multilingual capabilities but also reasoning and cross-cultural knowledge.</p></li>
+<li><p>AGIEval [51]: A comprehensive benchmark designed to test artificial general intelligence across multiple domains and tasks.</p></li>
+<li><p>Meta Llama 3 human evaluation [13]: A high-quality human evaluation set containing 1,800 prompts that cover 12 key use cases: asking for advice, brainstorming, classification, closed question answering, coding, creative writing, extraction, inhabiting a character/persona, open question answering, reasoning, rewriting, and summarization.</p></li>
+</ul>
+<p>To summarize, we use various tasks and benchmarks to evaluate LLMs’ task-specific performance. This evaluation covers understanding and generating human-like responses across various domains. However, evaluation doesn’t stop there. Safety evaluation is crucial for the responsible deployment of these models. Let’s look deeper.</p>
+</section>
+</section>
+<section id="safety-evaluation">
+<h2>Safety evaluation<a class="headerlink" href="#safety-evaluation" title="Link to this heading">#</a></h2>
+<p>Safety evaluations of LLMs are critical to ensure these models generate responses that are safe and ethical. These evaluations focus on various tasks that help identify and mitigate risks such as the generation of harmful content. The main aspects of safety evaluation include:</p>
+<ul class="simple">
+<li><p>Toxicity and harmful content</p></li>
+<li><p>Bias and fairness</p></li>
+<li><p>Truthfulness</p></li>
+<li><p>User privacy and data leakage</p></li>
+<li><p>Adversarial robustness</p></li>
+</ul>
+</section>
+<section id="toxicity-and-harmful-content">
+<h2>Toxicity and harmful content<a class="headerlink" href="#toxicity-and-harmful-content" title="Link to this heading">#</a></h2>
+<p>We evaluate a model’s ability to avoid generating toxic content. Toxicity includes:</p>
+<ul class="simple">
+<li><p>Hate speech</p></li>
+<li><p>Abusive language</p></li>
+<li><p>Content that may pose harm to individuals, groups, or society</p></li>
+<li><p>Content useful for planning attacks or violence</p></li>
+<li><p>Instructions for finding illegal content</p></li>
+</ul>
+<p><strong>Prompt:</strong></p>
+<p>I think people of race X are…</p>
+<p><strong>Answer:</strong></p>
+<p>Everyone deserves to be treated with respect and equality.</p>
+<p>Commonly used benchmarks to evaluate a model’s toxicity are:</p>
+<ul class="simple">
+<li><p><strong>RealToxicityPrompts [52]:</strong> Consists of about 100,000 prompts that the model must complete; then a toxicity score is automatically evaluated using PerspectiveAPI [53].</p></li>
+<li><p><strong>ToxiGen [54]:</strong> This benchmark tests a model’s ability to avoid generating discriminatory language.</p></li>
+<li><p><strong>HateCheck [55]:</strong> A suite of tests specifically for hate speech detection, covering various types of hate speech.</p></li>
+</ul>
+<p>Evaluating models using these benchmarks helps identify potential risks and improve the ability of models to generate safe and respectful content.</p>
+<p><strong>Bias and fairness</strong></p>
+<p>We assess the model’s responses for potential biases. This includes detecting gender, racial, and other biases in generated content.</p>
+<p>Typical benchmarks are:</p>
+<ul class="simple">
+<li><p><strong>CrowS-Pairs [56]:</strong> Contains paired sentences differing in only one attribute (e.g., gender) to test for bias. This dataset enables measuring biases in 9 categories: gender, religion, race/color, sexual orientation, age, nationality, disability, physical appearance, and socioeconomic status.</p></li>
+<li><p><strong>BBQ [57]:</strong> A dataset of hand-written question sets that target attested social biases against different socially relevant categories.</p></li>
+<li><p><strong>BOLD [58]:</strong> A large-scale dataset that consists of 23,679 English text generation prompts for bias benchmarking across five domains.</p></li>
+</ul>
+<p>These benchmarks help us ensure the model treats all demographic groups fairly and equally.</p>
+<p><strong>Truthfulness</strong></p>
+<p>We evaluate the LLM’s ability to generate truthful and factually accurate responses. This includes distinguishing between factual information and common misconceptions or falsehoods.</p>
+</section>
+<section id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<span class="target" id="id1"></span></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs/chapter_LLM_eval"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-evaluation-metrics">Overview of evaluation metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#traditional-evaluation">Traditional evaluation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-specific-evaluation">Task-specific evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-sense-reasoning">Common-sense reasoning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#world-knowledge">World knowledge</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-comprehension">Reading comprehension</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-reasoning">Mathematical reasoning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-benchmarks">Composite benchmarks</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#safety-evaluation">Safety evaluation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toxicity-and-harmful-content">Toxicity and harmful content</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">Bibliography</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuguang Yang
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -202,8 +202,8 @@
 <li class="toctree-l1"><a class="reference internal" href="reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Annotated Finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Annotated DPO Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Lab DPO Training</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -431,8 +431,8 @@ on this reward model. Image from <span id="id8">[<a class="reference internal" h
 <h3><span class="section-number">14.2.2. </span>Preference Data and Reward Modeling<a class="headerlink" href="#preference-data-and-reward-modeling" title="Link to this heading">#</a></h3>
 <p>After SFT process on positive example, the trained model has improved ability on producing human preferred output. <strong>But it often has the overfitting risk and does not generalize well to unseen input data distributions.</strong> Preference data collections aims to provide both positive and negative examples, which are then used to train a reward model to help guide the model to generalize.</p>
 <p>In the preference data collection process, human labelers assess different model outputs given the same prompt input and rank the output based on the human preference. The following table show the scoring standard used in the preference ranking process.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1587">
-<caption><span class="caption-number">Table 14.1 </span><span class="caption-text">How labeler evaluates the response quality</span><a class="headerlink" href="#id1587" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1591">
+<caption><span class="caption-number">Table 14.1 </span><span class="caption-text">How labeler evaluates the response quality</span><a class="headerlink" href="#id1591" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Metadata</p></th>
 <th class="head text-right"><p>Scale</p></th>

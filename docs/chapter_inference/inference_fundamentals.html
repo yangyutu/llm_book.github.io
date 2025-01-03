@@ -64,7 +64,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="21. Inference Acceleration (WIP)" href="inference_acceleration.html" />
-    <link rel="prev" title="19. *Annotated DPO Training" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html" />
+    <link rel="prev" title="19. *Lab DPO Training" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -202,8 +202,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Annotated Finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Annotated DPO Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Lab DPO Training</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="current nav bd-sidenav">
@@ -343,7 +343,12 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-k-and-top-p-sampling">20.2.2. Top-k and top-p sampling</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">20.3. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-step-decoding">20.3. Multi-step Decoding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#speculative-decoding">20.3.1. Speculative Decoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multihead-decoding-medusa">20.3.2. Multihead Decoding (Medusa)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">20.4. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -391,7 +396,8 @@ P\left(y_1, \ldots, y_t \mid \mathbf{x}\right)=\prod_{t=1}^N P\left(y_t \mid y_{
 <p><span class="caption-number">Fig. 20.1 </span><span class="caption-text">Greedy decoding demonstrations.</span><a class="headerlink" href="#chapter-inference-fig-inference-fundamentals-greedy-decoding-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>While being efficient, greedy search decoding often fails to produce sequences that have high probability. The reason is that the token at each step is chosen without considering its impact on the subsequent tokens. In practice, the model may produce repetitive output sequences. In the following, we will introduce beam search and sampling methods to mitigate the drawbacks of greedy decoding.</p>
+<p>While being efficient, greedy search decoding often fails to produce sequences that have high probability. The reason is that the token at each step is chosen without considering its impact on the subsequent tokens. In practice, the model may produce repetitive output sequences. This happens when the model identifies that certain words following each other with high probability. The root cause could be similar patterns are seen frequently during the pretraining stage.</p>
+<p>In the following, we will introduce beam search and sampling methods to mitigate the drawbacks of greedy decoding.</p>
 </section>
 <section id="beam-search-decoding">
 <span id="chapter-inference-sec-deconding-beam-search"></span><h3><span class="section-number">20.1.2. </span>Beam search decoding<a class="headerlink" href="#beam-search-decoding" title="Link to this heading">#</a></h3>
@@ -429,7 +435,7 @@ Y_{n}=\underset{Y_{n} \in \mathcal{Y}_t}{\operatorname{argmax}} \operatorname{Sc
 </section>
 <section id="controling-beam-search-behavior">
 <h4><span class="section-number">20.1.2.3. </span>Controling beam search behavior<a class="headerlink" href="#controling-beam-search-behavior" title="Link to this heading">#</a></h4>
-<p>Since beam-decoding is optimizing a user-defined score function, we can incorpoate various penalties or rewards into the score function to control the diversity, brevity, smoothness, etc. of the generated sequence<span id="id1">[<a class="reference internal" href="#id1496" title="Ashwin K Vijayakumar, Michael Cogswell, Ramprasath R Selvaraju, Qing Sun, Stefan Lee, David Crandall, and Dhruv Batra. Diverse beam search: decoding diverse solutions from neural sequence models. arXiv preprint arXiv:1610.02424, 2016.">VCS+16</a>]</span>.
+<p>Since beam-decoding is optimizing a user-defined score function, we can incorpoate various penalties or rewards into the score function to control the diversity, brevity, smoothness, etc. of the generated sequence<span id="id1">[<a class="reference internal" href="#id1498" title="Ashwin K Vijayakumar, Michael Cogswell, Ramprasath R Selvaraju, Qing Sun, Stefan Lee, David Crandall, and Dhruv Batra. Diverse beam search: decoding diverse solutions from neural sequence models. arXiv preprint arXiv:1610.02424, 2016.">VCS+16</a>]</span>.
 For example,</p>
 <ul class="simple">
 <li><p>Let <span class="math notranslate nohighlight">\(s\)</span> be the original score, we can add length penalty by using score <span class="math notranslate nohighlight">\(s\exp(-\alpha l)\)</span>, where <span class="math notranslate nohighlight">\(\alpha\)</span> is a scalar and <span class="math notranslate nohighlight">\(l\)</span> is the length of the generated sequence. <span class="math notranslate nohighlight">\(\alpha &gt; 0.0\)</span> means that the beam score is penalized by the sequence length; <span class="math notranslate nohighlight">\(\alpha  &lt; 0.0\)</span> is used to encourage the model to generate longer sequence.</p></li>
@@ -473,11 +479,38 @@ The temperature-controlled sampling randomly samples from the model output’s p
 <p>The top-<span class="math notranslate nohighlight">\(p\)</span> approach aims to adapt <span class="math notranslate nohighlight">\(k\)</span> heuristically based on the distribution shape. Let token <span class="math notranslate nohighlight">\(i=1,...,|V|\)</span> be sorted descendingly according to its probability <span class="math notranslate nohighlight">\(p_i\)</span>. The top-p sampling approach chooses a probability threshold <span class="math notranslate nohighlight">\(p_0\)</span> and sets k to be the lowest value such that <span class="math notranslate nohighlight">\(\sum_i (p_i) &gt; p_0\)</span>. If the next word distribution is narrow (i.e., the model is confident in its next-word prediction), then k will be lower and vice versa.</p>
 </section>
 </section>
+<section id="multi-step-decoding">
+<h2><span class="section-number">20.3. </span>Multi-step Decoding<a class="headerlink" href="#multi-step-decoding" title="Link to this heading">#</a></h2>
+<section id="speculative-decoding">
+<h3><span class="section-number">20.3.1. </span>Speculative Decoding<a class="headerlink" href="#speculative-decoding" title="Link to this heading">#</a></h3>
+<p><span id="id2">[<a class="reference internal" href="#id1571" title="Charlie Chen, Sebastian Borgeaud, Geoffrey Irving, Jean-Baptiste Lespiau, Laurent Sifre, and John Jumper. Accelerating large language model decoding with speculative sampling. arXiv preprint arXiv:2302.01318, 2023.">CBI+23</a>, <a class="reference internal" href="#id1570" title="Yaniv Leviathan, Matan Kalman, and Yossi Matias. Fast inference from transformers via speculative decoding. In International Conference on Machine Learning, 19274–19286. PMLR, 2023.">LKM23</a>, <a class="reference internal" href="#id1572" title="Xupeng Miao, Gabriele Oliaro, Zhihao Zhang, Xinhao Cheng, Zeyu Wang, Zhengxin Zhang, Rae Ying Yee Wong, Alan Zhu, Lijie Yang, Xiaoxiang Shi, and others. Specinfer: accelerating generative large language model serving with tree-based speculative inference and verification. arXiv preprint arXiv:2305.09781, 2023.">MOZ+23</a>]</span></p>
+</section>
+<section id="multihead-decoding-medusa">
+<h3><span class="section-number">20.3.2. </span>Multihead Decoding (Medusa)<a class="headerlink" href="#multihead-decoding-medusa" title="Link to this heading">#</a></h3>
+<p><span id="id3">[<a class="reference internal" href="#id1569" title="Tianle Cai, Yuhong Li, Zhengyang Geng, Hongwu Peng, Jason D Lee, Deming Chen, and Tri Dao. Medusa: simple llm inference acceleration framework with multiple decoding heads. arXiv preprint arXiv:2401.10774, 2024.">CLG+24</a>]</span></p>
+</section>
+</section>
 <section id="bibliography">
-<h2><span class="section-number">20.3. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id2">
+<h2><span class="section-number">20.4. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id4">
 <div role="list" class="citation-list">
-<div class="citation" id="id1496" role="doc-biblioentry">
+<div class="citation" id="id1569" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">CLG+24</a><span class="fn-bracket">]</span></span>
+<p>Tianle Cai, Yuhong Li, Zhengyang Geng, Hongwu Peng, Jason D Lee, Deming Chen, and Tri Dao. Medusa: simple llm inference acceleration framework with multiple decoding heads. <em>arXiv preprint arXiv:2401.10774</em>, 2024.</p>
+</div>
+<div class="citation" id="id1571" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">CBI+23</a><span class="fn-bracket">]</span></span>
+<p>Charlie Chen, Sebastian Borgeaud, Geoffrey Irving, Jean-Baptiste Lespiau, Laurent Sifre, and John Jumper. Accelerating large language model decoding with speculative sampling. <em>arXiv preprint arXiv:2302.01318</em>, 2023.</p>
+</div>
+<div class="citation" id="id1570" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">LKM23</a><span class="fn-bracket">]</span></span>
+<p>Yaniv Leviathan, Matan Kalman, and Yossi Matias. Fast inference from transformers via speculative decoding. In <em>International Conference on Machine Learning</em>, 19274–19286. PMLR, 2023.</p>
+</div>
+<div class="citation" id="id1572" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">MOZ+23</a><span class="fn-bracket">]</span></span>
+<p>Xupeng Miao, Gabriele Oliaro, Zhihao Zhang, Xinhao Cheng, Zeyu Wang, Zhengxin Zhang, Rae Ying Yee Wong, Alan Zhu, Lijie Yang, Xiaoxiang Shi, and others. Specinfer: accelerating generative large language model serving with tree-based speculative inference and verification. <em>arXiv preprint arXiv:2305.09781</em>, 2023.</p>
+</div>
+<div class="citation" id="id1498" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">VCS+16</a><span class="fn-bracket">]</span></span>
 <p>Ashwin K Vijayakumar, Michael Cogswell, Ramprasath R Selvaraju, Qing Sun, Stefan Lee, David Crandall, and Dhruv Batra. Diverse beam search: decoding diverse solutions from neural sequence models. <em>arXiv preprint arXiv:1610.02424</em>, 2016.</p>
 </div>
@@ -522,7 +555,7 @@ The temperature-controlled sampling randomly samples from the model output’s p
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">19. </span>*Annotated DPO Training</p>
+        <p class="prev-next-title"><span class="section-number">19. </span>*Lab DPO Training</p>
       </div>
     </a>
     <a class="right-next"
@@ -565,7 +598,12 @@ The temperature-controlled sampling randomly samples from the model output’s p
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-k-and-top-p-sampling">20.2.2. Top-k and top-p sampling</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">20.3. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-step-decoding">20.3. Multi-step Decoding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#speculative-decoding">20.3.1. Speculative Decoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multihead-decoding-medusa">20.3.2. Multihead Decoding (Medusa)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">20.4. Bibliography</a></li>
 </ul>
   </nav></div>
 

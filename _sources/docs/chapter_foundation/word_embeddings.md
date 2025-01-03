@@ -254,11 +254,11 @@ Solving Skip-gram optimization [{prf:ref}`chapter_foundation_word_embedding_def_
 Note that negative sampling will result in incorrect normalization since we are not summing over the vast majority of the vocabulary. In practice, this approximation that turns out to work well. Further, the computational cost to update weight parameters goes from $O(D\cdot |V|)$ to $O(D\cdot k)$.
 
 
-In the optimization, gradient descent steps tend to pull embeddings of frequently co-occurring words closer (i.e., to make $v_i\cdot v_j$ have a larger value) while push embeddings of rarely co-occurring words away (i.e.,  to make $v_i\cdot v_j$ have a smaller value). Because frequent words are more frequently used as positive examples, it is justified to **pick more commonly seen words with larger probability as negative samples** to compensate. This is similar to the idea of **hard negative mining** in contrastive learning. In this way, embeddings of commonly seen words will be encouraged to stay away from other commonly seen but irrelevant words. In the study, the negative samples $w$ are empirically sampled from 
+In the optimization, gradient descent steps tend to pull embeddings of frequently co-occurring words closer (i.e., to make $v_i\cdot v_j$ have a larger value) while push embeddings of rarely co-occurring words away (i.e.,  to make $v_i\cdot v_j$ have a smaller value). Because frequent words are more frequently used as positive examples, it is justified to **pick more commonly seen words with larger probability as negative samples** to compensate. This is similar to the idea of **hard negative mining** in contrastive learning. In this way, **embeddings of commonly seen words will be encouraged to stay away from other commonly seen but irrelevant words.** In the study, the negative samples $w$ are empirically sampled from 
 
 $$P_n(w) = \frac{f(w)^{3/4}}{\sum_{w'\in V} f(w')^{3/4}},$$
 
-where $f(w)$ is the frequency of word $w$ in the training corpus.  This distribution is found to significantly outperform uni-gram or uniform distribution {cite:p}`mikolov2013distributed`. 
+where $f(w)$ is the frequency of word $w$ in the training corpus, and $P_n(w)$ is a montonic function on $w$.  This distribution is found to significantly outperform uniform distribution {cite:p}`mikolov2013distributed`. 
 
 Finally, we have the modified optimization for Skip-gram model given by
 
@@ -281,22 +281,37 @@ $$
 where $f(w_i)$ is the frequency of word $w_i$ and $t$ is a chosen threshold, typically around $10^{-5}$. Clearly, the larger the frequency of a word, the larger the probability of being discarded.
 
 (chapter_foundation_word_embedding_NoiseContrastiveEstimation)=
-### Noise Contrastive Estimation}
+### Noise Contrastive Estimation
 An alternative approach to the above sampled Softmax loss formulation is using Noise Contrastive Estimation (NCE). NCE can be viewed as an optimization based on binary classification using logistic regression {cite:p}`goldberg2014word2vec` that **ranks observed data above noise**. The class labels are positive pairs, which are formed by each word and the word in its context windows, and negative pairs, which are formed by each word and negatively sampled words. NCE can be shown to approximately maximize the log probability of the Softmax {cite:p}`collobert2008unified`.
 
 Denote $D$ as the set of positive pairs with label $y=1$ and $D'$ the set of negative pairs with label $y=0$. The NCE formulation minimize the following binary cross-entropy given by
 
 $$
 \begin{align}
-&	\operatorname{argmin}_{\theta}  -\sum_{(w, c) \in D\cup D'} y\log \sigma\left(v_{c} \cdot v_{w}\right)+ (1 - y) \log \sigma\left(-v_{c} \cdot v_{w}\right) \\
-&	\operatorname{argmin}_{\theta} -\sum_{(w, c) \in D} \log \sigma\left(v_{c} \cdot v_{w}\right)+\sum_{(w, c) \in D^{\prime}} \log \sigma\left(-v_{c} \cdot v_{w}\right)
+&	\operatorname{argmin}_{\theta}  -\left(\sum_{(w, c) \in D\cup D'} y\log \sigma\left(v_{c} \cdot v_{w}\right)+ (1 - y) \log \sigma\left(-v_{c} \cdot v_{w}\right)\right) \\
+&	\operatorname{argmin}_{\theta} -\sum_{(w, c) \in D} \log \sigma\left(v_{c} \cdot v_{w}\right)-\sum_{(w, c) \in D^{\prime}} \log \sigma\left(-v_{c} \cdot v_{w}\right)
 \end{align}
 $$
 
+### Limitations and Challenges
+
+Word2Vec was a revolutionary word embedding technique that represents words as numerical vectors, capturing semantic relationships between them. However, it also have some limitations.
+
+**Out-of-Vocabulary (OOV) words**: One of the most significant limitations of Word2Vec, is its inability to handle words it hasn't seen during training. When the model encounters an OOV word, it cannot create a meaningful vector for it. 
+
+**Lack of sub-word level understanding**: Word2Vec treats each word as a distinct unit, disregarding any sub-word level information. This can be a major drawback, especially for languages with rich morphology, where words have complex structures and inflections. For example, the model may not accurately capture the relationship between "play," "playing," and "played." This limitation can hinder the model's ability to understand the nuances of language and affect its performance in tasks like machine translation or text generation.
+
+**Difficulty in handling polysemy**: Polysemy refers to the phenomenon where a single word has multiple meanings (e.g., bank in financial banking vs river bank). Word2Vec assigns a single vector to each word, irrespective of its different senses. 
+
+**Limited contextual understanding**: While Word2Vec considers the surrounding words of a target word, it often struggles to capture the broader context of a sentence or document. This is because only a limited context window is used in constructing training data, which may not be sufficient to capture long-range dependencies and complex relationships between words.   
+
+**Insensitive to word order**: Word2Vec models do not fully capture the nuances of word order. Word order information is not considered in both the Skip-gram and the CBOW model loss function. 
+
+**Rare words**: While the Skip-gram model is generally better at handling infrequent words than the CBOW model , it may still struggle to create accurate representations for rare words if the training data is limited.
 
 ### Visualization
-We can visualize the word embedding space by projecting onto a 2D plane using two leading principal components [{numref}`chapter_foundation_fig_word_embedding_word2Vec_visualization'].
-The neighboring words of *apple* include *macintosh, microsoft, ibm, Windows, mac, intel, computers* as well as *wine, juice*, which capture to some extent the two common meanings in the word *apple*.  This example also reveals the drawback of the word2vec approach, where we associate each token with a fixed/static embedding irrespective of context. For example, *apple* in *I like to eat an apple* vs *Apple is great company* means two different things and have the same embedding.
+We can visualize the word embedding space by projecting onto a 2D plane using two leading principal components [{numref}`chapter_foundation_fig_word_embedding_word2Vec_visualization`].
+The neighboring words of *apple* include *macintosh, microsoft, ibm, Windows, mac, intel, computers* as well as *wine, juice*, which capture to some extent the two common meanings in the word *apple*.  This example also reveals the **drawback of the word2vec approach in representing multi-meaning words (known as polysemy)**, where we associate each token with a fixed/static embedding irrespective of context. For example, *apple* in *I like to eat an apple* vs *Apple is great company* means two different things and have the same embedding.
 
 Another example is the word *bank*, which has two contrasting meanings in the following two sentences:
 * *We went to the river bank*.
@@ -369,7 +384,10 @@ $$\frac{1}{T} \sum_{t=1}^{T} \sum_{-c \leq j \leq c, j \neq 0} \log p\left(w_{t+
 where we have assumed conditional independence given word $w_t$. 
 Further applying the negative sampling technique [{ref}`chapter_foundation_word_embedding_NoiseContrastiveEstimation`], we arrive at the approximate loss function given by
 
-$$\sum_{t=1}^T \log \left(1+e^{-s\left(w_{t}, w_{c}\right)}\right)+\sum_{n \in \mathcal{N}_{t, c}} \log \left(1+e^{s\left(w_{t}, n\right)}\right).$$
+$$
+\begin{align*} L &= - \sum_{t=1}^T \left(\log \sigma(s(w_t,w_c)) + \sum_{n \in \mathcal{N}_{t, c}} \log \sigma(-s(w_t, n))\right) \\
+& =- \sum_{t=1}^T \left(\log \left(1+e^{-s\left(w_{t}, w_{c}\right)}\right)+\sum_{n \in \mathcal{N}_{t, c}} \log \left(1+e^{s\left(w_{t}, n\right)}\right)\right).
+\end{align*}$$
 
 Here the score function is computed via $s(w_t, w_c) = v_t' \cdot v_c$, where $v_t'$ is the word vector in the input layer and $v_c$ is the word vector in the output layer.
 
@@ -377,8 +395,8 @@ In the subword model, Each word $w$ is represented as a bag of character
 $n$-gram. Word boundary symbols $<$ and $>$ are dded
 at the beginning and end of words to distinguish prefixes and suffixes from other character
 sequences. For example, the word *where* will be presented as by 3-grams of 
-\textit{<wh, whe, her, ere, re>
-}
+*<wh, whe, her, ere, re>*
+
 
 In the subword model, we have a vocabulary $V$ of regular words as well as a vocabulary of $n$-grams of size $G$. Given a word $w,$ whose $n$-gram decomposition is $\mathcal{G}_{w} \subset\{1, \ldots, G\}$, we let the embedding of $w$ be the sum of the vector representations of its $n$ -grams. That is
 

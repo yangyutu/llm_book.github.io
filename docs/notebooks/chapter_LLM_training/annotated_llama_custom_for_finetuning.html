@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>18. *Lab: Annotated Finetuning &#8212; LLM Foundations</title>
+    <title>18. *Lab: Finetuning &#8212; LLM Foundations</title>
   
   
   
@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="19. Decoding" href="../../chapter_inference/inference_fundamentals.html" />
+    <link rel="next" title="19. *Lab DPO Training" href="annotated_llama_custom_for_DPO.html" />
     <link rel="prev" title="17. *Lab: LLM Pretraining" href="annotated_pretraining.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -191,8 +191,8 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MOE Sparse Architectures (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/annotated_llama_custom.html">11. *Lab: Annotated Minimal LLama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/annotated_llama_custom.html">11. *Lab: Minimal LLama</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="current nav bd-sidenav">
@@ -202,22 +202,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">18. *Lab: Annotated Finetuning</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">18. *Lab: Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="annotated_llama_custom_for_DPO.html">19. *Lab DPO Training</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_inference/inference_fundamentals.html">19. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_inference/inference_acceleration.html">20. Inference Acceleration (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_inference/inference_fundamentals.html">20. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_inference/inference_acceleration.html">21. Inference Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/basic_prompt.html">21. Basic Prompting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/advanced_prompt.html">22. Advanced Prompting Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/basic_prompt.html">22. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/advanced_prompt.html">23. Advanced Prompting Techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/basic_rag.html">23. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/advanced_rag.html">24. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/basic_rag.html">24. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/advanced_rag.html">25. Advanced RAG (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
 <ul class="nav bd-sidenav">
@@ -225,8 +226,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/information_retrieval_fundamentals.html">25. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/application_LLM_in_IR.html">26. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/information_retrieval_fundamentals.html">26. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -317,7 +318,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>*Lab: Annotated Finetuning</h1>
+    <h1>*Lab: Finetuning</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -348,8 +349,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="lab-annotated-finetuning">
-<h1><span class="section-number">18. </span>*Lab: Annotated Finetuning<a class="headerlink" href="#lab-annotated-finetuning" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="lab-finetuning">
+<h1><span class="section-number">18. </span>*Lab: Finetuning<a class="headerlink" href="#lab-finetuning" title="Link to this heading">#</a></h1>
 <p>Here we present a simplified llama implementation based <a class="reference external" href="https://github.com/huggingface/transformers/blob/main/src/transformers/models/llama/modeling_llama.py#L731">Huggingface implementation</a> to illustrate different components on the Llama decoder model.</p>
 <p>The key components are</p>
 <ul class="simple">
@@ -3124,11 +3125,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="../../chapter_inference/inference_fundamentals.html"
+       href="annotated_llama_custom_for_DPO.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">19. </span>Decoding</p>
+        <p class="prev-next-title"><span class="section-number">19. </span>*Lab DPO Training</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

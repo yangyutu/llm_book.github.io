@@ -1,16 +1,18 @@
 (chapter_foundation_sec_bert)=
 # BERT
-## BERT Architecture
+## Contextual Embedding
 
-In natural language processing, although we have seen many successful end-to-end systems , they usually require large scale training examples and the systems require a complete retrain for a different task. Alternatively, we can first learn a good representation of word sequences that not task-specific but would be likely to facilitate downstream specific tasks. Learning a good representation in prior from broadly available unlabeled data also resembles how human perform various intelligent tasks. 
-In the context of natural languages, a good representation should capture the implicit linguistic rules, semantic meaning, syntactic structures, and even basic knowledge implied by the text data.
+In natural language processing, although we have seen many successful end-to-end systems , they usually require large scale training examples and the systems require a complete retrain for a different task. Alternatively, we can first learn a **good representation of word sequences that not task-specific but would be likely to facilitate downstream specific tasks**. Learning a good representation in prior from broadly available unlabeled data also resembles how human perform various intelligent tasks. In the context of natural languages, a good representation should capture the implicit linguistic rules, semantic meaning, syntactic structures, and even basic knowledge implied by the text data.
 
-With a good representation, the downstream tasks can be significantly sped up by fining training the system on top of the representation. Therefore, the process of a learning a good representation from unlabeled data is also known as pre-training a language model.
+With a good representation, the downstream tasks can be significantly sped up by fining tuning the system on top of the representation. Therefore, the process of a learning a good representation from unlabeled data is also known as pre-training a language model.
 
-Pre-training language models have several advantages: first, it enable the learning of universal language representations that suit different downstream tasks; second, it usually gives better performance in the downstream tasks after fine-tuning on a target task; finally, we can also interpret pre-training as a way of regularization to avoid overfitting on small data set.
+Pre-training language models have several advantages: 
+* first, it enable the learning of universal language representations that suit different downstream tasks; 
+* second, it usually gives better performance in the downstream tasks after fine-tuning on a target task; 
+* finally, we can also interpret pre-training as a way of regularization to avoid overfitting on small data set.
 
 
-In {ref}`chapter_foundation_sec_word_embedding`, we discussed different approaches (e.g., Word2Vec, GloVe) to learning a low-dimensional dense vector representation of word tokens. One significant drawback of these representations is context-independent or context-free static embedding, meaning the embedding of a word token is fixed no matter the context it is in. By contrast, in natural language, the meaning of a word is usually context-dependent. For example, in sentences  *I like to have an apple since I am thirty* vs. *I like to have an Apple to watch fun movies*, the word *apple* mean the fruit apple and the electronic device, respectively.
+In {ref}`chapter_foundation_sec_word_embedding`, we discussed different approaches (e.g., **Word2Vec, GloVe**) to learning a low-dimensional dense vector representation of word tokens. **One significant drawback of these representations is context-independent or context-free static embedding, meaning the embedding of a word token is fixed no matter the context it is in**. By contrast, in natural language, the meaning of a word is usually context-dependent. For example, in sentences  *I like to have an apple since I am thirty* vs. *I like to have an Apple to watch fun movies*, the word *apple* mean the fruit apple and the electronic device, respectively.
 
 There has been significant efforts directed to learning contextual embedding of word sequences{cite:p}`Qiu2020PreTrained, liu2020survey`. A contextual embedding encoder usually operates at the sequence level. As shown in the following, given
 a non-contextual word  embedding sequence $x_{1}, x_{2}, \cdots, x_{T}$, the contextual embeddings of the whole sequence are obtained simultaneously via 

@@ -202,8 +202,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Annotated Finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Annotated DPO Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Lab DPO Training</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -341,7 +341,8 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-head-attention-mha">9.4.1. Multi-Head Attention (MHA)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-query-attention-mqa">9.4.2. Multi Query Attention (MQA)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grouped-query-attention-gqa">9.4.3. Grouped Query Attention (GQA)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sliding-window-attention">9.4.4. Sliding Window Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-head-latent-attention-mla">9.4.4. Multi-Head Latent Attention (MLA)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sliding-window-attention">9.4.5. Sliding Window Attention</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#position-encoding-and-long-context">9.5. Position Encoding and Long Context</a><ul class="nav section-nav flex-column">
@@ -415,10 +416,10 @@ document.write(`
 <h2><span class="section-number">9.2. </span>Layer Normalization<a class="headerlink" href="#layer-normalization" title="Link to this heading">#</a></h2>
 <section id="layer-normalization-basics">
 <h3><span class="section-number">9.2.1. </span>Layer normalization basics<a class="headerlink" href="#layer-normalization-basics" title="Link to this heading">#</a></h3>
-<p>The LayerNorm was originally proposed to overcome the  in combating the internal covariate shift issue <span id="id4">[<a class="reference internal" href="#id1557" title="Sergey Ioffe and Christian Szegedy. Batch normalization: accelerating deep network training by reducing internal covariate shift. 2015. URL: https://arxiv.org/abs/1502.03167, arXiv:1502.03167.">IS15</a>]</span>, where a layer’s input distribution changes as previous layers are updated, causing the difficulty of traning deep models.</p>
-<p>The key idea in LayerNorm is to normalize the input to the neural network layer via</p>
+<p>The LayerNorm was originally proposed to overcome the internal covariate shift issue <span id="id4">[<a class="reference internal" href="#id1557" title="Sergey Ioffe and Christian Szegedy. Batch normalization: accelerating deep network training by reducing internal covariate shift. 2015. URL: https://arxiv.org/abs/1502.03167, arXiv:1502.03167.">IS15</a>]</span>, where a layer’s input distribution changes as previous layers are updated, causing the difficulty of traning deep models.</p>
+<p>The key idea in LayerNorm is to normalize the input distribution to the neural network layer via</p>
 <ul class="simple">
-<li><p><strong>re-centering</strong> by subtracting the mean</p></li>
+<li><p><strong>re-centering</strong> by subtracting the mean;</p></li>
 <li><p><strong>re-scaling</strong> by dividing the standard deviation.</p></li>
 </ul>
 <p>The calculation formula for an input vector <span class="math notranslate nohighlight">\(x\)</span> with <span class="math notranslate nohighlight">\(H\)</span> feature dimension is given by</p>
@@ -437,12 +438,12 @@ document.write(`
 <div class="proof remark admonition" id="remark-0">
 <p class="admonition-title"><span class="caption-number">Remark 9.1 </span> (Why we need <span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>)</p>
 <section class="remark-content" id="proof-content">
-<p><span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> are parameters used to enhance the model’s learning capacity. As the normalization operation is used to stablize the learning by standardizing the data distribution, it also removes useful feature distributions and decreases the model’s learning capacity. With learnable shift and scaling parameters, we offset these negative impacts of normalization.</p>
+<p><span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> are parameters used to enhance the model’s learning capacity. As the normalization operation is used to stablize the learning by standardizing the data distribution, it also smooths out useful feature distributions and decreases the model’s learning capacity. With learnable shift and scaling parameters, we offset these negative impacts of normalization.</p>
 </section>
 </div></section>
 <section id="rms-norm-root-mean-square-norm">
 <h3><span class="section-number">9.2.2. </span>RMS Norm (Root Mean Square Norm)<a class="headerlink" href="#rms-norm-root-mean-square-norm" title="Link to this heading">#</a></h3>
-<p>A common hypothesis on why layer normalization can help stalize training and boost model convergence is because of the re-centering and re-scaling of both inputs and weight matrix. <strong>RMSNorm</strong> <span id="id5">[<a class="reference internal" href="#id1556" title="Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: https://arxiv.org/abs/1910.07467, arXiv:1910.07467.">ZS19</a>]</span> is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. RMSNorm hypothesizes that only the re-scaling component is necessary and proposes the following simplified normalization formula</p>
+<p><strong>RMSNorm</strong> <span id="id5">[<a class="reference internal" href="#id1556" title="Biao Zhang and Rico Sennrich. Root mean square layer normalization. 2019. URL: https://arxiv.org/abs/1910.07467, arXiv:1910.07467.">ZS19</a>]</span> is a technique aiming to achieve similar model training stablizing benefit with a reduced computational overhead compared to LayerNorm. <strong>RMSNorm hypothesizes that only the re-scaling component is necessary</strong> and proposes the following simplified normalization formula</p>
 <div class="math notranslate nohighlight" id="equation-chapter-llm-arch-rms-nomalization-formula">
 <span class="eqno">(9.2)<a class="headerlink" href="#equation-chapter-llm-arch-rms-nomalization-formula" title="Link to this equation">#</a></span>\[
 \operatorname{RMSNorm}(x)=\frac{x}{\sqrt{\frac{1}{H} \sum_{i=1}^H x_i^2}} \cdot \gamma
@@ -457,7 +458,7 @@ document.write(`
 <div class="sd-card-title sd-font-weight-bold docutils">
 <p style="text-align: center;"><span style="background-color: #e4ac94"><strong>Computational complexity</strong></span></p></div>
 <p class="sd-card-text"><strong>LayerNorm</strong> involves both mean and variance calculation for each normalization layer, which brings sizable computational cost for high-dimensional inputs in LLM (e.g., GPT-3 <span class="math notranslate nohighlight">\(d_model = 12288\)</span>).
-<strong>RMSNorm</strong>, on the other hand, only keeps the variance calculation, reducing the normalization cost by half and increses efficiency</p>
+<strong>RMSNorm</strong>, on the other hand, only keeps the variance calculation, reducing the normalization cost by half.</p>
 </div>
 </div>
 </div>
@@ -479,12 +480,12 @@ document.write(`
 </section>
 <section id="layer-normalization-position">
 <h3><span class="section-number">9.2.3. </span>Layer normalization position<a class="headerlink" href="#layer-normalization-position" title="Link to this heading">#</a></h3>
-<p>It has been shown that <span id="id7">[<a class="reference internal" href="../chapter_foundation/transformers.html#id433" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span> the position of normalization layer has an impact on model training, covergence, and final performance.</p>
+<p>It has been shown in <span id="id7">[<a class="reference internal" href="../chapter_foundation/transformers.html#id433" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span> that the position of normalization layer has an impact on model training, covergence, and final performance.</p>
 <p>The <strong>Post-Norm</strong> (as in the vanilla Transformer architecture) can stablize the variance of the output by applying the LayerNorm after the residual connection, which is given by</p>
 <div class="math notranslate nohighlight">
 \[\operatorname{PostNorm Output} = \operatorname{LayerNorm}(X + \operatorname{SubLayer}(X))\]</div>
-<p>Here the SubLayer could be the FeedForward Layer or the Attention Layer.</p>
-<p>The <strong>Pre-Norm</strong> normalize the input to SubLayers, which is given by</p>
+<p>Here the SubLayer refers to either the FeedForward Layer or the Attention Layer.</p>
+<p>The <strong>Pre-Norm</strong> normalizes the input to each SubLayers, which is given by</p>
 <div class="math notranslate nohighlight">
 \[\operatorname{PreNorm Output} = X + \operatorname{SubLayer}(\operatorname{LayerNorm}(X)).\]</div>
 <p>It is shown in <span id="id8">[<a class="reference internal" href="../chapter_foundation/transformers.html#id433" title="Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei Wang, and Tieyan Liu. On layer normalization in the transformer architecture. In International Conference on Machine Learning, 10524–10533. PMLR, 2020.">XYH+20</a>]</span> that the gradients at the last layer <span class="math notranslate nohighlight">\(L\)</span> satisfy the following condition:</p>
@@ -568,14 +569,14 @@ a small/tiny learning rate, and then gradually increases it to a pre-defined max
 </section>
 <section id="nonlinearity-in-ffn">
 <h2><span class="section-number">9.3. </span>Nonlinearity in FFN<a class="headerlink" href="#nonlinearity-in-ffn" title="Link to this heading">#</a></h2>
-<p>As introduced in <a class="reference internal" href="../chapter_foundation/transformers.html#chapter-foundation-sec-pretrained-lm-transformer-arch-ffn"><span class="std std-ref">Pointwise FeedForward Layer</span></a>, FFN block plays a critical role in improving model capacity via nonlinear activations.</p>
-<p>With <span class="math notranslate nohighlight">\(x\)</span> is the input vector, <span class="math notranslate nohighlight">\(W_1, b_1\)</span> and <span class="math notranslate nohighlight">\(W_2, b_2\)</span> are weight matrices and biases for the two layers, the FFN block is given by</p>
+<p>As introduced in <a class="reference internal" href="../chapter_foundation/transformers.html#chapter-foundation-sec-pretrained-lm-transformer-arch-ffn"><span class="std std-ref">Pointwise FeedForward Layer</span></a>, the FFN block plays a critical role in improving model capacity via nonlinear activations.</p>
+<p>Let <span class="math notranslate nohighlight">\(x\)</span> be the input vector, <span class="math notranslate nohighlight">\(W_1, b_1\)</span> and <span class="math notranslate nohighlight">\(W_2, b_2\)</span> be the weight matrices and biases for the two layers, the FFN block is given by</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{FFN}(x)=f(xW_1+b_1)W_2+b_2
+\operatorname{FFN}(x)=f(xW_1+b_1)W_2+b_2,
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(f\)</span> is the activation function.</p>
-<p>While in the original Transformer paper ReLU is used, many other different activations are explored. In the latest LLMs, GLU activations <span id="id10">[<a class="reference internal" href="#id56" title="Noam Shazeer. Glu variants improve transformer. 2020. URL: https://arxiv.org/abs/2002.05202, arXiv:2002.05202.">Sha20</a>]</span> are widely adopted and its variations SwiGLU are also widely used to achieve better performance in practice.</p>
+<p>While ReLU is used in the vanilla Transformer model, many other different nonlinear activations are explored. In the latest LLMs, GLU activations <span id="id10">[<a class="reference internal" href="#id56" title="Noam Shazeer. Glu variants improve transformer. 2020. URL: https://arxiv.org/abs/2002.05202, arXiv:2002.05202.">Sha20</a>]</span> are widely adopted and its variations SwiGLU are also widely used to achieve better performance in practice.</p>
 <p><strong>Gated Linear Units (GLU)</strong> is a neural network layer defined as the componentwise product of two linear transformations of the input, one of which is sigmoid-activated.</p>
 <div class="math notranslate nohighlight" id="equation-chapter-llm-arch-eq-glu">
 <span class="eqno">(9.3)<a class="headerlink" href="#equation-chapter-llm-arch-eq-glu" title="Link to this equation">#</a></span>\[\operatorname{GLU}(x; W, V, b)=\sigma(xW+b) \otimes xV
@@ -587,16 +588,16 @@ a small/tiny learning rate, and then gradually increases it to a pre-defined max
 \operatorname{FFN}_{GLU}(x; W_1,W_2,V, b_1, b_2)=(\sigma(xW_1 + b) \otimes xV)W_2 + b_2
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(W_1, W_2, V\)</span> are weight matrices. Note that the FFN layer with GLU have three weight matrices, as opposed to two for the original FFN.</p>
-<p>One variant of GLU is <strong>Swish</strong> <span id="id11">[<a class="reference internal" href="#id57" title="Prajit Ramachandran, Barret Zoph, and Quoc V. Le. Searching for activation functions. 2017. URL: https://arxiv.org/abs/1710.05941, arXiv:1710.05941.">RZL17</a>]</span>, which is given by</p>
+<p>One important variant of GLU is <strong>Swish</strong> <span id="id11">[<a class="reference internal" href="#id57" title="Prajit Ramachandran, Barret Zoph, and Quoc V. Le. Searching for activation functions. 2017. URL: https://arxiv.org/abs/1710.05941, arXiv:1710.05941.">RZL17</a>]</span>, which is given by</p>
 <div class="math notranslate nohighlight" id="equation-chapter-llm-arch-eq-swish">
 <span class="eqno">(9.5)<a class="headerlink" href="#equation-chapter-llm-arch-eq-swish" title="Link to this equation">#</a></span>\[
 \operatorname{Swish}_\beta(x)=x \cdot \sigma(\beta x)
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\beta\)</span> is a hyperparameter for Swish. Compared to GLU, Swish is a self-gated activation function. As showed in <a class="reference internal" href="#chapter-foundation-fig-pretrained-llm-activation-swish"><span class="std std-numref">Fig. 9.3</span></a>, Swish has the following appealing properites:</p>
+<p>where <span class="math notranslate nohighlight">\(\beta\)</span> is a hyperparameter for Swish. Compared to GLU, <strong>Swish is a self-gated activation function</strong>. As showed in <a class="reference internal" href="#chapter-foundation-fig-pretrained-llm-activation-swish"><span class="std std-numref">Fig. 9.3</span></a>, Swish has the following appealing properites:</p>
 <ul class="simple">
 <li><p>Smooth derivative leading to better gradient flow, while ReLU is nonsmooth at <span class="math notranslate nohighlight">\(x=0\)</span></p></li>
 <li><p>Non-monotonicity: The non-monotonic nature of Swish allows it to capture more complex relationships in the data</p></li>
-<li><p>Unbounded above and bounded below, where as GLU is bounded above and below</p></li>
+<li><p>Unbounded above and bounded below, <strong>whereas GLU is bounded above and below</strong></p></li>
 <li><p>Non-zero gradient for negative inputs: For very negative inputs, Swish has a small but non-zero gradient, unlike ReLU which has a zero gradient. This can help mitigate the “dying ReLU” problem.</p></li>
 <li><p>Self-gating property allows the network to learn when to emphasize or de-emphasize certain features.</p></li>
 </ul>
@@ -607,7 +608,7 @@ a small/tiny learning rate, and then gradually increases it to a pre-defined max
 <p><span class="caption-number">Fig. 9.3 </span><span class="caption-text">(Left) The Swish activation function. (Right)  First derivatives of Swish. Image from <span id="id12">[<a class="reference internal" href="#id57" title="Prajit Ramachandran, Barret Zoph, and Quoc V. Le. Searching for activation functions. 2017. URL: https://arxiv.org/abs/1710.05941, arXiv:1710.05941.">RZL17</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-pretrained-llm-activation-swish" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>If we use Swish function in the GLU, we can obtain the following variations:</p>
+<p>If we use Swish function in the GLU, we can obtain the following <strong>SwiGLU</strong> and <strong>SwiGLU-FFN</strong> variations:</p>
 <div class="math notranslate nohighlight" id="equation-chapter-llm-arch-eq-ffn-swiglu">
 <span class="eqno">(9.6)<a class="headerlink" href="#equation-chapter-llm-arch-eq-ffn-swiglu" title="Link to this equation">#</a></span>\[\begin{split}
 SwiGLU=\text{Swish}_1(xW) \otimes xV \\
@@ -639,8 +640,8 @@ SwiGLU=\text{Swish}_1(xW) \otimes xV \\
 <h2><span class="section-number">9.4. </span>Self-attention Variants<a class="headerlink" href="#self-attention-variants" title="Link to this heading">#</a></h2>
 <section id="multi-head-attention-mha">
 <h3><span class="section-number">9.4.1. </span>Multi-Head Attention (MHA)<a class="headerlink" href="#multi-head-attention-mha" title="Link to this heading">#</a></h3>
-<p>Multi-Head Attention [detailed in <a class="reference internal" href="../chapter_foundation/transformers.html#chapter-foundation-sec-pretrained-lm-transformer-arch-mha"><span class="std std-ref">Multihead Attention with Masks</span></a>] is the foundation of many transformer-based models, including the original transformer architecture.</p>
-<p>The computation of an <span class="math notranslate nohighlight">\(H\)</span>-headed MHA given input <span class="math notranslate nohighlight">\(X\in \mathbb{R}^{n\times d_{model}}\)</span> matrix and <span class="math notranslate nohighlight">\(H\)</span> projection matrices <span class="math notranslate nohighlight">\(W^Q_i, W^K_i, W^V_i \in\mathbb{R}^{d_{model}}\times d_{head}\)</span>, <span class="math notranslate nohighlight">\(i\in \{1,...,H\}\)</span> is given by</p>
+<p>Multi-Head Attention [detailed in <a class="reference internal" href="../chapter_foundation/transformers.html#chapter-foundation-sec-pretrained-lm-transformer-arch-mha"><span class="std std-ref">Multihead Attention with Masks</span></a>] is the foundation of many Transformer-based models, including the original Transformer architecture.</p>
+<p>The computation of an <span class="math notranslate nohighlight">\(H\)</span>-headed MHA given input <span class="math notranslate nohighlight">\(X\in \mathbb{R}^{n\times d_{model}}\)</span> matrix and <span class="math notranslate nohighlight">\(H\)</span> projection matrices <span class="math notranslate nohighlight">\(W^Q_i, W^K_i, W^V_i \in\mathbb{R}^{d_{model}\times d_{head}}\)</span>, <span class="math notranslate nohighlight">\(i\in \{1,...,H\}\)</span> is given by</p>
 <div class="math notranslate nohighlight">
 \[
 \text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_H)W^O
@@ -653,7 +654,7 @@ SwiGLU=\text{Swish}_1(xW) \otimes xV \\
 <p>with the attention given by</p>
 <div class="math notranslate nohighlight">
 \[
-\text{Attention}(Q, K, V) = \text{Softmax}(\frac{QK^T}{\sqrt{d_k}})V.
+\text{Attention}(Q, K, V) = \text{Softmax}(\frac{QK^T}{\sqrt{d_{head}}})V.
 \]</div>
 <figure class="align-default" id="chapter-llm-arch-fig-fundamentals-attention-mha">
 <a class="reference internal image-reference" href="../../_images/MHA.png"><img alt="../../_images/MHA.png" src="../../_images/MHA.png" style="width: 358.8px; height: 270.0px;" />
@@ -662,7 +663,20 @@ SwiGLU=\text{Swish}_1(xW) \otimes xV \\
 <p><span class="caption-number">Fig. 9.4 </span><span class="caption-text">Multi-head attention has <span class="math notranslate nohighlight">\(H\)</span> query, key, and value heads for each token.</span><a class="headerlink" href="#chapter-llm-arch-fig-fundamentals-attention-mha" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>In the following, we summarize the advantages and drawbacks of MHA.</p>
+<div class="proof remark admonition" id="remark-1">
+<p class="admonition-title"><span class="caption-number">Remark 9.2 </span> (Combine to RoPE)</p>
+<section class="remark-content" id="proof-content">
+<p>More recent LLMs are using Rotary Position Embedding (RoPE) (see <a class="reference internal" href="#chapter-llm-arch-sec-llm-arch-fundamentals-position-embedding-rope"><span class="std std-ref">Rotary Postion Embedding</span></a>). The position information related to the query key <span class="math notranslate nohighlight">\(Q_i\)</span> (row <span class="math notranslate nohighlight">\(i\)</span> from <span class="math notranslate nohighlight">\(Q\)</span>)at position <span class="math notranslate nohighlight">\(i\)</span> and the key <span class="math notranslate nohighlight">\(K_j\)</span> at position <span class="math notranslate nohighlight">\(j\)</span> is baked in through</p>
+<div class="math notranslate nohighlight">
+\[\tilde{Q}_i = Q_i\mathcal{R}_i, \tilde{K}_j = K_j\mathcal{R}_j.\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\mathcal{R}_i\)</span> is a rotation matrix parameterized by position integer <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>Finally, the Attention computation is computed using the rotated query and key, given by</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Attention}(Q, K, V) = \text{Softmax}(\frac{\tilde{Q}\tilde{K}^T}{\sqrt{d_{head}}})V.
+.\]</div>
+</section>
+</div><p>In the following, we summarize the advantages and drawbacks of MHA.</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
 <div class="sd-col sd-d-flex-row docutils">
@@ -684,7 +698,7 @@ SwiGLU=\text{Swish}_1(xW) \otimes xV \\
 <p style="text-align: center;"><span style="background-color: #b4c9da"><strong>Drawbacks</strong></span></p></div>
 <ul class="simple">
 <li><p class="sd-card-text">Computational complexity scales quadratically with sequence length (i.e., huge cost for long context applications)</p></li>
-<li><p class="sd-card-text">During inference stage, each head has its own key and value to cache, bring additional memory burden to inference process.</p></li>
+<li><p class="sd-card-text">During inference stage, each head has its own key and value to cache (i.e., KV cache), bring additional memory burden to inference process.</p></li>
 </ul>
 </div>
 </div>
@@ -694,10 +708,9 @@ SwiGLU=\text{Swish}_1(xW) \otimes xV \\
 </section>
 <section id="multi-query-attention-mqa">
 <h3><span class="section-number">9.4.2. </span>Multi Query Attention (MQA)<a class="headerlink" href="#multi-query-attention-mqa" title="Link to this heading">#</a></h3>
-<p>To reduce the inference cost from MHA, <span id="id13">[<a class="reference internal" href="#id51" title="Noam Shazeer. Fast transformer decoding: one write-head is all you need. 2019. URL: https://arxiv.org/abs/1911.02150, arXiv:1911.02150.">Sha19</a>]</span> proposed <strong>MQA</strong>, which reduces <span class="math notranslate nohighlight">\(H\)</span> key and value heads in MHA to a single key and value head.
-During inference, MQA reducing the size of the key-value cache by a factor of <span class="math notranslate nohighlight">\(H\)</span> (see <a class="reference internal" href="../chapter_inference/inference_acceleration.html#chapter-inference-sec-inference-acceleration-kv-cache"><span class="std std-ref">KV Cache</span></a>). However, larger models generally scale the number of heads (e.g., GPT-2 has 12 heads; GPT-3 has 96 heads), such that multi-query attention represents a more
-aggressive cut in both memory bandwidth and capacity footprint.</p>
-<p>In MQA, the single head attnetion is computed as</p>
+<p>To reduce the inference cost from MHA, <span id="id13">[<a class="reference internal" href="#id51" title="Noam Shazeer. Fast transformer decoding: one write-head is all you need. 2019. URL: https://arxiv.org/abs/1911.02150, arXiv:1911.02150.">Sha19</a>]</span> proposed <strong>MQA</strong>, which reduces <span class="math notranslate nohighlight">\(H\)</span> key and value heads in MHA to a single key and value shared head.
+During inference, MQA reduces the size of the key-value cache by a factor of <span class="math notranslate nohighlight">\(H\)</span> (see <a class="reference internal" href="../chapter_inference/inference_acceleration.html#chapter-inference-sec-inference-acceleration-kv-cache"><span class="std std-ref">KV Cache</span></a>). However, larger models generally scale up the number of heads (e.g., GPT-2 has 12 heads; GPT-3 has 96 heads), such that MQA represents a very aggressive cut in both memory bandwidth and capacity footprint.</p>
+<p>In MQA, the single head attention is computed as</p>
 <div class="math notranslate nohighlight">
 \[
 \text{head}_i = \text{Attention}(XW^Q_i, XW^K, XW^V).
@@ -741,10 +754,9 @@ aggressive cut in both memory bandwidth and capacity footprint.</p>
 </section>
 <section id="grouped-query-attention-gqa">
 <span id="chapter-llm-arch-sec-self-attention-variant-gqa"></span><h3><span class="section-number">9.4.3. </span>Grouped Query Attention (GQA)<a class="headerlink" href="#grouped-query-attention-gqa" title="Link to this heading">#</a></h3>
-<p>GQA <span id="id14">[<a class="reference internal" href="#id50" title="Joshua Ainslie, James Lee-Thorp, Michiel de Jong, Yury Zemlyanskiy, Federico Lebrón, and Sumit Sanghai. Gqa: training generalized multi-query transformer models from multi-head checkpoints. 2023. URL: https://arxiv.org/abs/2305.13245, arXiv:2305.13245.">ALTdJ+23</a>]</span> is an optimization of MHA and MQA that reduces computational complexity while maintaining performance.</p>
-<p>Unlike MQA, GQA uses an intermediate (more than one, less than number of query heads) number of key-value heads.
-GQA is shown to achieve quality close to MHA with comparable speed to MQA</p>
-<p>In GQA, the single head attnetion is computed as</p>
+<p>GQA <span id="id14">[<a class="reference internal" href="#id50" title="Joshua Ainslie, James Lee-Thorp, Michiel de Jong, Yury Zemlyanskiy, Federico Lebrón, and Sumit Sanghai. Gqa: training generalized multi-query transformer models from multi-head checkpoints. 2023. URL: https://arxiv.org/abs/2305.13245, arXiv:2305.13245.">ALTdJ+23</a>]</span> is an optimization of MHA and MQA that aims to reduce computational complexity while maintaining performance.</p>
+<p>Unlike MQA, GQA uses an intermediate (more than one, less than number of query heads) number of key-value heads. GQA is shown to achieve quality close to MHA, but with comparable inference speed to MQA.</p>
+<p>In GQA, the single head attention is computed as</p>
 <div class="math notranslate nohighlight">
 \[
 \text{head}_i = \text{Attention}(QW^Q_i, KW^K_{g(i)}, VW^V_{g(i)})
@@ -760,8 +772,8 @@ key and value heads are attended to by query heads. GQA interpolats between MHA 
 </figcaption>
 </figure>
 <p>GQA is widely adopted in the latest LLM. Following shows example configurations of Qwen2 and Mistral LLM series <span id="id16">[<a class="reference internal" href="#id58" title="Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed. Mistral 7b. 2023. URL: https://arxiv.org/abs/2310.06825, arXiv:2310.06825.">JSM+23</a>, <a class="reference internal" href="../chapter_training/accelerated_training.html#id30" title="An Yang, Baosong Yang, Binyuan Hui, and et al. Bo Zheng. Qwen2 technical report. 2024. URL: https://arxiv.org/abs/2407.10671, arXiv:2407.10671.">YYHBZ24</a>]</span>.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1595">
-<caption><span class="caption-number">Table 9.1 </span><span class="caption-text">Model configuration of Qwen2 and Mistral, which uses GQA (# KV heads is number of groups )</span><a class="headerlink" href="#id1595" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1599">
+<caption><span class="caption-number">Table 9.1 </span><span class="caption-text">Model configuration of Qwen2 and Mistral, which uses GQA (# KV heads is number of groups )</span><a class="headerlink" href="#id1599" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Configuration</p></th>
 <th class="head text-center"><p>Hidden Size</p></th>
@@ -805,8 +817,11 @@ key and value heads are attended to by query heads. GQA interpolats between MHA 
 </table>
 </div>
 </section>
+<section id="multi-head-latent-attention-mla">
+<h3><span class="section-number">9.4.4. </span>Multi-Head Latent Attention (MLA)<a class="headerlink" href="#multi-head-latent-attention-mla" title="Link to this heading">#</a></h3>
+</section>
 <section id="sliding-window-attention">
-<h3><span class="section-number">9.4.4. </span>Sliding Window Attention<a class="headerlink" href="#sliding-window-attention" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">9.4.5. </span>Sliding Window Attention<a class="headerlink" href="#sliding-window-attention" title="Link to this heading">#</a></h3>
 <p>The computational complexity for MHA, MQA, GQA are scaling quadratically with the sequence length. This constrains the context length that LLM can effectively process, impacting their ability to handle long documents or maintain coherence over extended generations.</p>
 <p>To address this challenge, recent LLMs (e.g., Mistral <span id="id17">[<a class="reference internal" href="#id58" title="Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed. Mistral 7b. 2023. URL: https://arxiv.org/abs/2310.06825, arXiv:2310.06825.">JSM+23</a>]</span>) adopts <strong>sliding window attention</strong>, which reduces the computational complexity by restricting each token’s attention to a fixed-size window <span class="math notranslate nohighlight">\(W\)</span> of preceding tokens, rather than attending to the entire sequence. The computational complexity is reduced from quadratic <span class="math notranslate nohighlight">\(O(s^2)\)</span> to linear <span class="math notranslate nohighlight">\(O(\min(W, s)\times s)\)</span>, where <span class="math notranslate nohighlight">\(s\)</span> is the sequence length. Although the token can only capture local context within its fixed window, with multiple layers stacked upon each other, a token at layer <span class="math notranslate nohighlight">\(L\)</span> can effectively attend to previous <span class="math notranslate nohighlight">\(L\times W\)</span> tokens.</p>
 <p>In Mistral 7B with <span class="math notranslate nohighlight">\(L = 32\)</span>, and <span class="math notranslate nohighlight">\(W\)</span> set to 4096, the effective attention length is about <span class="math notranslate nohighlight">\(131K\)</span> tokens.</p>
@@ -892,7 +907,7 @@ validation set and the sinusoidal absolute position encoding baseline. Image fro
 </figure>
 </section>
 <section id="rotary-postion-embedding">
-<h3><span class="section-number">9.5.4. </span>Rotary Postion Embedding<a class="headerlink" href="#rotary-postion-embedding" title="Link to this heading">#</a></h3>
+<span id="chapter-llm-arch-sec-llm-arch-fundamentals-position-embedding-rope"></span><h3><span class="section-number">9.5.4. </span>Rotary Postion Embedding<a class="headerlink" href="#rotary-postion-embedding" title="Link to this heading">#</a></h3>
 <section id="the-mechanism">
 <h4><span class="section-number">9.5.4.1. </span>The mechanism<a class="headerlink" href="#the-mechanism" title="Link to this heading">#</a></h4>
 <p><strong>Rotary Position Encoding (RoPE)</strong> <span id="id22">[<a class="reference internal" href="#id61" title="Jianlin Su, Yu Lu, Shengfeng Pan, Ahmed Murtadha, Bo Wen, and Yunfeng Liu. Roformer: enhanced transformer with rotary position embedding. 2023. URL: https://arxiv.org/abs/2104.09864, arXiv:2104.09864.">SLP+23</a>]</span> is a widely adopted and proved-effective position encoding method in latest LLM (e.g., Llama, Qwen, etc.). RoPE has ideas similar to ALiBi and sinusoid position encoding:</p>
@@ -900,11 +915,11 @@ validation set and the sinusoidal absolute position encoding baseline. Image fro
 <li><p>Like ALiBi, relative positional information is directly used in attention score computation.</p></li>
 <li><p>Sinusoid functions are used in construction for their nice mathematical properties.</p></li>
 </ul>
-<p>Specifically, the key idea of RoPE is to multiply query vector <span class="math notranslate nohighlight">\(Q_m\)</span> (of a token at position <span class="math notranslate nohighlight">\(m\)</span>) and key vector <span class="math notranslate nohighlight">\(K_n\)</span> (of another token at position <span class="math notranslate nohighlight">\(n\)</span>) by a rotational matrix <span class="math notranslate nohighlight">\(\boldsymbol{R}(m; \Theta)\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{R}(n; \Theta)\)</span> before taking the scaled doc product. Here rotational matrix <span class="math notranslate nohighlight">\(\boldsymbol{R}(\cdot; \Theta)\)</span> is constructed a group of 2D rotational matrices, whose wave-length are specified by <span class="math notranslate nohighlight">\(\Theta\)</span>.</p>
+<p>Specifically, the key idea of RoPE is to multiply query vector <span class="math notranslate nohighlight">\(Q_m\)</span> (of a token at position <span class="math notranslate nohighlight">\(m\)</span>) and key vector <span class="math notranslate nohighlight">\(K_n\)</span> (of another token at position <span class="math notranslate nohighlight">\(n\)</span>) by a rotational matrix <span class="math notranslate nohighlight">\(\mathcal{R}(m; \Theta)\)</span> and <span class="math notranslate nohighlight">\(\mathcal{R}(n; \Theta)\)</span> before taking the scaled doc product. Here rotational matrix <span class="math notranslate nohighlight">\(\mathcal{R}(\cdot; \Theta)\)</span> is constructed a group of 2D rotational matrices, whose wave-length are specified by <span class="math notranslate nohighlight">\(\Theta\)</span>.</p>
 <p>The <span class="math notranslate nohighlight">\(d_{model}\times d_{model}\)</span> rotational matrix for position <span class="math notranslate nohighlight">\(m\)</span> is given by</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\boldsymbol{R}_{\Theta, m}^d=\left(\begin{array}{ccccccc}
+\mathcal{R}_{\Theta, m}=\left(\begin{array}{ccccccc}
 \cos m \theta_1 &amp; -\sin m \theta_1 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 0 \\
 \sin m \theta_1 &amp; \cos m \theta_1 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 0 \\
 0 &amp; 0 &amp; \cos m \theta_2 &amp; -\sin m \theta_2 &amp; \cdots &amp; 0 &amp; 0 \\
@@ -922,15 +937,15 @@ validation set and the sinusoidal absolute position encoding baseline. Image fro
 <p>Pre-SoftMax input (omitting scaling) for query token at position <span class="math notranslate nohighlight">\(m\)</span> and key token at position <span class="math notranslate nohighlight">\(n\)</span> is given by</p>
 <div class="math notranslate nohighlight">
 \[
-\operatorname{PreSoftmax}(Q_m, K_n) =\left(\boldsymbol{R}_{\Theta, m} Q_m\right) \cdot \left(\boldsymbol{R}{\Theta,n} K_n \right)
+\operatorname{PreSoftmax}(Q_m, K_n) =\left( Q_m \mathcal{R}_{\Theta, m}\right) \cdot \left( K_n \mathcal{R}_{\Theta, n} \right)
 \]</div>
-<div class="proof example admonition" id="example-1">
+<div class="proof example admonition" id="example-2">
 <p class="admonition-title"><span class="caption-number">Example 9.1 </span></p>
 <section class="example-content" id="proof-content">
 <p>For <span class="math notranslate nohighlight">\(d_{model} == 2\)</span>, the rotation matrix for position <span class="math notranslate nohighlight">\(m \)</span> is:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\boldsymbol{R}(m; \Theta)=\left[\begin{array}{cc}
+\mathcal{R}(m; \Theta)=\left[\begin{array}{cc}
 \cos (m\theta_1) &amp; -\sin (m\theta_1) \\
 \sin (m\theta_1) &amp; \cos (m\theta_1)
 \end{array}\right]
@@ -939,7 +954,7 @@ validation set and the sinusoidal absolute position encoding baseline. Image fro
 <p>For <span class="math notranslate nohighlight">\(d_{model} == 4\)</span>, the rotation matrix for position <span class="math notranslate nohighlight">\(m \)</span> is:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\boldsymbol{R}(m; \Theta)=\left[\begin{array}{cc}
+\mathcal{R}(m; \Theta)=\left[\begin{array}{cc}
 \cos (m\theta_1) &amp; -\sin (m\theta_1) &amp; 0 &amp; 0 \\
 \sin (m\theta_1) &amp; \cos (m\theta_1) &amp; 0 &amp; 0 \\
 0 &amp; 0 &amp; \cos (m\theta_2) &amp; -\sin (m\theta_2) \\
@@ -956,17 +971,17 @@ Now we are showing that the rotated query-key inner product is a function of the
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\left\langle R\left(\theta_q\right) Q_m, R\left(\theta_k\right) K_n\right\rangle &amp; =Q_m^{\top} R\left(\theta_q\right)^{\top} R\left(\theta_k\right) K_n \\
-&amp; =Q_m^{\top} R\left(\theta_k-\theta_q\right) K_n \\
-&amp; =\left\langle R\left(\theta_q-\theta_k\right) Q_m, K_n\right\rangle \\
-&amp; =\left\langle R\left(\theta (m-n)\right) Q_m, K_n\right\rangle 
+\left\langle \mathcal{R}\left(\theta_q\right) Q_m, \mathcal{R}\left(\theta_k\right) K_n\right\rangle &amp; =Q_m^{\top} \mathcal{R}\left(\theta_q\right)^{\top} \mathcal{R}\left(\theta_k\right) K_n \\
+&amp; =Q_m^{\top} \mathcal{R}\left(\theta_k-\theta_q\right) K_n \\
+&amp; =\left\langle \mathcal{R}\left(\theta_q-\theta_k\right) Q_m, K_n\right\rangle \\
+&amp; =\left\langle \mathcal{R}\left(\theta (m-n)\right) Q_m, K_n\right\rangle 
 \end{aligned}
 \end{split}\]</div>
 <p>That is, the Pre-Softmax input of <span class="math notranslate nohighlight">\(Q_m, K_n\)</span> is a funciton of <span class="math notranslate nohighlight">\(m - n\)</span>.</p>
 <p>We have used the following important properties of rotational matrix:</p>
 <ol class="arabic simple">
-<li><p>The transpose of a rotation matrix is equal to its inverse: <span class="math notranslate nohighlight">\(R(\theta)^{\top}=R(-\theta)\)</span>.</p></li>
-<li><p>The matrix multiplication of rotational matrices satisfies: <span class="math notranslate nohighlight">\(R(\theta_x)\cdot R(\theta_y) = R(\theta_x + \theta_y)\)</span></p></li>
+<li><p>The transpose of a rotation matrix is equal to its inverse: <span class="math notranslate nohighlight">\(\mathcal{R}(\theta)^{\top}=\mathcal{R}(-\theta)\)</span>.</p></li>
+<li><p>The matrix multiplication of rotational matrices satisfies: <span class="math notranslate nohighlight">\(\mathcal{R}(\theta_x)\cdot \mathcal{R}(\theta_y) = \mathcal{R}(\theta_x + \theta_y)\)</span></p></li>
 </ol>
 <p>In other words, the inner product of two rotated vectors is equal to the inner product of one vector rotated by their angle difference and the other original vector.</p>
 <p><strong>Long-term decay</strong>: In <span id="id23">[<a class="reference internal" href="#id61" title="Jianlin Su, Yu Lu, Shengfeng Pan, Ahmed Murtadha, Bo Wen, and Yunfeng Liu. Roformer: enhanced transformer with rotary position embedding. 2023. URL: https://arxiv.org/abs/2104.09864, arXiv:2104.09864.">SLP+23</a>]</span>, it is shown that the inner-product will decay when the relative position increase. This property aligns with desired property that a pair of tokens will have gradually descreasing semantic impact on each other when they are far apart.</p>
@@ -988,7 +1003,7 @@ Visualization of 2D RoPE and its mechanism in encoding context. Image from [Blog
 <p><strong>Position Interpolation</strong><span id="id24">[<a class="reference internal" href="#id35" title="Shouyuan Chen, Sherman Wong, Liangjian Chen, and Yuandong Tian. Extending context window of large language models via positional interpolation. arXiv preprint arXiv:2306.15595, 2023.">CWCT23</a>]</span> is a cheap method to extend the context window of an existing LLM, which allows LLM to have longer context window during inference time than the context window size used during training.</p>
 <p>The idea is to linearly down-scales the input position indices to match the original context window size [<a class="reference internal" href="#chapter-llm-arch-fig-fundamentals-rope-position-interpolation"><span class="std std-numref">Fig. 9.10</span></a>].Specifically, given that the rotation matrix in RoPE is a continuous function, one can adjust the rotation matrix for large position <span class="math notranslate nohighlight">\(m\)</span> to <span class="math notranslate nohighlight">\(m'\)</span> as</p>
 <div class="math notranslate nohighlight">
-\[R_{\Theta, m} = R_{\Theta, m'}, m' = \frac{L}{L'}\]</div>
+\[\mathcal{R}_{\Theta, m} = \mathcal{R}_{\Theta, m'}, m' = \frac{L}{L'}\]</div>
 <p>where <span class="math notranslate nohighlight">\(L\)</span> maximum length of context window during the training and <span class="math notranslate nohighlight">\(L' &gt; L\)</span> is larger context window we would like to apply during the inference stage.
 Intuitively, we reduce position indices from <span class="math notranslate nohighlight">\(\left[0, L^{\prime}\right)\)</span> to <span class="math notranslate nohighlight">\([0, L)\)</span> to match the original range of indices before computing RoPE.</p>
 <p>It is found that Position Interpolation is highly effective and efficient, requiring only a
@@ -1067,7 +1082,7 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <li><p>Return the subword vocabulary <span class="math notranslate nohighlight">\(V\)</span>.</p></li>
 </ol>
 </section>
-</div><div class="proof example admonition" id="example-3">
+</div><div class="proof example admonition" id="example-4">
 <p class="admonition-title"><span class="caption-number">Example 9.2 </span></p>
 <section class="example-content" id="proof-content">
 <p>GPT-2’s vocabulary size is 50,257, corresponding to 256 basic byte tokens, a special end-of-text token, and 50,000 tokens obtained through merging process.</p>
@@ -1111,8 +1126,8 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <li><p>Unified tokenization: The BBPE method does not rely on language-specific character structures. Therefore, it can be uniformly applied to multilingual tasks without adding extra complexity, simplifying the tokenization process in both pre-training and downstream tasks.</p></li>
 <li><p>Compatibility with emojis and special characters: Modern large language models need to process large amounts of internet data, which contains many emojis, special characters, and non-standard symbols. BBPE can better support these types of symbols.</p></li>
 </ul>
-<div class="proof remark admonition" id="remark-4">
-<p class="admonition-title"><span class="caption-number">Remark 9.2 </span> (What does Byte-level mean?)</p>
+<div class="proof remark admonition" id="remark-5">
+<p class="admonition-title"><span class="caption-number">Remark 9.3 </span> (What does Byte-level mean?)</p>
 <section class="remark-content" id="proof-content">
 <p>“Byte-level” in the context of BBPE means that the algorithm operates on individual bytes of data rather than on characters or higher-level text units. Note that characters are typically encoded using schemes like UTF-8, where a single character might be represented by one or more bytes. In other words, BBPE treats the input as a sequence of raw bytes, without interpreting them as characters or considering character boundaries.</p>
 <p>Below is more context about UTF-8 encoding.</p>
@@ -1157,8 +1172,8 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <li><p>how the total number of parameters scales when we scale up different components.</p></li>
 </ul>
 <p>Let <span class="math notranslate nohighlight">\(V\)</span> be the vocabulary size, <span class="math notranslate nohighlight">\(d\)</span> be the model hidden dimensions, <span class="math notranslate nohighlight">\(L\)</span> be the number of layer,</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1596">
-<caption><span class="caption-number">Table 9.2 </span><span class="caption-text">Parameters in a Transformer</span><a class="headerlink" href="#id1596" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1600">
+<caption><span class="caption-number">Table 9.2 </span><span class="caption-text">Parameters in a Transformer</span><a class="headerlink" href="#id1600" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Module</p></th>
 <th class="head text-left"><p>Computation</p></th>
@@ -1224,13 +1239,13 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <li><p>The total number of parameters scales linearly with number of layers <span class="math notranslate nohighlight">\(L\)</span></p></li>
 <li><p>The total number of parameters scales quadratically with model hidden dimensionality <span class="math notranslate nohighlight">\(d\)</span>.</p></li>
 </ul>
-<div class="proof remark admonition" id="remark-5">
-<p class="admonition-title"><span class="caption-number">Remark 9.3 </span></p>
+<div class="proof remark admonition" id="remark-6">
+<p class="admonition-title"><span class="caption-number">Remark 9.4 </span></p>
 <section class="remark-content" id="proof-content">
 <p>We have simplification in the above computation for MHA but the results are the same. Suppose we have <span class="math notranslate nohighlight">\(H\)</span> heads, head dimension <span class="math notranslate nohighlight">\(d_{head}\)</span> and <span class="math notranslate nohighlight">\(H \times d_{head} = d\)</span>. QKV transformation matrices have weight parameters <span class="math notranslate nohighlight">\(3 \times H \times d \times d_{head} = 3d^2\)</span>.</p>
 <p>With GQA that has <span class="math notranslate nohighlight">\(G\)</span> key-value shared heads, the total parameters are <span class="math notranslate nohighlight">\(d^2 + 2Gd_{head}d\)</span>.</p>
 </section>
-</div><div class="proof example admonition" id="example-6">
+</div><div class="proof example admonition" id="example-7">
 <p class="admonition-title"><span class="caption-number">Example 9.3 </span></p>
 <section class="example-content" id="proof-content">
 <p>Take the following GPT-3 13B and 175B as an example, 175B model has approximate 2.4 times of <span class="math notranslate nohighlight">\(L\)</span> and <span class="math notranslate nohighlight">\(d_{model}\)</span>. Extrapolating from 13B model, we estimate the 175B model to have model parameters of <span class="math notranslate nohighlight">\(13\times 2.4^3 = 179B\)</span>, which is very close.</p>
@@ -1267,8 +1282,8 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <section id="forward-pass-computation-breadown">
 <span id="chapter-llm-arch-sec-llm-arch-fundamentals-forward-pass-computation"></span><h2><span class="section-number">9.8. </span>Forward Pass Computation Breadown<a class="headerlink" href="#forward-pass-computation-breadown" title="Link to this heading">#</a></h2>
 <p>In this section, we estimate the computational cost (in term of FLOPS) for a forward pass.</p>
-<div class="proof remark admonition" id="remark-7">
-<p class="admonition-title"><span class="caption-number">Remark 9.4 </span> (FLOPs estimation)</p>
+<div class="proof remark admonition" id="remark-8">
+<p class="admonition-title"><span class="caption-number">Remark 9.5 </span> (FLOPs estimation)</p>
 <section class="remark-content" id="proof-content">
 <p>If <span class="math notranslate nohighlight">\(A \in R^{m \times k}, B \in R^{k \times n}\)</span> then, to compute <span class="math notranslate nohighlight">\(A B\)</span> the number of floating-point arithmetic required is <span class="math notranslate nohighlight">\(2 m n k\)</span>.</p>
 <p>For example, for</p>
@@ -1280,8 +1295,8 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <p>It is clear that for each <span class="math notranslate nohighlight">\(c_{ij}\)</span> there are <span class="math notranslate nohighlight">\(k\)</span> multiplications and <span class="math notranslate nohighlight">\(k\)</span> additions (technically <span class="math notranslate nohighlight">\(k-1\)</span> additions among <span class="math notranslate nohighlight">\(k\)</span> terms).</p>
 </section>
 </div><p>Let <span class="math notranslate nohighlight">\(V\)</span> be the vocabulary size, <span class="math notranslate nohighlight">\(b\)</span> be the batch size, <span class="math notranslate nohighlight">\(s\)</span> be sequence length, <span class="math notranslate nohighlight">\(d\)</span> be the model hidden dimensions, <span class="math notranslate nohighlight">\(L\)</span> be the number of layer, we have summarized the computation breakdown in the following.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1597">
-<caption><span class="caption-number">Table 9.3 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id1597" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1601">
+<caption><span class="caption-number">Table 9.3 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id1601" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Module</p></th>
 <th class="head text-left"><p>Computation</p></th>
@@ -1530,7 +1545,8 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-head-attention-mha">9.4.1. Multi-Head Attention (MHA)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-query-attention-mqa">9.4.2. Multi Query Attention (MQA)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grouped-query-attention-gqa">9.4.3. Grouped Query Attention (GQA)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sliding-window-attention">9.4.4. Sliding Window Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-head-latent-attention-mla">9.4.4. Multi-Head Latent Attention (MLA)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sliding-window-attention">9.4.5. Sliding Window Attention</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#position-encoding-and-long-context">9.5. Position Encoding and Long Context</a><ul class="nav section-nav flex-column">

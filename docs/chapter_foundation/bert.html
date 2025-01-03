@@ -202,8 +202,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Annotated Finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Annotated DPO Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Lab DPO Training</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -328,7 +328,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-architecture">6.1. BERT Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contextual-embedding">6.1. Contextual Embedding</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-architecture-componenents">6.2. BERT Architecture Componenents</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-embeddings">6.2.1. Input Embeddings</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-encoder-anatomy">6.2.2. The Encoder Anatomy</a></li>
@@ -376,13 +376,17 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="bert">
 <span id="chapter-foundation-sec-bert"></span><h1><span class="section-number">6. </span>BERT<a class="headerlink" href="#bert" title="Link to this heading">#</a></h1>
-<section id="bert-architecture">
-<h2><span class="section-number">6.1. </span>BERT Architecture<a class="headerlink" href="#bert-architecture" title="Link to this heading">#</a></h2>
-<p>In natural language processing, although we have seen many successful end-to-end systems , they usually require large scale training examples and the systems require a complete retrain for a different task. Alternatively, we can first learn a good representation of word sequences that not task-specific but would be likely to facilitate downstream specific tasks. Learning a good representation in prior from broadly available unlabeled data also resembles how human perform various intelligent tasks.
-In the context of natural languages, a good representation should capture the implicit linguistic rules, semantic meaning, syntactic structures, and even basic knowledge implied by the text data.</p>
-<p>With a good representation, the downstream tasks can be significantly sped up by fining training the system on top of the representation. Therefore, the process of a learning a good representation from unlabeled data is also known as pre-training a language model.</p>
-<p>Pre-training language models have several advantages: first, it enable the learning of universal language representations that suit different downstream tasks; second, it usually gives better performance in the downstream tasks after fine-tuning on a target task; finally, we can also interpret pre-training as a way of regularization to avoid overfitting on small data set.</p>
-<p>In <a class="reference internal" href="word_embeddings.html#chapter-foundation-sec-word-embedding"><span class="std std-ref">Word Embeddings</span></a>, we discussed different approaches (e.g., Word2Vec, GloVe) to learning a low-dimensional dense vector representation of word tokens. One significant drawback of these representations is context-independent or context-free static embedding, meaning the embedding of a word token is fixed no matter the context it is in. By contrast, in natural language, the meaning of a word is usually context-dependent. For example, in sentences  <em>I like to have an apple since I am thirty</em> vs. <em>I like to have an Apple to watch fun movies</em>, the word <em>apple</em> mean the fruit apple and the electronic device, respectively.</p>
+<section id="contextual-embedding">
+<h2><span class="section-number">6.1. </span>Contextual Embedding<a class="headerlink" href="#contextual-embedding" title="Link to this heading">#</a></h2>
+<p>In natural language processing, although we have seen many successful end-to-end systems , they usually require large scale training examples and the systems require a complete retrain for a different task. Alternatively, we can first learn a <strong>good representation of word sequences that not task-specific but would be likely to facilitate downstream specific tasks</strong>. Learning a good representation in prior from broadly available unlabeled data also resembles how human perform various intelligent tasks. In the context of natural languages, a good representation should capture the implicit linguistic rules, semantic meaning, syntactic structures, and even basic knowledge implied by the text data.</p>
+<p>With a good representation, the downstream tasks can be significantly sped up by fining tuning the system on top of the representation. Therefore, the process of a learning a good representation from unlabeled data is also known as pre-training a language model.</p>
+<p>Pre-training language models have several advantages:</p>
+<ul class="simple">
+<li><p>first, it enable the learning of universal language representations that suit different downstream tasks;</p></li>
+<li><p>second, it usually gives better performance in the downstream tasks after fine-tuning on a target task;</p></li>
+<li><p>finally, we can also interpret pre-training as a way of regularization to avoid overfitting on small data set.</p></li>
+</ul>
+<p>In <a class="reference internal" href="word_embeddings.html#chapter-foundation-sec-word-embedding"><span class="std std-ref">Word Embeddings</span></a>, we discussed different approaches (e.g., <strong>Word2Vec, GloVe</strong>) to learning a low-dimensional dense vector representation of word tokens. <strong>One significant drawback of these representations is context-independent or context-free static embedding, meaning the embedding of a word token is fixed no matter the context it is in</strong>. By contrast, in natural language, the meaning of a word is usually context-dependent. For example, in sentences  <em>I like to have an apple since I am thirty</em> vs. <em>I like to have an Apple to watch fun movies</em>, the word <em>apple</em> mean the fruit apple and the electronic device, respectively.</p>
 <p>There has been significant efforts directed to learning contextual embedding of word sequences<span id="id1">[<a class="reference internal" href="#id1411" title="Qi Liu, Matt J Kusner, and Phil Blunsom. A survey on contextual embeddings. arXiv preprint arXiv:2003.07278, 2020.">LKB20</a>, <a class="reference internal" href="#id1231">QSX+20</a>]</span>. A contextual embedding encoder usually operates at the sequence level. As shown in the following, given
 a non-contextual word  embedding sequence <span class="math notranslate nohighlight">\(x_{1}, x_{2}, \cdots, x_{T}\)</span>, the contextual embeddings of the whole sequence are obtained simultaneously via
 $<span class="math notranslate nohighlight">\(\left[{h}_{1}, {h}_{2}, \cdots, {h}_{T}\right]=\operatorname{ContextualEncoder}\left(x_{1}, x_{2}, \cdots, x_{T}\right).\)</span>$</p>
@@ -401,11 +405,11 @@ $<span class="math notranslate nohighlight">\(\left[{h}_{1}, {h}_{2}, \cdots, {h
 </figcaption>
 </figure>
 <p>Given large-scale unlabeled data, the most common way to learn a good representation is via self-Supervised learning.  The key idea of self-Supervised learning is to predict part of the input from other parts in some form (e.g., add distortion). By minimizing prediction task loss or other auxiliary task losses, the neural network learns good presentations that can be used to speed up downstream tasks.</p>
-<p>Since the advent of the most successful pretrained language model BERT <span id="id2">[<a class="reference internal" href="transformers.html#id1170" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.">DCLT18</a>]</span>, many follow-up research found that the performance of the pretrained model in downstream tasks highly depend on the self-supervised tasks in the pretraining stage. If the downstream tasks are closely related to self-supervised tasks, a pretrained model can offer significant performance boost. And the fine tuning process can be understood as a process that further improves features relevant to downstream tasks and discards irrelevant features.</p>
+<p>Since the advent of the most successful pretrained language model BERT <span id="id2">[<a class="reference internal" href="#id1184" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.">DCLT18</a>]</span>, many follow-up research found that the performance of the pretrained model in downstream tasks highly depend on the self-supervised tasks in the pretraining stage. If the downstream tasks are closely related to self-supervised tasks, a pretrained model can offer significant performance boost. And the fine tuning process can be understood as a process that further improves features relevant to downstream tasks and discards irrelevant features.</p>
 </section>
 <section id="bert-architecture-componenents">
 <h2><span class="section-number">6.2. </span>BERT Architecture Componenents<a class="headerlink" href="#bert-architecture-componenents" title="Link to this heading">#</a></h2>
-<p>BERT, Bidirectional Encoder Representations from Transformers <span id="id3">[<a class="reference internal" href="transformers.html#id1170" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.">DCLT18</a>]</span>, is one of the most successful pre-trained language model. BERT relies on a Transformer (the attention mechanism that learns contextual relationships between words in a text). BERT model heavily utilizes stacked self-attention modules to contextualize word embeddings.</p>
+<p>BERT, Bidirectional Encoder Representations from Transformers <span id="id3">[<a class="reference internal" href="#id1184" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.">DCLT18</a>]</span>, is one of the most successful pre-trained language model. BERT relies on a Transformer (the attention mechanism that learns contextual relationships between words in a text). BERT model heavily utilizes stacked self-attention modules to contextualize word embeddings.</p>
 <figure class="align-default" id="chapter-foundation-fig-bert-transformerencoder">
 <a class="reference internal image-reference" href="../../_images/transformer_encoder.png"><img alt="../../_images/transformer_encoder.png" src="../../_images/transformer_encoder.png" style="width: 272.7px; height: 504.9px;" />
 </a>
@@ -494,8 +498,8 @@ E_{\text {word }}=\left[\begin{array}{lll}
 <li><p>BERT-BASE, <span class="math notranslate nohighlight">\(L=12, d_{model}=768, H=12\)</span>, total Parameters 110M.</p></li>
 <li><p>BERT-LARGE, <span class="math notranslate nohighlight">\(L=24, d_{model} = 1024, H=16\)</span>, total parameters 340M.</p></li>
 </ul>
-<div class="pst-scrollable-table-container"><table class="table" id="id1593">
-<caption><span class="caption-number">Table 6.1 </span><span class="caption-text">The hyperparameter settings of various pretrained BERT configurations.  BERTBase and BERTLarge are the two most commonly used configurations today;</span><a class="headerlink" href="#id1593" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1597">
+<caption><span class="caption-number">Table 6.1 </span><span class="caption-text">The hyperparameter settings of various pretrained BERT configurations.  BERTBase and BERTLarge are the two most commonly used configurations today;</span><a class="headerlink" href="#id1597" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Size</p></th>
 <th class="head text-right"><p>Layers</p></th>
@@ -572,7 +576,7 @@ Given a sequence of <span class="math notranslate nohighlight">\(N\)</span> toke
 <a class="reference internal image-reference" href="../../_images/BERTPretrainFineTune.png"><img alt="../../_images/BERTPretrainFineTune.png" src="../../_images/BERTPretrainFineTune.png" style="width: 676.1999999999999px; height: 271.2px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 6.7 </span><span class="caption-text">BERT pre-training and downstream task fine tuning framework. Image from <span id="id6">[<a class="reference internal" href="transformers.html#id1170" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.">DCLT18</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-bert-bertpretrainfinetune" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 6.7 </span><span class="caption-text">BERT pre-training and downstream task fine tuning framework. Image from <span id="id6">[<a class="reference internal" href="#id1184" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.">DCLT18</a>]</span>.</span><a class="headerlink" href="#chapter-foundation-fig-bert-bertpretrainfinetune" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>There are two tasks to pretrain the network: <strong>masked language modeling (Masked LM)</strong> and <strong>next sentence prediction (NSP)</strong>.</p>
@@ -606,7 +610,7 @@ Given a sequence of <span class="math notranslate nohighlight">\(N\)</span> toke
 <section id="next-sentence-prediction-nsp">
 <h4><span class="section-number">6.2.4.2. </span>Next Sentence Prediction (NSP)<a class="headerlink" href="#next-sentence-prediction-nsp" title="Link to this heading">#</a></h4>
 <p>In the NSP, <strong>the network is trained to understand relationship between two sentences</strong>. A pre-trained model with this kind of understanding is relevant for tasks like question answering and natural language Inference. This task is also reminiscent of human language study exercise, where the learner needs to restore the correct order of sentences in a paragraph consisting of randomly displaced sentences.</p>
-<p>The input for NSP is a pair of segments, which can each contain multiple natural sentences, but the total combined length must be less than 512 tokens. Notably, it is found that using individual natural sentence pairs hurts performance on downstream tasks<span id="id7">[<a class="reference internal" href="transformers.html#id1232" title="Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. Roberta: a robustly optimized bert pretraining approach. arXiv preprint arXiv:1907.11692, 2019.">LOG+19</a>]</span>.</p>
+<p>The input for NSP is a pair of segments, which can each contain multiple natural sentences, but the total combined length must be less than 512 tokens. Notably, it is found that using individual natural sentence pairs hurts performance on downstream tasks<span id="id7">[<a class="reference internal" href="#id1246" title="Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. Roberta: a robustly optimized bert pretraining approach. arXiv preprint arXiv:1907.11692, 2019.">LOG+19</a>]</span>.</p>
 <p>The model is trained to predict if the second sentence is the next sentence in the original text. In choosing the sentences pair for each pretraining example, <span class="math notranslate nohighlight">\(50 \%\)</span> of the time, the second sentence is the actual next sentence of the first one, and <span class="math notranslate nohighlight">\(50 \%\)</span> of the time, it is a random sentence from the corpus.</p>
 <p>The next sentence prediction task can be illustrated in the following examples.<br />
 <em><strong>Input</strong></em>: [CLS] the man went to [MASK] store [SEP]  he bought a gallon [MASK] milk [SEP] <br />
@@ -668,7 +672,7 @@ L\left(\theta, \theta_{1}, \theta_{2}\right)=-\sum_{i=1}^{M} \log p\left(m=m_{i}
 </section>
 <section id="albert">
 <h3><span class="section-number">6.3.2. </span>ALBERT<a class="headerlink" href="#albert" title="Link to this heading">#</a></h3>
-<p>ALBERT <span id="id8">[<a class="reference internal" href="transformers.html#id1538" title="Zhenzhong Lan, Mingda Chen, Sebastian Goodman, Kevin Gimpel, Piyush Sharma, and Radu Soricut. Albert: a lite bert for self-supervised learning of language representations. 2020. URL: https://arxiv.org/abs/1909.11942, arXiv:1909.11942.">LCG+20</a>]</span>, standing for A Lite BERT, is one of the recent achievement that reduces the model parameter number considerably and at the same time improves performance.
+<p>ALBERT <span id="id8">[<a class="reference internal" href="#id1552" title="Zhenzhong Lan, Mingda Chen, Sebastian Goodman, Kevin Gimpel, Piyush Sharma, and Radu Soricut. Albert: a lite bert for self-supervised learning of language representations. 2020. URL: https://arxiv.org/abs/1909.11942, arXiv:1909.11942.">LCG+20</a>]</span>, standing for A Lite BERT, is one of the recent achievement that reduces the model parameter number considerably and at the same time improves performance.
 In ALBERT , there are three major improvements on the model architecture and the pretraining process. The first two improvements on the model architecture are</p>
 <ul class="simple">
 <li><p><em><strong>Factorized embedding parameterization</strong></em>. In the original BERT, tokens (represented as one-hot vectors) are directly  projected the hidden space with dimensionality <span class="math notranslate nohighlight">\(H = 768\)</span> or <span class="math notranslate nohighlight">\(1024\)</span>. For large vocabulary size <span class="math notranslate nohighlight">\(V\)</span> at the scale of 10,000, the projection matrix <span class="math notranslate nohighlight">\(W\)</span> has parameters <span class="math notranslate nohighlight">\(HV\)</span>. One way to reduce parameter size is to factorize <span class="math notranslate nohighlight">\(W\)</span> into two lower rank matrices. This is equivalent to two-step projection:</p>
@@ -681,8 +685,8 @@ The two-step projection only requires parameters <span class="math notranslate n
 <li><p><em><strong>Cross-layer parameter sharing</strong></em>. In the original BERT, each encoder sub-unit (which has an attention module and a feed-forward module) has different parameters. In ALBERT, these parameters are shared in different sub-units to reduce model size and improve parameter efficiency.  The authors also mentioned that there are alternative parameter sharing strategies: only sharing feed-forward network parameters; only sharing attention module parameters; sharing both feed-forward network and attention module.</p></li>
 </ul>
 <p>The effect of embedding factorization and parameter sharing can be illustrated in the following comparison.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1594">
-<caption><span class="caption-number">Table 6.2 </span><span class="caption-text">BERT model parameters</span><a class="headerlink" href="#id1594" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1598">
+<caption><span class="caption-number">Table 6.2 </span><span class="caption-text">BERT model parameters</span><a class="headerlink" href="#id1598" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Model</p></th>
 <th class="head text-center"><p>Parameters</p></th>
@@ -711,7 +715,7 @@ The two-step projection only requires parameters <span class="math notranslate n
 </table>
 </div>
 <p>The third improvement in ALBERT over BERT is a new sentence-level loss to replace the next sentence prediction task. In the original BERT, the next-sentence prediction (NSP)</p>
-<p>In ALBERT, a new sentence-order prediction (SOP) loss to model inter-sentence coherence, which demonstrated better performance in multi-sentence encoding tasks was motivated to improve performance on downstream tasks involving reasoning about the relationship between sentence pairs such as natural language inference. However, several follow-up studies <span id="id9">[<a class="reference internal" href="transformers.html#id1232" title="Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. Roberta: a robustly optimized bert pretraining approach. arXiv preprint arXiv:1907.11692, 2019.">LOG+19</a>]</span> found that the NSP task has minimal impact and was even eliminated in several BERT variants. One possible reason is that there is a lack of difficulty in the NSP task. Specifically, the sentence pair in a negative example are randomly sampled from the corpus, and there could exist a vast topical difference that makes the prediction task much easier than the intended coherence prediction.</p>
+<p>In ALBERT, a new sentence-order prediction (SOP) loss to model inter-sentence coherence, which demonstrated better performance in multi-sentence encoding tasks was motivated to improve performance on downstream tasks involving reasoning about the relationship between sentence pairs such as natural language inference. However, several follow-up studies <span id="id9">[<a class="reference internal" href="#id1246" title="Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. Roberta: a robustly optimized bert pretraining approach. arXiv preprint arXiv:1907.11692, 2019.">LOG+19</a>]</span> found that the NSP task has minimal impact and was even eliminated in several BERT variants. One possible reason is that there is a lack of difficulty in the NSP task. Specifically, the sentence pair in a negative example are randomly sampled from the corpus, and there could exist a vast topical difference that makes the prediction task much easier than the intended coherence prediction.</p>
 <p>In ALBERT, a sentence-order prediction (SOP) loss replaces NSP loss. The SOP loss avoids topic prediction and instead focuses on modeling inter-sentence coherence. The positive example consists of two consecutive segments from the same document; the negative example consists of the same two consecutive segments but with their order swapped. This forces the model to learn a fine-grained representation about sentence level coherence properties.</p>
 </section>
 </section>
@@ -1090,7 +1094,7 @@ As the generator is trained, the replaced tokens is harder and harder to disting
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-architecture">6.1. BERT Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contextual-embedding">6.1. Contextual Embedding</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-architecture-componenents">6.2. BERT Architecture Componenents</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-embeddings">6.2.1. Input Embeddings</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-encoder-anatomy">6.2.2. The Encoder Anatomy</a></li>
