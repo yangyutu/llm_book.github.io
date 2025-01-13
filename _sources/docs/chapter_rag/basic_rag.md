@@ -8,7 +8,7 @@ LLMs have revolutionized natural language processing, but they still face severa
 * **Untraceable reasoning**: The decision-making process of LLMs is often unclear, making it difficult to verify or understand their outputs.
 * **Expensive cost to inject knowledge**: Although one can inject domain knowledge or updated knowledge via continuous pretraining or finetining, the cost of data collections and training is very high.
 
-To address these challenges, researchers and developers have been exploring promising solutions. One such solution is to integrate of LLMs' inherent knowledge with external knowledge bases during model generation process. This approach is known as **Retrieval-Augmented Generation (RAG)** [{numref}`chapter_rag_fig_rag_demo`].
+To address these challenges, researchers and developers have been exploring promising solutions. One such solution is to integrate the LLMs' inherent knowledge with external knowledge bases during model generation process. This approach is known as **Retrieval-Augmented Generation (RAG)** [{numref}`chapter_rag_fig_rag_demo`].
 
 ```{figure} ../img/chapter_rag/RAG_demo.png
 ---
@@ -23,7 +23,7 @@ Generation. The original question and the retrieved context are fed into LLM to 
 Compared to LLM's responses that are relied on its own internal knowledge, RAG exhibits the following advantages:
 
 * **Improved accuracy and reliability**: By supplementing the LLM's knowledge with current, factual information from external sources, RAG can significantly reduce hallucinations and increase the accuracy of generated content. In additional, by comparing retrieved sources and generated output, one can trace or verify claims in the output.
-* **Superior performance on knowledge-intensive tasks**: RAG excels in tasks that require specific, detailed information, such as question-answering, fact-checking, and research assistance.
+* **Improved performance on knowledge-intensive tasks**: RAG excels in tasks that require specific, detailed information, such as question-answering, fact-checking, and research assistance.
 * **Continuous and domain-specific knowledge updates**: Unlike traditional LLMs, which require retraining or continuous pretraining to incorporate updated or additional information, RAG systems can be updated by simply modifying the external knowledge base. This allows for more frequent and efficient knowledge updates and the integration of specialized knowledge from particular fields or industries, making it possible to create more focused and accurate outputs for specific domains.
 
 
