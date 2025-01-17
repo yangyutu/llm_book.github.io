@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Vision Language Pretraining &#8212; LLM Foundations</title>
+    <title>26. Vision Language Pretraining &#8212; LLM Foundations</title>
   
   
   
@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_multimodality/vision_transformers';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="26. Information Retrieval and Text Ranking" href="../chapter_application_IR/information_retrieval_fundamentals.html" />
+    <link rel="next" title="27. Information Retrieval and Text Ranking" href="../chapter_application_IR/information_retrieval_fundamentals.html" />
     <link rel="prev" title="25. Advanced RAG (WIP)" href="../chapter_rag/advanced_rag.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -203,7 +203,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Lab DPO Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Lab: DPO Training</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -222,12 +222,12 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Vision Language Pretraining</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">26. Vision Language Pretraining</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">26. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">27. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">28. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -328,25 +328,25 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clip">CLIP</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detailed-implementations">Detailed Implementations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clip">26.1. CLIP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">26.1.1. Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detailed-implementations">26.1.2. Detailed Implementations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#blip">BLIP</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-architecture">Model Architecture</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-strategy">Training Strategy</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downstream-application">Downstream Application</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#blip">26.2. BLIP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">26.2.1. Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-architecture">26.2.2. Model Architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-strategy">26.2.3. Training Strategy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downstream-application">26.2.4. Downstream Application</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#blip-2">BLIP-2</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Model Architecture</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Training Strategy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#blip-2">26.3. BLIP-2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">26.3.1. Model Architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">26.3.2. Training Strategy</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instruct-blip">Instruct BLIP</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instruct-blip">26.4. Instruct BLIP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">26.5. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -359,33 +359,33 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="vision-language-pretraining">
-<h1>Vision Language Pretraining<a class="headerlink" href="#vision-language-pretraining" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">26. </span>Vision Language Pretraining<a class="headerlink" href="#vision-language-pretraining" title="Link to this heading">#</a></h1>
 <section id="clip">
-<h2>CLIP<a class="headerlink" href="#clip" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">26.1. </span>CLIP<a class="headerlink" href="#clip" title="Link to this heading">#</a></h2>
 <section id="overview">
-<h3>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
-<p>CLIP, which stands for “Contrastive Language-Image Pre-training,” is a multimodal model that uses contrastive learning. CLIP is trained on text-image pairs with the goal of teaching the model to learn matching relationships between text and images via contrastive learning [<a class="reference internal" href="#chapter-vllm-visionlanguagepretrain-clip-method"><span class="std std-numref">Fig. 1</span></a>]. The model consists of two parts: a <strong>text encoder</strong> and an <strong>image encoder</strong>, which are used to extract text and image features and produce semantic vectors.</p>
+<h3><span class="section-number">26.1.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
+<p>CLIP, which stands for “Contrastive Language-Image Pre-training,” is a multimodal model that uses contrastive learning. CLIP is trained on text-image pairs with the goal of teaching the model to learn matching relationships between text and images via contrastive learning [<a class="reference internal" href="#chapter-vllm-visionlanguagepretrain-clip-method"><span class="std std-numref">Fig. 26.1</span></a>]. The model consists of two parts: a <strong>text encoder</strong> and an <strong>image encoder</strong>, which are used to extract text and image features and produce semantic vectors.</p>
 <figure class="align-default" id="chapter-vllm-visionlanguagepretrain-clip-method">
 <a class="reference internal image-reference" href="../../_images/CLIP_method.png"><img alt="../../_images/CLIP_method.png" src="../../_images/CLIP_method.png" style="width: 500.4px; height: 363.59999999999997px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Using contrastive learning, CLIP jointly trains an image encoder and a text encoder to predict the correct pairings of a batch of (image, text) training
+<p><span class="caption-number">Fig. 26.1 </span><span class="caption-text">Using contrastive learning, CLIP jointly trains an image encoder and a text encoder to predict the correct pairings of a batch of (image, text) training
 examples. Image from <span id="id1">[<a class="reference internal" href="#id458" title="Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, and et al. Learning transferable visual models from natural language supervision. In International Conference on Machine Learning, 8748–8763. PMLR, 2021.">RKH+21</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-clip-method" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>The trained text encode and image encodder can be directly used in zero-shot application setting, as shown in <a class="reference internal" href="#chapter-vllm-visionlanguagepretrain-clip-zero-shot-prediction"><span class="std std-numref">Fig. 2</span></a>.</p>
+<p>The trained text encode and image encodder can be directly used in zero-shot application setting, as shown in <a class="reference internal" href="#chapter-vllm-visionlanguagepretrain-clip-zero-shot-prediction"><span class="std std-numref">Fig. 26.2</span></a>.</p>
 <figure class="align-default" id="chapter-vllm-visionlanguagepretrain-clip-zero-shot-prediction">
 <a class="reference internal image-reference" href="../../_images/CLIP_zero_shot_prediction.png"><img alt="../../_images/CLIP_zero_shot_prediction.png" src="../../_images/CLIP_zero_shot_prediction.png" style="width: 502.79999999999995px; height: 363.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 2 </span><span class="caption-text">At test time the learned text encoder synthesizes a zero-shot linear classifier by embedding the names or descriptions of the
+<p><span class="caption-number">Fig. 26.2 </span><span class="caption-text">At test time the learned text encoder synthesizes a zero-shot linear classifier by embedding the names or descriptions of the
 target dataset’s classes. Image from <span id="id2">[<a class="reference internal" href="#id458" title="Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, and et al. Learning transferable visual models from natural language supervision. In International Conference on Machine Learning, 8748–8763. PMLR, 2021.">RKH+21</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-clip-zero-shot-prediction" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The key conclusion is that CLIP model learns from natural language supervision and is capable of performing various tasks during pre-training, such as OCR, geo-localization, and action recognition, while demonstrating competitive performance in zero-shot transfer tasks.</p>
 </section>
 <section id="detailed-implementations">
-<h3>Detailed Implementations<a class="headerlink" href="#detailed-implementations" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">26.1.2. </span>Detailed Implementations<a class="headerlink" href="#detailed-implementations" title="Link to this heading">#</a></h3>
 <p>In the original study, two architectures were considered for the image encoder:</p>
 <ul class="simple">
 <li><p><strong>ResNet</strong> (such as ResNet-50, ResNet-101, etc., with modifications like ResNetD improvements, pooling, attention pooling)</p></li>
@@ -422,14 +422,14 @@ They created a new dataset called WIT (WebImageText), containing 400M image-text
 </section>
 </section>
 <section id="blip">
-<h2>BLIP<a class="headerlink" href="#blip" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">26.2. </span>BLIP<a class="headerlink" href="#blip" title="Link to this heading">#</a></h2>
 <section id="introduction">
-<h3>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">26.2.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h3>
 <p><strong>BLIP</strong> (Bootstrapping Language-Image Pretraining) is a multimodal framework proposed by <strong>Salesforce</strong> in 2022. It <strong>unifies understanding and generation</strong> by introducing cross-modal encoders and decoders, enabling cross-modal information flow, and achieving SOTA results in multiple vision and language tasks. In AIGC, it’s commonly used to generate prompts for images. Good prompts are crucial for fine-tuning cross-attention, for example, the Automatic Prompt in ControlNet is generated by BLIP.</p>
 <p>The term <strong>Bootstrapping</strong> refers to the fact that the training data comes from web image-text pairs, which contain a lot of noise. Therefore, <strong>an online data labeling and cleaning task was added</strong>, where the processed data is used to iterate on the original model.</p>
 </section>
 <section id="model-architecture">
-<h3>Model Architecture<a class="headerlink" href="#model-architecture" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">26.2.2. </span>Model Architecture<a class="headerlink" href="#model-architecture" title="Link to this heading">#</a></h3>
 <p>BLIP introduces MED (Multimodal mixture of Encoder-Decoder), a multimodal hybrid architecture that enables effective multi-task pre-training and transfer learning. MED includes</p>
 <ul class="simple">
 <li><p>Two unimodal encoders (<strong>Image Encoder</strong> and <strong>Text Encoder</strong>);</p></li>
@@ -440,7 +440,7 @@ They created a new dataset called WIT (WebImageText), containing 400M image-text
 <a class="reference internal image-reference" href="../../_images/BLIP_arch.png"><img alt="../../_images/BLIP_arch.png" src="../../_images/BLIP_arch.png" style="width: 790.8px; height: 324.59999999999997px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Pre-training model architecture and objectives of BLIP (same parameters have the same color). Image from <span id="id3">[<a class="reference internal" href="#id1566" title="Junnan Li, Dongxu Li, Caiming Xiong, and Steven Hoi. Blip: bootstrapping language-image pre-training for unified vision-language understanding and generation. In International conference on machine learning, 12888–12900. PMLR, 2022.">LLXH22</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip-arch" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 26.3 </span><span class="caption-text">Pre-training model architecture and objectives of BLIP (same parameters have the same color). Image from <span id="id3">[<a class="reference internal" href="#id1566" title="Junnan Li, Dongxu Li, Caiming Xiong, and Steven Hoi. Blip: bootstrapping language-image pre-training for unified vision-language understanding and generation. In International conference on machine learning, 12888–12900. PMLR, 2022.">LLXH22</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip-arch" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>There are three different loss functions to align different modules:</p>
@@ -451,13 +451,13 @@ They created a new dataset called WIT (WebImageText), containing 400M image-text
 </ul>
 </section>
 <section id="training-strategy">
-<h3>Training Strategy<a class="headerlink" href="#training-strategy" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">26.2.3. </span>Training Strategy<a class="headerlink" href="#training-strategy" title="Link to this heading">#</a></h3>
 <p>To effectively utilize the large amount of image-text pairs obtained from the web, which often contain inaccurate or even incorrect information, BLIP proposes the <strong>CapFilt</strong> (Captioning and Filtering) module for caption generation and filtering. It first learns from noisy image-text pairs, then generates and filters to create new datasets, which are used to iteratively optimize the original model.</p>
 <figure class="align-default" id="chapter-vllm-visionlanguagepretrain-blip-training-strategy">
 <a class="reference internal image-reference" href="../../_images/BLIP_training_strategy.png"><img alt="../../_images/BLIP_training_strategy.png" src="../../_images/BLIP_training_strategy.png" style="width: 801.6px; height: 268.2px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Learning framework of BLIP. A captioner is used to produce synthetic captions for web images, and a filter is used to remove
+<p><span class="caption-number">Fig. 26.4 </span><span class="caption-text">Learning framework of BLIP. A captioner is used to produce synthetic captions for web images, and a filter is used to remove
 noisy image-text pairs. The resulted bootstrapped dataset is used to pre-train a new model. Image from <span id="id4">[<a class="reference internal" href="#id1566" title="Junnan Li, Dongxu Li, Caiming Xiong, and Steven Hoi. Blip: bootstrapping language-image pre-training for unified vision-language understanding and generation. In International conference on machine learning, 12888–12900. PMLR, 2022.">LLXH22</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip-training-strategy" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
@@ -472,24 +472,24 @@ noisy image-text pairs. The resulted bootstrapped dataset is used to pre-train a
 <p><strong>Filter is an image-grounded text encoder</strong> that is fine-tuned with <strong>ITC</strong> and <strong>ITM</strong> objectives to learn whether text matches images, removing noisy text from both original web text and synthetic text.</p>
 </section>
 <section id="downstream-application">
-<h3>Downstream Application<a class="headerlink" href="#downstream-application" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">26.2.4. </span>Downstream Application<a class="headerlink" href="#downstream-application" title="Link to this heading">#</a></h3>
 <figure class="align-default" id="chapter-vllm-visionlanguagepretrain-blip-downstream">
 <a class="reference internal image-reference" href="../../_images/BLIP_downstream.png"><img alt="../../_images/BLIP_downstream.png" src="../../_images/BLIP_downstream.png" style="width: 395.4px; height: 445.8px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Model architecture for the downstream tasks. Q: question; C: caption; QA: question-answer pair. Image from <span id="id5">[<a class="reference internal" href="#id1566" title="Junnan Li, Dongxu Li, Caiming Xiong, and Steven Hoi. Blip: bootstrapping language-image pre-training for unified vision-language understanding and generation. In International conference on machine learning, 12888–12900. PMLR, 2022.">LLXH22</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip-downstream" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 26.5 </span><span class="caption-text">Model architecture for the downstream tasks. Q: question; C: caption; QA: question-answer pair. Image from <span id="id5">[<a class="reference internal" href="#id1566" title="Junnan Li, Dongxu Li, Caiming Xiong, and Steven Hoi. Blip: bootstrapping language-image pre-training for unified vision-language understanding and generation. In International conference on machine learning, 12888–12900. PMLR, 2022.">LLXH22</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip-downstream" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p><strong>Visual Question Answering (VQA)</strong> requires the model to predict an answer given an image and a question. During downstream finetuning, we can first encode the image-question input into multimodal embeddings using an image encoder and a text encoder with cross-attention to image embedding. The resulted multimodal embeddings are then given to an text to produce answer. The VQA model is finetuned with the LM loss using ground-truth answers as targets.</p>
 <p><strong>Natural Language Visual Reasoning (NLVR2)</strong> asks the model to predict whether a sentence describes a pair of images. First, each image is encoded into embeddings using unimodal image encoder. These image embeddings are then sent to the image-grounded text encoder, in which
 there exist two cross-attention layers to process the two input images, and their outputs are merged and fed to the FFN. The merge layer performs simple average pooling in the first 6 layers of the encoder, and performs concatenation followed by a linear projection in layer 6-12. An MLP classifier is applied on the output embedding of the [Encode] token.</p>
-<p><strong>Visual Dialog (VisDial)</strong> extends VQA in a natural conversational setting, where the model needs to predict an answer not only based on the image-question pair, but also considering the dialog history and the image’s caption. <a class="reference internal" href="#chapter-vllm-visionlanguagepretrain-blip-downstream"><span class="std std-numref">Fig. 5</span></a> adopts the discriminative setting where the model ranks a pool of answer candidates. Image and caption text are encoded separately using unimodal encoders, then image and text embeddings are concatenated and passed to the dialog encoder through cross-attention. The dialog encoder is trained with the ITM loss to discriminate whether the answer is true or false for a question, given the entire dialog history and the image-caption embeddings.</p>
+<p><strong>Visual Dialog (VisDial)</strong> extends VQA in a natural conversational setting, where the model needs to predict an answer not only based on the image-question pair, but also considering the dialog history and the image’s caption. <a class="reference internal" href="#chapter-vllm-visionlanguagepretrain-blip-downstream"><span class="std std-numref">Fig. 26.5</span></a> adopts the discriminative setting where the model ranks a pool of answer candidates. Image and caption text are encoded separately using unimodal encoders, then image and text embeddings are concatenated and passed to the dialog encoder through cross-attention. The dialog encoder is trained with the ITM loss to discriminate whether the answer is true or false for a question, given the entire dialog history and the image-caption embeddings.</p>
 </section>
 </section>
 <section id="blip-2">
-<h2>BLIP-2<a class="headerlink" href="#blip-2" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">26.3. </span>BLIP-2<a class="headerlink" href="#blip-2" title="Link to this heading">#</a></h2>
 <section id="id6">
-<h3>Model Architecture<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">26.3.1. </span>Model Architecture<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
 <p>BLIP-2 <span id="id7">[<a class="reference internal" href="#id1567" title="Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. Blip-2: bootstrapping language-image pre-training with frozen image encoders and large language models. In International conference on machine learning, 19730–19742. PMLR, 2023.">LLSH23</a>]</span> from Saleforces, which aimed to improve multimodal performance and reduces training costs by leveraging pre-trained vision models and language models. The pre-trained vision models provide high-quality visual representations, while the pre-trained language models offer powerful language generation capabilities.</p>
 <p>BLIP-2 consists of a pre-trained Image Encoder, a pre-trained Large Language Model, and a learnable Q-Former.</p>
 <ul class="simple">
@@ -506,11 +506,11 @@ there exist two cross-attention layers to process the two input images, and thei
 <a class="reference internal image-reference" href="../../_images/BLIP2_overview.png"><img alt="../../_images/BLIP2_overview.png" src="../../_images/BLIP2_overview.png" style="width: 386.09999999999997px; height: 179.1px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Overview of BLIP-2 framework. A lightweight Querying Transformer is trained via a two-stage strategy to bridge the modality gap. The first stage bootstraps vision-language representation learning from a frozen image encoder. The second stage bootstraps vision-to-language generative learning from a frozen LLM, which enables zero-shot instructed image-totext generation. Image from <span id="id8">[<a class="reference internal" href="#id1567" title="Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. Blip-2: bootstrapping language-image pre-training with frozen image encoders and large language models. In International conference on machine learning, 19730–19742. PMLR, 2023.">LLSH23</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip2-blip2-overview" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 26.6 </span><span class="caption-text">Overview of BLIP-2 framework. A lightweight Querying Transformer is trained via a two-stage strategy to bridge the modality gap. The first stage bootstraps vision-language representation learning from a frozen image encoder. The second stage bootstraps vision-to-language generative learning from a frozen LLM, which enables zero-shot instructed image-totext generation. Image from <span id="id8">[<a class="reference internal" href="#id1567" title="Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. Blip-2: bootstrapping language-image pre-training with frozen image encoders and large language models. In International conference on machine learning, 19730–19742. PMLR, 2023.">LLSH23</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip2-blip2-overview" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="proof remark admonition" id="remark-0">
-<p class="admonition-title"><span class="caption-number">Remark 1 </span> (Design considerations for fusing image understanding signals)</p>
+<p class="admonition-title"><span class="caption-number">Remark 26.1 </span> (Design considerations for fusing image understanding signals)</p>
 <section class="remark-content" id="proof-content">
 <p>One way to fuse image understanding signal into text LLM is first going through a <strong>semantic conversion stage</strong> - using caption models to generate textual descriptions of images/videos (scenes, events, entities, etc.), then feeding these textual descriptions (or perform some preprocessing, like summarization beforehand) into the LLM.</p>
 <p>This approach involves indirectly converting visual semantics into textual semantics through a visual Captioner (<strong>semantic conversion stage</strong>), then better adapting the textual semantics through Prompt+LLM (<strong>semantic adaptation stage</strong>), and finally using this as input for the target LLM to create an MLLM (<strong>semantic fusion stage</strong>).</p>
@@ -519,7 +519,7 @@ there exist two cross-attention layers to process the two input images, and thei
 </section>
 </div></section>
 <section id="id10">
-<h3>Training Strategy<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">26.3.2. </span>Training Strategy<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
 <p>To reduce computational costs and avoid catastrophic forgetting, BLIP-2 freezes both pre-trained image and language models during pre-training. However, simply freezing pre-trained model parameters makes it difficult to align visual and text features. To address this, BLIP-2 proposes a two-stage Q-Former pre-training approach to bridge the modality gap:</p>
 <ul class="simple">
 <li><p>Representation learning stage</p></li>
@@ -536,7 +536,7 @@ Fig.4 Model architecture of Q-Former and Vision-Language Representation Learning
 <a class="reference internal image-reference" href="../../_images/representative_training.png"><img alt="../../_images/representative_training.png" src="../../_images/representative_training.png" style="width: 859.0px; height: 185.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 7 </span><span class="caption-text">(Left) Model architecture of Q-Former and BLIP-2’s first-stage vision-language representation learning objectives. We jointly
+<p><span class="caption-number">Fig. 26.7 </span><span class="caption-text">(Left) Model architecture of Q-Former and BLIP-2’s first-stage vision-language representation learning objectives. We jointly
 optimize three objectives which enforce the queries (a set of learnable embeddings) to extract visual representation most relevant to the
 text. (Right) The self-attention masking strategy for each objective to control query-text interaction. Image from <span id="id11">[<a class="reference internal" href="#id1567" title="Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. Blip-2: bootstrapping language-image pre-training with frozen image encoders and large language models. In International conference on machine learning, 19730–19742. PMLR, 2023.">LLSH23</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip2-representative-training" title="Link to this image">#</a></p>
 </figcaption>
@@ -547,7 +547,7 @@ text. (Right) The self-attention masking strategy for each objective to control 
 <a class="reference internal image-reference" href="../../_images/generative_training.png"><img alt="../../_images/generative_training.png" src="../../_images/generative_training.png" style="width: 774.5px; height: 238.5px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 8 </span><span class="caption-text">BLIP-2 second-stage vision-to-language generative pre-training, which bootstraps from frozen large language models (LLMs).
+<p><span class="caption-number">Fig. 26.8 </span><span class="caption-text">BLIP-2 second-stage vision-to-language generative pre-training, which bootstraps from frozen large language models (LLMs).
 (Top) Bootstrapping a decoder-based LLM (e.g. OPT). (Bottom) Bootstrapping an encoder-decoder-based LLM (e.g. FlanT5). The
 fully-connected layer adapts from the output dimension of the Q-Former to the input dimension of the chosen LLM. Image from <span id="id12">[<a class="reference internal" href="#id1567" title="Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. Blip-2: bootstrapping language-image pre-training with frozen image encoders and large language models. In International conference on machine learning, 19730–19742. PMLR, 2023.">LLSH23</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-blip2-generative-training" title="Link to this image">#</a></p>
 </figcaption>
@@ -555,7 +555,7 @@ fully-connected layer adapts from the output dimension of the Q-Former to the in
 </section>
 </section>
 <section id="instruct-blip">
-<h2>Instruct BLIP<a class="headerlink" href="#instruct-blip" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">26.4. </span>Instruct BLIP<a class="headerlink" href="#instruct-blip" title="Link to this heading">#</a></h2>
 <p>Large-scale pre-training and instruction tuning <span id="id13">[<a class="reference internal" href="../chapter_training/finetuning.html#id58" title="Renze Lou, Kai Zhang, and Wenpeng Yin. Large language model instruction following: a survey of progresses and challenges. Computational Linguistics, pages 1–10, 2024.">LZY24</a>]</span> have been successful at creating general-purpose language models. InstructBLIP <span id="id14">[<a class="reference internal" href="#id1568" title="Haotian Liu, Chunyuan Li, Qingyang Wu, and Yong Jae Lee. Visual instruction tuning. Advances in neural information processing systems, 2024.">LLWL24</a>]</span>, a vision-language instruction tuning framework that enables general-purpose models to solve a wide range of visuallanguage tasks through a unified natural language interface.</p>
 <p>InstructBLIP adopts a model architecture similar to BLIP-2, which consists of a visual encoder, Q-Former, and LLM. The visual encoder extracts features from the input image and feeds them into the Q-Former. Q-Former’s input includes both <strong>learnable Queries</strong> and <strong>Instruction</strong>. The internal structure of Q-Former is shown in <span id="id15">[]</span>, where the learnable Queries interact with the Instruction through Self-Attention, and interact with the input image features through Cross-Attention, encouraging the extraction of task-relevant image features.</p>
 <p>Q-Former’s output is fed into the LLM through an FC layer. The pre-training process of Q-Former follows BLIP-2’s two steps:</p>
@@ -567,7 +567,7 @@ fully-connected layer adapts from the output dimension of the Q-Former to the in
 <a class="reference internal image-reference" href="../../_images/instruct_BLIP_demo.png"><img alt="../../_images/instruct_BLIP_demo.png" src="../../_images/instruct_BLIP_demo.png" style="width: 786.0999999999999px; height: 333.2px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Model architecture of InstructBLIP. The Q-Former extracts instruction-aware visual features
+<p><span class="caption-number">Fig. 26.9 </span><span class="caption-text">Model architecture of InstructBLIP. The Q-Former extracts instruction-aware visual features
 from the output embeddings of the frozen image encoder, and feeds the visual features as soft prompt input to the frozen LLM. We instruction-tune the model with the language modeling loss to generate the response. Image from <span id="id16">[<a class="reference internal" href="#id1568" title="Haotian Liu, Chunyuan Li, Qingyang Wu, and Yong Jae Lee. Visual instruction tuning. Advances in neural information processing systems, 2024.">LLWL24</a>]</span>.</span><a class="headerlink" href="#chapter-vllm-visionlanguagepretrain-instruct-blip-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
@@ -628,7 +628,7 @@ from the output embeddings of the frozen image encoder, and feeds the visual fea
 </div>
 </section>
 <section id="bibliography">
-<h2>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">26.5. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id17">
 <div role="list" class="citation-list">
 <div class="citation" id="id1548" role="doc-biblioentry">
@@ -708,7 +708,7 @@ from the output embeddings of the frozen image encoder, and feeds the visual fea
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">26. </span>Information Retrieval and Text Ranking</p>
+        <p class="prev-next-title"><span class="section-number">27. </span>Information Retrieval and Text Ranking</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -728,25 +728,25 @@ from the output embeddings of the frozen image encoder, and feeds the visual fea
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clip">CLIP</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detailed-implementations">Detailed Implementations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clip">26.1. CLIP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">26.1.1. Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detailed-implementations">26.1.2. Detailed Implementations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#blip">BLIP</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-architecture">Model Architecture</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-strategy">Training Strategy</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downstream-application">Downstream Application</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#blip">26.2. BLIP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">26.2.1. Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-architecture">26.2.2. Model Architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-strategy">26.2.3. Training Strategy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downstream-application">26.2.4. Downstream Application</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#blip-2">BLIP-2</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Model Architecture</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Training Strategy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#blip-2">26.3. BLIP-2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">26.3.1. Model Architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">26.3.2. Training Strategy</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instruct-blip">Instruct BLIP</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instruct-blip">26.4. Instruct BLIP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">26.5. Bibliography</a></li>
 </ul>
   </nav></div>
 
