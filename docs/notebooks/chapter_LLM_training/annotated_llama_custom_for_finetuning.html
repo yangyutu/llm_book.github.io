@@ -220,12 +220,12 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_multimodality/vision_transformers.html">Vision Language Pretraining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_multimodality/vision_transformers.html">26. Vision Language Pretraining</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/information_retrieval_fundamentals.html">26. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/information_retrieval_fundamentals.html">27. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/application_LLM_in_IR.html">28. Application of LLM in IR (WIP)</a></li>
 </ul>
 
     </div>
@@ -342,14 +342,6 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="lab-finetuning">
 <h1><span class="section-number">18. </span>*Lab: Finetuning<a class="headerlink" href="#lab-finetuning" title="Link to this heading">#</a></h1>
-<p>Here we present a simplified llama implementation based <a class="reference external" href="https://github.com/huggingface/transformers/blob/main/src/transformers/models/llama/modeling_llama.py#L731">Huggingface implementation</a> to illustrate different components on the Llama decoder model.</p>
-<p>The key components are</p>
-<ul class="simple">
-<li><p>RMS Norm</p></li>
-<li><p>Rotary Position Embedding</p></li>
-<li><p>Grouped Query Attention</p></li>
-<li><p>Feedfoward network (FFN)</p></li>
-</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
