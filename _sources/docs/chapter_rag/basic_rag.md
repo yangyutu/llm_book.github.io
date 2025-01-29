@@ -1,4 +1,4 @@
-# RAG
+# RAG and Conversational IR
 
 ## Motivation
 LLMs have revolutionized natural language processing, but they still face several significant challenges, particularly in **knowledge intensive tasks**:
@@ -175,6 +175,7 @@ name: chapter_rag_fig_rag_rag_checker
 llustration of the proposed metrics in RAGChecker. Image from {cite:p}`ru2024ragchecker`.
 ```
 
+## Conversational IR
 
 
 

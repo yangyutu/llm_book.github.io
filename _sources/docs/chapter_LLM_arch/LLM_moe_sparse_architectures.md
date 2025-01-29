@@ -220,7 +220,7 @@ Note that the bias term is only used for routing. The gating value, which will b
 
 ### MTP
 
-```{figure} ../img/chapter_LLM_arch/MoEs/deepseek_v3/mtp_demo.png
+```{figure} ../img/chapter_LLM_arch/MoEs/deepseek_v3/mtp_arch.png
 ---
 scale: 70%
 name: chapter_LLM_moe_arch_fig_mtp_demo

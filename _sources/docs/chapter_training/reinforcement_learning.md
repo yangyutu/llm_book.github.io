@@ -71,11 +71,11 @@ $$
 is maximized, where $R(s,a):\mathcal{S}\times\mathcal{A}\to{\mathbb(R)}$ is the one-step reward function and $\gamma \in [0, 1)$ is the discount factor.
 ```
 
-````{prf:example} examples of reward functions
+```{prf:example} examples of reward functions
 - In a navigation task, we can set $r(s_t,a_t) = \mathbb{I}(s_t \in S_{target})$.
 - In a game, the state of gaining scores has a reward 1 and other states have a reward 0. 
 
-````
+```
 
 ````{prf:definition} value functions
 - Let $\pi$ be a given control policy. We can define a **value function** associated with this policy by
@@ -191,7 +191,7 @@ $$Q^*(s,a) = {E}^*_{s'\sim p(s'|s,\pi(s))} [r + \gamma Q^*(s',\pi^*(s'))].$$
 Further note that $\pi^*(s') = \arg\max_{a\in \mathcal(A)(s')} Q(s',a')$
 ````
 
-````{prf:remark} recursive relation for value functions
+```{prf:remark} recursive relation for value functions
 Recall that in {prf:ref}`ch:reinforcement-learning:th:recursiveRelationshipValueFunctionMDP`, we have covered the recursive relation for value functions.  
 - Given a value function $V^\pi$ associated with control policy $\pi$. 
 	The value function satisfies the following backward relationship:
@@ -203,7 +203,7 @@ Recall that in {prf:ref}`ch:reinforcement-learning:th:recursiveRelationshipValue
 	$$V^*(s) = \max_aE_{s'\sim P(s'|s, a ))}[R(s',a)+ \gamma V^*(s')].$$
 
 Note that in above two cases, $a$ is determined by either the policy function $\pi$ or the maximization. $a$ is not a free variable.
-````
+```
 
 (ch:reinforcement-learning:sec:PolicyIterationValueIteration)=
 ### Policy iteration and Value iteration
@@ -284,9 +284,9 @@ We have
 ``` -->
 
 
-````{prf:remark} error estimation and stopping criterion
+```{prf:remark} error estimation and stopping criterion
 The third property can be used as a stopping criterion during iterations. Suppose the tolerance is $Tol$, then we should iterate until the maximum change during consecutive iteration is small than $(1 - \gamma)\times Tol$.
-````
+```
 
 
 
@@ -480,7 +480,7 @@ A direct application of the value iteration theorem gives the following **value 
 ```
 
 
-````{prf:remark} value iteration vs. policy iteration; model-based vs. model-free
+```{prf:remark} value iteration vs. policy iteration; model-based vs. model-free
 - At the first glance, it may seem the simplicity of the value iteration method will make the policy iteration method obsolete. It is critical to know that value iteration requires the knowledge of model, which is represented by the transition probabilities $p(s'|s, a)$. 
 - Later we will see that for many complicated real-world decision-making problems, a model is a luxury and often unavailable. In such situations, we usually turn to reinforcement learning, a model-free, data-driven approach to learn control policies. Most reinforcement learning algorithms, from a high-level abstraction, are comprised of the two steps of policy evaluation and policy improvement.
-````
+```

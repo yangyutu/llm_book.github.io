@@ -213,19 +213,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/basic_prompt.html">22. Basic Prompting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/advanced_prompt.html">23. Advanced Prompting Techniques</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/basic_rag.html">24. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/advanced_rag.html">25. Advanced RAG (WIP)</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_multimodality/vision_transformers.html">26. Vision Language Pretraining</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/information_retrieval_fundamentals.html">27. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/application_LLM_in_IR.html">28. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/information_retrieval_fundamentals.html">24. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/basic_rag.html">26. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/advanced_rag.html">27. Advanced RAG (WIP)</a></li>
 </ul>
 
     </div>
@@ -672,7 +665,42 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "1437e27c332b4ffc8b6c94881cd6d22b", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "4d32458cb7fe4f1c860c3b98477e0458", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "ea3cab14a7cb426286c987b17dcc59e5", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "1437e27c332b4ffc8b6c94881cd6d22b", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "4d32458cb7fe4f1c860c3b98477e0458", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "ea3cab14a7cb426286c987b17dcc59e5", "version_major": 2, "version_minor": 0}</script><div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="n">line</span> <span class="mi">29</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">5e-6</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span> <span class="c1"># train model</span>
+<span class="ne">---&gt; </span><span class="mi">29</span> <span class="n">train_dpo</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ref_model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">train_dataloader</span><span class="p">,</span> <span class="n">OmegaConf</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">train_settings</span><span class="p">),</span> <span class="n">device</span><span class="p">)</span>
+
+<span class="nn">Cell In [13], line 14,</span> in <span class="ni">train_dpo</span><span class="nt">(model, ref_model, optimizer, train_loader, train_settings, device)</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+<span class="ne">---&gt; </span><span class="mi">14</span> <span class="n">losses</span><span class="p">,</span> <span class="n">chosen_rewards</span><span class="p">,</span> <span class="n">rejected_rewards</span> <span class="o">=</span> <span class="n">compute_batch_loss</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">ref_model</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="n">loss</span> <span class="o">=</span> <span class="n">losses</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="n">chosen_reward</span> <span class="o">=</span> <span class="n">chosen_rewards</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="nn">Cell In [12], line 22,</span> in <span class="ni">compute_batch_loss</span><span class="nt">(batch, model, ref_model, device)</span>
+<span class="g g-Whitespace">     </span><span class="mi">19</span>     <span class="n">chosen_logits_ref</span> <span class="o">=</span> <span class="n">ref_model</span><span class="p">(</span><span class="n">input_ids</span><span class="o">=</span><span class="n">chosen_batch</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">],</span> <span class="n">attention_mask</span><span class="o">=</span><span class="n">chosen_batch</span><span class="p">[</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">logits</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span>     <span class="n">rejected_logits_ref</span> <span class="o">=</span> <span class="n">ref_model</span><span class="p">(</span><span class="n">input_ids</span><span class="o">=</span><span class="n">rejected_batch</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">],</span> <span class="n">attention_mask</span><span class="o">=</span><span class="n">rejected_batch</span><span class="p">[</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">logits</span>
+<span class="ne">---&gt; </span><span class="mi">22</span>     <span class="n">chosen_sequence_log_probs_ref</span> <span class="o">=</span> <span class="n">_get_squence_log_probs</span><span class="p">(</span><span class="n">chosen_logits_ref</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">chosen_batch</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">],</span> <span class="n">loss_mask</span> <span class="o">=</span> <span class="n">chosen_batch</span><span class="p">[</span><span class="s1">&#39;loss_mask&#39;</span><span class="p">])</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span>     <span class="n">rejected_sequence_log_probs_ref</span> <span class="o">=</span> <span class="n">_get_squence_log_probs</span><span class="p">(</span><span class="n">rejected_logits_ref</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">rejected_batch</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">],</span> <span class="n">loss_mask</span> <span class="o">=</span> <span class="n">rejected_batch</span><span class="p">[</span><span class="s1">&#39;loss_mask&#39;</span><span class="p">])</span>
+<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="n">losses</span><span class="p">,</span> <span class="n">chosen_rewards</span><span class="p">,</span> <span class="n">rejected_rewards</span> <span class="o">=</span> <span class="n">preference_loss</span><span class="p">(</span><span class="n">chosen_sequence_log_probs</span><span class="p">,</span> <span class="n">rejected_sequence_log_probs</span><span class="p">,</span> <span class="n">chosen_sequence_log_probs_ref</span><span class="p">,</span> <span class="n">rejected_sequence_log_probs_ref</span><span class="p">)</span>
+
+<span class="nn">Cell In [11], line 46,</span> in <span class="ni">_get_squence_log_probs</span><span class="nt">(logits, labels, loss_mask, average_log_prob)</span>
+<span class="g g-Whitespace">     </span><span class="mi">40</span> <span class="k">assert</span> <span class="n">logits</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">labels</span><span class="o">.</span><span class="n">shape</span>
+<span class="g g-Whitespace">     </span><span class="mi">41</span> <span class="c1">#assert labels.shape == loss_mask.shape</span>
+<span class="g g-Whitespace">     </span><span class="mi">42</span> <span class="c1"># let the sequence be A, B, C, D</span>
+<span class="g g-Whitespace">     </span><span class="mi">43</span> <span class="c1"># labels[:,1：] are B, C, D</span>
+<span class="g g-Whitespace">     </span><span class="mi">44</span> <span class="c1"># logits corresponds to B, C, D, X</span>
+<span class="g g-Whitespace">     </span><span class="mi">45</span> <span class="c1"># logits[:,:-1,:] corresponds to B, C, D</span>
+<span class="ne">---&gt; </span><span class="mi">46</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="c1"># labels </span>
+<span class="g g-Whitespace">     </span><span class="mi">47</span> <span class="n">logits</span> <span class="o">=</span> <span class="n">logits</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span>
+<span class="g g-Whitespace">     </span><span class="mi">48</span> <span class="n">loss_mask</span> <span class="o">=</span> <span class="n">loss_mask</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 </section>

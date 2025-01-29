@@ -1143,7 +1143,7 @@ $$L_{MSE} = ||z^{(T)} - z^{(S)}||^2$$
 
 where $z^{(T)}$ and $z^{(S)}$ are logits from the teacher and the student network, respectively. 
 
-````{prf:remark} connections between MSE loss and KL loss
+```{prf:remark} connections between MSE loss and KL loss
 
 In {cite}`hinton2015distilling`, given a single sample input feature $x$, the gradient of ${L}_{KL}$ with respect to $z_{k}^{(S)}$ is as follows:
 
@@ -1160,7 +1160,7 @@ $$
 where $K$ is the number of classes.
 
 Here, by assuming the zero-mean teacher and student logit, i.e., $\sum_{j} {z}_{j}^{(T)}=0$ and $\sum_{j} {z}_{j}^{(S)}=0$, and hence $\frac{\partial {L}_{K L}}{\partial {z}_{k}^{(S)}} \approx \frac{1}{K}\left({z}_{k}^{(S)}-{z}_{k}^{(T)}\right)$. This indicates that minimizing ${L}_{KL}$ is equivalent to minimizing the mean squared error ${L}_{MSE}$, under a sufficiently large temperature $T$ and the zero-mean logit assumption for both the teacher and the student.
-````
+```
 
 ### Example Distillation Strategies
 
@@ -1686,9 +1686,9 @@ $$
 
 Commonly we represent $y$ by the tuple $\left(q_{\mathrm{c}}(y), q_{\mathrm{p}}(r(y))\right)$. Like binary representation of a number, the coarse quantizer part represents the most significant bits, while the product quantizer part represents the least significant bits.
 
-````{prf:remark} shared product quantizer for residuals
+```{prf:remark} shared product quantizer for residuals
 The product quantizer can be learned on a set of residual vectors. Ideally, we can learn a product quantizer for each partition since the residual vectors likely to be dependent on the coarse quantizer. One can further reduce memory cost significantly by using the same product quantizer across all coarse quantizers, although this probably gives inferior results
-````
+```
 
 ## Benchmark Datasets
 

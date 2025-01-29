@@ -15,7 +15,7 @@ This chapter explores two primary approaches to LLM finetuning: **Instruction Fi
 Instruction finetuning {cite:p}`lou2024large` for LLMs was developed to address the gap between the general knowledge and capabilities of pre-trained base models and the specific tasks or behaviors desired in real-world applications. While pre-trained LLMs possess broad knowledge, they often lack the ability to follow specific instructions or perform targeted tasks consistently.
 
 As shown in the following example, a base LLM (without insturction finetuning) often fails to understand the intent of the prompt, and instead blindly performs text generation. An instructed LLM, on the other hand, understands the intent and provides useful responses. 
-````{prf:example} Comparision of base LLM and instructed LLM in response to a prompt
+```{prf:example} Comparision of base LLM and instructed LLM in response to a prompt
 Given the **prompt**:
 
 Task: Answer the following question about basic car maintenance concisely and accurately.
@@ -32,7 +32,7 @@ Question: How have video games and the gaming industry evolved over time?
 <span style="background-color: #e4ac94">
 You should change your car's oil every 5,000 to 7,500 miles, or as recommended by your vehicle's manufacturer. Regular oil changes are crucial because they remove contaminants that can damage engine components, ensuring the engine runs smoothly and efficiently, and extending its life.
 </span>
-````
+```
 
 The core idea of instruction finetuning [{numref}`chapter_training_fig_finetuning_instruction_finetuning`] is to train the model on a diverse set of task descriptions and their corresponding desired outputs. This typically involves:
 1. Creating a dataset of instruction-output pairs covering a wide range of tasks.
@@ -326,11 +326,11 @@ The selection of low rank matrices
  full rank (i.e., d) is as high as 12,288 -->
 
 
-````{prf:remark} $A,B$ initialization and model inference
+```{prf:remark} $A,B$ initialization and model inference
 * To help stablize training, $A,B$ is initialized in a way to ensure $AB = 0$. Specifically, we can set one matrix (say $A$) to zero, and initialize $B$ with random values. For $AB\neq 0$, the initial training phase can be unstable due to large changes of model weights. 
 
 * After training, we only need to save low-rank matrices $A$ and $B$ for different tasks. During inference, we can add $AB$ onto the original projection matrices. Unlike previous Adapter approach, there is no additional inference latency.
-````
+```
 
 #### Study Results
 

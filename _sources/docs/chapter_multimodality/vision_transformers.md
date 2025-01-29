@@ -162,7 +162,7 @@ name: chapter_VLLM_VisionLanguagePretrain_BLIP2_BLIP2_overview
 Overview of BLIP-2 framework. A lightweight Querying Transformer is trained via a two-stage strategy to bridge the modality gap. The first stage bootstraps vision-language representation learning from a frozen image encoder. The second stage bootstraps vision-to-language generative learning from a frozen LLM, which enables zero-shot instructed image-totext generation. Image from {cite:p}`li2023blip`.
 ```
 
-````{prf:remark} Design considerations for fusing image understanding signals
+```{prf:remark} Design considerations for fusing image understanding signals
 One way to fuse image understanding signal into text LLM is first going through a **semantic conversion stage** - using caption models to generate textual descriptions of images/videos (scenes, events, entities, etc.), then feeding these textual descriptions (or perform some preprocessing, like summarization beforehand) into the LLM. 
 
 This approach involves indirectly converting visual semantics into textual semantics through a visual Captioner (**semantic conversion stage**), then better adapting the textual semantics through Prompt+LLM (**semantic adaptation stage**), and finally using this as input for the target LLM to create an MLLM (**semantic fusion stage**). 
@@ -170,7 +170,7 @@ This approach involves indirectly converting visual semantics into textual seman
 While this approach is straightforward and easy to implement, its limitations are obvious - there is information loss at the **semantic conversion stage**, in which the final LLM model cannot perceive fine-grained information from the original visual input, which severely limits the MLLM's potential.
 
 One design idea is Q-Former is to use a learnable query vector plus cross-attention mechanism to directly fuse image signals features in the semantic vector space. The usage of learnable query vector also resembles the idea of **learnable soft prompt** {cite:p}`lester2021power` in LLM fine-tuning.
-````
+```
 
 
   

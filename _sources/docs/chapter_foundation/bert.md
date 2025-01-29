@@ -222,13 +222,13 @@ $$\min_{\theta} - \sum_{t=1}^{T} m_{t} \log p\left(x_{t} \mid \hat{\mathbf{x}}\r
 where $m_t \in \{0, 1\}$ indicates if $x_t$ is a mask token, $(h_1,...,h_T)$ are contextualized encodings produced by the encoder, $e(x_t)$ is the weight vector (corresponding to token $x_t$ in the vocabulary) in the prediction head, which consists of a linear layer and Softmax function. 
 
 
-````{prf:remark} Imperfections of the masking strategy.
+```{prf:remark} Imperfections of the masking strategy.
 * This masked LM task suffers from training inefficiency and slow convergence since each batch only 15\% of masked tokens are predicted.
 * The masked LM task is making ***conditional independence assumption***. When we predict the masked tokens, we are assuming that **different masked tokens are independent conditioning on masked input sequence**. 
 	* For example, suppose the original sentence *New York is a city* and we mask the *New* and *York* two tokens. In our prediction, we assume these two masked tokens are independent, but actually *New York* is an entity that co-occur frequently. However, it should be noted that this conditional-independence assumption problem has not been a big in practice since the model is often trained on huge corpus to learn the inter-dependencies of these words.
 	* This conditional independence assumption also make mask LM task not aligned with language generation tasks, in which predicted tokens are dependent on preceding tokens.
 * Another drawback is that the mask can be applied to a sub-word piece due to fine-grained WordPieces tokenizer. For example, the word *probability* is tokenized into three parts: *pro*, *\#babi*, and *\#lity*. One might randomly mask *\#babi* alone. In this case, the model can leverage the word spelling itself for prediction rather than the semantic context.
-````
+```
 
 #### Next Sentence Prediction (NSP)
 

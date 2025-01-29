@@ -268,12 +268,12 @@ In the simple case of backing off from bigrams to unigrams, the bigram probabili
 
 $$P(i \mid j)= \begin{cases}d\frac{\operatorname{count}(i, j)}{\operatorname{count}(j)} & \text { if } \operatorname{count}(i, j)>0 \\ \beta(j) \times \frac{P(i)}{\sum_{i^{\prime}: \operatorname{count}\left(i^{\prime}, j\right)=0} {P}^{\left(i^{\prime}\right)}} & \text { if } \operatorname{count}(i, j)=0\end{cases}.$$
 
-````{prf:remark} Practical simple back-off
+```{prf:remark} Practical simple back-off
 So far we have discussed the back-off idea of redistributing probability mass to unobserved n-grams based on their corresponding lower-order grams. All probabilities will be re-normalized after redistribution. In the practical applications, there are even simpler back-off strategy by satisfying some degree of accuracy. Consider a trigram language model.
 * If we have trigram probability, use it; 
 * If we don’t have trigram probability, use its bigram probabilities;
 * if we don’t even have bigram probabilities, then use unigram probabilities.
-````
+```
 
 ## Model Evaluation
 
@@ -295,13 +295,13 @@ $$
 
 Intuitively, perplexity is roughly the **inverse probability** of the test set. Therefore, a good larnguage model will assign high probability to the test set and produce a low perplexity value. Since $\ln P(w_{1:N}) \le 0$, the perplexity is always greater than or equal to 1.0.  Since the longer the sentence, the more negative $\ln P$ tends to be, the normalization by sentence length $N$ reduces such impact.
 
-````{prf:remark} Caveats
+```{prf:remark} Caveats
 To compare the performance of two different language models, it is necessary to **keep the vocabulary and the actual word to special token mapping the same. **
 	
 Suppose we construct the vocabulary by mapping words whose frequencies are below certain threshold to the <UNK> token. When we use a large threshold, we will get a smaller vocabulary. 
 	
 In the inference stage, rare words in the test corpus will be mapped to the <UNK> token and we tend to overestimate their transition probabilities, thus causing the final perplexity to be lower.  
-````
+```
 
 ### More On Perplexity
 
@@ -321,7 +321,7 @@ If, for example, the perplexity of the model is 120 (even though the vocabulary 
 
 
 
-````{prf:remark} Relationship to Cross Entropy
+```{prf:remark} Relationship to Cross Entropy
 Given a test set $W$, we can also write 
 
 $$\operatorname{perplexity}(W) \approx \exp(CE(P_{true}, P)),$$
@@ -333,7 +333,7 @@ $$CE = -E_{W\sim P_{True}}[\ln P] =\lim_{N\to\infty} -\frac{1}{N}\sum_{w_i\in W}
 This means that, training a language model over well-written sentences means we are maximizing the normalized sentence probabilities given by the language model, which is more or less equivalent to minimizing the cross entropy loss of the model predicted distribution and the distribution of well-written sentences.
 
 We know that cross-entorpy loss is at its minimal when the two distributions are exactly matched.
-````
+```
 ### Benchmarking
 #### Datasets
 

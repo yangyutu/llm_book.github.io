@@ -244,9 +244,9 @@ In the original Skip-gram and the CBOW model, each word will have two embeddings
 
 With the trained embeddings for each word, we can assemble then into a matrix of size $D\times V$, which is also called an Embedding layer. In applications, the one-hot word vector is fed into the embedding layer and produce the corresponding dense word vectors. From the computational perspective, we do not need to perform matrix multiplication; instead, we can view the Embedding layer as a dictionary that maps integer indices of the word to dense vectors.
 
-````{prf:remark} (Skip-gram vs CBOW performance)
+```{prf:remark} (Skip-gram vs CBOW performance)
 **In Skip-gram, the weight associated with each word receives adjustment signal (via gradient descent) from its surrounding context words.** In CBOW, a central word provides signal to optimize the weights of its multiple surrounding words. **Skip-gram is more computational expensive** than CBOW as the Skip-gram model has to make predictions of size $O(cV)$  while CBOW makes prediction on the scale of $O(V)$. Further, because of the averaging effect from input layer to hidden layer in CBOW, CBOW is less competent in calculating effective word embedding for rare words than Skip-gram.  
-````
+```
 
 ### Optimization I: negative sampling
 

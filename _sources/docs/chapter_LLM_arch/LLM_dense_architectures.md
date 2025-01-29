@@ -61,9 +61,11 @@ $\sigma =\sqrt{\frac{1}{H} \sum_{i=1}^H\left(x_i-\mu\right)^2+\epsilon}$.
 * $\epsilon$ is a small number acting as regularizer for division.
 * $\gamma$ and $\beta$ are learnable scaling and shifting parameters.
 
-````{prf:remark} Why we need $\gamma$ and $\beta$
+
+```{prf:remark} Why we need $\gamma$ and $\beta$
+
 $\gamma$ and $\beta$ are parameters used to enhance the model's learning capacity. As the normalization operation is used to stablize the learning by standardizing the data distribution, it also smooths out useful feature distributions and decreases the model's learning capacity. With learnable shift and scaling parameters, we offset these negative impacts of normalization. 
-````
+```
 
 ### RMS Norm (Root Mean Square Norm)
 
@@ -282,7 +284,7 @@ name: chapter_LLM_arch_fig_fundamentals_attention_MHA
 Multi-head attention has $H$ query, key, and value heads for each token.
 ```
 
-````{prf:remark} Combine to RoPE
+```{prf:remark} Combine to RoPE
 More recent LLMs are using Rotary Position Embedding (RoPE) (see {ref}`chapter_LLM_arch_sec_LLM_arch_fundamentals_position_embedding_RoPE`). The position information related to the query key $Q_i$ (row $i$ from $Q$)at position $i$ and the key $K_j$ at position $j$ is baked in through 
 
 $$\tilde{Q}_i = Q_i\mathcal{R}_i, \tilde{K}_j = K_j\mathcal{R}_j.$$
@@ -295,7 +297,7 @@ $$
 \text{Attention}(Q, K, V) = \text{Softmax}(\frac{\tilde{Q}\tilde{K}^T}{\sqrt{d_{head}}})V.
 .$$
 
-````
+```
 
 
 
@@ -534,7 +536,7 @@ $$
 \operatorname{PreSoftmax}(Q_m, K_n) =\left( Q_m \mathcal{R}_{\Theta, m}\right) \cdot \left( K_n \mathcal{R}_{\Theta, n} \right)
 $$
 
-````{prf:example}
+```{prf:example}
 For $d_{model} == 2$, the rotation matrix for position $m $ is:
 
 $$
@@ -559,7 +561,7 @@ $$
 
 Where $\theta_1 = 1, \theta_2 = 10000^{-2/4}$.
 
-````
+```
 
 #### Properties of RoPE 
 
@@ -693,9 +695,9 @@ Byte Pair Encoding (BPE) is a commonly used subword tokenization algorithm in NL
 4. Return the subword vocabulary $V$.
 ```
 
-````{prf:example}
+```{prf:example}
 GPT-2's vocabulary size is 50,257, corresponding to 256 basic byte tokens, a special end-of-text token, and 50,000 tokens obtained through merging process.
-````
+```
 ### From BPE to BBPE
 
 BPE (Byte Pair Encoding) and BBPE (Byte-level BPE) are both subword tokenization following the same idea of merging algorithm {prf:ref}`BPE-algorithm` but operating on different granularities. 
@@ -733,7 +735,7 @@ Currently, many mainstream large language models (such as the GPT series, Mistra
 
 
 
-````{prf:remark} What does Byte-level mean?
+```{prf:remark} What does Byte-level mean?
 "Byte-level" in the context of BBPE means that the algorithm operates on individual bytes of data rather than on characters or higher-level text units. Note that characters are typically encoded using schemes like UTF-8, where a single character might be represented by one or more bytes. In other words, BBPE treats the input as a sequence of raw bytes, without interpreting them as characters or considering character boundaries.
 
 Below is more context about UTF-8 encoding.
@@ -758,7 +760,7 @@ Below is more context about UTF-8 encoding.
 
 This multi-byte representation for single characters is why text processing algorithms that work at the character level can be more complex than those that work at the byte level, especially when dealing with multilingual text.
 
-````
+```
 (chapter_LLM_arch_sec_parameter_composition)=
 ## Parameter composition in Transformer models
 
@@ -784,20 +786,20 @@ The **key scaling properties** from this table are:
 * The total number of parameters scales linearly with number of layers $L$
 * The total number of parameters scales quadratically with model hidden dimensionality $d$.
 
-````{prf:remark}
+```{prf:remark}
 We have simplification in the above computation for MHA but the results are the same. Suppose we have $H$ heads, head dimension $d_{head}$ and $H \times d_{head} = d$. QKV transformation matrices have weight parameters $3 \times H \times d \times d_{head} = 3d^2$. 
 
 With GQA that has $G$ key-value shared heads, the total parameters are $d^2 + 2Gd_{head}d$.
-````
+```
 
-````{prf:example}
+```{prf:example}
 Take the following GPT-3 13B and 175B as an example, 175B model has approximate 2.4 times of $L$ and $d_{model}$. Extrapolating from 13B model, we estimate the 175B model to have model parameters of $13\times 2.4^3 = 179B$, which is very close.
 
 | Model Name | $n_{\text{params}}$ | $L$ | $d$ | $H$ | $d_{head}$ |
 |------------|----------|----------|---------|---------|--------|
 | GPT-3 13B | 13.0B | 40 | 5140 | 40 | 128 |
 | GPT-3 175B or "GPT-3" | 175.0B | 96 | 12288 | 96 | 128 |
-````
+```
 
 (chapter_LLM_arch_sec_LLM_arch_fundamentals_forward_pass_computation)=
 ## Forward Pass Computation Breadown
