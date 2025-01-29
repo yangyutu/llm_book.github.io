@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>16. LLM Training Acceleration (WIP) &#8212; LLM Foundations</title>
+    <title>15. LLM Training Acceleration (WIP) &#8212; LLM Foundations</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=b4b7a797" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -63,8 +63,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_training/accelerated_training';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="17. *Lab: LLM Pretraining" href="../notebooks/chapter_LLM_training/annotated_pretraining.html" />
-    <link rel="prev" title="15. *Reinforcement Learning Essentials" href="reinforcement_learning.html" />
+    <link rel="next" title="16. Decoding" href="../chapter_inference/inference_fundamentals.html" />
+    <link rel="prev" title="14. *Reinforcement Learning Essentials" href="reinforcement_learning.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -192,42 +192,37 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama_custom.html">11. *Lab: Minimal LLama</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="training_fundamentals.html">12. LLM Training Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="finetuning.html">13. LLM Finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="alignment.html">14. LLM Alignement and Preference Learning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">16. LLM Training Acceleration (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Lab DPO Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training_fundamentals.html">11. LLM Training Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="finetuning.html">12. LLM Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alignment.html">13. LLM Alignement and Preference Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reinforcement_learning.html">14. *Reinforcement Learning Essentials</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">15. LLM Training Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">20. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">21. Inference Acceleration (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">16. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">17. Inference Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">22. Basic Prompting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">23. Advanced Prompting Techniques</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">24. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">25. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">18. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">19. Advanced Prompting Techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">Vision Language Pretraining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">20. Multimodality fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">21. Vision Language Pretraining</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">26. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">22. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">23. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/conversational_IR.html">24. Conversational IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">25. RAG and Conversational IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">26. Advanced RAG (WIP)</a></li>
 </ul>
 
     </div>
@@ -328,33 +323,33 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-memory-requirement-for-training-llm">16.1. The Memory Requirement For Training LLM</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-and-optimizer-states">16.1.1. Model and Optimizer States</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activations">16.1.2. Activations</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-checkpointing-techniques">16.1.3. Activation Checkpointing Techniques</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-memory-requirement-for-training-llm">15.1. The Memory Requirement For Training LLM</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-and-optimizer-states">15.1.1. Model and Optimizer States</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activations">15.1.2. Activations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-checkpointing-techniques">15.1.3. Activation Checkpointing Techniques</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mixed-precision-training">16.2. Mixed Precision Training</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">16.2.1. Overview</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-process">16.2.2. Training Process</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mixed-precision-training">15.2. Mixed Precision Training</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">15.2.1. Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-process">15.2.2. Training Process</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distributed-parallel-training">16.3. Distributed Parallel Training</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-parallel-training-techniques">16.3.1. Overview of parallel training techniques</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parallelism-tensor-parallelism">16.3.2. Model parallelism (tensor parallelism)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distributed-parallel-training">15.3. Distributed Parallel Training</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-parallel-training-techniques">15.3.1. Overview of parallel training techniques</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parallelism-tensor-parallelism">15.3.2. Model parallelism (tensor parallelism)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-via-deepspeed">16.4. ZeRO Via DeepSpeed</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-memory-allocation">16.4.1. GPU Memory Allocation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-stage-one">16.4.2. ZeRO-Stage-One</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-via-deepspeed">15.4. ZeRO Via DeepSpeed</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-memory-allocation">15.4.1. GPU Memory Allocation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-stage-one">15.4.2. ZeRO-Stage-One</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">16.5. Appendix</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floating-data-types">16.5.1. Floating Data Types</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-parallel-operations">16.5.2. GPU Parallel Operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">15.5. Appendix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floating-data-types">15.5.1. Floating Data Types</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-parallel-operations">15.5.2. GPU Parallel Operations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">16.6. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">15.6. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -367,9 +362,9 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="llm-training-acceleration-wip">
-<h1><span class="section-number">16. </span>LLM Training Acceleration (WIP)<a class="headerlink" href="#llm-training-acceleration-wip" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">15. </span>LLM Training Acceleration (WIP)<a class="headerlink" href="#llm-training-acceleration-wip" title="Link to this heading">#</a></h1>
 <section id="the-memory-requirement-for-training-llm">
-<h2><span class="section-number">16.1. </span>The Memory Requirement For Training LLM<a class="headerlink" href="#the-memory-requirement-for-training-llm" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">15.1. </span>The Memory Requirement For Training LLM<a class="headerlink" href="#the-memory-requirement-for-training-llm" title="Link to this heading">#</a></h2>
 <!-- % https://medium.com/@maxshapp/understanding-and-estimating-gpu-memory-demands-for-training-llms-in-practise-c5ef20a4baff -->
 <p>We will discuss the following in this section</p>
 <ul class="simple">
@@ -378,7 +373,7 @@ document.write(`
 <li><p>What would you do in practise to reduce the memory needs if the model does not fit.</p></li>
 </ul>
 <section id="model-and-optimizer-states">
-<h3><span class="section-number">16.1.1. </span>Model and Optimizer States<a class="headerlink" href="#model-and-optimizer-states" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">15.1.1. </span>Model and Optimizer States<a class="headerlink" href="#model-and-optimizer-states" title="Link to this heading">#</a></h3>
 <p>Consider the case that we train a LLM using Adam optimizer, we need to have enough GPU memory to store</p>
 <ul class="simple">
 <li><p>Copy of model parameter</p></li>
@@ -418,7 +413,7 @@ then training a <span class="math notranslate nohighlight">\(X\)</span> billion 
 </div>
 </section>
 <section id="activations">
-<h3><span class="section-number">16.1.2. </span>Activations<a class="headerlink" href="#activations" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">15.1.2. </span>Activations<a class="headerlink" href="#activations" title="Link to this heading">#</a></h3>
 <p>Let’s have the following notations: <span class="math notranslate nohighlight">\(b\)</span> is the batch size, <span class="math notranslate nohighlight">\(s\)</span> is the sequence length, <span class="math notranslate nohighlight">\(d\)</span> is the model hidden dim, <span class="math notranslate nohighlight">\(L\)</span> is number of layers, <span class="math notranslate nohighlight">\(p\)</span> is the byte size per model paraemters (e.g., 2 for float16). The multiplier 2 is because of both K and V are cached.</p>
 <p>Based on the <strong>FFN</strong> architecture detailed in <a class="reference internal" href="../chapter_foundation/transformers.html#chapter-foundation-sec-pretrained-lm-transformer-arch-ffn"><span class="std std-ref">Pointwise FeedForward Layer</span></a>, we can estimate the memory requireement for FFN activations</p>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -558,7 +553,7 @@ def activations_memory(num_layers, seq_len, batch_size, hidden_dim, num_heads, p
 | 70B    | 1120 GB    | -->
 </section>
 <section id="activation-checkpointing-techniques">
-<h3><span class="section-number">16.1.3. </span>Activation Checkpointing Techniques<a class="headerlink" href="#activation-checkpointing-techniques" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">15.1.3. </span>Activation Checkpointing Techniques<a class="headerlink" href="#activation-checkpointing-techniques" title="Link to this heading">#</a></h3>
 <p>LLM have an enormous number of parameters. In the typical backpropogation during training, we save all the activation values from the forward pass to compute gradient, which consumes a large amount of GPU memory.</p>
 <p>On one extreme, we can completely discard the activation values from the forward pass and recalculate the necessary activation values when computing gradients. While this mitigates the activation memory footprint issue, it increases the computational load and slows down training.</p>
 <p><strong>Gradient Checkpointing</strong> <span id="id2">[<a class="reference internal" href="#id29" title="Tianqi Chen, Bing Xu, Chiyuan Zhang, and Carlos Guestrin. Training deep nets with sublinear memory cost. 2016. URL: https://arxiv.org/abs/1604.06174, arXiv:1604.06174.">CXZG16</a>]</span> sits in the middle of these two approaches. This method employs a strategy that selects and saves a portion of the activation values from the computational graph, discarding the rest. The discarded activation values need to be recalculated during gradient computation.</p>
@@ -566,9 +561,9 @@ def activations_memory(num_layers, seq_len, batch_size, hidden_dim, num_heads, p
 </section>
 </section>
 <section id="mixed-precision-training">
-<h2><span class="section-number">16.2. </span>Mixed Precision Training<a class="headerlink" href="#mixed-precision-training" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">15.2. </span>Mixed Precision Training<a class="headerlink" href="#mixed-precision-training" title="Link to this heading">#</a></h2>
 <section id="overview">
-<h3><span class="section-number">16.2.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">15.2.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
 <p>Training billion-scale LLM requires huge number of memory, which include model loading, optimizer state storage, and gradient storage. The idea of using low-precision for precision-insensitive computation and high-recision for precision sensitive computation leads to Mixed-precision training<span id="id3">[<a class="reference internal" href="#id1526" title="Paulius Micikevicius, Sharan Narang, Jonah Alben, Gregory Diamos, Erich Elsen, David Garcia, Boris Ginsburg, Michael Houston, Oleksii Kuchaiev, Ganesh Venkatesh, and others. Mixed precision training. arXiv preprint arXiv:1710.03740, 2017.">MNA+17</a>]</span>. Mixed-precision training lowers the required resources by using lower-precision arithmetic, and it therefore widely used in LLM training. It has the following benefits.</p>
 <p><strong>Reduced memory footprint</strong>: Mixed precision training leverages half-precision floating point format (FP16), which uses only 16 bits per number, in contrast to the 32 bits used by single precision (FP32). This significant reduction in memory usage offers two key advantages:</p>
 <ol class="arabic simple">
@@ -583,9 +578,9 @@ These factors combine to potentially shorten both training and inference times, 
 </ol>
 </section>
 <section id="training-process">
-<h3><span class="section-number">16.2.2. </span>Training Process<a class="headerlink" href="#training-process" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">15.2.2. </span>Training Process<a class="headerlink" href="#training-process" title="Link to this heading">#</a></h3>
 <p>This section describes three techniques for successful training of DNNs with half precision: accumulation of FP16 products into FP32; loss scaling; and an FP32 master copy of weights. With these techniques NVIDIA and Baidu Research were able to match single-precision result accuracy for all networks that were trained.<span id="id4">[<a class="reference internal" href="#id1526" title="Paulius Micikevicius, Sharan Narang, Jonah Alben, Gregory Diamos, Erich Elsen, David Garcia, Boris Ginsburg, Michael Houston, Oleksii Kuchaiev, Ganesh Venkatesh, and others. Mixed precision training. arXiv preprint arXiv:1710.03740, 2017.">MNA+17</a>]</span></p>
-<p>As shown in <a class="reference internal" href="#chapter-training-fig-efficient-training-mixed-precision-process-demo"><span class="std std-numref">Fig. 16.1</span></a>, key steps in the mixed-precision training are</p>
+<p>As shown in <a class="reference internal" href="#chapter-training-fig-efficient-training-mixed-precision-process-demo"><span class="std std-numref">Fig. 15.1</span></a>, key steps in the mixed-precision training are</p>
 <ul class="simple">
 <li><p>Maintain a master copy of model parameters, optimizer momentums and variances with fp32 precision.</p></li>
 <li><p>Before the model forward pass begins, allocate new storage to save model parameters in the fp16 format.</p></li>
@@ -597,12 +592,12 @@ These factors combine to potentially shorten both training and inference times, 
 <a class="reference internal image-reference" href="../../_images/mixed_precision_process_demo.png"><img alt="../../_images/mixed_precision_process_demo.png" src="../../_images/mixed_precision_process_demo.png" style="width: 484.04999999999995px; height: 452.54999999999995px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 16.1 </span><span class="caption-text">Model training step with mixed precision using classifical Adam algorithm [<a class="reference internal" href="training_fundamentals.html#Adam_stochastic_gradient_descent_algorithm">Algorithm 12.2</a>].</span><a class="headerlink" href="#chapter-training-fig-efficient-training-mixed-precision-process-demo" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 15.1 </span><span class="caption-text">Model training step with mixed precision using classifical Adam algorithm [<a class="reference internal" href="training_fundamentals.html#Adam_stochastic_gradient_descent_algorithm">Algorithm 11.2</a>].</span><a class="headerlink" href="#chapter-training-fig-efficient-training-mixed-precision-process-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>We can estimate the memory storage consumption according to the following table. Denote the model parameter size by <span class="math notranslate nohighlight">\(\Phi\)</span>. Let the storage unit be byte. We need <span class="math notranslate nohighlight">\(16\Phi\)</span> memory storage in total.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1575">
-<caption><span class="caption-number">Table 16.1 </span><span class="caption-text">Storage requirement for different components during LLM training using Adam.</span><a class="headerlink" href="#id1575" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1576">
+<caption><span class="caption-number">Table 15.1 </span><span class="caption-text">Storage requirement for different components during LLM training using Adam.</span><a class="headerlink" href="#id1576" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Type</p></th>
 <th class="head text-left"><p>Storage Size</p></th>
@@ -651,27 +646,27 @@ Figure out by experimentation if your network is sensitive to range and/or preci
 </section>
 </section>
 <section id="distributed-parallel-training">
-<h2><span class="section-number">16.3. </span>Distributed Parallel Training<a class="headerlink" href="#distributed-parallel-training" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">15.3. </span>Distributed Parallel Training<a class="headerlink" href="#distributed-parallel-training" title="Link to this heading">#</a></h2>
 <section id="overview-of-parallel-training-techniques">
-<h3><span class="section-number">16.3.1. </span>Overview of parallel training techniques<a class="headerlink" href="#overview-of-parallel-training-techniques" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">15.3.1. </span>Overview of parallel training techniques<a class="headerlink" href="#overview-of-parallel-training-techniques" title="Link to this heading">#</a></h3>
 </section>
 <section id="model-parallelism-tensor-parallelism">
-<span id="chapter-training-sec-distributed-parallel-training-model-parallelism"></span><h3><span class="section-number">16.3.2. </span>Model parallelism (tensor parallelism)<a class="headerlink" href="#model-parallelism-tensor-parallelism" title="Link to this heading">#</a></h3>
+<span id="chapter-training-sec-distributed-parallel-training-model-parallelism"></span><h3><span class="section-number">15.3.2. </span>Model parallelism (tensor parallelism)<a class="headerlink" href="#model-parallelism-tensor-parallelism" title="Link to this heading">#</a></h3>
 </section>
 </section>
 <section id="zero-via-deepspeed">
-<h2><span class="section-number">16.4. </span>ZeRO Via DeepSpeed<a class="headerlink" href="#zero-via-deepspeed" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">15.4. </span>ZeRO Via DeepSpeed<a class="headerlink" href="#zero-via-deepspeed" title="Link to this heading">#</a></h2>
 <p>Data parallelism is the most widely used technique because it is simple and easy to implement. However, tt is typically challenging to apply the vanilla flavor data parallelism since it requires each GPU to store the parameters of the whole model. As a result, the size of GPU memory becomes the ceiling of the model scale we can train.</p>
 <p>Model parallelism (e.g, Megatron) [<a class="reference internal" href="#chapter-training-sec-distributed-parallel-training-model-parallelism"><span class="std std-ref">Model parallelism (tensor parallelism)</span></a>], desipte its success in T5 (11B) and Megatron-LM (8.3B) is hard to scale beyond model sizes that cannot fit into a single GPU node. This is because model parallelism typically partitions the model weights or layers across GPU devices, incurring a significant communication between devices.</p>
 <p>ZeRO (Zero Redundancy Optimizer) <span id="id5">[<a class="reference internal" href="#id22" title="Samyam Rajbhandari, Jeff Rasley, Olatunji Ruwase, and Yuxiong He. Zero: memory optimizations toward training trillion parameter models. 2020. URL: https://arxiv.org/abs/1910.02054, arXiv:1910.02054.">RRRH20</a>]</span> adopt the data parallism paradigm, and optimize memory efficieny and commnication efficiency.</p>
 <section id="gpu-memory-allocation">
-<h3><span class="section-number">16.4.1. </span>GPU Memory Allocation<a class="headerlink" href="#gpu-memory-allocation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">15.4.1. </span>GPU Memory Allocation<a class="headerlink" href="#gpu-memory-allocation" title="Link to this heading">#</a></h3>
 <p>GPU memory is mainly allocated into two parts: <strong>model states</strong> and <strong>residual states</strong>.</p>
 <figure class="align-default" id="chapter-training-fig-efficient-training-zero-gpu-memory-allocation">
 <a class="reference internal image-reference" href="../../_images/gpu_memory_allocation.png"><img alt="../../_images/gpu_memory_allocation.png" src="../../_images/gpu_memory_allocation.png" style="width: 697.2px; height: 278.40000000000003px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 16.2 </span><span class="caption-text">Model training step with mixed precision.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-zero-gpu-memory-allocation" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 15.2 </span><span class="caption-text">Model training step with mixed precision.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-zero-gpu-memory-allocation" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Model states refer to the content that is closely related to the model itself and must be stored. Specifically, they include:
@@ -688,7 +683,7 @@ Figure out by experimentation if your network is sensitive to range and/or preci
 \end{itemize}</p>
 </section>
 <section id="zero-stage-one">
-<h3><span class="section-number">16.4.2. </span>ZeRO-Stage-One<a class="headerlink" href="#zero-stage-one" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">15.4.2. </span>ZeRO-Stage-One<a class="headerlink" href="#zero-stage-one" title="Link to this heading">#</a></h3>
 <p>Here’s the English translation of the provided text:</p>
 <p>(1) <span class="math notranslate nohighlight">\(P_{os}\)</span> (Optimizer State Partitioning)
 ZeRO-Stage-One reduces the required memory on each device by partitioning the optimizer state across <span class="math notranslate nohighlight">\(N_d\)</span> data-parallel processes. Each process only stores and updates its corresponding partition of the optimizer state, which is <span class="math notranslate nohighlight">\(\frac{1}{N_d}\)</span> of the total optimizer state. At the end of each training step, results from each process are collected to obtain the overall updated state parameters.</p>
@@ -699,7 +694,7 @@ ZeRO-Stage-One reduces the required memory on each device by partitioning the op
 \]</div>
 <p>As can be seen, the optimizer state memory has a divisor of <span class="math notranslate nohighlight">\(N_d\)</span> compared to the original.</p>
 <div class="proof example admonition" id="example-0">
-<p class="admonition-title"><span class="caption-number">Example 16.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Example 15.1 </span></p>
 <section class="example-content" id="proof-content">
 <p>For a 7.5B parameter model, the standard case requires 120 GB of memory, but using <span class="math notranslate nohighlight">\(P_{os}\)</span> with <span class="math notranslate nohighlight">\(N_d=64\)</span> only requires 31.4 GB of memory.
 When <span class="math notranslate nohighlight">\(N_d\)</span> is very large, the memory consumption approaches:</p>
@@ -843,9 +838,9 @@ From the above, we can see that all operations within the for loop satisfy the a
 </section>
 </section>
 <section id="appendix">
-<h2><span class="section-number">16.5. </span>Appendix<a class="headerlink" href="#appendix" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">15.5. </span>Appendix<a class="headerlink" href="#appendix" title="Link to this heading">#</a></h2>
 <section id="floating-data-types">
-<h3><span class="section-number">16.5.1. </span>Floating Data Types<a class="headerlink" href="#floating-data-types" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">15.5.1. </span>Floating Data Types<a class="headerlink" href="#floating-data-types" title="Link to this heading">#</a></h3>
 <p>Float32 (FP32) stands for the standardized IEEE 32-bit floating point representation. With this data type it is possible to represent a wide range of floating numbers. In FP32, 8 bits are reserved for the “exponent”, 23 bits for the “mantissa” and 1 bit for the sign of the number. In addition to that, most of the hardware supports FP32 operations and instructions.</p>
 <p>In the float16 (FP16) data type, 5 bits are reserved for the exponent and 10 bits are reserved for the mantissa. This makes the representable range of FP16 numbers much lower than FP32. This exposes FP16 numbers to the risk of overflowing (trying to represent a number that is very large) and underflowing (representing a number that is very small).</p>
 <p>For example, if you do 10k * 10k you end up with 100M which is not possible to represent in FP16, as the largest number possible is 64k. And thus you’d end up with NaN (Not a Number) result and if you have sequential computation like in neural networks, all the prior work is destroyed. Usually, loss scaling is used to overcome this issue, but it doesn’t always work well.</p>
@@ -859,67 +854,67 @@ From the above, we can see that all operations within the for loop satisfy the a
 <a class="reference internal image-reference" href="../../_images/different_precision_demo.png"><img alt="../../_images/different_precision_demo.png" src="../../_images/different_precision_demo.png" style="width: 387.90000000000003px; height: 297.90000000000003px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 16.3 </span><span class="caption-text">Comparison of different float number types.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-different-precision-demo" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 15.3 </span><span class="caption-text">Comparison of different float number types.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-different-precision-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="gpu-parallel-operations">
-<h3><span class="section-number">16.5.2. </span>GPU Parallel Operations<a class="headerlink" href="#gpu-parallel-operations" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">15.5.2. </span>GPU Parallel Operations<a class="headerlink" href="#gpu-parallel-operations" title="Link to this heading">#</a></h3>
 <p>References <a class="reference external" href="https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#:~:text=The%20ReduceScatter%20operation%20performs%20the%20same%20operation%20as,mapping%20since%20the%20ranks%20determine%20the%20data%20layout">https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#:~:text=The ReduceScatter operation performs the same operation as,mapping since the ranks determine the data layout</a>.</p>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-broadcast">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_broadcast.png"><img alt="../../_images/gpu_parallel_operation_broadcast.png" src="../../_images/gpu_parallel_operation_broadcast.png" style="width: 799.5px; height: 198.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 16.4 </span><span class="caption-text">Broadcast operation: data in one device is sent to all other devices.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-broadcast" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 15.4 </span><span class="caption-text">Broadcast operation: data in one device is sent to all other devices.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-broadcast" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-scatter">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_scatter.png"><img alt="../../_images/gpu_parallel_operation_scatter.png" src="../../_images/gpu_parallel_operation_scatter.png" style="width: 799.5px; height: 198.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 16.5 </span><span class="caption-text">Scatter operation.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-scatter" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 15.5 </span><span class="caption-text">Scatter operation.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-scatter" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-gather">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_gather.png"><img alt="../../_images/gpu_parallel_operation_gather.png" src="../../_images/gpu_parallel_operation_gather.png" style="width: 800.25px; height: 198.75px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 16.6 </span><span class="caption-text">Gather operation: every device broadcasts their data patition to a designated devices. Eventually, this desigated device has the complete data.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-gather" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 15.6 </span><span class="caption-text">Gather operation: every device broadcasts their data patition to a designated devices. Eventually, this desigated device has the complete data.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-gather" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-reduce">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_reduce.png"><img alt="../../_images/gpu_parallel_operation_reduce.png" src="../../_images/gpu_parallel_operation_reduce.png" style="width: 801.0px; height: 199.5px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 16.7 </span><span class="caption-text">Reduce operation.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-reduce" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 15.7 </span><span class="caption-text">Reduce operation.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-reduce" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-allgather">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_allgather.png"><img alt="../../_images/gpu_parallel_operation_allgather.png" src="../../_images/gpu_parallel_operation_allgather.png" style="width: 800.25px; height: 198.75px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 16.8 </span><span class="caption-text">AllGather operation: every device broadcasts their chuck of data to all other devices. Eventually, every device has a complete data copy.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-allgather" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 15.8 </span><span class="caption-text">AllGather operation: every device broadcasts their chuck of data to all other devices. Eventually, every device has a complete data copy.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-allgather" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-allgather-ring">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_allgather_ring.png"><img alt="../../_images/gpu_parallel_operation_allgather_ring.png" src="../../_images/gpu_parallel_operation_allgather_ring.png" style="width: 639.0px; height: 459.75px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 16.9 </span><span class="caption-text">Communication efficient implementation for AllGather via ring style. Every device sends its chuck of data to the next device in the ring.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-allgather-ring" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 15.9 </span><span class="caption-text">Communication efficient implementation for AllGather via ring style. Every device sends its chuck of data to the next device in the ring.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-allgather-ring" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-reducescatter">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_reducescatter.png"><img alt="../../_images/gpu_parallel_operation_reducescatter.png" src="../../_images/gpu_parallel_operation_reducescatter.png" style="width: 800.25px; height: 198.75px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 16.10 </span><span class="caption-text">ReduceScatter operation performs the same operation as Reduce, except that the result is scattered in equal-sized blocks across devices.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-reducescatter" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 15.10 </span><span class="caption-text">ReduceScatter operation performs the same operation as Reduce, except that the result is scattered in equal-sized blocks across devices.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-reducescatter" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-training-fig-efficient-training-gpu-parallel-operation-allreduce">
 <a class="reference internal image-reference" href="../../_images/gpu_parallel_operation_allreduce.png"><img alt="../../_images/gpu_parallel_operation_allreduce.png" src="../../_images/gpu_parallel_operation_allreduce.png" style="width: 799.5px; height: 198.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 16.11 </span><span class="caption-text">AllReduce operation.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-allreduce" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 15.11 </span><span class="caption-text">AllReduce operation.</span><a class="headerlink" href="#chapter-training-fig-efficient-training-gpu-parallel-operation-allreduce" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>A <strong>naive AllReduce</strong> implementation would be two steps:</p>
@@ -929,8 +924,8 @@ From the above, we can see that all operations within the for loop satisfy the a
 This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Phi\)</span> communication volume, in which the step 1 has <span class="math notranslate nohighlight">\((N_d-1)\Phi\)</span> and step 2 has <span class="math notranslate nohighlight">\((N_d-1)\Phi\)</span>. The naive implementation has the communication load imbalance issue as all data are sent into and sent out from Rank0 device.</p></li>
 </ol>
 <p>The <strong>RingAllReduce</strong> address the load imbalance issue by engaging all devices in data communication and reduction (i.e., more parallelism). The RingAllReduce is equivalent to first RingReduceScatter and then AllGather.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1576">
-<caption><span class="caption-number">Table 16.2 </span><span class="caption-text">Communication volumne summary for different operations. Let <span class="math notranslate nohighlight">\(\Phi\)</span> be the total data size in one device and <span class="math notranslate nohighlight">\(N\)</span> be the total number of devices.</span><a class="headerlink" href="#id1576" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1577">
+<caption><span class="caption-number">Table 15.2 </span><span class="caption-text">Communication volumne summary for different operations. Let <span class="math notranslate nohighlight">\(\Phi\)</span> be the total data size in one device and <span class="math notranslate nohighlight">\(N\)</span> be the total number of devices.</span><a class="headerlink" href="#id1577" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Type</p></th>
 <th class="head text-left"><p>Storage Size</p></th>
@@ -964,7 +959,7 @@ This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Ph
 </section>
 </section>
 <section id="bibliography">
-<h2><span class="section-number">16.6. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">15.6. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id6">
 <div role="list" class="citation-list">
 <div class="citation" id="id29" role="doc-biblioentry">
@@ -1025,15 +1020,15 @@ This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Ph
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">15. </span>*Reinforcement Learning Essentials</p>
+        <p class="prev-next-title"><span class="section-number">14. </span>*Reinforcement Learning Essentials</p>
       </div>
     </a>
     <a class="right-next"
-       href="../notebooks/chapter_LLM_training/annotated_pretraining.html"
+       href="../chapter_inference/inference_fundamentals.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">17. </span>*Lab: LLM Pretraining</p>
+        <p class="prev-next-title"><span class="section-number">16. </span>Decoding</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1053,33 +1048,33 @@ This amounts to a total <span class="math notranslate nohighlight">\(2(N_d-1)\Ph
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-memory-requirement-for-training-llm">16.1. The Memory Requirement For Training LLM</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-and-optimizer-states">16.1.1. Model and Optimizer States</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activations">16.1.2. Activations</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-checkpointing-techniques">16.1.3. Activation Checkpointing Techniques</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-memory-requirement-for-training-llm">15.1. The Memory Requirement For Training LLM</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-and-optimizer-states">15.1.1. Model and Optimizer States</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activations">15.1.2. Activations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-checkpointing-techniques">15.1.3. Activation Checkpointing Techniques</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mixed-precision-training">16.2. Mixed Precision Training</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">16.2.1. Overview</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-process">16.2.2. Training Process</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mixed-precision-training">15.2. Mixed Precision Training</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">15.2.1. Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-process">15.2.2. Training Process</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distributed-parallel-training">16.3. Distributed Parallel Training</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-parallel-training-techniques">16.3.1. Overview of parallel training techniques</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parallelism-tensor-parallelism">16.3.2. Model parallelism (tensor parallelism)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distributed-parallel-training">15.3. Distributed Parallel Training</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-parallel-training-techniques">15.3.1. Overview of parallel training techniques</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parallelism-tensor-parallelism">15.3.2. Model parallelism (tensor parallelism)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-via-deepspeed">16.4. ZeRO Via DeepSpeed</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-memory-allocation">16.4.1. GPU Memory Allocation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-stage-one">16.4.2. ZeRO-Stage-One</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-via-deepspeed">15.4. ZeRO Via DeepSpeed</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-memory-allocation">15.4.1. GPU Memory Allocation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-stage-one">15.4.2. ZeRO-Stage-One</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">16.5. Appendix</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floating-data-types">16.5.1. Floating Data Types</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-parallel-operations">16.5.2. GPU Parallel Operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">15.5. Appendix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floating-data-types">15.5.1. Floating Data Types</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-parallel-operations">15.5.2. GPU Parallel Operations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">16.6. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">15.6. Bibliography</a></li>
 </ul>
   </nav></div>
 

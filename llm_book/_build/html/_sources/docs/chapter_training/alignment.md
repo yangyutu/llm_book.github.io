@@ -43,13 +43,13 @@ The Alignment methodology {cite:p}`ouyang2022traininglanguagemodelsfollow,stienn
 
 **Step 3 Optimize model generation policy with reward model**: The reward model will be used to guide the model's improvement on producing human preferred outputs. The optimization can be done using reinforcement learning, particularly the PPO algorithm {cite:p}`schulman2017proximalpolicyoptimizationalgorithms`. 
 
-````{prf:example} Iterative reward model and policy improvement
+```{prf:example} Iterative reward model and policy improvement
 **Steps 2 and 3 can be, and sometimes must be, iterated continuously**; with model policy improved using reward model, the reward model might need be updated to further guide the improvement of the data. The reason is that
 * The text generated from improved model will have a different distribution than what is used in reward model training.
 * The trained reward model $R_0$ is an approximate to the groundtruth reward model $R_{GT}$. After one round of policy optimization, the model is likely overfitting to the $R_0$, and actually performs poorly under the evaluation of $R_{GT}$ (also see {cite:p}`stiennon2020learning`).
 
 To iterate the reward model to adapte to the new input distribution determined by the policy, we can collect more preference data, and combine with the original preference data to train a new RM and then a new policy. 
-````
+```
 
 ```{figure} ../img/chapter_training/alignment/RLHF_PPO/RLHF_demo.png
 ---
@@ -61,11 +61,11 @@ reward model (RM) training, and (3) reinforcement learning via proximal policy o
 on this reward model. Image from {cite:p}`ouyang2022traininglanguagemodelsfollow`.
 ```
 
-````{prf:remark} The importance of accurate reward model
+```{prf:remark} The importance of accurate reward model
 In classical RL, the reward model is usually deterministic and given. And RL algorithm optimizes the policy to maximize the reward. In LLM alignment, the reward model is not clearly defined and needs to be inferred from the preference data. 
 
 The size, quality, and distribution of the preference data affects how good we can train a reward model that approximates the ground-truth reward model. If there is a gap between the trained reward model and the ground-truth reward model, the gap will translate to the sub-optimality of the learned policy. 
-````
+```
 
 
 ### Preference Data and Reward Modeling
@@ -177,9 +177,9 @@ Illustration of PPO based optimization, which uses a Frozen LLM and KL loss to p
 ```
 
 
-````{prf:remark} exploitation and exploration aspects from $\gamma$
+```{prf:remark} exploitation and exploration aspects from $\gamma$
 $\gamma$ controls the balance between exploitation and exploration. When $\gamma \rightarrow 0$, the learning will concentrate on the max reward with full exploitation. When $\gamma \rightarrow \infty$, optimal policy will be the same as $\pi_{\mathrm{sft}}$ with full exploration.
-````
+```
 
 
 <!-- ### The PPO algorithm
@@ -213,7 +213,7 @@ RLHF essentially encourages LLMs to learn correct policies by contrasting the se
  
 These negative penality signal can mitigate the hallucination or over-generalization issues associated with SFT on positive only data. 
 
-````{prf:example} SFT on positive only data can lead to over-generalization
+```{prf:example} SFT on positive only data can lead to over-generalization
 Let's consider how an LLM learns about geographic facts through SFT. During training, it might see examples like:
 Training Data:
 
@@ -234,7 +234,7 @@ Question: "What is the capital of Mars?" \
 ✗ Rejected: "Olympus Mons is the capital of Mars." \
 ✗ Rejected: "The Mars Colony Capital was established in 2020."
 
-````
+```
 
 Like classic RL algorithms, RLHF has the drawbacks like sample inefficiency, training complexity and instability. When adapted to LLMs, RLHF further relies on a strong SFT model as initial model checkpoint for efficiently achieving good performance
 
@@ -318,12 +318,12 @@ where $s_i$ is a positive real-valued score assigned to individual $i$.
 $$
 P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}{\exp \left[r\left(x, y_1\right)\right]+\exp \left[r\left(x, y_2\right)\right]}$$
 
-````{prf:remark} Relationship to logistic regression
+```{prf:remark} Relationship to logistic regression
 
 $$\operatorname{logit} \operatorname{Pr}(i>j)=\log \frac{\operatorname{Pr}(i>j)}{1-\operatorname{Pr}(i>j)}=\log \frac{\operatorname{Pr}(i>j)}{\operatorname{Pr}(j>i)}=\beta_i-\beta_j
 $$
 
-````
+```
 
 ### Driving the DPO
 
@@ -346,9 +346,9 @@ With some algebra, we can also represent the reward funciton with $\pi_r(y|x)$, 
 
 $$r(x, y) = \beta \log \frac{\pi_r (y|x)}{\pi_{\text{ref}}(y|x)} + \beta \log Z.$$
 
-````{prf:remark} Implicit reward
+```{prf:remark} Implicit reward
 Note that here the reward can be interpreted as the log ratio of the likelihood of a response between the current policy model and the reference model. And the policy is the maximizer of the objective function given the reward.
-````
+```
 
 
 Note that we have just shown that that reward function $r(x, y)$ and its corresponding optimal policy $\pi_{\text{ref}}(y|x)$ are inter-convertable, with a funciton $Z(x)$ independent of $y$. 
@@ -369,7 +369,7 @@ $$
 where the terms $\beta \log Z$ are canceled during subtraction.
 
 
-````{prf:remark} How DPO loss work
+```{prf:remark} How DPO loss work
 
 The gradient of DPO loss function is given by:
 
@@ -377,13 +377,13 @@ $$\nabla_\theta \mathcal{L}_{\mathrm{DPO}}\left(\theta, y_w, y_l\right)=-\left(1
 $$
 
 where for the preference completion pair $y_w \succ y_l$, as long as $\hat{p} < 1$, there will gradients to upweight the probability of generating $y_w$ and downweight the probability of generating $y_l$.
-````
+```
 
-````{prf:remark} Monitor DPO training process
+```{prf:remark} Monitor DPO training process
 The DPO algorithm aims to make winning responses have higher probability and losing responses have lower probability. If the training works as expected, beside the overall loss is descreasing, we will see 
 *  $\log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}\left(y_w \mid x\right)}$ becomes larger for the same $y_w$.
 * $\log \frac{\pi_\theta\left(y_l  \mid x\right)}{\pi_{\mathrm{ref}}\left(y_l \mid x\right)}$ becomes smaller for the same $y_l$.
-````
+```
 
 
 <!-- ### Additional remark RL vs SFT vs DPO
@@ -406,9 +406,9 @@ Nevertheless, from reward modeling perspective, DPO and RL-PPO share the vulnerb
 * Both DPO and RL-PPO is approximating the ground-truth reward model using limited, offline generated preference data. The size and distribution of preference data affect the gap of trained reward model and the ground-truth reward model. The gap in the reward model will translate to the gap of policy. 
 * To overcome the limitation of reward modeling on offline generated data, we can use iterative approach to improve reward modeling (i.e., collecting additional preference data label on DPO or RL-PPO policies for continous reward modeling improvement). 
 
-````{prf:remark} Effective implementing PPO is critical
+```{prf:remark} Effective implementing PPO is critical
 Although RL-PPO has better robustness to imperfect reward model {cite:p}`xu2024dpo`, an effective implementation of PPO is critical. This involves tricks like advantage normalization, large batch size, and exponential moving average update for the reference model, etc.
-````
+```
 
 ## DPO Variants
 (chapter_training_sec_LLM_alignment_label_smoothing_DPO)=

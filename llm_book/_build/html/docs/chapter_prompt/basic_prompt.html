@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>22. Basic Prompting &#8212; LLM Foundations</title>
+    <title>18. Basic Prompting &#8212; LLM Foundations</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=b4b7a797" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -61,8 +61,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_prompt/basic_prompt';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="23. Advanced Prompting Techniques" href="advanced_prompt.html" />
-    <link rel="prev" title="21. Inference Acceleration (WIP)" href="../chapter_inference/inference_acceleration.html" />
+    <link rel="next" title="19. Advanced Prompting Techniques" href="advanced_prompt.html" />
+    <link rel="prev" title="17. Inference Acceleration (WIP)" href="../chapter_inference/inference_acceleration.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -190,42 +190,37 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_arch/annotated_llama_custom.html">11. *Lab: Minimal LLama</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">12. LLM Training Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">13. LLM Finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">14. LLM Alignement and Preference Learning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">15. *Reinforcement Learning Essentials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">16. LLM Training Acceleration (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_pretraining.html">17. *Lab: LLM Pretraining</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_finetuning.html">18. *Lab: Finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/chapter_LLM_training/annotated_llama_custom_for_DPO.html">19. *Lab DPO Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">11. LLM Training Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM Alignement and Preference Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">14. *Reinforcement Learning Essentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">15. LLM Training Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">20. Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">21. Inference Acceleration (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">16. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">17. Inference Acceleration (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">22. Basic Prompting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advanced_prompt.html">23. Advanced Prompting Techniques</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG and Agents</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">24. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">25. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">18. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_prompt.html">19. Advanced Prompting Techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">Vision Language Pretraining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">20. Multimodality fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">21. Vision Language Pretraining</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">26. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">22. Information Retrieval and Text Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">23. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/conversational_IR.html">24. Conversational IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">25. RAG and Conversational IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">26. Advanced RAG (WIP)</a></li>
 </ul>
 
     </div>
@@ -326,11 +321,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-llm-vs-instructed-llm">22.1. Base LLM vs Instructed LLM</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompt">22.2. Zero-shot prompt</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-and-in-context-learning">22.3. Few-shot and in-context learning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-of-thought-cot-prompting">22.4. Chain-of-Thought (CoT) Prompting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">22.5. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-llm-vs-instructed-llm">18.1. Base LLM vs Instructed LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompt">18.2. Zero-shot prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-and-in-context-learning">18.3. Few-shot and in-context learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-of-thought-cot-prompting">18.4. Chain-of-Thought (CoT) Prompting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">18.5. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -343,19 +338,19 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="basic-prompting">
-<h1><span class="section-number">22. </span>Basic Prompting<a class="headerlink" href="#basic-prompting" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">18. </span>Basic Prompting<a class="headerlink" href="#basic-prompting" title="Link to this heading">#</a></h1>
 <section id="base-llm-vs-instructed-llm">
-<h2><span class="section-number">22.1. </span>Base LLM vs Instructed LLM<a class="headerlink" href="#base-llm-vs-instructed-llm" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">18.1. </span>Base LLM vs Instructed LLM<a class="headerlink" href="#base-llm-vs-instructed-llm" title="Link to this heading">#</a></h2>
 <p>The purpose of presenting few-shot examples in the prompt is to explain our intent to the model; in other words, describe the task instruction to the model in the form of demonstrations. However, few-shot can be expensive in terms of token usage and restricts the input length due to limited context length. So, why not just give the instruction directly?</p>
 <p>Instructed LM (e.g. InstructGPT, natural instruction) finetunes a pretrained model with high-quality tuples of (task instruction, input, ground truth output) to make LM better understand user intention and follow instruction. RLHF (Reinforcement Learning from Human Feedback) is a common method to do so. The benefit of instruction following style fine-tuning improves the model to be more aligned with human intention and greatly reduces the cost of communication.</p>
 <p>When interacting with instruction models, we should describe the task requirement in details, trying to be specific and precise and avoiding say “not do something” but rather specify what to do.</p>
 </section>
 <section id="zero-shot-prompt">
-<h2><span class="section-number">22.2. </span>Zero-shot prompt<a class="headerlink" href="#zero-shot-prompt" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">18.2. </span>Zero-shot prompt<a class="headerlink" href="#zero-shot-prompt" title="Link to this heading">#</a></h2>
 <p>A zero-shot prompt for LLM is a technique where the model is asked to perform a task or answer a question without providing examples or any specific training for that particular task. The model relies solely on its pre-existing knowledge and general language understanding to generate a response.</p>
 <p>For example, in zero shot text classification (see the following), we provide the model with a prompt and a sequence of text that describes what we want our model to do, in natural language. Zero-shot classification excludes any examples of the desired task being completed. This differs from single or few-shot classification, as these tasks include a single or a few examples of the selected task.</p>
 <div class="proof example admonition" id="example-0">
-<p class="admonition-title"><span class="caption-number">Example 22.1 </span> (Zero shot prompt for movie review sentiment classification)</p>
+<p class="admonition-title"><span class="caption-number">Example 18.1 </span> (Zero shot prompt for movie review sentiment classification)</p>
 <section class="example-content" id="proof-content">
 <p><strong>Prompt</strong>:
 Classify the sentiment of the following movie review as positive, negative, or neutral:</p>
@@ -364,7 +359,7 @@ Classify the sentiment of the following movie review as positive, negative, or n
 </section>
 </div><p>Besides the above demonstrated classification text, LLM can accomplish a wide rangle of straight forward tasks, as shown in the following.</p>
 <div class="proof example admonition" id="example-1">
-<p class="admonition-title"><span class="caption-number">Example 22.2 </span> (Zero shot prompt for text extracting)</p>
+<p class="admonition-title"><span class="caption-number">Example 18.2 </span> (Zero shot prompt for text extracting)</p>
 <section class="example-content" id="proof-content">
 <p><strong>Prompt</strong>:
 Extract the title, h1, and body text from the following HTML</p>
@@ -378,7 +373,7 @@ Title: A simple page</p>
 <p>Body text: This is some text in a simple html page.</p>
 </section>
 </div><div class="proof example admonition" id="example-2">
-<p class="admonition-title"><span class="caption-number">Example 22.3 </span> (Zero shot prompt for programming task)</p>
+<p class="admonition-title"><span class="caption-number">Example 18.3 </span> (Zero shot prompt for programming task)</p>
 <section class="example-content" id="proof-content">
 <p><strong>Prompt</strong>: Write a python code to compute the 50th element in the Fibonacci sequence.</p>
 <p><strong>Response</strong>: Certainly! Here’s a Python code snippet that computes the 50th element in the Fibonacci sequence:</p>
@@ -402,11 +397,11 @@ Title: A simple page</p>
 <p>On the other hand, as LLM’s pretrained knowledge is the solely relied on to generate the response, it can have variable performance across the tasks. Specifically, the effectiveness can vary depending on the complexity of the task and how well it aligns with the model’s pre-trained knowledge.</p>
 </section>
 <section id="few-shot-and-in-context-learning">
-<h2><span class="section-number">22.3. </span>Few-shot and in-context learning<a class="headerlink" href="#few-shot-and-in-context-learning" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">18.3. </span>Few-shot and in-context learning<a class="headerlink" href="#few-shot-and-in-context-learning" title="Link to this heading">#</a></h2>
 <p>Few-shot learning is a technique where an LLM is given a small number of examples (typically 2-5) to guide its understanding of a task before it’s asked to perform that task on new, unseen data. This approach interpolates between zero-shot learning (no examples) and fine-tuning (extensive task-specific training).</p>
 <p>In the few-shot example, the model has some context for how to approach the task, potentially leading to more accurate and consistent results compared to the zero-shot approach.</p>
 <div class="proof example admonition" id="example-3">
-<p class="admonition-title"><span class="caption-number">Example 22.4 </span></p>
+<p class="admonition-title"><span class="caption-number">Example 18.4 </span></p>
 <section class="example-content" id="proof-content">
 <p><strong>Pormpt</strong>: Classify the sentiment of movie reviews as positive, negative, or neutral.</p>
 <p>Examples:</p>
@@ -452,7 +447,7 @@ Sentiment:</p>
 </div>
 </section>
 <section id="chain-of-thought-cot-prompting">
-<span id="chapter-prompt-sec-cot-prompting"></span><h2><span class="section-number">22.4. </span>Chain-of-Thought (CoT) Prompting<a class="headerlink" href="#chain-of-thought-cot-prompting" title="Link to this heading">#</a></h2>
+<span id="chapter-prompt-sec-cot-prompting"></span><h2><span class="section-number">18.4. </span>Chain-of-Thought (CoT) Prompting<a class="headerlink" href="#chain-of-thought-cot-prompting" title="Link to this heading">#</a></h2>
 <p>Chain of Thought (CoT) prompting <span id="id1">[<a class="reference internal" href="#id507" title="Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Ed Chi, Quoc Le, and Denny Zhou. Chain of thought prompting elicits reasoning in large language models. ArXiv:2201.11903, 2022.">WWS+22</a>]</span> is a technique used with Large Language Models (LLMs) to enhance their problem-solving capabilities, especially for complex tasks requiring multi-step reasoning. The motivation behind CoT prompting is to mimic human-like step-by-step thinking processes, addressing the limitation of LLMs in handling tasks that require intermediate logical steps.</p>
 <p>The key idea is to prompt the model to “think aloud” by breaking down its reasoning into explicit steps, often by providing examples of such step-by-step reasoning in the prompt. This approach offers several benefits: it improves the model’s performance on complex tasks, increases transparency in the decision-making process, and allows for easier error detection and correction.</p>
 <p>CoT prompting can help LLMs tackle problems that were previously challenging, such as multi-step mathematical or logical reasoning tasks.</p>
@@ -461,7 +456,7 @@ Sentiment:</p>
 <a class="reference internal image-reference" href="../../_images/chain_of_thought_prompt_demo.png"><img alt="../../_images/chain_of_thought_prompt_demo.png" src="../../_images/chain_of_thought_prompt_demo.png" style="width: 805.6999999999999px; height: 401.09999999999997px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 22.1 </span><span class="caption-text">COT example.</span><a class="headerlink" href="#chapter-prompt-fig-basic-prompt-cot-demo" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 18.1 </span><span class="caption-text">COT example.</span><a class="headerlink" href="#chapter-prompt-fig-basic-prompt-cot-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The idea of COT can be generalize to different tasks, as shown in the following.</p>
@@ -469,7 +464,7 @@ Sentiment:</p>
 <a class="reference internal image-reference" href="../../_images/chain_of_thought_prompt_demo2.png"><img alt="../../_images/chain_of_thought_prompt_demo2.png" src="../../_images/chain_of_thought_prompt_demo2.png" style="width: 737.8px; height: 588.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 22.2 </span><span class="caption-text">More COT examples for different tasks.</span><a class="headerlink" href="#chapter-prompt-fig-basic-prompt-cot-demo2" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 18.2 </span><span class="caption-text">More COT examples for different tasks.</span><a class="headerlink" href="#chapter-prompt-fig-basic-prompt-cot-demo2" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The classically CoT prompting requires CoT few-shot demonstration, a further simplification is to use sentence like “Let’s think step by step” to encourage the model to directly produce a reasoning chain before generating the final answer<span id="id2">[<a class="reference internal" href="#id511" title="Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke Iwasawa. Large language models are zero-shot reasoners. arxiv.org/abs/2205.11916, 2022.">KGR+22</a>]</span>. This approach is illustrated as the following.</p>
@@ -477,7 +472,7 @@ Sentiment:</p>
 <a class="reference internal image-reference" href="../../_images/zero_shot_CoT.png"><img alt="../../_images/zero_shot_CoT.png" src="../../_images/zero_shot_CoT.png" style="width: 1031.8px; height: 527.8px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 22.3 </span><span class="caption-text">Comparison of few-shot CoT and zero-shot CoT</span><a class="headerlink" href="#chapter-prompt-fig-basic-prompt-zero-shot-cot" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 18.3 </span><span class="caption-text">Comparison of few-shot CoT and zero-shot CoT</span><a class="headerlink" href="#chapter-prompt-fig-basic-prompt-zero-shot-cot" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -517,7 +512,7 @@ Sentiment:</p>
 </div>
 </section>
 <section id="bibliography">
-<h2><span class="section-number">22.5. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">18.5. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id3">
 <div role="list" class="citation-list">
 <div class="citation" id="id511" role="doc-biblioentry">
@@ -569,7 +564,7 @@ Sentiment:</p>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">21. </span>Inference Acceleration (WIP)</p>
+        <p class="prev-next-title"><span class="section-number">17. </span>Inference Acceleration (WIP)</p>
       </div>
     </a>
     <a class="right-next"
@@ -577,7 +572,7 @@ Sentiment:</p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">23. </span>Advanced Prompting Techniques</p>
+        <p class="prev-next-title"><span class="section-number">19. </span>Advanced Prompting Techniques</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -597,11 +592,11 @@ Sentiment:</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-llm-vs-instructed-llm">22.1. Base LLM vs Instructed LLM</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompt">22.2. Zero-shot prompt</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-and-in-context-learning">22.3. Few-shot and in-context learning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-of-thought-cot-prompting">22.4. Chain-of-Thought (CoT) Prompting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">22.5. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-llm-vs-instructed-llm">18.1. Base LLM vs Instructed LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompt">18.2. Zero-shot prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-and-in-context-learning">18.3. Few-shot and in-context learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-of-thought-cot-prompting">18.4. Chain-of-Thought (CoT) Prompting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">18.5. Bibliography</a></li>
 </ul>
   </nav></div>
 

@@ -184,13 +184,13 @@ Here by setting un-normalized attention weight to $-\inf$, we are effectively se
 
 At this point, it is clear that the memory and computational complexity required to compute the attention matrix is quadratic in the input sequence length $n$. This could be a bottleneck the overall utility of attention-based models in applications involving the processing of long sequences. 
 
-````{prf:remark} Dropout on attention weight
+```{prf:remark} Dropout on attention weight
 We also apply dropout to reduce overfitting during training. Dropout can be applied in several places:
 - After computing the attention weight matrix $W_{att}$;
 - After multiplying the attention weights with the value vectors
 
 More commonly, we apply the dropout mask after computing the attention weights. For each token, the Dropout will randomly pick some hidden dimensions and set them to zero. The remaining non-zero weights will be rescaled of a factor of $1/(1-p)$, where $p$ is the Dropout ratio.
-````
+```
 
 ### Comparison with Recurrent Layer in Sequence Modeling
 

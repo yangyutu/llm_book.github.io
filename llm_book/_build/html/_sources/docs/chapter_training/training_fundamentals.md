@@ -186,10 +186,10 @@ A typical algorithm is showed as follows.
 ```
 
 
-````{prf:remark} choice of minibatch size
+```{prf:remark} choice of minibatch size
 * The estimation quality of gradient via minibatch gradient descent is strongly affected by the minibatch size. In general, the gradient estimate is unbiased, irrespective of the choice of minibatch size, but its variance will decrease as the minibatch increases.
 * For larger minibatch size, we can increase learning rate since the estimated gradient is more certain. There is an empirical ***Linear Scaling Rule***: When the minibatch size is multiplied by $k$, multiply the learning rate by $k$ {cite:p}`goyal2017accurate`.
-````
+```
 
 ### Adaptive Gradient Method
 #### Adaptive Gradient (AdaGrad)
@@ -226,7 +226,7 @@ which is the core part of the RMSProp algorithm {cite:p}`Hinton2012Neural`.
 
 How this modification can make the $G_k$ smaller than that in the AdaGrad, as can be seen from following expansion. 
 
-````{prf:remark} Expansion of $G_k$
+```{prf:remark} Expansion of $G_k$
 In RMSProp, we have
 
 $$
@@ -243,11 +243,11 @@ roughly,
 
 $$G_k^{RMSProp} \approx  \frac{(1 - \rho^k)}{k} G_k^{AdaGrad}, G_k^{AdaGrad}\approx k g\odot g.$$
 
-````
+```
 
-````{prf:remark} Importance of adaptive learning rate
+```{prf:remark} Importance of adaptive learning rate
 One example to demonstrate the importance of having adaptive learing rate is learning word embeddings. Embeddings of rare words only get limited chances to update because they have limited presence in the training data. On the other hand, embeddings of common words get update frequently. With adaptive learning rate, embeddings of rare words will have large learning rate whenever it gets update. This help the model learn better embeddings for rare words. 
-````
+```
 
 
 ### Momentum Method

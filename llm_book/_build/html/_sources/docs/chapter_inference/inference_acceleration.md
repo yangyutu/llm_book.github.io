@@ -86,10 +86,10 @@ Comparision of the attention computation on the settings of **without** KV cache
 :::
 ::::
 
-````{prf:remark} KV-cache pre-fill for prompts
+```{prf:remark} KV-cache pre-fill for prompts
 While traditional autoregressive generation processes tokens one-by-one, we can prefil KV Cache by leveraging the fact that the prompt is known in advance.
 Specifically, we can pre-computes and stores the key (K) and value (V) representations for the entire prompt in the cache before generation begins. During token generation, the model can then access these pre-computed values, eliminating the need to recalculate them at each step. This approach reduces computational overhead, especially for tasks involving long prompts or multiple generations from the same context, leading to faster inference times.
-````
+```
 
 ### Computational cost with KV Cache
 

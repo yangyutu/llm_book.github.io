@@ -245,7 +245,7 @@ $$
 As can be seen, the optimizer state memory has a divisor of $N_d$ compared to the original.
 
 
-````{prf:example}
+```{prf:example}
 For a 7.5B parameter model, the standard case requires 120 GB of memory, but using $P_{os}$ with $N_d=64$ only requires 31.4 GB of memory.
 When $N_d$ is very large, the memory consumption approaches:
 
@@ -261,7 +261,7 @@ $$
 
 When $K=12$, this becomes $\frac{1}{4}$, meaning the memory usage is $\frac{1}{4}$ of the original.
 
-````
+```
 <!-- 
 ## Flash Attention
 
