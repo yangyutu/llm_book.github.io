@@ -1,6 +1,6 @@
 
 (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch)=
-# Information Retrieval and Text Ranking: I
+# Information Retrieval and Sparse Retrieval
 
 ```{index} IR, Neural IR, Information retrieval
 ```
@@ -673,9 +673,8 @@ The dense retriever is able to achieve semantic understanding the query and doc:
 In the above example, dense retriever shows a clear advantage over sparse retriever. However, the observation from BEIR benchmark is that BM25 remains as a stronger baseline compared to dense retriever across diverse domains. The seemingly contradictory results can be understood from the following results
 * BM25 is usually performing poorly for short documents, where word count frequency are quite uniform across different words - in other words, two documents with different topics can have a similar count stats for the same query terms.
 * Dense retriever model tend to have weaker performance over long documents and in tail topic domains. 
-	* Encoding a document into a fixed length vector will have more information loss for long documents due to context window limit (i.e., a model might truncate the part exceeding its max context length) or the model's own capacity.
-	* Tail topic (e.g., topic involves uncommon technical jargons) have a much lower presence in the training corpus, causing inferior semantic understanding of the topic.
-
+	* Encoding a document into a fixed length vector (e.g., 512) will have more information loss for long documents due to context window limit (i.e., a model might truncate the part exceeding its max context length) or the model's own capacity.
+	* Tail topic (e.g., topics involve uncommon technical jargons) have a much lower presence in the training corpus, causing inferior semantic understanding of the topic.
 
 Also see {ref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2_retriever_comparison` for a more detailed discussion.
 ```
@@ -683,7 +682,7 @@ Also see {ref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2
 
 
 
-## Note On Bibliography And Software
+## Note on Bibliography and Software
 
 ### Bibliography
 For excellent reviews in neural information retrieval, see {cite}`guo2020deep, mitra2018introduction, lin2021pretrained`

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>23. Information Retrieval and Text Ranking: I &#8212; LLM Foundations</title>
+    <title>23. Information Retrieval and Sparse Retrieval &#8212; LLM Foundations</title>
   
   
   
@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_application_IR/information_retrieval_fundamentals_part1';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="24. Information Retrieval and Text Ranking: II" href="information_retrieval_fundamentals_part2.html" />
+    <link rel="next" title="24. Information Retrieval and Dense Models" href="information_retrieval_fundamentals_part2.html" />
     <link rel="prev" title="22. Vision Language Pretraining" href="../chapter_multimodality/vision_transformers.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -222,11 +222,11 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">23. Information Retrieval and Text Ranking: I</a></li>
-<li class="toctree-l1"><a class="reference internal" href="information_retrieval_fundamentals_part2.html">24. Information Retrieval and Text Ranking: II</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">23. Information Retrieval and Sparse Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="information_retrieval_fundamentals_part2.html">24. Information Retrieval and Dense Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_LLM_in_IR.html">25. Application of LLM in IR (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="conversational_IR.html">26. Conversational IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">27. RAG and Conversational IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">27. RAG</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">28. Advanced RAG (WIP)</a></li>
 </ul>
 
@@ -318,7 +318,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Information Retrieval and Text Ranking: I</h1>
+    <h1>Information Retrieval and Sparse Retrieval</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -372,7 +372,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bm25-demonstration">23.6.1. BM25 Demonstration</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#note-on-bibliography-and-software">23.7. Note On Bibliography And Software</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#note-on-bibliography-and-software">23.7. Note on Bibliography and Software</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">23.7.1. Bibliography</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software">23.7.2. Software</a></li>
 </ul>
@@ -388,8 +388,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="information-retrieval-and-text-ranking-i">
-<span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch"></span><h1><span class="section-number">23. </span>Information Retrieval and Text Ranking: I<a class="headerlink" href="#information-retrieval-and-text-ranking-i" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="information-retrieval-and-sparse-retrieval">
+<span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch"></span><h1><span class="section-number">23. </span>Information Retrieval and Sparse Retrieval<a class="headerlink" href="#information-retrieval-and-sparse-retrieval" title="Link to this heading">#</a></h1>
 <section id="overview-of-information-retrieval">
 <span id="index-0"></span><h2><span class="section-number">23.1. </span>Overview of Information Retrieval<a class="headerlink" href="#overview-of-information-retrieval" title="Link to this heading">#</a></h2>
 <section id="ad-hoc-retrieval">
@@ -512,8 +512,8 @@ This subcomponent aims to figure out the main intent behind the query, e.g., the
 <p>The first reason is due to the polysemy of words. That is, a word can mean different things depending on context. The meaning of <em>book</em> is different in <em>text book</em> and <em>book a hotel room</em>. Short queries particularly suffer from Polysemy because they are often devoid of context.</p>
 <p>The second reason is due to the fact that a concept is often expressed using different vocabularies and language styles in documents and queries. As a result, such a model would have difficulty in retrieving documents that have none of the query terms but turn out to be relevant.</p>
 <p>Modern neural-based IR model enable semantic retrieval by learning latent representations of text from data and enable document retrieval based on semantic similarity.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1600">
-<caption><span class="caption-number">Table 23.1 </span><span class="caption-text">Retrieval results based on exact matching methods and semantic matching methods.</span><a class="headerlink" href="#id1600" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1601">
+<caption><span class="caption-number">Table 23.1 </span><span class="caption-text">Retrieval results based on exact matching methods and semantic matching methods.</span><a class="headerlink" href="#id1601" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Query</strong></p></th>
 <th class="head"><p>“Weather Related Fatalities”</p></th>
@@ -1056,8 +1056,8 @@ In another interesting extension, if we reduce the token dimension of COIL to on
 <li><p>BM25 is usually performing poorly for short documents, where word count frequency are quite uniform across different words - in other words, two documents with different topics can have a similar count stats for the same query terms.</p></li>
 <li><p>Dense retriever model tend to have weaker performance over long documents and in tail topic domains.</p>
 <ul>
-<li><p>Encoding a document into a fixed length vector will have more information loss for long documents due to context window limit (i.e., a model might truncate the part exceeding its max context length) or the model’s own capacity.</p></li>
-<li><p>Tail topic (e.g., topic involves uncommon technical jargons) have a much lower presence in the training corpus, causing inferior semantic understanding of the topic.</p></li>
+<li><p>Encoding a document into a fixed length vector (e.g., 512) will have more information loss for long documents due to context window limit (i.e., a model might truncate the part exceeding its max context length) or the model’s own capacity.</p></li>
+<li><p>Tail topic (e.g., topics involve uncommon technical jargons) have a much lower presence in the training corpus, causing inferior semantic understanding of the topic.</p></li>
 </ul>
 </li>
 </ul>
@@ -1066,7 +1066,7 @@ In another interesting extension, if we reduce the token dimension of COIL to on
 </div></section>
 </section>
 <section id="note-on-bibliography-and-software">
-<h2><span class="section-number">23.7. </span>Note On Bibliography And Software<a class="headerlink" href="#note-on-bibliography-and-software" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">23.7. </span>Note on Bibliography and Software<a class="headerlink" href="#note-on-bibliography-and-software" title="Link to this heading">#</a></h2>
 <section id="bibliography">
 <h3><span class="section-number">23.7.1. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h3>
 <p>For excellent reviews in neural information retrieval, see <span id="id20">[<a class="reference internal" href="information_retrieval_fundamentals_part2.html#id1424" title="Jiafeng Guo, Yixing Fan, Liang Pang, Liu Yang, Qingyao Ai, Hamed Zamani, Chen Wu, W Bruce Croft, and Xueqi Cheng. A deep look into neural ranking models for information retrieval. Information Processing &amp; Management, 57(6):102067, 2020.">GFP+20</a>, <a class="reference internal" href="information_retrieval_fundamentals_part2.html#id1478" title="Jimmy Lin, Rodrigo Nogueira, and Andrew Yates. Pretrained transformers for text ranking: bert and beyond. Synthesis Lectures on Human Language Technologies, 14(4):1–325, 2021.">LNY21</a>, <a class="reference internal" href="information_retrieval_fundamentals_part2.html#id1425" title="Bhaskar Mitra, Nick Craswell, and others. An introduction to neural information retrieval. Now Foundations and Trends Boston, MA, 2018.">MC+18</a>]</span></p>
@@ -1258,7 +1258,7 @@ In another interesting extension, if we reduce the token dimension of COIL to on
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">24. </span>Information Retrieval and Text Ranking: II</p>
+        <p class="prev-next-title"><span class="section-number">24. </span>Information Retrieval and Dense Models</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1322,7 +1322,7 @@ In another interesting extension, if we reduce the token dimension of COIL to on
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bm25-demonstration">23.6.1. BM25 Demonstration</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#note-on-bibliography-and-software">23.7. Note On Bibliography And Software</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#note-on-bibliography-and-software">23.7. Note on Bibliography and Software</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">23.7.1. Bibliography</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software">23.7.2. Software</a></li>
 </ul>

@@ -222,11 +222,11 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">23. Information Retrieval and Text Ranking: I</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">24. Information Retrieval and Text Ranking: II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">23. Information Retrieval and Sparse Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">24. Information Retrieval and Dense Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/conversational_IR.html">26. Conversational IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">27. RAG and Conversational IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">27. RAG</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">28. Advanced RAG (WIP)</a></li>
 </ul>
 
@@ -498,8 +498,8 @@ E_{\text {word }}=\left[\begin{array}{lll}
 <li><p>BERT-BASE, <span class="math notranslate nohighlight">\(L=12, d_{model}=768, H=12\)</span>, total Parameters 110M.</p></li>
 <li><p>BERT-LARGE, <span class="math notranslate nohighlight">\(L=24, d_{model} = 1024, H=16\)</span>, total parameters 340M.</p></li>
 </ul>
-<div class="pst-scrollable-table-container"><table class="table" id="id1606">
-<caption><span class="caption-number">Table 6.1 </span><span class="caption-text">The hyperparameter settings of various pretrained BERT configurations.  BERTBase and BERTLarge are the two most commonly used configurations today;</span><a class="headerlink" href="#id1606" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1607">
+<caption><span class="caption-number">Table 6.1 </span><span class="caption-text">The hyperparameter settings of various pretrained BERT configurations.  BERTBase and BERTLarge are the two most commonly used configurations today;</span><a class="headerlink" href="#id1607" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Size</p></th>
 <th class="head text-right"><p>Layers</p></th>
@@ -685,8 +685,8 @@ The two-step projection only requires parameters <span class="math notranslate n
 <li><p><em><strong>Cross-layer parameter sharing</strong></em>. In the original BERT, each encoder sub-unit (which has an attention module and a feed-forward module) has different parameters. In ALBERT, these parameters are shared in different sub-units to reduce model size and improve parameter efficiency.  The authors also mentioned that there are alternative parameter sharing strategies: only sharing feed-forward network parameters; only sharing attention module parameters; sharing both feed-forward network and attention module.</p></li>
 </ul>
 <p>The effect of embedding factorization and parameter sharing can be illustrated in the following comparison.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1607">
-<caption><span class="caption-number">Table 6.2 </span><span class="caption-text">BERT model parameters</span><a class="headerlink" href="#id1607" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1608">
+<caption><span class="caption-number">Table 6.2 </span><span class="caption-text">BERT model parameters</span><a class="headerlink" href="#id1608" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Model</p></th>
 <th class="head text-center"><p>Parameters</p></th>

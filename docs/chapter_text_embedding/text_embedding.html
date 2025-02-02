@@ -222,11 +222,11 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">23. Information Retrieval and Text Ranking: I</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">24. Information Retrieval and Text Ranking: II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">23. Information Retrieval and Sparse Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">24. Information Retrieval and Dense Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/conversational_IR.html">26. Conversational IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">27. RAG and Conversational IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">27. RAG</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">28. Advanced RAG (WIP)</a></li>
 </ul>
 
@@ -354,16 +354,20 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matryoshka-representation-learning">20.5. Matryoshka Representation Learning</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loss-function">20.5.1. Loss Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-transfer-and-distillation">20.5. Knowledge Transfer and Distillation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-mono-language-to-multi-lingual">20.5.1. From mono language to multi lingual</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-model">20.6. LLM Embedding Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nv-embed">20.6.1. NV-Embed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matryoshka-representation-learning">20.6. Matryoshka Representation Learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loss-function">20.6.1. Loss Function</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software">20.7. Software</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">20.8. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-model">20.7. LLM Embedding Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nv-embed">20.7.1. NV-Embed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software">20.8. Software</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">20.9. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -380,14 +384,14 @@ document.write(`
 <section id="introduction">
 <h2><span class="section-number">20.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
 <p>There are many NLP tasks involves determining the relationship of two sentences, including semantic similarity, semantic relation reasoning, questioning answering etc. For example, Quora needs to determine if a question asked by a user has a semantically similar duplicate. The GLUE benchmark as an example [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:sec:BERTDownstreamTasks}], 6 of them are tasks that require learning sentences Inter-relationship. Specifically,</p>
-<p><strong>MRPC</strong>: The Microsoft Research Paraphrase Corpus <span id="id1">[<a class="reference internal" href="#id1339" title="William B Dolan and Chris Brockett. Automatically constructing a corpus of sentential paraphrases. In Proceedings of the Third International Workshop on Paraphrasing (IWP2005). 2005.">DB05</a>]</span> is a corpus of sentence pairs automatically extracted from online news sources, with human annotations for whether the sentences in the pair are semantically equivalent.\</p>
+<p><strong>MRPC</strong>: The Microsoft Research Paraphrase Corpus <span id="id1">[<a class="reference internal" href="#id1340" title="William B Dolan and Chris Brockett. Automatically constructing a corpus of sentential paraphrases. In Proceedings of the Third International Workshop on Paraphrasing (IWP2005). 2005.">DB05</a>]</span> is a corpus of sentence pairs automatically extracted from online news sources, with human annotations for whether the sentences in the pair are semantically equivalent.\</p>
 <p><strong>QQP</strong>: The <a class="reference external" href="https://quoradata.quora.com/First-Quora-Dataset-Release-Question-Pairs">Quora Question Pairs</a> dataset is a collection of question pairs from the community question-answering website Quora. The task is to determine whether a pair of questions are semantically equivalent. As in MRPC, the class distribution in <span class="math notranslate nohighlight">\(\mathrm{QQP}\)</span> is unbalanced <span class="math notranslate nohighlight">\((63 \%\)</span> negative), so we report both accuracy and F1 score. We use the standard test set, for which we obtained private labels from the authors. We observe that the test set has a different label distribution than the training set. \</p>
-<p><strong>STS-B</strong>: The Semantic Textual Similarity Benchmark <span id="id2">[<a class="reference internal" href="#id1340" title="Daniel Cer, Mona Diab, Eneko Agirre, Inigo Lopez-Gazpio, and Lucia Specia. Semeval-2017 task 1: semantic textual similarity-multilingual and cross-lingual focused evaluation. arXiv preprint arXiv:1708.00055, 2017.">CDA+17</a>]</span> is a collection of sentence pairs drawn from news headlines, video and image captions, and natural language inference data.</p>
-<p><strong>Natural language inference</strong>: <span id="id3">[<a class="reference internal" href="#id1352" title="Samuel R Bowman, Gabor Angeli, Christopher Potts, and Christopher D Manning. A large annotated corpus for learning natural language inference. arXiv preprint arXiv:1508.05326, 2015.">BAPM15</a>]</span> Understanding entailment and contradiction is fundamental to understanding natural language, and inference about entailment and contradiction is a valuable testing ground for the development of semantic representations. The semantic concepts of entailment and contradiction are central to all aspects of natural language meaning,
+<p><strong>STS-B</strong>: The Semantic Textual Similarity Benchmark <span id="id2">[<a class="reference internal" href="#id1341" title="Daniel Cer, Mona Diab, Eneko Agirre, Inigo Lopez-Gazpio, and Lucia Specia. Semeval-2017 task 1: semantic textual similarity-multilingual and cross-lingual focused evaluation. arXiv preprint arXiv:1708.00055, 2017.">CDA+17</a>]</span> is a collection of sentence pairs drawn from news headlines, video and image captions, and natural language inference data.</p>
+<p><strong>Natural language inference</strong>: <span id="id3">[<a class="reference internal" href="#id1353" title="Samuel R Bowman, Gabor Angeli, Christopher Potts, and Christopher D Manning. A large annotated corpus for learning natural language inference. arXiv preprint arXiv:1508.05326, 2015.">BAPM15</a>]</span> Understanding entailment and contradiction is fundamental to understanding natural language, and inference about entailment and contradiction is a valuable testing ground for the development of semantic representations. The semantic concepts of entailment and contradiction are central to all aspects of natural language meaning,
 from the lexicon to the content of entire texts.
 Natural language inference is the task of determining whether a <em>hypothesis</em> is true (entailment), false (contradiction), or undetermined (neutral) given a <em>premise</em>.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1596">
-<caption><span class="caption-number">Table 20.1 </span><span class="caption-text"><em>Entailment</em>, <em>contradiction</em>, and <em>neural</em> examples in a natural language inference task.</span><a class="headerlink" href="#id1596" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1598">
+<caption><span class="caption-number">Table 20.1 </span><span class="caption-text"><em>Entailment</em>, <em>contradiction</em>, and <em>neural</em> examples in a natural language inference task.</span><a class="headerlink" href="#id1598" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Premise</p></th>
 <th class="head text-center"><p>Label</p></th>
@@ -424,11 +428,11 @@ as clustering, topic modeling, information retrieval, or semantic search. Becaus
 <h2><span class="section-number">20.2. </span>Contextual Text Embedding Fundamentals<a class="headerlink" href="#contextual-text-embedding-fundamentals" title="Link to this heading">#</a></h2>
 <section id="anisotropy">
 <h3><span class="section-number">20.2.1. </span>Anisotropy<a class="headerlink" href="#anisotropy" title="Link to this heading">#</a></h3>
-<p><span id="id4">[<a class="reference internal" href="#id1591" title="Kawin Ethayarajh. How contextual are contextualized word representations? comparing the geometry of bert, elmo, and gpt-2 embeddings. arXiv preprint arXiv:1909.00512, 2019.">Eth19</a>]</span></p>
+<p><span id="id4">[<a class="reference internal" href="#id1592" title="Kawin Ethayarajh. How contextual are contextualized word representations? comparing the geometry of bert, elmo, and gpt-2 embeddings. arXiv preprint arXiv:1909.00512, 2019.">Eth19</a>]</span></p>
 <p>Contextualized representations are <strong>anisotropic</strong> in all non-input layers. If word representations from a particular layer were isotropic (i.e., directionally uniform), then the average cosine similarity between uniformly randomly sampled words would be 0. The closer this average is to 1, the more anisotropic the representations. The geometric interpretation of anisotropy is that the word representations all occupy a narrow cone in the vector space rather than being uniform in all directions; the greater the anisotropy, the narrower this cone.</p>
 <p>As seen in <a class="reference internal" href="#chapter-text-embedding-fig-text-embedding-anisotropy"><span class="std std-numref">Fig. 20.1</span></a>, this implies that in almost all layers of BERT and GPT-2, the representations of all words occupy a narrow cone in the vector space.</p>
 <p>Contextual word embeddings are generally more anisotropic in higher layers.</p>
-<p>anisotropy is also viewed as representation degeneration problem <span id="id5">[<a class="reference internal" href="#id1593" title="Jun Gao, Di He, Xu Tan, Tao Qin, Liwei Wang, and Tie-Yan Liu. Representation degeneration problem in training natural language generation models. arXiv preprint arXiv:1907.12009, 2019.">GHT+19</a>]</span>, where the expressiveness of the embedding model is been compromised.</p>
+<p>anisotropy is also viewed as representation degeneration problem <span id="id5">[<a class="reference internal" href="#id1594" title="Jun Gao, Di He, Xu Tan, Tao Qin, Liwei Wang, and Tie-Yan Liu. Representation degeneration problem in training natural language generation models. arXiv preprint arXiv:1907.12009, 2019.">GHT+19</a>]</span>, where the expressiveness of the embedding model is been compromised.</p>
 <figure class="align-default" id="chapter-text-embedding-fig-text-embedding-anisotropy">
 <a class="reference internal image-reference" href="../../_images/self_similarity_across_layers.png"><img alt="../../_images/self_similarity_across_layers.png" src="../../_images/self_similarity_across_layers.png" style="width: 730.4000000000001px; height: 289.6px;" />
 </a>
@@ -456,10 +460,10 @@ more accurately.</p>
 <section id="static-vs-contextual-word-embeddings">
 <h3><span class="section-number">20.2.3. </span>Static vs Contextual Word embeddings<a class="headerlink" href="#static-vs-contextual-word-embeddings" title="Link to this heading">#</a></h3>
 <p>A word’s embedding changes when the word resides in different contexts. It is found that, on average, less than 5% of such variance can be explained by the first principal component, which can be viewed as a static embedding. This also indicates that contextually word embedding cannot be easily replaced by a static embedding.</p>
-<p>However, we can still use principal components of contextualized representations in <strong>lower layers</strong> as proxy static word embeddings, which can be used in low-resource scenarios. It is found <span id="id6">[<a class="reference internal" href="#id1591" title="Kawin Ethayarajh. How contextual are contextualized word representations? comparing the geometry of bert, elmo, and gpt-2 embeddings. arXiv preprint arXiv:1909.00512, 2019.">Eth19</a>]</span> that such proxy static embedding can still outperform GloVe and FastText on many benchmarks.</p>
+<p>However, we can still use principal components of contextualized representations in <strong>lower layers</strong> as proxy static word embeddings, which can be used in low-resource scenarios. It is found <span id="id6">[<a class="reference internal" href="#id1592" title="Kawin Ethayarajh. How contextual are contextualized word representations? comparing the geometry of bert, elmo, and gpt-2 embeddings. arXiv preprint arXiv:1909.00512, 2019.">Eth19</a>]</span> that such proxy static embedding can still outperform GloVe and FastText on many benchmarks.</p>
 <p>We can create static embeddings for each word by taking the first principal component (PC) of its contextualized representations in a given layer.</p>
 <p>Given that upper layers are much more contextspecific than lower layers, and given that GPT2’s representations are more context-specific than ELMo and BERT’s (see Figure 2), this suggests that the PCs of highly context-specific representations are less effective on traditional benchmarks.</p>
-<p><span id="id7">[<a class="reference internal" href="#id1592" title="Lingxiao Wang, Jing Huang, Kevin Huang, Ziniu Hu, Guangtao Wang, and Quanquan Gu. Improving neural language generation with spectrum control. In International Conference on Learning Representations. 2019.">WHH+19</a>]</span></p>
+<p><span id="id7">[<a class="reference internal" href="#id1593" title="Lingxiao Wang, Jing Huang, Kevin Huang, Ziniu Hu, Guangtao Wang, and Quanquan Gu. Improving neural language generation with spectrum control. In International Conference on Learning Representations. 2019.">WHH+19</a>]</span></p>
 </section>
 </section>
 <section id="contrastive-learning-fundamentals">
@@ -475,7 +479,7 @@ more accurately.</p>
 </section>
 <section id="embedding-quality-intrinsic-measurement">
 <h3><span class="section-number">20.3.2. </span>Embedding quality intrinsic measurement<a class="headerlink" href="#embedding-quality-intrinsic-measurement" title="Link to this heading">#</a></h3>
-<p>Embedding quality, often as a result of contrastive learning, can be intrinsically measured using two properties: <strong>Alignment</strong> and <strong>uniformity</strong> <span id="id8">[<a class="reference internal" href="#id1435" title="Tongzhou Wang and Phillip Isola. Understanding contrastive representation learning through alignment and uniformity on the hypersphere. In International Conference on Machine Learning, 9929–9939. PMLR, 2020.">WI20</a>]</span>. Given a distribution of positive pairs <span class="math notranslate nohighlight">\(p_{\text {pos }}\)</span>, alignment calculates expected distance between embeddings of the paired instances (assuming representations are already normalized):</p>
+<p>Embedding quality, often as a result of contrastive learning, can be intrinsically measured using two properties: <strong>Alignment</strong> and <strong>uniformity</strong> <span id="id8">[<a class="reference internal" href="#id1436" title="Tongzhou Wang and Phillip Isola. Understanding contrastive representation learning through alignment and uniformity on the hypersphere. In International Conference on Machine Learning, 9929–9939. PMLR, 2020.">WI20</a>]</span>. Given a distribution of positive pairs <span class="math notranslate nohighlight">\(p_{\text {pos }}\)</span>, alignment calculates expected distance between embeddings of the paired instances (assuming representations are already normalized):</p>
 <div class="math notranslate nohighlight">
 \[
 \ell_{\mathrm{align}} \triangleq \underset{\left(x, x^{+}\right) \sim p_{\mathrm{pos}}}{\mathbb{E}}\left\|f(x)-f\left(x^{+}\right)\right\|^2
@@ -489,7 +493,7 @@ more accurately.</p>
 </section>
 <section id="anisotropy-problem-in-embeddings">
 <h3><span class="section-number">20.3.3. </span>Anisotropy problem in embeddings<a class="headerlink" href="#anisotropy-problem-in-embeddings" title="Link to this heading">#</a></h3>
-<p><span id="id9">[<a class="reference internal" href="#id1591" title="Kawin Ethayarajh. How contextual are contextualized word representations? comparing the geometry of bert, elmo, and gpt-2 embeddings. arXiv preprint arXiv:1909.00512, 2019.">Eth19</a>]</span></p>
+<p><span id="id9">[<a class="reference internal" href="#id1592" title="Kawin Ethayarajh. How contextual are contextualized word representations? comparing the geometry of bert, elmo, and gpt-2 embeddings. arXiv preprint arXiv:1909.00512, 2019.">Eth19</a>]</span></p>
 <p>Recent work identifies an anisotropy problem in
 language representations (Ethayarajh, 2019; Li
 et al., 2020), i.e., the learned embeddings occupy a
@@ -511,7 +515,7 @@ negative instances apart.</p>
 <section id="sentence-bert">
 <h3><span class="section-number">20.4.1. </span>Sentence-BERT<a class="headerlink" href="#sentence-bert" title="Link to this heading">#</a></h3>
 <p>While a pretrained BERT has provided contextulized embeddings for each token, it is found that high-quality, semantically meaning sentence embeddings can not be directly derived from token embedding.</p>
-<p>Sentence-BERT <span id="id10">[<a class="reference internal" href="#id1343" title="Nils Reimers and Iryna Gurevych. Sentence-bert: sentence embeddings using siamese bert-networks. arXiv preprint arXiv:1908.10084, 2019.">RG19</a>]</span> enables sentence embedding extraction from the BERT model after fine-tuning the BERT model via Siamese type of learning<a class="reference internal" href="#chapter-text-embedding-fig-bert-sentencebert"><span class="std std-numref">Fig. 20.2</span></a>. Specifically, three strategies can be used to derived sentence embedding</p>
+<p>Sentence-BERT <span id="id10">[<a class="reference internal" href="#id1344" title="Nils Reimers and Iryna Gurevych. Sentence-bert: sentence embeddings using siamese bert-networks. arXiv preprint arXiv:1908.10084, 2019.">RG19</a>]</span> enables sentence embedding extraction from the BERT model after fine-tuning the BERT model via Siamese type of learning<a class="reference internal" href="#chapter-text-embedding-fig-bert-sentencebert"><span class="std std-numref">Fig. 20.2</span></a>. Specifically, three strategies can be used to derived sentence embedding</p>
 <ul class="simple">
 <li><p>the output of the CLS-token</p></li>
 <li><p>the mean of all output vectors (<strong>default</strong>)</p></li>
@@ -571,7 +575,7 @@ Figure 1: Schematic illustration of the proposed cutoff augmentation strategies,
 </section>
 <section id="simcse">
 <h3><span class="section-number">20.4.2. </span>SimCSE<a class="headerlink" href="#simcse" title="Link to this heading">#</a></h3>
-<p>SimCSE <span id="id11">[<a class="reference internal" href="#id1431" title="Tianyu Gao, Xingcheng Yao, and Danqi Chen. Simcse: simple contrastive learning of sentence embeddings. arXiv preprint arXiv:2104.08821, 2021.">GYC21</a>]</span> introduces a simple Dropout strategy to identify positive examples and conduct unsupervised learning.
+<p>SimCSE <span id="id11">[<a class="reference internal" href="#id1432" title="Tianyu Gao, Xingcheng Yao, and Danqi Chen. Simcse: simple contrastive learning of sentence embeddings. arXiv preprint arXiv:2104.08821, 2021.">GYC21</a>]</span> introduces a simple Dropout strategy to identify positive examples and conduct unsupervised learning.
 As shown in <a class="reference internal" href="#chapter-text-embedding-fig-bert-sim-sce-demo"><span class="std std-numref">Fig. 20.3</span></a>,</p>
 <ul class="simple">
 <li><p>Positive example pairs can be constructed by passing one sentence passing through the encoder network with different dropout masking.</p></li>
@@ -597,8 +601,8 @@ As shown in <a class="reference internal" href="#chapter-text-embedding-fig-bert
 tive <span class="math notranslate nohighlight">\(\ell_{i}\)</span> is then defined by <span class="math notranslate nohighlight">\(N\)</span> is mini-batch size</p>
 <div class="math notranslate nohighlight">
 \[-\log \frac{e^{\operatorname{sim}\left(\mathbf{h}_{i}, \mathbf{h}_{i}^{+}\right) / \tau}}{\sum_{j=1}^{N}\left(e^{\operatorname{sim}\left(\mathbf{h}_{i}, \mathbf{h}_{j}^{+}\right) / \tau}+e^{\operatorname{sim}\left(\mathbf{h}_{i}, \mathbf{h}_{j}^{-}\right) / \tau}\right)}\]</div>
-<div class="pst-scrollable-table-container"><table class="table" id="id1597">
-<caption><span class="caption-number">Table 20.2 </span><span class="caption-text">Effects of different dropout probabilities <span class="math notranslate nohighlight">\(p\)</span> (from 0.0 to 0.5) on the STS-B development set (Spearman’s correlation). Fixed 0.1: default 0.1 dropout rate but apply the same dropout mask on both <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_i^{+}\)</span>.</span><a class="headerlink" href="#id1597" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1599">
+<caption><span class="caption-number">Table 20.2 </span><span class="caption-text">Effects of different dropout probabilities <span class="math notranslate nohighlight">\(p\)</span> (from 0.0 to 0.5) on the STS-B development set (Spearman’s correlation). Fixed 0.1: default 0.1 dropout rate but apply the same dropout mask on both <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_i^{+}\)</span>.</span><a class="headerlink" href="#id1599" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p><span class="math notranslate nohighlight">\(p\)</span></p></th>
 <th class="head text-center"><p>0.0</p></th>
@@ -655,25 +659,32 @@ labels in the target task and get the final model that performs the target task.
 <h3><span class="section-number">20.4.3. </span>Benchmark dataset<a class="headerlink" href="#benchmark-dataset" title="Link to this heading">#</a></h3>
 <section id="multinli-data">
 <h4><span class="section-number">20.4.3.1. </span>MultiNLI data<a class="headerlink" href="#multinli-data" title="Link to this heading">#</a></h4>
-<p><span id="id12">[<a class="reference internal" href="#id1358" title="Adina Williams, Nikita Nangia, and Samuel R Bowman. A broad-coverage challenge corpus for sentence understanding through inference. arXiv preprint arXiv:1704.05426, 2017.">WNB17</a>]</span></p>
+<p><span id="id12">[<a class="reference internal" href="#id1359" title="Adina Williams, Nikita Nangia, and Samuel R Bowman. A broad-coverage challenge corpus for sentence understanding through inference. arXiv preprint arXiv:1704.05426, 2017.">WNB17</a>]</span></p>
 <p>The Multi-Genre Natural Language Inference (MultiNLI) corpus <sup>[^3]</sup> is a dataset designed for use in the development and evaluation of machine learning models for sentence understanding. It has over 433,000 examples and is one of the largest datasets available for natural language inference (a.k.a recognizing textual entailment). The dataset is also designed so that existing machine learning models trained on the Stanford NLI corpus can also be evaluated using MultiNLI.</p>
 </section>
 <section id="standard-semantic-textual-similarity-tasks">
 <h4><span class="section-number">20.4.3.2. </span>Standard semantic textual similarity tasks<a class="headerlink" href="#standard-semantic-textual-similarity-tasks" title="Link to this heading">#</a></h4>
-<p><span id="id13">[<a class="reference internal" href="#id1406" title="Eneko Agirre, Carmen Banea, Claire Cardie, Daniel Cer, Mona Diab, Aitor Gonzalez-Agirre, Weiwei Guo, Inigo Lopez-Gazpio, Montse Maritxalar, Rada Mihalcea, and others. Semeval-2015 task 2: semantic textual similarity, english, spanish and pilot on interpretability. In Proceedings of the 9th international workshop on semantic evaluation (SemEval 2015), 252–263. 2015.">ABC+15</a>, <a class="reference internal" href="#id1407" title="Eneko Agirre, Carmen Banea, Claire Cardie, Daniel M Cer, Mona T Diab, Aitor Gonzalez-Agirre, Weiwei Guo, Rada Mihalcea, German Rigau, and Janyce Wiebe. Semeval-2014 task 10: multilingual semantic textual similarity. In SemEval&#64; COLING, 81–91. 2014.">ABC+14</a>, <a class="reference internal" href="#id1408" title="Eneko Agirre, Carmen Banea, Daniel Cer, Mona Diab, Aitor Gonzalez Agirre, Rada Mihalcea, German Rigau Claramunt, and Janyce Wiebe. Semeval-2016 task 1: semantic textual similarity, monolingual and cross-lingual evaluation. In SemEval-2016. 10th International Workshop on Semantic Evaluation; 2016 Jun 16-17; San Diego, CA. Stroudsburg (PA): ACL; 2016. p. 497-511. ACL (Association for Computational Linguistics), 2016.">ABC+16</a>, <a class="reference internal" href="#id1409" title="Eneko Agirre, Daniel Cer, Mona Diab, and Aitor Gonzalez-Agirre. Semeval-2012 task 6: a pilot on semantic textual similarity. In * SEM 2012: The First Joint Conference on Lexical and Computational Semantics–Volume 1: Proceedings of the main conference and the shared task, and Volume 2: Proceedings of the Sixth International Workshop on Semantic Evaluation (SemEval 2012), 385–393. 2012.">ACDGA12</a>, <a class="reference internal" href="#id1410" title="Eneko Agirre, Daniel Cer, Mona Diab, Aitor Gonzalez-Agirre, and Weiwei Guo. * sem 2013 shared task: semantic textual similarity. In Second joint conference on lexical and computational semantics (* SEM), volume 1: proceedings of the Main conference and the shared task: semantic textual similarity, 32–43. 2013.">ACD+13</a>, <a class="reference internal" href="#id1340" title="Daniel Cer, Mona Diab, Eneko Agirre, Inigo Lopez-Gazpio, and Lucia Specia. Semeval-2017 task 1: semantic textual similarity-multilingual and cross-lingual focused evaluation. arXiv preprint arXiv:1708.00055, 2017.">CDA+17</a>]</span></p>
+<p><span id="id13">[<a class="reference internal" href="#id1407" title="Eneko Agirre, Carmen Banea, Claire Cardie, Daniel Cer, Mona Diab, Aitor Gonzalez-Agirre, Weiwei Guo, Inigo Lopez-Gazpio, Montse Maritxalar, Rada Mihalcea, and others. Semeval-2015 task 2: semantic textual similarity, english, spanish and pilot on interpretability. In Proceedings of the 9th international workshop on semantic evaluation (SemEval 2015), 252–263. 2015.">ABC+15</a>, <a class="reference internal" href="#id1408" title="Eneko Agirre, Carmen Banea, Claire Cardie, Daniel M Cer, Mona T Diab, Aitor Gonzalez-Agirre, Weiwei Guo, Rada Mihalcea, German Rigau, and Janyce Wiebe. Semeval-2014 task 10: multilingual semantic textual similarity. In SemEval&#64; COLING, 81–91. 2014.">ABC+14</a>, <a class="reference internal" href="#id1409" title="Eneko Agirre, Carmen Banea, Daniel Cer, Mona Diab, Aitor Gonzalez Agirre, Rada Mihalcea, German Rigau Claramunt, and Janyce Wiebe. Semeval-2016 task 1: semantic textual similarity, monolingual and cross-lingual evaluation. In SemEval-2016. 10th International Workshop on Semantic Evaluation; 2016 Jun 16-17; San Diego, CA. Stroudsburg (PA): ACL; 2016. p. 497-511. ACL (Association for Computational Linguistics), 2016.">ABC+16</a>, <a class="reference internal" href="#id1410" title="Eneko Agirre, Daniel Cer, Mona Diab, and Aitor Gonzalez-Agirre. Semeval-2012 task 6: a pilot on semantic textual similarity. In * SEM 2012: The First Joint Conference on Lexical and Computational Semantics–Volume 1: Proceedings of the main conference and the shared task, and Volume 2: Proceedings of the Sixth International Workshop on Semantic Evaluation (SemEval 2012), 385–393. 2012.">ACDGA12</a>, <a class="reference internal" href="#id1411" title="Eneko Agirre, Daniel Cer, Mona Diab, Aitor Gonzalez-Agirre, and Weiwei Guo. * sem 2013 shared task: semantic textual similarity. In Second joint conference on lexical and computational semantics (* SEM), volume 1: proceedings of the Main conference and the shared task: semantic textual similarity, 32–43. 2013.">ACD+13</a>, <a class="reference internal" href="#id1341" title="Daniel Cer, Mona Diab, Eneko Agirre, Inigo Lopez-Gazpio, and Lucia Specia. Semeval-2017 task 1: semantic textual similarity-multilingual and cross-lingual focused evaluation. arXiv preprint arXiv:1708.00055, 2017.">CDA+17</a>]</span></p>
 </section>
+</section>
+</section>
+<section id="knowledge-transfer-and-distillation">
+<h2><span class="section-number">20.5. </span>Knowledge Transfer and Distillation<a class="headerlink" href="#knowledge-transfer-and-distillation" title="Link to this heading">#</a></h2>
+<section id="from-mono-language-to-multi-lingual">
+<h3><span class="section-number">20.5.1. </span>From mono language to multi lingual<a class="headerlink" href="#from-mono-language-to-multi-lingual" title="Link to this heading">#</a></h3>
+<p><span id="id14">[<a class="reference internal" href="#id1597" title="Nils Reimers and Iryna Gurevych. Making monolingual sentence embeddings multilingual using knowledge distillation. arXiv preprint arXiv:2004.09813, 2020.">RG20</a>]</span></p>
 </section>
 </section>
 <section id="matryoshka-representation-learning">
-<h2><span class="section-number">20.5. </span>Matryoshka Representation Learning<a class="headerlink" href="#matryoshka-representation-learning" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">20.6. </span>Matryoshka Representation Learning<a class="headerlink" href="#matryoshka-representation-learning" title="Link to this heading">#</a></h2>
 <p>new state-of-the-art (text) embedding models started producing embeddings with increasingly higher output dimensions, i.e., every input text is represented using more values. Although this improves performance, it comes at the cost of efficiency of downstream tasks such as search or classification.</p>
-<p><span id="id14">[<a class="reference internal" href="#id1590" title="Aditya Kusupati, Gantavya Bhatt, Aniket Rege, Matthew Wallingford, Aditya Sinha, Vivek Ramanujan, William Howard-Snyder, Kaifeng Chen, Sham Kakade, Prateek Jain, and others. Matryoshka representation learning. Advances in Neural Information Processing Systems, 35:30233–30249, 2022.">KBR+22</a>]</span></p>
+<p><span id="id15">[<a class="reference internal" href="#id1591" title="Aditya Kusupati, Gantavya Bhatt, Aniket Rege, Matthew Wallingford, Aditya Sinha, Vivek Ramanujan, William Howard-Snyder, Kaifeng Chen, Sham Kakade, Prateek Jain, and others. Matryoshka representation learning. Advances in Neural Information Processing Systems, 35:30233–30249, 2022.">KBR+22</a>]</span></p>
 <p>These Matryoshka embedding models are trained such that these small truncated embeddings would still be useful. In short, Matryoshka embedding models can produce useful embeddings of various dimensions.</p>
 <p>Matryoshka embedding models aim to store more important information in earlier dimensions, and less important information in later dimensions. This characteristic of Matryoshka embedding models allows us to truncate the original (large) embedding produced by the model, while still retaining enough of the information to perform well on downstream tasks.</p>
 <p>For Matryoshka Embedding models, the training aims to optimize the quality of your embeddings at various different dimensionalities. For example, output dimensionalities are 768, 512, 256, 128, and 64. The loss values for each dimensionality are added together, resulting in a final loss value. The optimizer will then try and adjust the model weights to lower this loss value.</p>
 <p>In practice, this incentivizes the model to frontload the most important information at the start of an embedding, such that it will be retained if the embedding is truncated.</p>
 <section id="loss-function">
-<h3><span class="section-number">20.5.1. </span>Loss Function<a class="headerlink" href="#loss-function" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">20.6.1. </span>Loss Function<a class="headerlink" href="#loss-function" title="Link to this heading">#</a></h3>
 <p>For MRL, we choose <span class="math notranslate nohighlight">\(\mathcal{M}=\{8,16, \ldots, 1024,2048\}\)</span> as the nesting dimensions.
 Suppose we are given a labelled dataset <span class="math notranslate nohighlight">\(\mathcal{D}=\left\{\left(x_1, y_1\right), \ldots,\left(x_N, y_N\right)\right\}\)</span> where <span class="math notranslate nohighlight">\(x_i \in \mathcal{X}\)</span> is an input point and <span class="math notranslate nohighlight">\(y_i \in[L]\)</span> is the label of <span class="math notranslate nohighlight">\(x_i\)</span> for all <span class="math notranslate nohighlight">\(i \in[N]\)</span>. MRL optimizes the multi-class classification loss for each of the nested dimension <span class="math notranslate nohighlight">\(m \in \mathcal{M}\)</span> using standard empirical risk minimization using a separate linear classifier, parameterized by <span class="math notranslate nohighlight">\(\mathbf{W}^{(m)} \in \mathbb{R}^{L \times m}\)</span>. All the losses are aggregated after scaling with their relative importance <span class="math notranslate nohighlight">\(\left(c_m \geq 0\right)_{m \in \mathcal{M}}\)</span> respectively. That is, we solve</p>
 <div class="math notranslate nohighlight">
@@ -684,12 +695,12 @@ Suppose we are given a labelled dataset <span class="math notranslate nohighligh
 </section>
 </section>
 <section id="llm-embedding-model">
-<h2><span class="section-number">20.6. </span>LLM Embedding Model<a class="headerlink" href="#llm-embedding-model" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">20.7. </span>LLM Embedding Model<a class="headerlink" href="#llm-embedding-model" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://arxiv.org/pdf/2401.00368">Improving text embeddings with large language models</a>
 <a class="reference external" href="https://arxiv.org/pdf/2405.17428">NV-Embed: Improved Techniques for Training LLMs as Generalist Embedding Models.</a></p>
 <section id="nv-embed">
-<h3><span class="section-number">20.6.1. </span>NV-Embed<a class="headerlink" href="#nv-embed" title="Link to this heading">#</a></h3>
-<p>NV-Embed from Nvidia <span id="id15">[<a class="reference internal" href="#id1582" title="Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. arXiv preprint arXiv:2405.17428, 2024.">LRX+24</a>]</span> proposed several improvement techniques on LLM-based embedding model, which include:</p>
+<h3><span class="section-number">20.7.1. </span>NV-Embed<a class="headerlink" href="#nv-embed" title="Link to this heading">#</a></h3>
+<p>NV-Embed from Nvidia <span id="id16">[<a class="reference internal" href="#id1583" title="Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. arXiv preprint arXiv:2405.17428, 2024.">LRX+24</a>]</span> proposed several improvement techniques on LLM-based embedding model, which include:</p>
 <ul class="simple">
 <li><p>Model architecture improvement, which introduces a <strong>latent attention layer</strong> to obtain better pooled embeddings.</p></li>
 <li><p>Traing process improvement, which introduces a <strong>two-stage contrastive instruction-tuning method</strong>.</p></li>
@@ -706,7 +717,7 @@ Suppose we are given a labelled dataset <span class="math notranslate nohighligh
 O=\operatorname{softmax}\left(Q K^T\right) V.
 \]</div>
 <p>Intuitively, each token’s represention in <span class="math notranslate nohighlight">\(O\)</span> (which is a <span class="math notranslate nohighlight">\(d\)</span> vector) is a linear combination of the <span class="math notranslate nohighlight">\(r\)</span> row vectors in <span class="math notranslate nohighlight">\(V\)</span>(or <span class="math notranslate nohighlight">\(K\)</span>).</p>
-<p>This has the spirit of <strong>sparse dictionary learning</strong><span id="id16">[<a class="reference internal" href="#id1102" title="Julien Mairal, Francis Bach, Jean Ponce, and Guillermo Sapiro. Online dictionary learning for sparse coding. In Proceedings of the 26th annual international conference on machine learning, 689–696. ACM, 2009.">MBPS09</a>]</span>, which aims to learn a <strong>sparse set of atom vectors</strong>, such that each representation can be transformed to a linear combination of atom vectors.</p>
+<p>This has the spirit of <strong>sparse dictionary learning</strong><span id="id17">[<a class="reference internal" href="#id1103" title="Julien Mairal, Francis Bach, Jean Ponce, and Guillermo Sapiro. Online dictionary learning for sparse coding. In Proceedings of the 26th annual international conference on machine learning, 689–696. ACM, 2009.">MBPS09</a>]</span>, which aims to learn a <strong>sparse set of atom vectors</strong>, such that each representation can be transformed to a linear combination of atom vectors.</p>
 <p>An additional 2-layer MLP was added to further transfrom the <span class="math notranslate nohighlight">\(O\)</span> vectors.  Finally, a mean pooling after MLP layers to obtain the embedding of whole sequences.</p>
 <p>In the paper, authors used latent attention layer with <span class="math notranslate nohighlight">\(r\)</span> of 512 and the number of heads as 8 for multi-head attention.</p>
 <figure class="align-default" id="chapter-application-ir-llm-fig-embedding-nv-embedding-latent-attention-layer">
@@ -714,7 +725,7 @@ O=\operatorname{softmax}\left(Q K^T\right) V.
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 20.5 </span><span class="caption-text">The illustration of proposed architecture design comprising of decoder-only LLM followed
-by latent attention layer. Latent attention layer functions as a form of cross-attention where the decoder-only LLM output serves as queries (Q) and trainable latent array passes through the keyvalue inputs, followed by MLP. Image from <span id="id17">[<a class="reference internal" href="#id1582" title="Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. arXiv preprint arXiv:2405.17428, 2024.">LRX+24</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-embedding-nv-embedding-latent-attention-layer" title="Link to this image">#</a></p>
+by latent attention layer. Latent attention layer functions as a form of cross-attention where the decoder-only LLM output serves as queries (Q) and trainable latent array passes through the keyvalue inputs, followed by MLP. Image from <span id="id18">[<a class="reference internal" href="#id1583" title="Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. arXiv preprint arXiv:2405.17428, 2024.">LRX+24</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-embedding-nv-embedding-latent-attention-layer" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The two-stage instruction tuning method include</p>
@@ -730,85 +741,89 @@ by latent attention layer. Latent attention layer functions as a form of cross-a
 </section>
 </section>
 <section id="software">
-<h2><span class="section-number">20.7. </span>Software<a class="headerlink" href="#software" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">20.8. </span>Software<a class="headerlink" href="#software" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://github.com/deepset-ai/haystack">haystack</a></p>
 </section>
 <section id="bibliography">
-<h2><span class="section-number">20.8. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id18">
+<h2><span class="section-number">20.9. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id19">
 <div role="list" class="citation-list">
-<div class="citation" id="id1406" role="doc-biblioentry">
+<div class="citation" id="id1407" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">ABC+15</a><span class="fn-bracket">]</span></span>
 <p>Eneko Agirre, Carmen Banea, Claire Cardie, Daniel Cer, Mona Diab, Aitor Gonzalez-Agirre, Weiwei Guo, Inigo Lopez-Gazpio, Montse Maritxalar, Rada Mihalcea, and others. Semeval-2015 task 2: semantic textual similarity, english, spanish and pilot on interpretability. In <em>Proceedings of the 9th international workshop on semantic evaluation (SemEval 2015)</em>, 252–263. 2015.</p>
 </div>
-<div class="citation" id="id1407" role="doc-biblioentry">
+<div class="citation" id="id1408" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">ABC+14</a><span class="fn-bracket">]</span></span>
 <p>Eneko Agirre, Carmen Banea, Claire Cardie, Daniel M Cer, Mona T Diab, Aitor Gonzalez-Agirre, Weiwei Guo, Rada Mihalcea, German Rigau, and Janyce Wiebe. Semeval-2014 task 10: multilingual semantic textual similarity. In <em>SemEval&#64; COLING</em>, 81–91. 2014.</p>
 </div>
-<div class="citation" id="id1408" role="doc-biblioentry">
+<div class="citation" id="id1409" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">ABC+16</a><span class="fn-bracket">]</span></span>
 <p>Eneko Agirre, Carmen Banea, Daniel Cer, Mona Diab, Aitor Gonzalez Agirre, Rada Mihalcea, German Rigau Claramunt, and Janyce Wiebe. Semeval-2016 task 1: semantic textual similarity, monolingual and cross-lingual evaluation. In <em>SemEval-2016. 10th International Workshop on Semantic Evaluation; 2016 Jun 16-17; San Diego, CA. Stroudsburg (PA): ACL; 2016. p. 497-511.</em> ACL (Association for Computational Linguistics), 2016.</p>
 </div>
-<div class="citation" id="id1409" role="doc-biblioentry">
+<div class="citation" id="id1410" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">ACDGA12</a><span class="fn-bracket">]</span></span>
 <p>Eneko Agirre, Daniel Cer, Mona Diab, and Aitor Gonzalez-Agirre. Semeval-2012 task 6: a pilot on semantic textual similarity. In <em>* SEM 2012: The First Joint Conference on Lexical and Computational Semantics–Volume 1: Proceedings of the main conference and the shared task, and Volume 2: Proceedings of the Sixth International Workshop on Semantic Evaluation (SemEval 2012)</em>, 385–393. 2012.</p>
 </div>
-<div class="citation" id="id1410" role="doc-biblioentry">
+<div class="citation" id="id1411" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">ACD+13</a><span class="fn-bracket">]</span></span>
 <p>Eneko Agirre, Daniel Cer, Mona Diab, Aitor Gonzalez-Agirre, and Weiwei Guo. * sem 2013 shared task: semantic textual similarity. In <em>Second joint conference on lexical and computational semantics (* SEM), volume 1: proceedings of the Main conference and the shared task: semantic textual similarity</em>, 32–43. 2013.</p>
 </div>
-<div class="citation" id="id1352" role="doc-biblioentry">
+<div class="citation" id="id1353" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">BAPM15</a><span class="fn-bracket">]</span></span>
 <p>Samuel R Bowman, Gabor Angeli, Christopher Potts, and Christopher D Manning. A large annotated corpus for learning natural language inference. <em>arXiv preprint arXiv:1508.05326</em>, 2015.</p>
 </div>
-<div class="citation" id="id1340" role="doc-biblioentry">
+<div class="citation" id="id1341" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>CDA+17<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id13">2</a>)</span>
 <p>Daniel Cer, Mona Diab, Eneko Agirre, Inigo Lopez-Gazpio, and Lucia Specia. Semeval-2017 task 1: semantic textual similarity-multilingual and cross-lingual focused evaluation. <em>arXiv preprint arXiv:1708.00055</em>, 2017.</p>
 </div>
-<div class="citation" id="id1339" role="doc-biblioentry">
+<div class="citation" id="id1340" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">DB05</a><span class="fn-bracket">]</span></span>
 <p>William B Dolan and Chris Brockett. Automatically constructing a corpus of sentential paraphrases. In <em>Proceedings of the Third International Workshop on Paraphrasing (IWP2005)</em>. 2005.</p>
 </div>
-<div class="citation" id="id1591" role="doc-biblioentry">
+<div class="citation" id="id1592" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Eth19<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id4">1</a>,<a role="doc-backlink" href="#id6">2</a>,<a role="doc-backlink" href="#id9">3</a>)</span>
 <p>Kawin Ethayarajh. How contextual are contextualized word representations? comparing the geometry of bert, elmo, and gpt-2 embeddings. <em>arXiv preprint arXiv:1909.00512</em>, 2019.</p>
 </div>
-<div class="citation" id="id1593" role="doc-biblioentry">
+<div class="citation" id="id1594" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">GHT+19</a><span class="fn-bracket">]</span></span>
 <p>Jun Gao, Di He, Xu Tan, Tao Qin, Liwei Wang, and Tie-Yan Liu. Representation degeneration problem in training natural language generation models. <em>arXiv preprint arXiv:1907.12009</em>, 2019.</p>
 </div>
-<div class="citation" id="id1431" role="doc-biblioentry">
+<div class="citation" id="id1432" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">GYC21</a><span class="fn-bracket">]</span></span>
 <p>Tianyu Gao, Xingcheng Yao, and Danqi Chen. Simcse: simple contrastive learning of sentence embeddings. <em>arXiv preprint arXiv:2104.08821</em>, 2021.</p>
 </div>
-<div class="citation" id="id1590" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id14">KBR+22</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1591" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id15">KBR+22</a><span class="fn-bracket">]</span></span>
 <p>Aditya Kusupati, Gantavya Bhatt, Aniket Rege, Matthew Wallingford, Aditya Sinha, Vivek Ramanujan, William Howard-Snyder, Kaifeng Chen, Sham Kakade, Prateek Jain, and others. Matryoshka representation learning. <em>Advances in Neural Information Processing Systems</em>, 35:30233–30249, 2022.</p>
 </div>
-<div class="citation" id="id1582" role="doc-biblioentry">
+<div class="citation" id="id1583" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>LRX+24<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id15">1</a>,<a role="doc-backlink" href="#id17">2</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id16">1</a>,<a role="doc-backlink" href="#id18">2</a>)</span>
 <p>Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. <em>arXiv preprint arXiv:2405.17428</em>, 2024.</p>
 </div>
-<div class="citation" id="id1102" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id16">MBPS09</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1103" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id17">MBPS09</a><span class="fn-bracket">]</span></span>
 <p>Julien Mairal, Francis Bach, Jean Ponce, and Guillermo Sapiro. Online dictionary learning for sparse coding. In <em>Proceedings of the 26th annual international conference on machine learning</em>, 689–696. ACM, 2009.</p>
 </div>
-<div class="citation" id="id1343" role="doc-biblioentry">
+<div class="citation" id="id1344" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">RG19</a><span class="fn-bracket">]</span></span>
 <p>Nils Reimers and Iryna Gurevych. Sentence-bert: sentence embeddings using siamese bert-networks. <em>arXiv preprint arXiv:1908.10084</em>, 2019.</p>
 </div>
-<div class="citation" id="id1592" role="doc-biblioentry">
+<div class="citation" id="id1597" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id14">RG20</a><span class="fn-bracket">]</span></span>
+<p>Nils Reimers and Iryna Gurevych. Making monolingual sentence embeddings multilingual using knowledge distillation. <em>arXiv preprint arXiv:2004.09813</em>, 2020.</p>
+</div>
+<div class="citation" id="id1593" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">WHH+19</a><span class="fn-bracket">]</span></span>
 <p>Lingxiao Wang, Jing Huang, Kevin Huang, Ziniu Hu, Guangtao Wang, and Quanquan Gu. Improving neural language generation with spectrum control. In <em>International Conference on Learning Representations</em>. 2019.</p>
 </div>
-<div class="citation" id="id1435" role="doc-biblioentry">
+<div class="citation" id="id1436" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">WI20</a><span class="fn-bracket">]</span></span>
 <p>Tongzhou Wang and Phillip Isola. Understanding contrastive representation learning through alignment and uniformity on the hypersphere. In <em>International Conference on Machine Learning</em>, 9929–9939. PMLR, 2020.</p>
 </div>
-<div class="citation" id="id1358" role="doc-biblioentry">
+<div class="citation" id="id1359" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id12">WNB17</a><span class="fn-bracket">]</span></span>
 <p>Adina Williams, Nikita Nangia, and Samuel R Bowman. A broad-coverage challenge corpus for sentence understanding through inference. <em>arXiv preprint arXiv:1704.05426</em>, 2017.</p>
 </div>
@@ -907,16 +922,20 @@ by latent attention layer. Latent attention layer functions as a form of cross-a
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matryoshka-representation-learning">20.5. Matryoshka Representation Learning</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loss-function">20.5.1. Loss Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-transfer-and-distillation">20.5. Knowledge Transfer and Distillation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-mono-language-to-multi-lingual">20.5.1. From mono language to multi lingual</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-model">20.6. LLM Embedding Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nv-embed">20.6.1. NV-Embed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matryoshka-representation-learning">20.6. Matryoshka Representation Learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loss-function">20.6.1. Loss Function</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software">20.7. Software</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">20.8. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-model">20.7. LLM Embedding Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nv-embed">20.7.1. NV-Embed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software">20.8. Software</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">20.9. Bibliography</a></li>
 </ul>
   </nav></div>
 

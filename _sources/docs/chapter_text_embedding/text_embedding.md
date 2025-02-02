@@ -281,6 +281,12 @@ The Multi-Genre Natural Language Inference (MultiNLI) corpus <sup>[^3]</sup> is 
 {cite:p}`agirre2012semeval, agirre2013sem, agirre2014semeval, agirre2015semeval, agirre2016semeval, cer2017semeval`
 
 
+## Knowledge Transfer and Distillation
+
+### From mono language to multi lingual
+
+{cite:p}`reimers2020making`
+
 ## Matryoshka Representation Learning
 
 new state-of-the-art (text) embedding models started producing embeddings with increasingly higher output dimensions, i.e., every input text is represented using more values. Although this improves performance, it comes at the cost of efficiency of downstream tasks such as search or classification.

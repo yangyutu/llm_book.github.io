@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>24. Information Retrieval and Text Ranking: II &#8212; LLM Foundations</title>
+    <title>24. Information Retrieval and Dense Models &#8212; LLM Foundations</title>
   
   
   
@@ -64,7 +64,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="25. Application of LLM in IR (WIP)" href="application_LLM_in_IR.html" />
-    <link rel="prev" title="23. Information Retrieval and Text Ranking: I" href="information_retrieval_fundamentals_part1.html" />
+    <link rel="prev" title="23. Information Retrieval and Sparse Retrieval" href="information_retrieval_fundamentals_part1.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -222,11 +222,11 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="information_retrieval_fundamentals_part1.html">23. Information Retrieval and Text Ranking: I</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">24. Information Retrieval and Text Ranking: II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="information_retrieval_fundamentals_part1.html">23. Information Retrieval and Sparse Retrieval</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">24. Information Retrieval and Dense Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_LLM_in_IR.html">25. Application of LLM in IR (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="conversational_IR.html">26. Conversational IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">27. RAG and Conversational IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">27. RAG</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">28. Advanced RAG (WIP)</a></li>
 </ul>
 
@@ -318,7 +318,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Information Retrieval and Text Ranking: II</h1>
+    <h1>Information Retrieval and Dense Models</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -453,8 +453,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="information-retrieval-and-text-ranking-ii">
-<span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-part2"></span><h1><span class="section-number">24. </span>Information Retrieval and Text Ranking: II<a class="headerlink" href="#information-retrieval-and-text-ranking-ii" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="information-retrieval-and-dense-models">
+<span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-part2"></span><h1><span class="section-number">24. </span>Information Retrieval and Dense Models<a class="headerlink" href="#information-retrieval-and-dense-models" title="Link to this heading">#</a></h1>
 <section id="semantic-dense-models">
 <span id="index-0"></span><h2><span class="section-number">24.1. </span>Semantic Dense Models<a class="headerlink" href="#semantic-dense-models" title="Link to this heading">#</a></h2>
 <section id="motivation">
@@ -505,8 +505,8 @@ document.write(`
 </ul>
 <p>One problem of this method is collision, i.e., two different
 words could have the same letter n-gram vector representation because this is a bag-of-words representation that does not take into account orders. But the collision probability is rather low.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1638">
-<caption><span class="caption-number">Table 24.1 </span><span class="caption-text">Word hashing token size and collision numbers as a function of the vocabulary size and the type of letter ngrams.</span><a class="headerlink" href="#id1638" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1639">
+<caption><span class="caption-number">Table 24.1 </span><span class="caption-text">Word hashing token size and collision numbers as a function of the vocabulary size and the type of letter ngrams.</span><a class="headerlink" href="#id1639" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Word Size</p></th>
 <th class="head"><p>Letter-Bigram</p></th>
@@ -1098,7 +1098,7 @@ l\left(q, d^{+}, d^{-}\right):=-\max \left(0, \operatorname{sim}\left(q, d^{+}\r
 <span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-n-pair-loss"></span><h4><span class="section-number">24.3.3.4. </span>N-pair Loss<a class="headerlink" href="#n-pair-loss" title="Link to this heading">#</a></h4>
 <p>Triplet loss optimize the neural by encouraging positive pair <span class="math notranslate nohighlight">\((q_i, d^+_i)\)</span> to be more similar than its negative pair <span class="math notranslate nohighlight">\((q_i, d^+_i)\)</span>. One improvement is to encourage <span class="math notranslate nohighlight">\(q_i\)</span> to be more similar <span class="math notranslate nohighlight">\(d^+_i\)</span> compared to <span class="math notranslate nohighlight">\(n\)</span> negative examples <span class="math notranslate nohighlight">\( d_{i, 1}^{-}, \cdots, d_{i, n}^{-}\)</span>, instead of just one negative example. This is known as N-pair loss <span id="id25">[<a class="reference internal" href="#id1472" title="Kihyuk Sohn. Improved deep metric learning with multi-class n-pair loss objective. Advances in neural information processing systems, 2016.">Soh16</a>]</span>, and it is typically more robust than triplet loss.</p>
 <p>Let <span class="math notranslate nohighlight">\(\mathcal{D}=\left\{\left\langle q_{i}, d_{i}^{+}, D_i^-\right\rangle\right\}_{i=1}^{m}\)</span>, where <span class="math notranslate nohighlight">\(D_i^- = \{d_{i, 1}^{-}, \cdots, d_{i, n}^{-}\}\)</span> are a set of negative examples (i.e., irrelevant document) with respect to query <span class="math notranslate nohighlight">\(q_i\)</span>,  be the training data that consists of <span class="math notranslate nohighlight">\(m\)</span> examples. Each example contains one query <span class="math notranslate nohighlight">\(q_{i}\)</span> and one relevant document <span class="math notranslate nohighlight">\(d_{i}^{+}\)</span>, along with <span class="math notranslate nohighlight">\(n\)</span> irrelevant (negative) documents <span class="math notranslate nohighlight">\(d_{i, j}^{-}\)</span>. The <span class="math notranslate nohighlight">\(n\)</span> negative documents are typically randomly sampled from a large corpus or are strategically constructed [<a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-sec-negativesamplingstrategies"><span class="std std-numref">Section 24.4</span></a>].</p>
-<p>Visualization of the learning process in the embedding space is shown in <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-npairloss"><span class="std std-numref">Fig. 24.12</span></a>. Like triplet loss, N-pair loss helps guide the encoder networks to pull relevant query and document closer and push irrelevant query and document away. Besides that, when there are are negatives are involved in the N-pair loss, their repelling to each other appears to help the learning of generating more uniform embeddings<span id="id26">[<a class="reference internal" href="../chapter_text_embedding/text_embedding.html#id1435" title="Tongzhou Wang and Phillip Isola. Understanding contrastive representation learning through alignment and uniformity on the hypersphere. In International Conference on Machine Learning, 9929–9939. PMLR, 2020.">WI20</a>]</span>.</p>
+<p>Visualization of the learning process in the embedding space is shown in <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-npairloss"><span class="std std-numref">Fig. 24.12</span></a>. Like triplet loss, N-pair loss helps guide the encoder networks to pull relevant query and document closer and push irrelevant query and document away. Besides that, when there are are negatives are involved in the N-pair loss, their repelling to each other appears to help the learning of generating more uniform embeddings<span id="id26">[<a class="reference internal" href="../chapter_text_embedding/text_embedding.html#id1436" title="Tongzhou Wang and Phillip Isola. Understanding contrastive representation learning through alignment and uniformity on the hypersphere. In International Conference on Machine Learning, 9929–9939. PMLR, 2020.">WI20</a>]</span>.</p>
 <p>The loss function is given by</p>
 <div class="math notranslate nohighlight">
 \[L =-\sum_{\left\langle q_{i}, d_{i}^{+}, D_{i}^{-}\right\rangle}\log \frac{\exp(\operatorname{Sim}\left(e_{q_{i}}, e_{d_{i}^{+}}\right))}{\exp(\operatorname{Sim}\left(e_{q_{i}}, e_{d_{i}^{+}}\right))+\sum_{d^-_i\in D^-} \exp(\operatorname{Sim}\left(e_{q_{i}}, e_{d_{i}^{-}}\right))}\]</div>
@@ -1232,7 +1232,7 @@ P\left(w_i\right)=\frac{f\left(w_i\right)^{3 / 4}}{\sum_{j=0}^n\left(f\left(w_j\
 <p>The model learning from easy negative example can quickly plateau since easy negative examples produces vanishing gradients to update the model. An improvement strategy is to supply additional hard negatives with randomly sampled negatives. In the simplest case, hard negatives can be selected based on a traditional BM25model <span id="id32">[<a class="reference internal" href="#id1447" title="Vladimir Karpukhin, Barlas Oğuz, Sewon Min, Patrick Lewis, Ledell Wu, Sergey Edunov, Danqi Chen, and Wen-tau Yih. Dense passage retrieval for open-domain question answering. arXiv preprint arXiv:2004.04906, 2020.">KOuguzM+20</a>, <a class="reference internal" href="#id1435" title="Rodrigo Nogueira and Kyunghyun Cho. Passage re-ranking with bert. arXiv preprint arXiv:1901.04085, 2019.">NC19</a>]</span> or other efficient dense retriever: hard negatives are those have a high relevant score to the query but they are not relevant.</p>
 <p>As illustrated in <a class="reference internal" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-impacthardnegativeonretrieval"><span class="std std-numref">Fig. 24.17</span></a>, a model trained only with easy negatives can fail to distinguish fairly relevant documents from irrelevant examples; on the other hand, a model trained with some hard negatives can learn better representations:</p>
 <ul class="simple">
-<li><p>Positive document embeddings are more aligned <span id="id33">[<a class="reference internal" href="../chapter_text_embedding/text_embedding.html#id1435" title="Tongzhou Wang and Phillip Isola. Understanding contrastive representation learning through alignment and uniformity on the hypersphere. In International Conference on Machine Learning, 9929–9939. PMLR, 2020.">WI20</a>]</span>; that is, they are lying closer with respect to each other.</p></li>
+<li><p>Positive document embeddings are more aligned <span id="id33">[<a class="reference internal" href="../chapter_text_embedding/text_embedding.html#id1436" title="Tongzhou Wang and Phillip Isola. Understanding contrastive representation learning through alignment and uniformity on the hypersphere. In International Conference on Machine Learning, 9929–9939. PMLR, 2020.">WI20</a>]</span>; that is, they are lying closer with respect to each other.</p></li>
 <li><p>Fairly relevant and irrelevant documents are more separated in the embedding space and thus a better decision boundary for relevant and irrelevant documents.</p></li>
 </ul>
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-impacthardnegativeonretrieval">
@@ -1425,6 +1425,104 @@ s_{i j}^{(k)}=\frac{1}{K} \sum_{k=1}^{K}\frac{1}{C+\hat{r}_{i j}^{(k)}}
 </section>
 <section id="comparison-between-sparse-and-dense-retrieval">
 <span id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-part2-retriever-comparison"></span><h2><span class="section-number">24.6. </span>Comparison Between Sparse and Dense Retrieval<a class="headerlink" href="#comparison-between-sparse-and-dense-retrieval" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Aspects</p></th>
+<th class="head text-center"><p>BM25</p></th>
+<th class="head text-center"><p>Bi-Encoder</p></th>
+<th class="head text-center"><p>Cross-Encoder</p></th>
+<th class="head text-center"><p>Late-Interaction BiEncoder (Colbert)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>Speed</p></td>
+<td class="text-center"><p>Fast</p></td>
+<td class="text-center"><p>Fast</p></td>
+<td class="text-center"><p>Slow</p></td>
+<td class="text-center"><p>Medium</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Training needed</p></td>
+<td class="text-center"><p>N</p></td>
+<td class="text-center"><p>Y</p></td>
+<td class="text-center"><p>Y</p></td>
+<td class="text-center"><p>Y</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>OOD Generation</p></td>
+<td class="text-center"><p>Strong</p></td>
+<td class="text-center"><p>Weak</p></td>
+<td class="text-center"><p>Medium</p></td>
+<td class="text-center"><p>Medium</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Semantic Understanding</p></td>
+<td class="text-center"><p>Weak</p></td>
+<td class="text-center"><p>Strong</p></td>
+<td class="text-center"><p>Very strong</p></td>
+<td class="text-center"><p>Very strong</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Scability</p></td>
+<td class="text-center"><p>Y</p></td>
+<td class="text-center"><p>Y</p></td>
+<td class="text-center"><p>N</p></td>
+<td class="text-center"><p>Medium</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Performance</p></td>
+<td class="text-center"><p>Consistent medium</p></td>
+<td class="text-center"><p>Decent for in-domain</p></td>
+<td class="text-center"><p>Strong</p></td>
+<td class="text-center"><p>Strong</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In terms of semantic understanding, cross-Encoder sets the upperbound for Late-Interaction Bi-Encoder model.</p>
+<p>The importance of Out-of-distribution generation, a robust retriever should have reliable performance on tail topic and tail queries.</p>
+<p>When dense model encode a query or document into a fixed length vector, it usually have the following limitations:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Aspects</p></th>
+<th class="head text-center"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>When a query is a short and tail-ish, query embedding is of low quality as the model barely gets exposed to such query during training.</p></td>
+<td class="text-center"><p>one word query <em>laresar</em> is a navigation query looking for a Chinese high-tech company.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>When a query is long, specific, and invovles multi-concept with complex relationships or modifiers, the query embedding is insensitive to variations of concept relationships</p></td>
+<td class="text-center"><p><em>The cause of climate change and its impact on marine life in the Altantic sea</em> vs <em>The cause of climate change and its impact on marine life</em> will have high cosine similar embeddings</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p></p></td>
+<td class="text-center"><p><em>What are some good rap songs to dance to?</em> vs <em>What are some of the best rap songs?</em> have high similarity score; but they mean different things.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p></p></td>
+<td class="text-center"><p><em>What are the types of immunity?</em> vs <em>What are the different types of immunity in our body?</em> - the former one is more broad, including immunity in the socieity sense.</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Long queries are semantically similar but have many different lexical terms</p></td>
+<td class="text-center"><p><em>What would a Trump presidency mean for current international master’s students on an F1 visa?</em> vs <em>How will a Trump presidency affect the students presently in US or planning to study in US?</em> will have relatively low similarity scores</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p></p></td>
+<td class="text-center"><p><em>Why does China block sanctions at the UN against the Masood Azhar?</em> vs <em>Why does China support Masood Azhar?</em> have low similarity score even if they have the same meaning.</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Different query intent due to slight variation on grammar, word order, and word choice</p></td>
+<td class="text-center"><p><em>How do I prevent breast cancer?</em> vs <em>Is breast cancer preventable?</em> have different intent but high similarity score.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p></p></td>
+<td class="text-center"><p><em>How can I transfer money from Skrill to a PayPal account?</em> vs <em>How can I send money from my PayPal account to my Skrill account to withdraw?</em> have high similarity score, but they mean different directions. Similarly, <em>‘How do I switch from Apple Music to Spotify?’</em> vs <em>Should I switch from Spotify to Apple Music?</em></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Queries involving external knowledge that is not in the model</p></td>
+<td class="text-center"><p><em>How do we prepare for UPSC?</em> and <em>How do I prepare for civil service?</em> have low similarity score despite the fact that UPSC and civil service mean the same exam in India</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p></p></td>
+<td class="text-center"><p><em>How competitive is the hiring process at Republic Bank?</em> vs <em>How competitive is the hiring process at S &amp; T Bank?</em> have high similarity score but Republic Bank and S &amp; T bank are different entities.</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>When a query’s intent shall be interpreted deeply</p></td>
+<td class="text-center"><p><em>My mom wished that I would die</em> has the intent of seeking relationship consultation.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul class="simple">
+<li><p>When a document is long and being compressed into a single dense vector, there will be innevitably information loss.</p></li>
+</ul>
 </section>
 <section id="approximate-nearest-neighbor-search">
 <h2><span class="section-number">24.7. </span>Approximate Nearest Neighbor Search<a class="headerlink" href="#approximate-nearest-neighbor-search" title="Link to this heading">#</a></h2>
@@ -1717,6 +1815,133 @@ Documents
 <p><span class="caption-number">Fig. 24.27 </span><span class="caption-text">An overview of the diverse tasks and datasets in BEIR benchmark. Image from <span id="id56">[<a class="reference internal" href="#id1630" title="Nandan Thakur, Nils Reimers, Andreas Rücklé, Abhishek Srivastava, and Iryna Gurevych. Beir: a heterogenous benchmark for zero-shot evaluation of information retrieval models. arXiv preprint arXiv:2104.08663, 2021.">TRRuckle+21</a>]</span>.</span><a class="headerlink" href="#ch-neural-network-and-deep-learning-applicationnlp-irsearch-benchmark-fig-beir-datasets" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Dataset</p></th>
+<th class="head text-center"><p>BEIR-Name</p></th>
+<th class="head text-center"><p>Type</p></th>
+<th class="head text-center"><p>Queries</p></th>
+<th class="head text-center"><p>Corpus</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>MSMARCO</p></td>
+<td class="text-center"><p>msmarco</p></td>
+<td class="text-center"><p>train, dev, test</p></td>
+<td class="text-center"><p>6,980</p></td>
+<td class="text-center"><p>8,840,000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>TREC-COVID</p></td>
+<td class="text-center"><p>trec-covid</p></td>
+<td class="text-center"><p>test</p></td>
+<td class="text-center"><p>50</p></td>
+<td class="text-center"><p>171,000</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>NFCorpus</p></td>
+<td class="text-center"><p>nfcorpus</p></td>
+<td class="text-center"><p>train, dev, test</p></td>
+<td class="text-center"><p>323</p></td>
+<td class="text-center"><p>3,600</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>BioASQ</p></td>
+<td class="text-center"><p>bioasq</p></td>
+<td class="text-center"><p>train, test</p></td>
+<td class="text-center"><p>500</p></td>
+<td class="text-center"><p>14,910,000</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>NQ</p></td>
+<td class="text-center"><p>nq</p></td>
+<td class="text-center"><p>train, test</p></td>
+<td class="text-center"><p>3,452</p></td>
+<td class="text-center"><p>2,680,000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>HotpotQA</p></td>
+<td class="text-center"><p>hotpotqa</p></td>
+<td class="text-center"><p>train, dev, test</p></td>
+<td class="text-center"><p>7,405</p></td>
+<td class="text-center"><p>5,230,000</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>FIQA-2018</p></td>
+<td class="text-center"><p>fiqa</p></td>
+<td class="text-center"><p>train, dev, test</p></td>
+<td class="text-center"><p>648</p></td>
+<td class="text-center"><p>57,000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Signal-1M(RT)</p></td>
+<td class="text-center"><p>signal1m</p></td>
+<td class="text-center"><p>test</p></td>
+<td class="text-center"><p>97</p></td>
+<td class="text-center"><p>2,860,000</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>TREC-NEWS</p></td>
+<td class="text-center"><p>trec-news</p></td>
+<td class="text-center"><p>test</p></td>
+<td class="text-center"><p>57</p></td>
+<td class="text-center"><p>595,000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Robust04</p></td>
+<td class="text-center"><p>robust04</p></td>
+<td class="text-center"><p>test</p></td>
+<td class="text-center"><p>249</p></td>
+<td class="text-center"><p>528,000</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>ArguAna</p></td>
+<td class="text-center"><p>arguana</p></td>
+<td class="text-center"><p>test</p></td>
+<td class="text-center"><p>1,406</p></td>
+<td class="text-center"><p>8,670</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Touche-2020</p></td>
+<td class="text-center"><p>webis-touche2020</p></td>
+<td class="text-center"><p>test</p></td>
+<td class="text-center"><p>49</p></td>
+<td class="text-center"><p>382,000</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>CQADupstack</p></td>
+<td class="text-center"><p>cqadupstack</p></td>
+<td class="text-center"><p>test</p></td>
+<td class="text-center"><p>13,145</p></td>
+<td class="text-center"><p>457,000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Quora</p></td>
+<td class="text-center"><p>quora</p></td>
+<td class="text-center"><p>dev, test</p></td>
+<td class="text-center"><p>10,000</p></td>
+<td class="text-center"><p>523,000</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>DBPedia</p></td>
+<td class="text-center"><p>dbpedia-entity</p></td>
+<td class="text-center"><p>dev, test</p></td>
+<td class="text-center"><p>400</p></td>
+<td class="text-center"><p>4,630,000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>SCIDOCS</p></td>
+<td class="text-center"><p>scidocs</p></td>
+<td class="text-center"><p>test</p></td>
+<td class="text-center"><p>1,000</p></td>
+<td class="text-center"><p>25,000</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>FEVER</p></td>
+<td class="text-center"><p>fever</p></td>
+<td class="text-center"><p>train, dev, test</p></td>
+<td class="text-center"><p>6,666</p></td>
+<td class="text-center"><p>5,420,000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Climate-FEVER</p></td>
+<td class="text-center"><p>climate-fever</p></td>
+<td class="text-center"><p>test</p></td>
+<td class="text-center"><p>1,535</p></td>
+<td class="text-center"><p>5,420,000</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>SciFact</p></td>
+<td class="text-center"><p>scifact</p></td>
+<td class="text-center"><p>train, test</p></td>
+<td class="text-center"><p>300</p></td>
+<td class="text-center"><p>5,000</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>Key Findings from evaluting BM25 and different dense models:</p>
 <ol class="arabic simple">
 <li><p><strong>BM25 remains a strong baseline</strong> – Outperforms many neural models across diverse domains in zero-shot settings.</p></li>
@@ -2013,7 +2238,7 @@ MPNet and MiniLM perform well on reranking and clustering.</p></li>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">23. </span>Information Retrieval and Text Ranking: I</p>
+        <p class="prev-next-title"><span class="section-number">23. </span>Information Retrieval and Sparse Retrieval</p>
       </div>
     </a>
     <a class="right-next"

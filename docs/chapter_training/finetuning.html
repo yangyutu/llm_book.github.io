@@ -222,11 +222,11 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">23. Information Retrieval and Text Ranking: I</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">24. Information Retrieval and Text Ranking: II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">23. Information Retrieval and Sparse Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">24. Information Retrieval and Dense Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/conversational_IR.html">26. Conversational IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">27. RAG and Conversational IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">27. RAG</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">28. Advanced RAG (WIP)</a></li>
 </ul>
 
@@ -685,8 +685,8 @@ The selection of low rank matrices
 <section id="study-results">
 <h4><span class="section-number">12.3.5.2. </span>Study Results<a class="headerlink" href="#study-results" title="Link to this heading">#</a></h4>
 <p>As shown in the following, LoRA has been successfully applied to various models, including RoBERT and GPT-3, showing competitive performance with full finetuning while using only 0.01% of the trainable parameters.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1600">
-<caption><span class="caption-number">Table 12.1 </span><span class="caption-text">RoBERT with different adaptation methods on the language understanding GLUE benchmark.</span><a class="headerlink" href="#id1600" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1601">
+<caption><span class="caption-number">Table 12.1 </span><span class="caption-text">RoBERT with different adaptation methods on the language understanding GLUE benchmark.</span><a class="headerlink" href="#id1601" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Model &amp; Method</p></th>
 <th class="head"><p># Trainable Parameters</p></th>
@@ -709,8 +709,8 @@ The selection of low rank matrices
 </tbody>
 </table>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id1601">
-<caption><span class="caption-number">Table 12.2 </span><span class="caption-text">GPT-3-175B with different adaptation methods on the language understanding benchmark.</span><a class="headerlink" href="#id1601" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1602">
+<caption><span class="caption-number">Table 12.2 </span><span class="caption-text">GPT-3-175B with different adaptation methods on the language understanding benchmark.</span><a class="headerlink" href="#id1602" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Model&amp;Method</p></th>
 <th class="head text-center"><p># Trainable Parameters</p></th>
@@ -753,8 +753,8 @@ The selection of low rank matrices
 <li><p><span class="math notranslate nohighlight">\(r\)</span> as small as one suffices for adapting both <span class="math notranslate nohighlight">\(W^Q\)</span> and <span class="math notranslate nohighlight">\(W^V\)</span> on these datasets while training <span class="math notranslate nohighlight">\(W^Q\)</span> alone needs a larger <span class="math notranslate nohighlight">\(r\)</span>.</p></li>
 <li><p>Adapting more matrices will improve model performance but has marginal gain when adapting all matrices.</p></li>
 </ul>
-<div class="pst-scrollable-table-container"><table class="table" id="id1602">
-<caption><span class="caption-number">Table 12.3 </span><span class="caption-text">Validation accuracy on WikiSQL and MultiNLI with different rank <span class="math notranslate nohighlight">\(r\)</span>.</span><a class="headerlink" href="#id1602" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1603">
+<caption><span class="caption-number">Table 12.3 </span><span class="caption-text">Validation accuracy on WikiSQL and MultiNLI with different rank <span class="math notranslate nohighlight">\(r\)</span>.</span><a class="headerlink" href="#id1603" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-center"><p></p></th>
 <th class="head text-center"><p>Weight Type</p></th>

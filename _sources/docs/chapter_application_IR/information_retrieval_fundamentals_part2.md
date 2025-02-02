@@ -1,6 +1,6 @@
 
 (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2)=
-# Information Retrieval and Text Ranking: II
+# Information Retrieval and Dense Models
 
 ```{index} IR, Neural IR, Information retrieval
 ```
@@ -896,6 +896,40 @@ With the fused score, softened probability vector can be obtained by taking Soft
 ## Comparison Between Sparse and Dense Retrieval
 
 
+| Aspects | BM25 | Bi-Encoder | Cross-Encoder | Late-Interaction BiEncoder (Colbert) |
+| :---: | :---: | :---: | :---: | :---: |
+| Speed | Fast | Fast | Slow | Medium |
+| Training needed | N | Y | Y | Y |
+| OOD Generation | Strong | Weak | Medium | Medium | 
+| Semantic Understanding | Weak | Strong | Very strong | Very strong
+| Scability | Y | Y | N | Medium |
+| Performance | Consistent medium | Decent for in-domain | Strong | Strong |
+
+
+In terms of semantic understanding, cross-Encoder sets the upperbound for Late-Interaction Bi-Encoder model. 
+
+The importance of Out-of-distribution generation, a robust retriever should have reliable performance on tail topic and tail queries.
+
+When dense model encode a query or document into a fixed length vector, it usually have the following limitations:
+
+| Aspects | Example | 
+| :---: | :---: | 
+| When a query is a short and tail-ish, query embedding is of low quality as the model barely gets exposed to such query during training. | one word query *laresar* is a navigation query looking for a Chinese high-tech company. |
+| When a query is long, specific, and invovles multi-concept with complex relationships or modifiers, the query embedding is insensitive to variations of concept relationships   | *The cause of climate change and its impact on marine life in the Altantic sea* vs *The cause of climate change and its impact on marine life* will have high cosine similar embeddings|
+| | *What are some good rap songs to dance to?* vs *What are some of the best rap songs?* have high similarity score; but they mean different things.|
+| | *What are the types of immunity?* vs *What are the different types of immunity in our body?* - the former one is more broad, including immunity in the socieity sense. |
+| Long queries are semantically similar but have many different lexical terms| *What would a Trump presidency mean for current international master’s students on an F1 visa?* vs *How will a Trump presidency affect the students presently in US or planning to study in US?* will have relatively low similarity scores |
+|| *Why does China block sanctions at the UN against the Masood Azhar?* vs *Why does China support Masood Azhar?* have low similarity score even if they have the same meaning.|
+|Different query intent due to slight variation on grammar, word order, and word choice | *How do I prevent breast cancer?* vs *Is breast cancer preventable?* have different intent but high similarity score. |
+|| *How can I transfer money from Skrill to a PayPal account?* vs *How can I send money from my PayPal account to my Skrill account to withdraw?* have high similarity score, but they mean different directions. Similarly, *'How do I switch from Apple Music to Spotify?'* vs *Should I switch from Spotify to Apple Music?* |
+| Queries involving external knowledge that is not in the model| *How do we prepare for UPSC?* and *How do I prepare for civil service?* have low similarity score despite the fact that UPSC and civil service mean the same exam in India |
+|| *How competitive is the hiring process at Republic Bank?* vs *How competitive is the hiring process at S & T Bank?* have high similarity score but Republic Bank and S & T bank are different entities. |
+| When a query's intent shall be interpreted deeply | *My mom wished that I would die* has the intent of seeking relationship consultation. |
+
+
+
+
+* When a document is long and being compressed into a single dense vector, there will be innevitably information loss. 
 
 
 ## Approximate Nearest Neighbor Search
@@ -1215,6 +1249,28 @@ Natural Question (NQ) {cite}`kwiatkowski2019natural` introduces a large dataset 
 :name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:benchmark:fig:BEIR_datasets
 An overview of the diverse tasks and datasets in BEIR benchmark. Image from {cite}`thakur2021beir`.
 ```
+
+| Dataset | BEIR-Name | Type | Queries | Corpus |
+| :---: | :---: | :---: | :---: | :---: |
+| MSMARCO | msmarco | train, dev, test | 6,980 | 8,840,000 |
+| TREC-COVID | trec-covid | test | 50 | 171,000 |
+| NFCorpus | nfcorpus | train, dev, test | 323 | 3,600 |
+| BioASQ | bioasq | train, test | 500 | 14,910,000 |
+| NQ | nq | train, test | 3,452 | 2,680,000 |
+| HotpotQA | hotpotqa | train, dev, test | 7,405 | 5,230,000 |
+| FIQA-2018 | fiqa | train, dev, test | 648 | 57,000 |
+| Signal-1M(RT) | signal1m | test | 97 | 2,860,000 |
+| TREC-NEWS | trec-news | test | 57 | 595,000 |
+| Robust04 | robust04 | test | 249 | 528,000 |
+| ArguAna | arguana | test | 1,406 | 8,670 |
+| Touche-2020 | webis-touche2020 | test | 49 | 382,000 |
+| CQADupstack | cqadupstack | test | 13,145 | 457,000 |
+| Quora | quora | dev, test | 10,000 | 523,000 |
+| DBPedia | dbpedia-entity | dev, test | 400 | 4,630,000 |
+| SCIDOCS | scidocs | test | 1,000 | 25,000 |
+| FEVER | fever | train, dev, test | 6,666 | 5,420,000 |
+| Climate-FEVER | climate-fever | test | 1,535 | 5,420,000 |
+| SciFact | scifact | train, test | 300 | 5,000 |
 
 
 Key Findings from evaluting BM25 and different dense models:
