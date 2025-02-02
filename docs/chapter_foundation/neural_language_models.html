@@ -211,18 +211,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">18. Basic Prompting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">19. Advanced Prompting Techniques</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Text Embedding</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_text_embedding/text_embedding.html">20. Text Embedding</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">20. Multimodality fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">21. Vision Language Pretraining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">21. Multimodality fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">22. Vision Language Pretraining</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">22. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">23. Application of LLM in IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/conversational_IR.html">24. Conversational IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">25. RAG and Conversational IR</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">26. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">23. Information Retrieval and Text Ranking: I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">24. Information Retrieval and Text Ranking: II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/conversational_IR.html">26. Conversational IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">27. RAG and Conversational IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">28. Advanced RAG (WIP)</a></li>
 </ul>
 
     </div>
@@ -377,10 +382,10 @@ y=b+We+U \tanh(d+He)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(W, H\)</span> are matrices and <span class="math notranslate nohighlight">\(b, d\)</span> are biases. Here <span class="math notranslate nohighlight">\(W\)</span> can optionally zero, meaning no direct connections. <span class="math notranslate nohighlight">\(e = (e_1,...,e_{n-1})\)</span> is the concatenations of word embeddings of each preceding token.</p>
 <p>Feed-forward neural language model brings several improvements over the traditional <span class="math notranslate nohighlight">\(n\)</span>-gram language model: it provides a <strong>compact and efficient parameterization</strong> to capture word dependencies among text data. Recall that <span class="math notranslate nohighlight">\(n\)</span>-gram model would have to store all observed <span class="math notranslate nohighlight">\(n\)</span>-grams. However, feed-forward neural language model still meet challenges to capture long-distance dependencies in natural language. In the feed-forward neural language model, <strong>capturing long-distance dependencies will require an increase of the context window size</strong>, which linearly scales with model parameters <span class="math notranslate nohighlight">\(W\)</span>. Another drawback is that a word that appears at different locations will be multiplied by different weights to get its embedding, which is inconsistent.</p>
-<figure class="align-default" id="id1573">
+<figure class="align-default" id="id1581">
 <img alt="../../_images/FeedForwardModel_v2.png" src="../../_images/FeedForwardModel_v2.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Feedforward neural netowk based language model.</span><a class="headerlink" href="#id1573" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Feedforward neural netowk based language model.</span><a class="headerlink" href="#id1581" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>

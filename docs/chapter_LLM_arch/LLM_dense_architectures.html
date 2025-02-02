@@ -211,18 +211,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">18. Basic Prompting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">19. Advanced Prompting Techniques</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Text Embedding</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_text_embedding/text_embedding.html">20. Text Embedding</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">20. Multimodality fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">21. Vision Language Pretraining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">21. Multimodality fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">22. Vision Language Pretraining</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals.html">22. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">23. Application of LLM in IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/conversational_IR.html">24. Conversational IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">25. RAG and Conversational IR</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">26. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">23. Information Retrieval and Text Ranking: I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">24. Information Retrieval and Text Ranking: II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/conversational_IR.html">26. Conversational IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">27. RAG and Conversational IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">28. Advanced RAG (WIP)</a></li>
 </ul>
 
     </div>
@@ -767,8 +772,8 @@ key and value heads are attended to by query heads. GQA interpolats between MHA 
 </figcaption>
 </figure>
 <p>GQA is widely adopted in the latest LLM. Following shows example configurations of Qwen2 and Mistral LLM series <span id="id16">[<a class="reference internal" href="#id58" title="Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed. Mistral 7b. 2023. URL: https://arxiv.org/abs/2310.06825, arXiv:2310.06825.">JSM+23</a>, <a class="reference internal" href="../chapter_training/accelerated_training.html#id30" title="An Yang, Baosong Yang, Binyuan Hui, and et al. Bo Zheng. Qwen2 technical report. 2024. URL: https://arxiv.org/abs/2407.10671, arXiv:2407.10671.">YYHBZ24</a>]</span>.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1600">
-<caption><span class="caption-number">Table 9.1 </span><span class="caption-text">Model configuration of Qwen2 and Mistral, which uses GQA (# KV heads is number of groups )</span><a class="headerlink" href="#id1600" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1608">
+<caption><span class="caption-number">Table 9.1 </span><span class="caption-text">Model configuration of Qwen2 and Mistral, which uses GQA (# KV heads is number of groups )</span><a class="headerlink" href="#id1608" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Configuration</p></th>
 <th class="head text-center"><p>Hidden Size</p></th>
@@ -1167,8 +1172,8 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <li><p>how the total number of parameters scales when we scale up different components.</p></li>
 </ul>
 <p>Let <span class="math notranslate nohighlight">\(V\)</span> be the vocabulary size, <span class="math notranslate nohighlight">\(d\)</span> be the model hidden dimensions, <span class="math notranslate nohighlight">\(L\)</span> be the number of layer,</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1601">
-<caption><span class="caption-number">Table 9.2 </span><span class="caption-text">Parameters in a Transformer</span><a class="headerlink" href="#id1601" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1609">
+<caption><span class="caption-number">Table 9.2 </span><span class="caption-text">Parameters in a Transformer</span><a class="headerlink" href="#id1609" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Module</p></th>
 <th class="head text-left"><p>Computation</p></th>
@@ -1290,8 +1295,8 @@ M(i, j)= \begin{cases}P_{\mathbf{q}}^{\text {Intra }}[i]-P_{\mathbf{k}}[j] &amp;
 <p>It is clear that for each <span class="math notranslate nohighlight">\(c_{ij}\)</span> there are <span class="math notranslate nohighlight">\(k\)</span> multiplications and <span class="math notranslate nohighlight">\(k\)</span> additions (technically <span class="math notranslate nohighlight">\(k-1\)</span> additions among <span class="math notranslate nohighlight">\(k\)</span> terms).</p>
 </section>
 </div><p>Let <span class="math notranslate nohighlight">\(V\)</span> be the vocabulary size, <span class="math notranslate nohighlight">\(b\)</span> be the batch size, <span class="math notranslate nohighlight">\(s\)</span> be sequence length, <span class="math notranslate nohighlight">\(d\)</span> be the model hidden dimensions, <span class="math notranslate nohighlight">\(L\)</span> be the number of layer, we have summarized the computation breakdown in the following.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1602">
-<caption><span class="caption-number">Table 9.3 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id1602" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1610">
+<caption><span class="caption-number">Table 9.3 </span><span class="caption-text">Computation breakdown</span><a class="headerlink" href="#id1610" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Module</p></th>
 <th class="head text-left"><p>Computation</p></th>
