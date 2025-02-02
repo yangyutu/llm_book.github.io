@@ -1,4 +1,4 @@
-# RAG and Conversational IR
+# RAG
 
 ## Motivation
 LLMs have revolutionized natural language processing, but they still face several significant challenges, particularly in **knowledge intensive tasks**:
