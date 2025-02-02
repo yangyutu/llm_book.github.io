@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>23. Application of LLM in IR (WIP) &#8212; LLM Foundations</title>
+    <title>25. Application of LLM in IR (WIP) &#8212; LLM Foundations</title>
   
   
   
@@ -63,8 +63,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_application_IR/application_LLM_in_IR';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="24. Conversational IR (WIP)" href="conversational_IR.html" />
-    <link rel="prev" title="22. Information Retrieval and Text Ranking" href="information_retrieval_fundamentals.html" />
+    <link rel="next" title="26. Conversational IR (WIP)" href="conversational_IR.html" />
+    <link rel="prev" title="24. Information Retrieval and Text Ranking: II" href="information_retrieval_fundamentals_part2.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -211,18 +211,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">18. Basic Prompting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">19. Advanced Prompting Techniques</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Text Embedding</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_text_embedding/text_embedding.html">20. Text Embedding</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">20. Multimodality fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">21. Vision Language Pretraining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">21. Multimodality fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">22. Vision Language Pretraining</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="information_retrieval_fundamentals.html">22. Information Retrieval and Text Ranking</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">23. Application of LLM in IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conversational_IR.html">24. Conversational IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">25. RAG and Conversational IR</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">26. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="information_retrieval_fundamentals_part1.html">23. Information Retrieval and Text Ranking: I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="information_retrieval_fundamentals_part2.html">24. Information Retrieval and Text Ranking: II</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">25. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conversational_IR.html">26. Conversational IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">27. RAG and Conversational IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">28. Advanced RAG (WIP)</a></li>
 </ul>
 
     </div>
@@ -323,28 +328,24 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-understanding-optimization">23.1. Query Understanding &amp; Optimization</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-categorization">23.1.1. Query Categorization</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#natural-language-queries">23.1.1.1. Natural Language Queries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-understanding-optimization">25.1. Query Understanding &amp; Optimization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-categorization">25.1.1. Query Categorization</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#natural-language-queries">25.1.1.1. Natural Language Queries</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-optimization-overview">23.1.2. Query Optimization Overview</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gefeed-retrieval-feedback">23.1.3. GEFEED (Retrieval Feedback)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-optimization-overview">25.1.2. Query Optimization Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gefeed-retrieval-feedback">25.1.3. GEFEED (Retrieval Feedback)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-doc-ranking">23.2. Query-Doc Ranking</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rank-list-generation">23.2.1. Rank List Generation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ranker-distillation">23.2.2. Ranker Distillation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-doc-ranking">25.2. Query-Doc Ranking</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rank-list-generation">25.2.1. Rank List Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ranker-distillation">25.2.2. Ranker Distillation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-model">23.3. LLM Embedding Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nv-embed">23.3.1. NV-Embed</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-in-rag">23.4. Application in RAG</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-serp">23.5. Generative SERP</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collections">23.6. Collections</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">23.7. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-in-rag">25.3. Application in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-serp">25.4. Generative SERP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collections">25.5. Collections</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">25.6. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -357,16 +358,16 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="application-of-llm-in-ir-wip">
-<h1><span class="section-number">23. </span>Application of LLM in IR (WIP)<a class="headerlink" href="#application-of-llm-in-ir-wip" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">25. </span>Application of LLM in IR (WIP)<a class="headerlink" href="#application-of-llm-in-ir-wip" title="Link to this heading">#</a></h1>
 <section id="query-understanding-optimization">
-<h2><span class="section-number">23.1. </span>Query Understanding &amp; Optimization<a class="headerlink" href="#query-understanding-optimization" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">25.1. </span>Query Understanding &amp; Optimization<a class="headerlink" href="#query-understanding-optimization" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://arxiv.org/pdf/2412.17558">A Survey of Query Optimization in Large Language Models</a></p>
 <p><a class="reference external" href="https://arxiv.org/pdf/2305.14283">Query Rewriting for Retrieval-Augmented Large Language Models</a></p>
 <p><a class="reference external" href="https://arxiv.org/pdf/2402.11129">BlendFilter: Advancing Retrieval-Augmented Large Language Models via Query Generation Blending and Knowledge Filtering</a></p>
 <section id="query-categorization">
-<h3><span class="section-number">23.1.1. </span>Query Categorization<a class="headerlink" href="#query-categorization" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">25.1.1. </span>Query Categorization<a class="headerlink" href="#query-categorization" title="Link to this heading">#</a></h3>
 <section id="natural-language-queries">
-<h4><span class="section-number">23.1.1.1. </span>Natural Language Queries<a class="headerlink" href="#natural-language-queries" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">25.1.1.1. </span>Natural Language Queries<a class="headerlink" href="#natural-language-queries" title="Link to this heading">#</a></h4>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Question Type</p></th>
@@ -427,23 +428,23 @@ document.write(`
 </section>
 </section>
 <section id="query-optimization-overview">
-<h3><span class="section-number">23.1.2. </span>Query Optimization Overview<a class="headerlink" href="#query-optimization-overview" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">25.1.2. </span>Query Optimization Overview<a class="headerlink" href="#query-optimization-overview" title="Link to this heading">#</a></h3>
 <p><strong>Query Expansion</strong> - aims to capture a wider range of relevant information and potentially uncover connections that may not have been apparent in the query.This process involves analyzing the initial query, identifying key concepts, and incorporating related terms, synonyms, or associated ideas to form a new query for creating a more comprehensive search.</p>
 <p><strong>Query Decomposition</strong> - aims to effectively break down complex, multihop queries into simpler, more manageable subqueries or tasks. This approach involves dissecting a query that requires facts from multiple sources or steps into smaller, more direct queries that can be answered individually.</p>
 <p><strong>Query Disambiguation</strong> - aims to identify and eliminate ambiguity in complex queries, ensuring they are unequivocal. This involves pinpointing elements of the query that could be interpreted in multiple ways and refining the query to ensure a single, precise interpretation.</p>
 <p><strong>Query Abstraction</strong> - aims to provide a broader perspective on the fact need, potentially leading to more diverse and comprehensive results. This involves identifying and distilling the fundamental intent and core conceptual elements of the query, then creating a higher-level representation that captures the essential meaning while removing specific details.</p>
 </section>
 <section id="gefeed-retrieval-feedback">
-<h3><span class="section-number">23.1.3. </span>GEFEED (Retrieval Feedback)<a class="headerlink" href="#gefeed-retrieval-feedback" title="Link to this heading">#</a></h3>
-<p>When using LLM to optimize query and retrievel processes, there has been efforts on using LLM to generate relevent context for the query <span id="id1">[<a class="reference internal" href="#id1570" title="Liang Wang, Nan Yang, and Furu Wei. Query2doc: query expansion with large language models. arXiv preprint arXiv:2303.07678, 2023.">WYW23</a>, <a class="reference internal" href="#id1569" title="Wenhao Yu, Dan Iter, Shuohang Wang, Yichong Xu, Mingxuan Ju, Soumya Sanyal, Chenguang Zhu, Michael Zeng, and Meng Jiang. Generate rather than retrieve: large language models are strong context generators. arXiv preprint arXiv:2209.10063, 2022.">YIW+22</a>]</span> based on the <strong>internal knowledge of LLM</strong>. These relevant context can be used to further refine the query or the retrievel process. However, there are several fundamental drawback in this approach when it comes to knowledge intensive tasks.</p>
+<h3><span class="section-number">25.1.3. </span>GEFEED (Retrieval Feedback)<a class="headerlink" href="#gefeed-retrieval-feedback" title="Link to this heading">#</a></h3>
+<p>When using LLM to optimize query and retrievel processes, there has been efforts on using LLM to generate relevent context for the query <span id="id1">[<a class="reference internal" href="#id1567" title="Liang Wang, Nan Yang, and Furu Wei. Query2doc: query expansion with large language models. arXiv preprint arXiv:2303.07678, 2023.">WYW23</a>, <a class="reference internal" href="#id1566" title="Wenhao Yu, Dan Iter, Shuohang Wang, Yichong Xu, Mingxuan Ju, Soumya Sanyal, Chenguang Zhu, Michael Zeng, and Meng Jiang. Generate rather than retrieve: large language models are strong context generators. arXiv preprint arXiv:2209.10063, 2022.">YIW+22</a>]</span> based on the <strong>internal knowledge of LLM</strong>. These relevant context can be used to further refine the query or the retrievel process. However, there are several fundamental drawback in this approach when it comes to knowledge intensive tasks.</p>
 <ul class="simple">
 <li><p>LLM has a tendency to hallucinate content, generating information not grounded
 by world knowledge, leading to untrustworthy outputs and a diminished capacity to provide accurate information.</p></li>
-<li><p>The quality and scope of the internal knowledge of LLM may be incomplete or out-of-date due to the reliability of the sources in the pre-training corpus. Moreover, due to model capacity limitation, <strong>LLMs cannot memorize all world information</strong>, particularly the long tail of knowledge from their training corpus <span id="id2">[<a class="reference internal" href="#id1571" title="Nikhil Kandpal, Haikang Deng, Adam Roberts, Eric Wallace, and Colin Raffel. Large language models struggle to learn long-tail knowledge. In International Conference on Machine Learning, 15696–15707. PMLR, 2023.">KDR+23</a>]</span>.</p></li>
+<li><p>The quality and scope of the internal knowledge of LLM may be incomplete or out-of-date due to the reliability of the sources in the pre-training corpus. Moreover, due to model capacity limitation, <strong>LLMs cannot memorize all world information</strong>, particularly the long tail of knowledge from their training corpus <span id="id2">[<a class="reference internal" href="#id1568" title="Nikhil Kandpal, Haikang Deng, Adam Roberts, Eric Wallace, and Colin Raffel. Large language models struggle to learn long-tail knowledge. In International Conference on Machine Learning, 15696–15707. PMLR, 2023.">KDR+23</a>]</span>.</p></li>
 </ul>
-<p>The key steps in GEFEED [<a class="reference internal" href="#chapter-application-ir-llm-fig-queryunderstandingoptimization-gefeed-demo"><span class="std std-numref">Fig. 23.1</span></a>] are:</p>
+<p>The key steps in GEFEED [<a class="reference internal" href="#chapter-application-ir-llm-fig-queryunderstandingoptimization-gefeed-demo"><span class="std std-numref">Fig. 25.1</span></a>] are:</p>
 <ul class="simple">
-<li><p>Given a query, the language model generates initial outputs (more than one)[<a class="reference internal" href="#chapter-application-ir-llm-fig-queryunderstandingoptimization-gefeed-workflow"><span class="std std-numref">Fig. 23.2</span></a>].</p></li>
+<li><p>Given a query, the language model generates initial outputs (more than one)[<a class="reference internal" href="#chapter-application-ir-llm-fig-queryunderstandingoptimization-gefeed-workflow"><span class="std std-numref">Fig. 25.2</span></a>].</p></li>
 <li><p>A retrieval module retrieve expanded relevant information using the original query and generated outputs as a new query.</p></li>
 <li><p>The language model reader produce the final output based on the expanded retrieved information.</p></li>
 </ul>
@@ -456,36 +457,36 @@ by world knowledge, leading to untrustworthy outputs and a diminished capacity t
 <a class="reference internal image-reference" href="../../_images/GEFEED_demo.png"><img alt="../../_images/GEFEED_demo.png" src="../../_images/GEFEED_demo.png" style="width: 826.1999999999999px; height: 378.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 23.1 </span><span class="caption-text">REFEED operates by initially prompting a large language model to generate an answer in response to a given query, followed by the retrieval of documents from extensive document collections. Subsequently, the pipeline refines the initial answer by incorporating the information gleaned from the retrieved documents. Image from <span id="id3">[<a class="reference internal" href="#id1568" title="Wenhao Yu, Zhihan Zhang, Zhenwen Liang, Meng Jiang, and Ashish Sabharwal. Improving language models via plug-and-play retrieval feedback. arXiv preprint arXiv:2305.14002, 2023.">YZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-queryunderstandingoptimization-gefeed-demo" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 25.1 </span><span class="caption-text">REFEED operates by initially prompting a large language model to generate an answer in response to a given query, followed by the retrieval of documents from extensive document collections. Subsequently, the pipeline refines the initial answer by incorporating the information gleaned from the retrieved documents. Image from <span id="id3">[<a class="reference internal" href="#id1565" title="Wenhao Yu, Zhihan Zhang, Zhenwen Liang, Meng Jiang, and Ashish Sabharwal. Improving language models via plug-and-play retrieval feedback. arXiv preprint arXiv:2305.14002, 2023.">YZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-queryunderstandingoptimization-gefeed-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="chapter-application-ir-llm-fig-queryunderstandingoptimization-gefeed-workflow">
 <a class="reference internal image-reference" href="../../_images/GEFEED_workflow.png"><img alt="../../_images/GEFEED_workflow.png" src="../../_images/GEFEED_workflow.png" style="width: 835.1999999999999px; height: 130.2px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 23.2 </span><span class="caption-text">The language model is prompted to sample multiple answers, allowing for a more comprehensive retrieval feedback based on different answers. Image from <span id="id4">[<a class="reference internal" href="#id1568" title="Wenhao Yu, Zhihan Zhang, Zhenwen Liang, Meng Jiang, and Ashish Sabharwal. Improving language models via plug-and-play retrieval feedback. arXiv preprint arXiv:2305.14002, 2023.">YZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-queryunderstandingoptimization-gefeed-workflow" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 25.2 </span><span class="caption-text">The language model is prompted to sample multiple answers, allowing for a more comprehensive retrieval feedback based on different answers. Image from <span id="id4">[<a class="reference internal" href="#id1565" title="Wenhao Yu, Zhihan Zhang, Zhenwen Liang, Meng Jiang, and Ashish Sabharwal. Improving language models via plug-and-play retrieval feedback. arXiv preprint arXiv:2305.14002, 2023.">YZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-queryunderstandingoptimization-gefeed-workflow" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 </section>
 <section id="query-doc-ranking">
-<h2><span class="section-number">23.2. </span>Query-Doc Ranking<a class="headerlink" href="#query-doc-ranking" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">25.2. </span>Query-Doc Ranking<a class="headerlink" href="#query-doc-ranking" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://arxiv.org/pdf/2304.09542v2">Is ChatGPT Good at Search? Investigating Large Language Models as Re-Ranking Agents</a></p>
 <p><a class="reference external" href="https://arxiv.org/abs/2310.09497">A Setwise Approach for Effective and Highly Efficient Zero-shot Ranking with Large Language Models</a></p>
 <p><a class="reference external" href="https://aclanthology.org/2024.findings-naacl.97/">Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting</a></p>
 <p><a class="reference external" href="https://arxiv.org/abs/2305.02156">Zero-Shot Listwise Document Reranking with a Large Language Model</a></p>
 <section id="rank-list-generation">
-<h3><span class="section-number">23.2.1. </span>Rank List Generation<a class="headerlink" href="#rank-list-generation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">25.2.1. </span>Rank List Generation<a class="headerlink" href="#rank-list-generation" title="Link to this heading">#</a></h3>
 <figure class="align-default" id="chapter-application-ir-llm-fig-querydocranking-slidingwindow-ranklist-generation">
 <a class="reference internal image-reference" href="../../_images/slidingwindow_ranklist_generation.png"><img alt="../../_images/slidingwindow_ranklist_generation.png" src="../../_images/slidingwindow_ranklist_generation.png" style="width: 874.1999999999999px; height: 307.2px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 23.3 </span><span class="caption-text">llustration of re-ranking 8 passages using sliding windows with a window size of 4 and a step size of 2. The blue color represents the first two windows, while the yellow color represents the last window. The sliding windows are applied in back-to-first order,. Image from <span id="id5">[<a class="reference internal" href="#id1572" title="Weiwei Sun, Lingyong Yan, Xinyu Ma, Shuaiqiang Wang, Pengjie Ren, Zhumin Chen, Dawei Yin, and Zhaochun Ren. Is chatgpt good at search? investigating large language models as re-ranking agents. arXiv preprint arXiv:2304.09542, 2023.">SYM+23</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-querydocranking-slidingwindow-ranklist-generation" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 25.3 </span><span class="caption-text">llustration of re-ranking 8 passages using sliding windows with a window size of 4 and a step size of 2. The blue color represents the first two windows, while the yellow color represents the last window. The sliding windows are applied in back-to-first order,. Image from <span id="id5">[<a class="reference internal" href="#id1569" title="Weiwei Sun, Lingyong Yan, Xinyu Ma, Shuaiqiang Wang, Pengjie Ren, Zhumin Chen, Dawei Yin, and Zhaochun Ren. Is chatgpt good at search? investigating large language models as re-ranking agents. arXiv preprint arXiv:2304.09542, 2023.">SYM+23</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-querydocranking-slidingwindow-ranklist-generation" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="ranker-distillation">
-<h3><span class="section-number">23.2.2. </span>Ranker Distillation<a class="headerlink" href="#ranker-distillation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">25.2.2. </span>Ranker Distillation<a class="headerlink" href="#ranker-distillation" title="Link to this heading">#</a></h3>
 <p><strong>Pairwise distillation</strong>: Suppose we have a query <span class="math notranslate nohighlight">\(q\)</span> and <span class="math notranslate nohighlight">\(D\)</span> candidate documents  <span class="math notranslate nohighlight">\(\left(d_1, \ldots, d_M\right)\)</span> for ranking. Let the LLM-based ranking results of the <span class="math notranslate nohighlight">\(D\)</span> documents be <span class="math notranslate nohighlight">\(R=\left(r_1, \ldots, r_M\right)\)</span> (e.g, <span class="math notranslate nohighlight">\(r_i=3\)</span> means <span class="math notranslate nohighlight">\(d_i\)</span> ranks third among the candidates).</p>
 <p>Let <span class="math notranslate nohighlight">\(s_i=f_\theta\left(q, d_i\right)\)</span> be the student model’s relevance prediction score between <span class="math notranslate nohighlight">\(\left(q, d_i\right)\)</span>.</p>
 <p>We can use pairwise Ranking loss to optimize the student model, which is given by</p>
@@ -495,95 +496,40 @@ by world knowledge, leading to untrustworthy outputs and a diminished capacity t
 \]</div>
 </section>
 </section>
-<section id="llm-embedding-model">
-<h2><span class="section-number">23.3. </span>LLM Embedding Model<a class="headerlink" href="#llm-embedding-model" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://arxiv.org/pdf/2401.00368">Improving text embeddings with large language models</a>
-<a class="reference external" href="https://arxiv.org/pdf/2405.17428">NV-Embed: Improved Techniques for Training LLMs as Generalist Embedding Models.</a></p>
-<section id="nv-embed">
-<h3><span class="section-number">23.3.1. </span>NV-Embed<a class="headerlink" href="#nv-embed" title="Link to this heading">#</a></h3>
-<p>NV-Embed from Nvidia <span id="id6">[<a class="reference internal" href="#id1573" title="Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. arXiv preprint arXiv:2405.17428, 2024.">LRX+24</a>]</span> proposed several improvement techniques on LLM-based embedding model, which include:</p>
-<ul class="simple">
-<li><p>Model architecture improvement, which introduces a <strong>latent attention layer</strong> to obtain better pooled embeddings.</p></li>
-<li><p>Traing process improvement, which introduces a <strong>two-stage contrastive instruction-tuning method</strong>.</p></li>
-</ul>
-<p>There are two popular methods to obtain the embedding for a sequence of tokens:</p>
-<ul class="simple">
-<li><p>Mean pooling of the all hidden vectors of the last layer, which is commonly used in bidirectional embedding models.</p></li>
-<li><p>Last <EOS> token embedding, which is more popular for decoder-only LLM based embedding models.</p></li>
-</ul>
-<p>However, both methods have certain limitations. Mean pooling simply takes the average of token embeddings and may dilute the important information from key phrases, meanwhile the semantics of the last <EOS> token embedding may be dominated by last few tokens.</p>
-<p>The latent attention layer aims to improve the <strong>mean pooling method</strong>. Denote the last layer hidden from decoder as the query <span class="math notranslate nohighlight">\(Q \in \mathbb{R}^{l \times d}\)</span>, where <span class="math notranslate nohighlight">\(l\)</span> is the length of sequence, and <span class="math notranslate nohighlight">\(d\)</span> is the hidden dimension. They are sent to attend the latent array <span class="math notranslate nohighlight">\(K=V \in \mathbb{R}^{r \times d}\)</span>, which are <strong>trainable matrices</strong>, used to obtain better representation, where <span class="math notranslate nohighlight">\(r\)</span> is the number of latents in the dictionary. The output of this cross-attention is denoted by <span class="math notranslate nohighlight">\(O \in \mathbb{R}^{l \times d}\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[
-O=\operatorname{softmax}\left(Q K^T\right) V.
-\]</div>
-<p>Intuitively, each token’s represention in <span class="math notranslate nohighlight">\(O\)</span> (which is a <span class="math notranslate nohighlight">\(d\)</span> vector) is a linear combination of the <span class="math notranslate nohighlight">\(r\)</span> row vectors in <span class="math notranslate nohighlight">\(V\)</span>(or <span class="math notranslate nohighlight">\(K\)</span>).</p>
-<p>This has the spirit of <strong>sparse dictionary learning</strong><span id="id7">[<a class="reference internal" href="#id1093" title="Julien Mairal, Francis Bach, Jean Ponce, and Guillermo Sapiro. Online dictionary learning for sparse coding. In Proceedings of the 26th annual international conference on machine learning, 689–696. ACM, 2009.">MBPS09</a>]</span>, which aims to learn a <strong>sparse set of atom vectors</strong>, such that each representation can be transformed to a linear combination of atom vectors.</p>
-<p>An additional 2-layer MLP was added to further transfrom the <span class="math notranslate nohighlight">\(O\)</span> vectors.  Finally, a mean pooling after MLP layers to obtain the embedding of whole sequences.</p>
-<p>In the paper, authors used latent attention layer with <span class="math notranslate nohighlight">\(r\)</span> of 512 and the number of heads as 8 for multi-head attention.</p>
-<figure class="align-default" id="chapter-application-ir-llm-fig-embedding-nv-embedding-latent-attention-layer">
-<a class="reference internal image-reference" href="../../_images/latent_attention_layer.png"><img alt="../../_images/latent_attention_layer.png" src="../../_images/latent_attention_layer.png" style="width: 644.0px; height: 252.8px;" />
-</a>
-<figcaption>
-<p><span class="caption-number">Fig. 23.4 </span><span class="caption-text">The illustration of proposed architecture design comprising of decoder-only LLM followed
-by latent attention layer. Latent attention layer functions as a form of cross-attention where the decoder-only LLM output serves as queries (Q) and trainable latent array passes through the keyvalue inputs, followed by MLP. Image from <span id="id8">[<a class="reference internal" href="#id1573" title="Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. arXiv preprint arXiv:2405.17428, 2024.">LRX+24</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-embedding-nv-embedding-latent-attention-layer" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-<p>The two-stage instruction tuning method include</p>
-<ul class="simple">
-<li><p>First-stage contrastive training with instructions on a variety of retrieval datasets, utilizing in-batch negatives and curated hard-negative examples.</p></li>
-<li><p>Second stage contrastive instruction-tuning on a combination of retrieval and non-retrieval datasets (e.g., classification ) without applying the trick of in-batch negatives.</p></li>
-</ul>
-<p>The design rationale behind the two-stage finetunings are:</p>
-<ul class="simple">
-<li><p>It is found that retrieval task presents greater difficulty compared to the non-retrieval tasks there is one stage training fully dedicated to the retrieval task.</p></li>
-<li><p>In second stage, as the retrieval and non-retrieval tasks are blended, it is necessary to remove in-batch negatives trick. Since the negative may come from the the class and are not true negatives.</p></li>
-</ul>
-</section>
-</section>
 <section id="application-in-rag">
-<h2><span class="section-number">23.4. </span>Application in RAG<a class="headerlink" href="#application-in-rag" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">25.3. </span>Application in RAG<a class="headerlink" href="#application-in-rag" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://aclanthology.org/2024.acl-long.242.pdf">Small Models, Big Insights: Leveraging Slim Proxy Models to Decide When
 and What to Retrieve for LLMs</a></p>
 </section>
 <section id="generative-serp">
-<h2><span class="section-number">23.5. </span>Generative SERP<a class="headerlink" href="#generative-serp" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">25.4. </span>Generative SERP<a class="headerlink" href="#generative-serp" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://arxiv.org/abs/2402.14301">GenSERP: Large Language Models for Whole Page Presentation</a></p>
 </section>
 <section id="collections">
-<h2><span class="section-number">23.6. </span>Collections<a class="headerlink" href="#collections" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">25.5. </span>Collections<a class="headerlink" href="#collections" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://github.com/IR-LLM/Awesome-Information-Retrieval-in-the-Age-of-Large-Language-Model">Awesome Information Retrieval in the Age of Large Language Model</a></p>
 </section>
 <section id="bibliography">
-<h2><span class="section-number">23.7. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id9">
+<h2><span class="section-number">25.6. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id6">
 <div role="list" class="citation-list">
-<div class="citation" id="id1571" role="doc-biblioentry">
+<div class="citation" id="id1568" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">KDR+23</a><span class="fn-bracket">]</span></span>
 <p>Nikhil Kandpal, Haikang Deng, Adam Roberts, Eric Wallace, and Colin Raffel. Large language models struggle to learn long-tail knowledge. In <em>International Conference on Machine Learning</em>, 15696–15707. PMLR, 2023.</p>
 </div>
-<div class="citation" id="id1573" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>LRX+24<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id6">1</a>,<a role="doc-backlink" href="#id8">2</a>)</span>
-<p>Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. <em>arXiv preprint arXiv:2405.17428</em>, 2024.</p>
-</div>
-<div class="citation" id="id1093" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">MBPS09</a><span class="fn-bracket">]</span></span>
-<p>Julien Mairal, Francis Bach, Jean Ponce, and Guillermo Sapiro. Online dictionary learning for sparse coding. In <em>Proceedings of the 26th annual international conference on machine learning</em>, 689–696. ACM, 2009.</p>
-</div>
-<div class="citation" id="id1572" role="doc-biblioentry">
+<div class="citation" id="id1569" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">SYM+23</a><span class="fn-bracket">]</span></span>
 <p>Weiwei Sun, Lingyong Yan, Xinyu Ma, Shuaiqiang Wang, Pengjie Ren, Zhumin Chen, Dawei Yin, and Zhaochun Ren. Is chatgpt good at search? investigating large language models as re-ranking agents. <em>arXiv preprint arXiv:2304.09542</em>, 2023.</p>
 </div>
-<div class="citation" id="id1570" role="doc-biblioentry">
+<div class="citation" id="id1567" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">WYW23</a><span class="fn-bracket">]</span></span>
 <p>Liang Wang, Nan Yang, and Furu Wei. Query2doc: query expansion with large language models. <em>arXiv preprint arXiv:2303.07678</em>, 2023.</p>
 </div>
-<div class="citation" id="id1569" role="doc-biblioentry">
+<div class="citation" id="id1566" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">YIW+22</a><span class="fn-bracket">]</span></span>
 <p>Wenhao Yu, Dan Iter, Shuohang Wang, Yichong Xu, Mingxuan Ju, Soumya Sanyal, Chenguang Zhu, Michael Zeng, and Meng Jiang. Generate rather than retrieve: large language models are strong context generators. <em>arXiv preprint arXiv:2209.10063</em>, 2022.</p>
 </div>
-<div class="citation" id="id1568" role="doc-biblioentry">
+<div class="citation" id="id1565" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>YZL+23<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id4">2</a>)</span>
 <p>Wenhao Yu, Zhihan Zhang, Zhenwen Liang, Meng Jiang, and Ashish Sabharwal. Improving language models via plug-and-play retrieval feedback. <em>arXiv preprint arXiv:2305.14002</em>, 2023.</p>
@@ -624,12 +570,12 @@ and What to Retrieve for LLMs</a></p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="information_retrieval_fundamentals.html"
+       href="information_retrieval_fundamentals_part2.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">22. </span>Information Retrieval and Text Ranking</p>
+        <p class="prev-next-title"><span class="section-number">24. </span>Information Retrieval and Text Ranking: II</p>
       </div>
     </a>
     <a class="right-next"
@@ -637,7 +583,7 @@ and What to Retrieve for LLMs</a></p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">24. </span>Conversational IR (WIP)</p>
+        <p class="prev-next-title"><span class="section-number">26. </span>Conversational IR (WIP)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -657,28 +603,24 @@ and What to Retrieve for LLMs</a></p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-understanding-optimization">23.1. Query Understanding &amp; Optimization</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-categorization">23.1.1. Query Categorization</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#natural-language-queries">23.1.1.1. Natural Language Queries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-understanding-optimization">25.1. Query Understanding &amp; Optimization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-categorization">25.1.1. Query Categorization</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#natural-language-queries">25.1.1.1. Natural Language Queries</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-optimization-overview">23.1.2. Query Optimization Overview</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gefeed-retrieval-feedback">23.1.3. GEFEED (Retrieval Feedback)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-optimization-overview">25.1.2. Query Optimization Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gefeed-retrieval-feedback">25.1.3. GEFEED (Retrieval Feedback)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-doc-ranking">23.2. Query-Doc Ranking</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rank-list-generation">23.2.1. Rank List Generation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ranker-distillation">23.2.2. Ranker Distillation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-doc-ranking">25.2. Query-Doc Ranking</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rank-list-generation">25.2.1. Rank List Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ranker-distillation">25.2.2. Ranker Distillation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-model">23.3. LLM Embedding Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nv-embed">23.3.1. NV-Embed</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-in-rag">23.4. Application in RAG</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-serp">23.5. Generative SERP</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collections">23.6. Collections</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">23.7. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-in-rag">25.3. Application in RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-serp">25.4. Generative SERP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collections">25.5. Collections</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">25.6. Bibliography</a></li>
 </ul>
   </nav></div>
 
