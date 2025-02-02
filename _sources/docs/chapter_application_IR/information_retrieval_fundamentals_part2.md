@@ -129,7 +129,7 @@ where $f_{t}$ is the letter-trigram representation of the $t$-th word, and $n=2 
 The architecture of CNN-DSSM. Each term together with its left and right contextual words are encoded together into term vectors. 
 ```
 
-### Mono-BERT And Duo-BERT
+## Transfomer Retrievers and Rerankers
 
 #### Why Transformers?
 
@@ -231,7 +231,7 @@ Further, the author found that	employing the technique of Target Corpus Pre-trai
 
 
 
-## Advanced Architectures
+
 ### DC-BERT
 
 
@@ -284,72 +284,6 @@ To further investigate the impact of our model architecture design, we compare t
 | DC-BERT         | 63.5           | 10.3x             |
 ```
 
-(ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:colBERT)=
-### ColBERT
-
-ColBERT {cite}`khattab2020colbert` is another example architecture that consists of an early separate encoding phase and a late interaction phase, as shown in {numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:colbert`. ColBERT employs a single BERT model for both query and document encoders but distinguish input sequences that correspond to queries and documents by prepending a special token [Q] to queries and another token [D] to documents.
-
-```{figure} ../img/chapter_application_IR/ApplicationIRSearch/DeepRetrievalModels/Berts/Col_BERT/Col_bert.png
-:scale: 30%
-:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:colbert
-The architecture of ColBERT, which consists of an early separate encoding phase and a late interaction phase.
-```
-
-
-The query Encoder take query tokens as the input. Note that if a query is shorter than a pre-defined number $N_q$, it will be padded with BERT’s special [mask] tokens up to length $N_q$; otherwise, only the first $N_q$ tokens will be kept. It is found that the mask token padding serves as some sort of query augmentation and brings perform gain. In additional, a [Q] token is placed right after BERT’s sequence start token [CLS]. The query encoder then computes a contextualized representation for the query tokens.
-
-The document encoder has a very similar architecture. A [D] token is placed right after BERT’s sequence start token [CLS]. Note that after passing through the encoder, embeddings correponding to punctuation symbols are filtered out. 
-
-Given BERT's representation of each token, an additional linear layer with no activation is used to reduce the dimensionality reduction. The reduced dimensionality $m$ is set much smaller than BERT's fixed hidden dimension.
-
-Finally, given $q= q_{1} \ldots q_{l}$ and $d=d_{1} \ldots d_{n}$, an additional CNN layer is used to allow each embedding vector to interact with its neighbor, yielding  the bags of embeddings $E_{q}$ and $E_{d}$ in the following manner.
-```{math}
-\begin{align*}
-&E_{q}:=\operatorname{Normalize}\left(\operatorname{CNN}\left(\operatorname{BERT}\left([Q] q_{0} q_{1} \ldots q_{l} \# \# \ldots \#\right)\right)\right) \\
-	&E_{d}:=\operatorname{Filter}\left(\operatorname{Normalize}\left(\operatorname{CNN}\left(\operatorname{BERT}\left([D] d_{0} d_{1} \ldots d_{n} \right)\right)\right)\right)
-\end{align*}
-```
-Here # refers to the [mask] tokens and $\operatorname{Normalize}$ denotes $L_2$ length normalization.
-
-In the late interaction phase, every query embedding interacts with all document embeddings via a MaxSimilarity operator, which computes maximum similarity (e.g., cosine similarity), and the scalar outputs of these operators are summed across query terms.
-
-Formally, the final similarity score between the $q$ and $d$ is given by
-
-$$
-S_{q, d} =\sum_{i \in I_q} \max _{j \in I_d} E_{q_{i}} \cdot E_{d_{j}}^{T},
-$$
-
-where $I_q = \{1,...,l\}$, $I_d = \{1, ..., n\}$ are the index sets for query token embeddings and document token embeddings, respectively. 
-ColBERT is differentiable end-to-end and we can fine-tune the BERT encoders and train from scratch the additional parameters (i.e., the linear layer and the $[Q]$ and $[D]$ markers' embeddings). Notice that the final aggregation interaction mechanism has no trainable parameters. 
-
-The retrieval performance of ColBERT is evaluated on MS MARCO dataset. Compared with traditional exact term matching retrieval, ColBERT has shortcomings in terms of latency but MRR is significantly better.
-
-```{table}
-| Method | MRR@10(Dev) | MRR@10 (Local Eval) | Latency (ms) | Recall@50 |
-|--------|-------------|---------------------|--------------|-----------|
-| BM25 (official) | 16.7 | - | - | - |
-| BM25 (Anserini) | 18.7 | 19.5 | 62 | 59.2 |
-| doc2query | 21.5 | 22.8 | 85 | 64.4 |
-| DeepCT | 24.3 | - | 62 (est.) | 69[2] |
-| docTTTTTquery | 27.7 | 28.4 | 87 | 75.6 |
-| ColBERT L2 (re-rank) | 34.8 | 36.4 | - | 75.3 |
-| ColBERTL2 (end-to-end) | 36.0 | 36.7 | 458 | 82.9 |
-```
-
-Similarly, we can evaluate ColBERT's re-ranking performance against some strong baselines, such as BERT cross encoders {cite}`nogueira2019passage, nogueira2019multi`. ColBERT has demonstrated significant benefits in reducing latency with little cost of re-ranking performance. 
-
-```{table}
-| Method | MRR@10 (Dev) | MRR@10 (Eval) | Re-ranking Latency (ms) |
-|--------|--------------|---------------|-------------------------|
-| BM25 (official) | 16.7 | 16.5 | - |
-| KNRM | 19.8 | 19.8 | 3 |
-| Duet | 24.3 | 24.5 | 22 |
-| fastText+ConvKNRM | 29.0 | 27.7 | 28 |
-| BERT base | 34.7 | - | 10,700 |
-| BERT large | 36.5 | 35.9 | 32,900 |
-| ColBERT (over BERT base) | 34.9 | 34.9 | 61 |
-```
-
 ### Multi-Attribute and Multi-task Modeling
 
 We can extend cross-encoder to take into multiple-attributes from query side and document side, as well as generating multiple predictive outputs for different tasks [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:multitask_multiattribute`].
@@ -375,6 +309,10 @@ After feature fusion (e.g., via concatination), we can separate MLP head for dif
 An representative cross-encoder that is extended to take into account multiple-attributes from query side and document side. There are multiple outputs for **multi-tasking**.
 ```
 
+(ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:multivector)=
+## Multi-Vector Retrievers
+
+
 ### Introduction
 
 In classic representation-based learning for semantic retrieval [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:classicRepresentationLearning`], we use two encoders (i.e., bi-encoders) to separately encoder a query and a candidate document into two dense vectors in the embedding space, and then a score function, such as cosine similarity, to produce the final relevance score. In this paradigm, there is a single global, static representation for each query and each document. Specifically, the document's embedding remain the same regardless of the document length, the content structure of document (e.g., multiple topics) and the variation of queries that are relevant to the document. It is very common that a document with hundreds of tokens might contain several distinct subtopics, some important semantic information might be easily missed or biased by each other when compressing a document into a dense vector.  As such, this simple bi-encoder structure may cause serious information loss when used to encode documents. <sup>[^2]</sup>
@@ -382,6 +320,89 @@ In classic representation-based learning for semantic retrieval [{numref}`ch:neu
 On the other hand,  cross-encoders based on BERT variants [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:classicRepresentationLearning`] utilize multiple self-attention layers not only to extract contextualized features from queries and documents but also capture the interactions between them. Cross-encoders only produce intermediate representations that take a pair of query and document as the joint input. While BERT-based cross-encoders brought significant performance gain,  they are computationally prohibitive and impractical for online inference. 
 
 In this section, we focus on different strategies {cite}`humeau2019poly, tang2021improving, luan2021sparse` to encode documents by multi-vector representations, which enriches the single vector representation produced by a bi-encoder. With additional computational overhead, these strategies can gain much improvement of the encoding quality while retaining the fast retrieval strengths of Bi-encoder.
+
+
+(ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:colBERT)=
+### ColBERT
+
+#### Overview
+ColBERT {cite}`khattab2020colbert` is another example architecture that consists of an early separate encoding phase and a late interaction phase, as shown in {numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:colbert`. ColBERT employs a single BERT model for both query and document encoders but distinguish input sequences that correspond to queries and documents by prepending a special token [Q] to queries and another token [D] to documents.
+
+```{figure} ../img/chapter_application_IR/ApplicationIRSearch/DeepRetrievalModels/Berts/Col_BERT/Col_bert.png
+:scale: 30%
+:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:colbert
+The architecture of ColBERT, which consists of an early separate encoding phase and a late interaction phase.
+```
+
+#### Encoding
+The query Encoder take query tokens as the input. Note that if a query is shorter than a pre-defined number $N_q$, it will be padded with BERT’s special [mask] tokens up to length $N_q$; otherwise, only the first $N_q$ tokens will be kept. It is found that the mask token padding serves as some sort of query augmentation and brings perform gain. In additional, a [Q] token is placed right after BERT’s sequence start token [CLS]. The query encoder then computes a contextualized representation for the query tokens.
+
+The document encoder has a very similar architecture. A [D] token is placed right after BERT’s sequence start token [CLS]. Note that after passing through the encoder, embeddings correponding to punctuation symbols are filtered out. 
+
+Given BERT's representation of each token, an additional linear layer with no activation is used to reduce the dimensionality reduction. The reduced dimensionality $m$ is set much smaller than BERT's fixed hidden dimension.
+
+Finally, given $q= q_{1} \ldots q_{l}$ and $d=d_{1} \ldots d_{n}$, an additional CNN layer is used to allow each embedding vector to interact with its neighbor, yielding  the bags of embeddings $E_{q}$ and $E_{d}$ in the following manner.
+```{math}
+\begin{align*}
+&E_{q}:=\operatorname{Normalize}\left(\operatorname{Linear}\left(\operatorname{BERT}\left([Q] q_{0} q_{1} \ldots q_{l} \# \# \ldots \#\right)\right)\right) \\
+	&E_{d}:=\operatorname{Filter}\left(\operatorname{Normalize}\left(\operatorname{Linear}\left(\operatorname{BERT}\left([D] d_{0} d_{1} \ldots d_{n} \right)\right)\right)\right)
+\end{align*}
+```
+Here # refers to the [Mask] tokens and $\operatorname{Normalize}$ denotes $L_2$ length normalization.
+
+#### Late Interaction
+In the late interaction phase, every query embedding interacts with all document embeddings via a MaxSimilarity operator, which computes maximum similarity (e.g., cosine similarity), and the scalar outputs of these operators are summed across query terms.
+
+Formally, the final similarity score between the $q$ and $d$ is given by
+
+$$
+S_{q, d} =\sum_{i \in I_q} \max _{j \in I_d} E_{q_{i}} \cdot E_{d_{j}}^{T},
+$$ (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2:eq:colbert_score)
+
+where $I_q = \{1,...,l\}$, $I_d = \{1, ..., n\}$ are the index sets for query token embeddings and document token embeddings, respectively. 
+ColBERT is differentiable end-to-end and we can fine-tune the BERT encoders and train from scratch the additional parameters (i.e., the linear layer and the $[Q]$ and $[D]$ markers' embeddings). Notice that the final aggregation interaction mechanism has no trainable parameters. 
+
+#### Retrieval & Re-ranking
+
+The retrieval and re-ranking using ColBert consists of three steps:
+* **Token retrieving** doc token candidates from index via query token embedding, with doc token's source canddiate being the doc candidates,
+* **Gathering** all token vectors for doc candidates,
+* **Scoring** the candidate documents using all its token embeddings
+
+The first retrieval step further consists of two-steps:
+* **each query token** (out of $N_q$ tokens) first retrieves top $k'$ (e.g., $k'=k/2$) document IDs using approximate nearest neighbor (ANN) search. See more in {ref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2_ann_search`. 
+* **Merge** $N_q \times k'$ documents ID to get $K$ unique documents as the retrieval result.  
+
+After retrieving top-$k$ documents given a query $q$, the next step is score these $k$ documents as the **re-ranking **step. Specifically, with a query $q$ represented by a bag contextualized embeddings $E_q$ (a 2D matrix) and we further gather the document representations into a 3-dimensional tensor $D$ consisting of $k$ document matrices. For each query and document pair, we compute its score according to {eq}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2:eq:colbert_score`. 
+
+#### Evaluation
+
+The **retrieval** performance of ColBERT is evaluated on MS MARCO dataset. Compared with traditional exact term matching retrieval BM25, ColBERT has shortcomings in terms of latency but MRR is significantly better.
+
+```{table} E2E retrieval results on MS MARCO
+| Method | MRR@10(Dev) | MRR@10 (Local Eval) | Latency (ms) | Recall@50 |
+|--------|-------------|---------------------|--------------|-----------|
+| BM25 (Anserini) | 18.7 | 19.5 | 62 | 59.2 |
+| doc2query | 21.5 | 22.8 | 85 | 64.4 |
+| DeepCT | 24.3 | - | 62 (est.) | 69[2] |
+| docTTTTTquery | 27.7 | 28.4 | 87 | 75.6 |
+| ColBERT L2 (BM25 + re-rank) | 34.8 | 36.4 | - | 75.3 |
+| ColBERTL2 (retrieval & re-rank) | 36.0 | 36.7 | 458 | 82.9 |
+```
+
+Similarly, we can evaluate ColBERT's re-ranking performance against some strong baselines, such as BERT cross encoders {cite}`nogueira2019passage, nogueira2019multi`. ColBERT has demonstrated significant benefits in reducing latency with little cost of re-ranking performance. 
+
+```{table} Re-ranking results on MS MARCO using candidates produced by BM25.
+| Method | MRR@10 (Dev) | MRR@10 (Eval) | Re-ranking Latency (ms) |
+|--------|--------------|---------------|-------------------------|
+| BM25 (official) | 16.7 | 16.5 | - |
+| KNRM | 19.8 | 19.8 | 3 |
+| Duet | 24.3 | 24.5 | 22 |
+| fastText+ConvKNRM | 29.0 | 27.7 | 28 |
+| BERT base | 34.7 | - | 10,700 |
+| BERT large | 36.5 | 35.9 | 32,900 |
+| ColBERT (over BERT base) | 34.9 | 34.9 | 61 |
+```
 
 ### Semantic Clusters As Pseudo Query Embeddings
 
@@ -931,7 +952,26 @@ When dense model encode a query or document into a fixed length vector, it usual
 
 * When a document is long and being compressed into a single dense vector, there will be innevitably information loss. 
 
+### Index Size and Embedding Dimensionality Impact
 
+In dense retrieval, query and documents are compressed into low-dimensionality, denoted by $k$, space. Query and document similarity are computed using length-normalized vectors. Geometrically, each query and documents are residing on the surface of a $k$-dimension hyper-space. Intuitively, the larger the index size $n$ and the smaller $k$, irrelevant documents more likely to be returned.
+Authors from {cite:p}`reimers2020curse` show that, both theorically and emprically,
+* The probability of retrieving an irrelevant doc will increase with index size $n$;
+* The probability of retrieving an irrelevant doc will increase with dimensionality $k$.
+
+The emprically findings are summarized in the table below.
+
+| Dense Model Setting| Model | 10k | 100k | 1M | 8.8M |
+|:--- | :--- | :---: | :---: | :---: | :---: |
+|Sparse model| BM25 | 79.93 | 63.88 | 40.14 | 17.56 |
+| Trained without hard negatives | 128 dim | 87.50 | 68.63 | 39.76 | 15.71 |
+|| 256 dim | 88.82 | 70.79 | 41.74 | 17.08 |
+|| 768 dim | 88.99 | 71.06 | 42.24 | 17.34 |
+| Trained with hard negatives | 128 dim | 90.32 | 77.92 | 54.45 | 27.34 |
+|| 256 dim | 91.10 | 78.90 | 55.51 | 28.16 |
+|| 768 dim | 91.48 | 79.42 | 56.05 | 28.55 |
+
+(ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2_ann_search)=
 ## Approximate Nearest Neighbor Search
 
 ### Overview
@@ -1240,6 +1280,30 @@ TREC-CAR (Complex Answer Retrieval) {cite}`dietz2017trec` is a dataset where the
 ### Natural Question (NQ)
 Natural Question (NQ) {cite}`kwiatkowski2019natural` introduces a large dataset for open-domain QA. The original dataset contains more than 300,000 questions collected from Google search logs. In {cite}`karpukhin2020dense`, around 62,000 factoid questions are selected, and all the Wikipedia articles are processed as the collection of passages. There are more than 21 million passages in the corpus. 
 
+
+### Entity Questions
+
+{cite:p}`sciavolino2021simple`
+
+a set of simple, entityrich questions based on facts from Wikidata
+(e.g., “Where was Arve Furset born?”)
+
+```{table} Retrieval accuracy for dense and sparse retrieval models on Natural Questions and our EntityQuestions benchmark.
+|  | DPR <br> (NQ) | DPR <br> (multi) | BM25 |
+| :--- | :---: | :---: | :---: |
+| Natural Questions | $\mathbf{8 0 . 1}$ | 79.4 | 64.4 |
+| EntityQuestions (this work) | 49.7 | 56.7 | $\mathbf{7 2 . 0}$ |
+| What is the capital of [E]? | 77.3 | 78.9 | $\mathbf{9 0 . 6}$ |
+| Who is [E] married to? | 35.6 | 48.1 | $\mathbf{8 9 . 7}$ |
+| Where is the headquarter of [E]? | 70.0 | 72.0 | $\mathbf{8 5 . 0}$ |
+| Where was [E] born? | 25.4 | 41.8 | $\mathbf{7 5 . 3}$ |
+| Where was [E] educated? | 26.4 | 41.8 | $\mathbf{7 3 . 1}$ |
+| Who was [E] created by? | 54.1 | 57.7 | $\mathbf{7 2 . 6}$ |
+| Who is [E]'s child? | 19.2 | 33.8 | $\mathbf{8 5 . 0}$ |
+| (17 more types of questions) | $\cdots$ | $\cdots$ | $\cdots$ |
+```
+
+
 ### BEIR
 
 **BEIR (Benchmarking Information Retrieval)** {cite:p}`thakur2021beir` is a **heterogeneous benchmark** designed to evaluate **zero-shot generalization** in retrieval models. It includes **18 datasets across 9 tasks**, covering fact-checking, question answering, news retrieval, biomedical IR, and more. The goal is to assess model performance in **out-of-distribution (OOD) scenarios**, as compared to large, homogeneous datasets like **MS MARCO**.
@@ -1280,6 +1344,22 @@ Key Findings from evaluting BM25 and different dense models:
 4. **Trade-off between accuracy and efficiency** – Re-ranking models (BM25 + CrossEncoder) or late interaction model like ColBERT perform better than BM25, but are computationally expensive compared to a single sparse and dense models.
 5. **Importance of negative sampling and strong teacher distillation** - TAS-B, which employed topic-balanced negative sampling and strong teacher distillation, showing the best performance compared to other deep models.  
 6. **Potential bias towards BM25** - Many benchmarks have relevance labels heavily based on lexical matching, which can disadvantage deep models.
+
+
+```{table} Selected evaluation results in BEIR, including in-domain results (MS MARCO) and zero-shot out-of-domain results.
+| Dataset| BM25 | docT5query | TAS-B | GenQ | ColBERT | BM25+CE |
+| :---: | :---: | :---: | :---:  | :---: | :---: | :---: |
+| MS MARCO (in-domain)| 0.228 |  0.338 |  0.408 | 0.408 | 0.401 | 0.413 |
+| Quora | 0.789  | 0.802  | 0.835 | 0.830 | 0.854 | 0.825 |
+| DBPedia | 0.313 | 0.331  | 0.384 | 0.328 | 0.392 | 0.409 |
+| SciFact | 0.665  | 0.675 | 0.643 | 0.644 | 0.671 | 0.688 |
+| Avg. Performance vs. BM25 |  | +1.6% | -2.8% | -3.6% | +2.5%|+11% |
+
+```
+
+### LoTTE
+
+The [LoTTE benchmark](https://github.com/stanford-futuredata/ColBERT/blob/main/LoTTE.md) (Long-Tail Topic-stratified Evaluation for IR) was introduced in {cite:p}`santhanam2021colbertv2` to complement the out-of-domain tests of BEIR {cite:p}`thakur2021beir`. LoTTE focuses on natural user queries that pertain to long-tail topics, ones that might not be covered by an entity-centric knowledge base like Wikipedia. LoTTE consists of 12 test sets, each with 500-2000 queries and 100k to 200M passages.
 
 ### MTEB
 

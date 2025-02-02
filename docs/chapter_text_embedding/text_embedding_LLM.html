@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>3. Early Neural Language Models &#8212; LLM Foundations</title>
+    <title>21. LLM Text Embedding &#8212; LLM Foundations</title>
   
   
   
@@ -60,11 +60,11 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_foundation/neural_language_models';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_text_embedding/text_embedding_LLM';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="4. Word Embeddings" href="word_embeddings.html" />
-    <link rel="prev" title="2. Language Models" href="language_models.html" />
+    <link rel="next" title="22. Multimodality fundamentals" href="../chapter_multimodality/multimodality_fundamentals.html" />
+    <link rel="prev" title="20. Text Embedding Fundamentals" href="text_embedding_fundamentals.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -179,14 +179,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: LLM in the Age of AI</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="language_models.html">2. Language Models</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">3. Early Neural Language Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="word_embeddings.html">4. Word Embeddings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="transformers.html">5. Transformers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bert.html">6. BERT</a></li>
-<li class="toctree-l1"><a class="reference internal" href="t5.html">7. Seq2Seq: T5 and BART</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GPT_series.html">8. GPT Series</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">2. Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/neural_language_models.html">3. Early Neural Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/word_embeddings.html">4. Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers.html">5. Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/bert.html">6. BERT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/t5.html">7. Seq2Seq: T5 and BART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/GPT_series.html">8. GPT Series</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
@@ -212,9 +212,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">19. Advanced Prompting Techniques</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Text Embedding</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_text_embedding/text_embedding_fundamentals.html">20. Text Embedding Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_text_embedding/text_embedding_LLM.html">21. LLM Text Embedding</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="text_embedding_fundamentals.html">20. Text Embedding Fundamentals</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">21. LLM Text Embedding</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
 <ul class="nav bd-sidenav">
@@ -319,7 +319,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Early Neural Language Models</h1>
+    <h1>LLM Text Embedding</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -329,12 +329,12 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">3.1. Motivation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feed-forward-neural-language-model">3.1.1. Feed-forward Neural Language Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-model">21.1. LLM Embedding Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nv-embed">21.1.1. NV-Embed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-language-model">3.2. Recurrent Neural Language Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">3.3. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-distillation">21.2. LLM Embedding Distillation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">21.3. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -346,87 +346,74 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="early-neural-language-models">
-<h1><span class="section-number">3. </span>Early Neural Language Models<a class="headerlink" href="#early-neural-language-models" title="Link to this heading">#</a></h1>
-<section id="motivation">
-<h2><span class="section-number">3.1. </span>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
-<p>As we mentioned above, <span class="math notranslate nohighlight">\(n\)</span>-gram models are count based methods, aimming to learn the joint distribution of word sequences, with the key assumption that the probability of a word depends only on the n-1 words that precede it.</p>
-<p>It has challenges in language modeling from the following aspects:</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="llm-text-embedding">
+<span id="chapter-text-embedding-sec-text-embedding-llm"></span><h1><span class="section-number">21. </span>LLM Text Embedding<a class="headerlink" href="#llm-text-embedding" title="Link to this heading">#</a></h1>
+<section id="llm-embedding-model">
+<h2><span class="section-number">21.1. </span>LLM Embedding Model<a class="headerlink" href="#llm-embedding-model" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://arxiv.org/pdf/2401.00368">Improving text embeddings with large language models</a>
+<a class="reference external" href="https://arxiv.org/pdf/2405.17428">NV-Embed: Improved Techniques for Training LLMs as Generalist Embedding Models.</a></p>
+<section id="nv-embed">
+<h3><span class="section-number">21.1.1. </span>NV-Embed<a class="headerlink" href="#nv-embed" title="Link to this heading">#</a></h3>
+<p>NV-Embed from Nvidia <span id="id1">[<a class="reference internal" href="text_embedding_fundamentals.html#id1584" title="Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. arXiv preprint arXiv:2405.17428, 2024.">LRX+24</a>]</span> proposed several improvement techniques on LLM-based embedding model, which include:</p>
 <ul class="simple">
-<li><p>Curse of dimensionality when <span class="math notranslate nohighlight">\(n\)</span> becomes large. For example, consider a language with a vocabulary of size <span class="math notranslate nohighlight">\(V = 10^6\)</span>, a 10-gram model would require model parameters of <span class="math notranslate nohighlight">\(V^{10}\)</span>.</p></li>
-<li><p>Difficulty in modeling long sequence dependency due to the <strong>sparsity of the long sequencenes data</strong> as well as the curse of dimensionaltiy for large <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
-<li><p>Inaccuracy in modeling sequences containing rare words, although we can apply smoothing functions to alleviate the difficulty.</p></li>
-<li><p>Poor genearlization to unseen word combination.</p></li>
+<li><p>Model architecture improvement, which introduces a <strong>latent attention layer</strong> to obtain better pooled embeddings.</p></li>
+<li><p>Traing process improvement, which introduces a <strong>two-stage contrastive instruction-tuning method</strong>.</p></li>
 </ul>
-<p>The recent neural language models are good at capturing the semantics of words, and they give good prediction for low frequency sequences.</p>
-<p>These limitations of <span class="math notranslate nohighlight">\(n\)</span>-gram models motivated researchers to explore neural network approaches [<span id="id1">[<a class="reference internal" href="#id1204" title="Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. Journal of machine learning research, 3(Feb):1137–1155, 2003.">BDVJ03</a>, <a class="reference internal" href="#id1205" title="Tomas Mikolov, Martin Karafiát, Lukás Burget, Jan Cernocký, and Sanjeev Khudanpur. Recurrent neural network based language model. In Takao Kobayashi, Keikichi Hirose, and Satoshi Nakamura, editors, INTERSPEECH, 1045–1048. ISCA, 2010. URL: http://dblp.uni-trier.de/db/conf/interspeech/interspeech2010.html#MikolovKBCK10.">MKB+10</a>]</span>] that could capture deeper semantic relationships and longer-range dependencies in language. The resulting neural language models are proved to have the following advantages</p>
+<p>There are two popular methods to obtain the embedding for a sequence of tokens:</p>
 <ul class="simple">
-<li><p>Improved <strong>efficient</strong> representation: Neural networks can learn a compact distributed representations of words (word embeddings), capturing semantic similarities. As a comparison, n-gram model only stores the statistical counting results.</p></li>
-<li><p>Better generalization with efficient model parameters: Neural models can generalize to unseen word combinations more effectively.</p></li>
-<li><p>Handling longer contexts: Recurrent neural network architectures allow for theoretically unlimited context.</p></li>
+<li><p>Mean pooling of the all hidden vectors of the last layer, which is commonly used in bidirectional embedding models.</p></li>
+<li><p>Last <EOS> token embedding, which is more popular for decoder-only LLM based embedding models.</p></li>
 </ul>
-<section id="feed-forward-neural-language-model">
-<h3><span class="section-number">3.1.1. </span>Feed-forward Neural Language Model<a class="headerlink" href="#feed-forward-neural-language-model" title="Link to this heading">#</a></h3>
-<p>The core idea of <span class="math notranslate nohighlight">\(n\)</span>-gram model is nothing but a mechanical counter of co-occurrence of words. In natural language, there are many words that are similar in their meaning as wells as their grammar rules.
-For example, <em>A cat is walking in the living room</em> vs. <em>a dog is running in the bedroom</em> have similar word pairs (cat, dog), (walking, running), (living room, bedroom) and use similar patterns.
-These similarities or word semantic meaning (i.e., the latent representation of words) can be exploited to construct model with much smaller model parameters.</p>
-<p><span id="id2">[<a class="reference internal" href="#id1204" title="Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. Journal of machine learning research, 3(Feb):1137–1155, 2003.">BDVJ03</a>]</span> proposed neural language models, which predict and generate next word based on its context and operating at a low dimensional dense vector space (i.e., word embedding).</p>
-<p>The core idea is that by projecting words into low dimensional space (via learning and gradient descent), words with similar semantics are automatically clustered together, thus providing opportunities for effecient parameterization and mitigating the the curse of dimensionality in <span class="math notranslate nohighlight">\(n\)</span>-gram language models.</p>
-<p>In the feed-forward network model, each word, together with its preceding <span class="math notranslate nohighlight">\(n - 1\)</span> words as context are projected into low-dimensional space and further predict the next word probability. Note that the context has a fixed length of <span class="math notranslate nohighlight">\(n\)</span>, which it is limited in the same way as in <span class="math notranslate nohighlight">\(n\)</span>-gram models [<span class="xref std std-ref">chapter_foundation_fig_language_model_feedforward_model</span>].</p>
-<p>Formally, the model is optimized to maximize</p>
-<div class="math notranslate nohighlight">
-\[{P}\left(w_{t} \mid w_{t-1}, \cdots w_{t-n+1}\right)=\frac{e^{y_{w_{t}}}}{\sum_{i} e^{y_{i}}}.\]</div>
-<p>The <span class="math notranslate nohighlight">\(y_{i}\)</span> is the logic for word <span class="math notranslate nohighlight">\(i\)</span>, given by</p>
+<p>However, both methods have certain limitations. Mean pooling simply takes the average of token embeddings and may dilute the important information from key phrases, meanwhile the semantics of the last <EOS> token embedding may be dominated by last few tokens.</p>
+<p>The latent attention layer aims to improve the <strong>mean pooling method</strong>. Denote the last layer hidden from decoder as the query <span class="math notranslate nohighlight">\(Q \in \mathbb{R}^{l \times d}\)</span>, where <span class="math notranslate nohighlight">\(l\)</span> is the length of sequence, and <span class="math notranslate nohighlight">\(d\)</span> is the hidden dimension. They are sent to attend the latent array <span class="math notranslate nohighlight">\(K=V \in \mathbb{R}^{r \times d}\)</span>, which are <strong>trainable matrices</strong>, used to obtain better representation, where <span class="math notranslate nohighlight">\(r\)</span> is the number of latents in the dictionary. The output of this cross-attention is denoted by <span class="math notranslate nohighlight">\(O \in \mathbb{R}^{l \times d}\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
-y=b+We+U \tanh(d+He)
+O=\operatorname{softmax}\left(Q K^T\right) V.
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(W, H\)</span> are matrices and <span class="math notranslate nohighlight">\(b, d\)</span> are biases. Here <span class="math notranslate nohighlight">\(W\)</span> can optionally zero, meaning no direct connections. <span class="math notranslate nohighlight">\(e = (e_1,...,e_{n-1})\)</span> is the concatenations of word embeddings of each preceding token.</p>
-<p>Feed-forward neural language model brings several improvements over the traditional <span class="math notranslate nohighlight">\(n\)</span>-gram language model: it provides a <strong>compact and efficient parameterization</strong> to capture word dependencies among text data. Recall that <span class="math notranslate nohighlight">\(n\)</span>-gram model would have to store all observed <span class="math notranslate nohighlight">\(n\)</span>-grams. However, feed-forward neural language model still meet challenges to capture long-distance dependencies in natural language. In the feed-forward neural language model, <strong>capturing long-distance dependencies will require an increase of the context window size</strong>, which linearly scales with model parameters <span class="math notranslate nohighlight">\(W\)</span>. Another drawback is that a word that appears at different locations will be multiplied by different weights to get its embedding, which is inconsistent.</p>
-<figure class="align-default" id="id1586">
-<img alt="../../_images/FeedForwardModel_v2.png" src="../../_images/FeedForwardModel_v2.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Feedforward neural netowk based language model.</span><a class="headerlink" href="#id1586" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-</section>
-</section>
-<section id="recurrent-neural-language-model">
-<h2><span class="section-number">3.2. </span>Recurrent Neural Language Model<a class="headerlink" href="#recurrent-neural-language-model" title="Link to this heading">#</a></h2>
-<p>In recurrent network model [<a class="reference internal" href="#chapter-foundation-fig-language-model-recurrent-model"><span class="std std-numref">Fig. 3.2</span></a>], context modeling ability is extended via recurrent connections and context modeling length is theoretically unlimited.
-Specially, let the recurrent network input be <span class="math notranslate nohighlight">\(x\)</span>, hidden layer output be <span class="math notranslate nohighlight">\(h\)</span>  and output probabilities be <span class="math notranslate nohighlight">\(y\)</span>. Input vector <span class="math notranslate nohighlight">\(x_t\)</span> is a concatenation of a word vector <span class="math notranslate nohighlight">\(w_t\)</span> and the previous hidden layer output <span class="math notranslate nohighlight">\(s_{t-1}\)</span>, which represents the context. To summarize, we have recurrent computation given by</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align}
-	x_t &amp;=\operatorname{Concat}(e_t,h_{t-1}) \\
-	h_t &amp;=\operatorname{Sigmoid}\left(W_xx_t + b_x\right) \\
-\end{align}
-\end{split}\]</div>
-<p>The prediction probability at each <span class="math notranslate nohighlight">\(t\)</span> is given by</p>
-<div class="math notranslate nohighlight">
-\[	p(y_{k}(t) =\operatorname{Softmax}\left(W_ys(t) + b_y\right).\]</div>
-<figure class="align-default" id="chapter-foundation-fig-language-model-recurrent-model">
-<a class="reference internal image-reference" href="../../_images/RecurrentModel_v2.png"><img alt="../../_images/RecurrentModel_v2.png" src="../../_images/RecurrentModel_v2.png" style="width: 649.2px; height: 669.6px;" />
+<p>Intuitively, each token’s represention in <span class="math notranslate nohighlight">\(O\)</span> (which is a <span class="math notranslate nohighlight">\(d\)</span> vector) is a linear combination of the <span class="math notranslate nohighlight">\(r\)</span> row vectors in <span class="math notranslate nohighlight">\(V\)</span>(or <span class="math notranslate nohighlight">\(K\)</span>).</p>
+<p>This has the spirit of <strong>sparse dictionary learning</strong><span id="id2">[<a class="reference internal" href="text_embedding_fundamentals.html#id1104" title="Julien Mairal, Francis Bach, Jean Ponce, and Guillermo Sapiro. Online dictionary learning for sparse coding. In Proceedings of the 26th annual international conference on machine learning, 689–696. ACM, 2009.">MBPS09</a>]</span>, which aims to learn a <strong>sparse set of atom vectors</strong>, such that each representation can be transformed to a linear combination of atom vectors.</p>
+<p>An additional 2-layer MLP was added to further transfrom the <span class="math notranslate nohighlight">\(O\)</span> vectors.  Finally, a mean pooling after MLP layers to obtain the embedding of whole sequences.</p>
+<p>In the paper, authors used latent attention layer with <span class="math notranslate nohighlight">\(r\)</span> of 512 and the number of heads as 8 for multi-head attention.</p>
+<figure class="align-default" id="chapter-application-ir-llm-fig-embedding-nv-embedding-latent-attention-layer">
+<a class="reference internal image-reference" href="../../_images/latent_attention_layer.png"><img alt="../../_images/latent_attention_layer.png" src="../../_images/latent_attention_layer.png" style="width: 644.0px; height: 252.8px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.2 </span><span class="caption-text">Recurrent neural network based language model.</span><a class="headerlink" href="#chapter-foundation-fig-language-model-recurrent-model" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 21.1 </span><span class="caption-text">The illustration of proposed architecture design comprising of decoder-only LLM followed
+by latent attention layer. Latent attention layer functions as a form of cross-attention where the decoder-only LLM output serves as queries (Q) and trainable latent array passes through the keyvalue inputs, followed by MLP. Image from <span id="id3">[<a class="reference internal" href="text_embedding_fundamentals.html#id1584" title="Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. arXiv preprint arXiv:2405.17428, 2024.">LRX+24</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-embedding-nv-embedding-latent-attention-layer" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Compared with <span class="math notranslate nohighlight">\(n\)</span>-gram language model and feed-forward neural language model, **RNN language model can in principle process input of any length without increasing the model size. **</p>
-<p>RNN language model also has several drawbacks: Computing a conditional probability <span class="math notranslate nohighlight">\(p(w_t|w_{1:t-1})\)</span> is expensive. One mitigating strategy is to cache and re-use previous computed results or to pre-compute conditional probabilities for frequent <span class="math notranslate nohighlight">\(n\)</span>-grams.</p>
+<p>The two-stage instruction tuning method include</p>
+<ul class="simple">
+<li><p>First-stage contrastive training with instructions on a variety of retrieval datasets, utilizing in-batch negatives and curated hard-negative examples.</p></li>
+<li><p>Second stage contrastive instruction-tuning on a combination of retrieval and non-retrieval datasets (e.g., classification ) without applying the trick of in-batch negatives.</p></li>
+</ul>
+<p>The design rationale behind the two-stage finetunings are:</p>
+<ul class="simple">
+<li><p>It is found that retrieval task presents greater difficulty compared to the non-retrieval tasks there is one stage training fully dedicated to the retrieval task.</p></li>
+<li><p>In second stage, as the retrieval and non-retrieval tasks are blended, it is necessary to remove in-batch negatives trick. Since the negative may come from the the class and are not true negatives.</p></li>
+</ul>
+</section>
+</section>
+<section id="llm-embedding-distillation">
+<h2><span class="section-number">21.2. </span>LLM Embedding Distillation<a class="headerlink" href="#llm-embedding-distillation" title="Link to this heading">#</a></h2>
+<p><span id="id4">[<a class="reference internal" href="text_embedding_fundamentals.html#id1600" title="Jinhyuk Lee, Zhuyun Dai, Xiaoqi Ren, Blair Chen, Daniel Cer, Jeremy R Cole, Kai Hui, Michael Boratko, Rajvi Kapadia, Wen Ding, and others. Gecko: versatile text embeddings distilled from large language models. arXiv preprint arXiv:2403.20327, 2024.">LDR+24</a>]</span></p>
 </section>
 <section id="bibliography">
-<h2><span class="section-number">3.3. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id3">
+<h2><span class="section-number">21.3. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id5">
 <div role="list" class="citation-list">
-<div class="citation" id="id1204" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>BDVJ03<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
-<p>Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. <em>Journal of machine learning research</em>, 3(Feb):1137–1155, 2003.</p>
+<div class="citation" id="id1569" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LRX+24<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id3">2</a>)</span>
+<p>Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. <em>arXiv preprint arXiv:2405.17428</em>, 2024.</p>
 </div>
-<div class="citation" id="id1205" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">MKB+10</a><span class="fn-bracket">]</span></span>
-<p>Tomas Mikolov, Martin Karafiát, Lukás Burget, Jan Cernocký, and Sanjeev Khudanpur. Recurrent neural network based language model. In Takao Kobayashi, Keikichi Hirose, and Satoshi Nakamura, editors, <em>INTERSPEECH</em>, 1045–1048. ISCA, 2010. URL: <a class="reference external" href="http://dblp.uni-trier.de/db/conf/interspeech/interspeech2010.html#MikolovKBCK10">http://dblp.uni-trier.de/db/conf/interspeech/interspeech2010.html#MikolovKBCK10</a>.</p>
+<div class="citation" id="id1585" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">LDR+24</a><span class="fn-bracket">]</span></span>
+<p>Jinhyuk Lee, Zhuyun Dai, Xiaoqi Ren, Blair Chen, Daniel Cer, Jeremy R Cole, Kai Hui, Michael Boratko, Rajvi Kapadia, Wen Ding, and others. Gecko: versatile text embeddings distilled from large language models. <em>arXiv preprint arXiv:2403.20327</em>, 2024.</p>
+</div>
+<div class="citation" id="id1089" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">MBPS09</a><span class="fn-bracket">]</span></span>
+<p>Julien Mairal, Francis Bach, Jean Ponce, and Guillermo Sapiro. Online dictionary learning for sparse coding. In <em>Proceedings of the 26th annual international conference on machine learning</em>, 689–696. ACM, 2009.</p>
 </div>
 </div>
 </div>
@@ -446,7 +433,7 @@ Specially, let the recurrent network input be <span class="math notranslate nohi
         },
         kernelOptions: {
             name: "python3",
-            path: "./docs/chapter_foundation"
+            path: "./docs/chapter_text_embedding"
         },
         predefinedOutput: true
     }
@@ -464,20 +451,20 @@ Specially, let the recurrent network input be <span class="math notranslate nohi
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="language_models.html"
+       href="text_embedding_fundamentals.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">2. </span>Language Models</p>
+        <p class="prev-next-title"><span class="section-number">20. </span>Text Embedding Fundamentals</p>
       </div>
     </a>
     <a class="right-next"
-       href="word_embeddings.html"
+       href="../chapter_multimodality/multimodality_fundamentals.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">4. </span>Word Embeddings</p>
+        <p class="prev-next-title"><span class="section-number">22. </span>Multimodality fundamentals</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -497,12 +484,12 @@ Specially, let the recurrent network input be <span class="math notranslate nohi
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">3.1. Motivation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feed-forward-neural-language-model">3.1.1. Feed-forward Neural Language Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-model">21.1. LLM Embedding Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nv-embed">21.1.1. NV-Embed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-language-model">3.2. Recurrent Neural Language Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">3.3. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-distillation">21.2. LLM Embedding Distillation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">21.3. Bibliography</a></li>
 </ul>
   </nav></div>
 
