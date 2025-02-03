@@ -354,7 +354,7 @@ document.write(`
 <a class="reference external" href="https://arxiv.org/pdf/2405.17428">NV-Embed: Improved Techniques for Training LLMs as Generalist Embedding Models.</a></p>
 <section id="nv-embed">
 <h3><span class="section-number">21.1.1. </span>NV-Embed<a class="headerlink" href="#nv-embed" title="Link to this heading">#</a></h3>
-<p>NV-Embed from Nvidia <span id="id1">[<a class="reference internal" href="text_embedding_fundamentals.html#id1584" title="Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. arXiv preprint arXiv:2405.17428, 2024.">LRX+24</a>]</span> proposed several improvement techniques on LLM-based embedding model, which include:</p>
+<p>NV-Embed from Nvidia <span id="id1">[<a class="reference internal" href="text_embedding_fundamentals.html#id1585" title="Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. arXiv preprint arXiv:2405.17428, 2024.">LRX+24</a>]</span> proposed several improvement techniques on LLM-based embedding model, which include:</p>
 <ul class="simple">
 <li><p>Model architecture improvement, which introduces a <strong>latent attention layer</strong> to obtain better pooled embeddings.</p></li>
 <li><p>Traing process improvement, which introduces a <strong>two-stage contrastive instruction-tuning method</strong>.</p></li>
@@ -371,7 +371,7 @@ document.write(`
 O=\operatorname{softmax}\left(Q K^T\right) V.
 \]</div>
 <p>Intuitively, each token’s represention in <span class="math notranslate nohighlight">\(O\)</span> (which is a <span class="math notranslate nohighlight">\(d\)</span> vector) is a linear combination of the <span class="math notranslate nohighlight">\(r\)</span> row vectors in <span class="math notranslate nohighlight">\(V\)</span>(or <span class="math notranslate nohighlight">\(K\)</span>).</p>
-<p>This has the spirit of <strong>sparse dictionary learning</strong><span id="id2">[<a class="reference internal" href="text_embedding_fundamentals.html#id1104" title="Julien Mairal, Francis Bach, Jean Ponce, and Guillermo Sapiro. Online dictionary learning for sparse coding. In Proceedings of the 26th annual international conference on machine learning, 689–696. ACM, 2009.">MBPS09</a>]</span>, which aims to learn a <strong>sparse set of atom vectors</strong>, such that each representation can be transformed to a linear combination of atom vectors.</p>
+<p>This has the spirit of <strong>sparse dictionary learning</strong><span id="id2">[<a class="reference internal" href="text_embedding_fundamentals.html#id1105" title="Julien Mairal, Francis Bach, Jean Ponce, and Guillermo Sapiro. Online dictionary learning for sparse coding. In Proceedings of the 26th annual international conference on machine learning, 689–696. ACM, 2009.">MBPS09</a>]</span>, which aims to learn a <strong>sparse set of atom vectors</strong>, such that each representation can be transformed to a linear combination of atom vectors.</p>
 <p>An additional 2-layer MLP was added to further transfrom the <span class="math notranslate nohighlight">\(O\)</span> vectors.  Finally, a mean pooling after MLP layers to obtain the embedding of whole sequences.</p>
 <p>In the paper, authors used latent attention layer with <span class="math notranslate nohighlight">\(r\)</span> of 512 and the number of heads as 8 for multi-head attention.</p>
 <figure class="align-default" id="chapter-application-ir-llm-fig-embedding-nv-embedding-latent-attention-layer">
@@ -379,7 +379,7 @@ O=\operatorname{softmax}\left(Q K^T\right) V.
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 21.1 </span><span class="caption-text">The illustration of proposed architecture design comprising of decoder-only LLM followed
-by latent attention layer. Latent attention layer functions as a form of cross-attention where the decoder-only LLM output serves as queries (Q) and trainable latent array passes through the keyvalue inputs, followed by MLP. Image from <span id="id3">[<a class="reference internal" href="text_embedding_fundamentals.html#id1584" title="Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. arXiv preprint arXiv:2405.17428, 2024.">LRX+24</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-embedding-nv-embedding-latent-attention-layer" title="Link to this image">#</a></p>
+by latent attention layer. Latent attention layer functions as a form of cross-attention where the decoder-only LLM output serves as queries (Q) and trainable latent array passes through the keyvalue inputs, followed by MLP. Image from <span id="id3">[<a class="reference internal" href="text_embedding_fundamentals.html#id1585" title="Chankyu Lee, Rajarshi Roy, Mengyao Xu, Jonathan Raiman, Mohammad Shoeybi, Bryan Catanzaro, and Wei Ping. Nv-embed: improved techniques for training llms as generalist embedding models. arXiv preprint arXiv:2405.17428, 2024.">LRX+24</a>]</span>.</span><a class="headerlink" href="#chapter-application-ir-llm-fig-embedding-nv-embedding-latent-attention-layer" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The two-stage instruction tuning method include</p>
@@ -396,7 +396,7 @@ by latent attention layer. Latent attention layer functions as a form of cross-a
 </section>
 <section id="llm-embedding-distillation">
 <h2><span class="section-number">21.2. </span>LLM Embedding Distillation<a class="headerlink" href="#llm-embedding-distillation" title="Link to this heading">#</a></h2>
-<p><span id="id4">[<a class="reference internal" href="text_embedding_fundamentals.html#id1600" title="Jinhyuk Lee, Zhuyun Dai, Xiaoqi Ren, Blair Chen, Daniel Cer, Jeremy R Cole, Kai Hui, Michael Boratko, Rajvi Kapadia, Wen Ding, and others. Gecko: versatile text embeddings distilled from large language models. arXiv preprint arXiv:2403.20327, 2024.">LDR+24</a>]</span></p>
+<p><span id="id4">[<a class="reference internal" href="text_embedding_fundamentals.html#id1601" title="Jinhyuk Lee, Zhuyun Dai, Xiaoqi Ren, Blair Chen, Daniel Cer, Jeremy R Cole, Kai Hui, Michael Boratko, Rajvi Kapadia, Wen Ding, and others. Gecko: versatile text embeddings distilled from large language models. arXiv preprint arXiv:2403.20327, 2024.">LDR+24</a>]</span></p>
 </section>
 <section id="bibliography">
 <h2><span class="section-number">21.3. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>

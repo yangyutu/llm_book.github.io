@@ -142,7 +142,7 @@ the anisotropy problem), as the objective pushes
 negative instances apart.
 
 
-## BERT based embeddings
+## Transformer based embeddings
 ### Sentence-BERT
 
 While a pretrained BERT has provided contextulized embeddings for each token, it is found that high-quality, semantically meaning sentence embeddings can not be directly derived from token embedding. 
@@ -267,6 +267,10 @@ The workflow of CERT. Given the large-scale input texts (without labels) from
 		Then we finetune the CERT model using the input texts and their associated
 		labels in the target task and get the final model that performs the target task.
 ```
+
+### Sentence T5
+
+{cite:p}`ni2021sentence`
 
 ### Benchmark dataset
 #### MultiNLI data

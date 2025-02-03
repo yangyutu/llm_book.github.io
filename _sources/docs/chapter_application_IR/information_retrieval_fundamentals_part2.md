@@ -131,36 +131,72 @@ The architecture of CNN-DSSM. Each term together with its left and right context
 
 ## Transfomer Retrievers and Rerankers
 
-#### Why Transformers?
+### Overview
 
-BERT (Bidirectional Encoder Representations from Transformers) {cite}`devlin2018bert` and its transformer variants {cite}`lin2021survey` represent the state-of-the-art modeling strategies in a broad range of natural language processing tasks. The application of BERT in information retrieval and ranking was pioneered by {cite}`nogueira2019passage, nogueira2019multi`. The fundamental characteristics of BERT architecture is self-attention. By pretraining BERT on large scale text data, BERT encoder can produce contextualized embeddings can better capture semantics of different linguistic units. By adding additional prediction head to the BERT backbone, such BERT encoders can be fine-tuned to retrieval related tasks. In this section, we will go over the application of different BERT-based models in neural information retrieval and ranking tasks. 
+BERT (Bidirectional Encoder Representations from Transformers) {cite}`devlin2018bert` and its transformer variants {cite}`lin2021survey` represent the state-of-the-art modeling strategies in a broad range of natural language processing tasks. The application of BERT in information retrieval and ranking was pioneered by {cite}`nogueira2019passage, nogueira2019multi`. The fundamental characteristics of BERT architecture is self-attention. By pretraining BERT on large scale text data, BERT encoder can produce contextualized embeddings can better capture semantics of different linguistic units. By adding additional prediction head to the BERT backbone, such BERT encoders can be fine-tuned to retrieval related tasks. 
 
-(ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:monoBERT)=
-#### Mono-BERT (Cross-Encoder) For Point-wise Ranking
+In general, there are two mainstream architectures in using BERT for information retrieval and ranking tasks [{cite:p}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:biencoder_cross_encoder_arch`].  
+* Bi-encoder, also known as dual-encoder or twin-tower models, employ two separate encoders to generate independent embeddings for each input text segment. The relevance label is predicted using similarity scores between the query embedding and the doc embedding. 
+* Cross-encoder, process both input text segments together within a single encoder. This joint encoding allows the model to capture richer relationships and dependencies between the text segments, leading to higher accuracy in tasks that require a deeper understanding of the semantic similarity or relatedness between the inputs.
 
-```{figure} ../img/chapter_application_IR/ApplicationIRSearch/DeepRetrievalModels/Berts/BERT/mono_bert_arch.png
+```{figure} ../img/chapter_application_IR/ApplicationIRSearch/DeepRetrievalModels/Berts/BERT/biencoder_bert_arch.png
 :scale: 30%
-:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:monobertarch
-The architecture of Mono-BERT for document relevance ranking. The input is the concatenation of the query token sequence and the candidate document token sequence. Once the input sequence is passed through the model, we use the [CLS] embedding as input to a single layer neural network to obtain a posterior probability $p_{i}$ of the candidate $d_{i}$ being relevant to query $q$. 
+:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:biencoder_cross_encoder_arch
+(Left) The Bi-Encoder architecture for document relevance ranking. The query and document inputs are passed to query encoder and document encoder separately. The [CLS] embedding for query encoder and the doc encoder are used to compute similiarity score, as the proxy of relevance score. (Right) The Cross-Encoder architecture for document relevance ranking. The input is the concatenation of the query token sequence and the candidate document token sequence. Once the input sequence is passed through the model, we use the [CLS] embedding as input to a single layer neural network to obtain a posterior probability $p_{i}$ of the candidate $d_{i}$ being relevant to query $q$. 
 ```
 
-The first application of BERT in document retrieval is using BERT as a cross encoder, where the query token sequence and the document token sequence are concatenated via [SEP] token and encoded together. This architecture [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:monobertarch`], called mono-BERT, was first proposed by {cite}`nogueira2019passage, nogueira2019multi`.
+### Bi-Encoder Retriever
+
+Using Bi-Encoder as retriever was first explored in passage retrieval **RepBERT** {cite:p}`zhan2020repbert` and OpenDomain QA **DPR** {cite:p}`karpukhin2020dense`.
+
+In RepBERT, the query encoder and document encoder shares the same weight. The encoding is the mean of the last hidden states of input tokens. In DPR, the query encoder and document encoder are separate encoder, and the text encoding is taking the representation at the [CLS].
+
+The relevance score between a query and a passage is expressed as the similarity between the query and the passage embeddings, given by
+
+$$\operatorname{sim}(q, p)=E_Q(q)^{\top} E_P(p).$$
+
+
+Loss Function The goal of training is to make the embedding inner products of relevant pairs of queries and documents larger than those of irrelevant pairs. Let $\left(q, d_1^{+}, \ldots, d_m^{+}, d_{m+1}^{-}, \ldots, d_n^{-}\right)$be one instance of the input training batch. The instance contains one query $q, m$ relevant (positive) documents and $n-m$ irrelevant (negative) documents. We adopt MultiLabelMarginLoss [16] as the loss function:
+
+$$
+\mathcal{L}\left(q, d_1^{+}, \ldots, d_m^{+}, d_{m+1}^{-}, \ldots, d_n^{-}\right)=\frac{1}{n} \cdot \sum_{1 \leq i \leq m, m<j \leq n} \max \left(0,1-\left(\operatorname{Rel}\left(q, d_i^{+}\right)-\operatorname{Rel}\left(q, d_j^{-}\right)\right)\right)
+$$
+
+Let $\mathcal{D}=\left\{\left\langle q_i, p_i^{+}, p_{i, 1}^{-}, \cdots, p_{i, n}^{-}\right\rangle\right\}_{i=1}^m$ be the training data that consists of $m$ instances. Each instance contains one question $q_i$ and one relevant (positive) passage $p_i^{+}$, along with $n$ irrelevant (negative) passages $p_{i, j}^{-}$. We optimize the loss function as the negative $\log$ likelihood of the positive passage:
+
+$$
+\begin{aligned}
+& L\left(q_i, p_i^{+}, p_{i, 1}^{-}, \cdots, p_{i, n}^{-}\right) \\
+= & -\log \frac{e^{\operatorname{sim}\left(q_i, p_i^{+}\right)}}{e^{\operatorname{sim}\left(q_i, p_i^{+}\right)}+\sum_{j=1}^n e^{\operatorname{sim}\left(q_i, p_{i, j}^{-}\right)}}
+\end{aligned}
+$$
+
+
+
+(ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:monoBERT)=
+### Cross-Encoder For Point-wise Ranking
+
+
+
+The first application of BERT in document retrieval is using BERT as a cross encoder, where the query token sequence and the document token sequence are concatenated via [SEP] token and encoded together. This architecture [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:biencoder_cross_encoder_arch`], called **mono-BERT**, was first proposed by {cite}`nogueira2019passage, nogueira2019multi`.
 
 To meet the token sequence length constraint of a BERT encoder (e.g., 512), we might need to truncate the query (e.g, not greater than 64 tokens) and the candidate document token sequence such that the total concatenated token sequence have a maximum length of 512 tokens.
 
-Once the input sequence is passed through the model, we use the [CLS] embedding as input to a single layer neural network to obtain a posterior probability $p_{i}$ of the candidate $d_{i}$ being relevant to query $q$. The posterior probability can be used to rank documents.
+Once the input sequence is passed through the model, we use the [CLS] embedding as input to a single layer neural network to obtain a posterior **binary classification probability** $p_{i}$ of the candidate $d_{i}$ being relevant to query $q$. The posterior probability can be used to rank documents.
 
 The training data can be represented by a collections of triplets $(q, J_P^q, J_N^q), q\in Q$, where $Q$ is the set of queries, $J_{P}^q$ is the set of indexes of the relevant candidates associated with query $q$ and $J_{N}^q$ is the set of indexes of the nonrelevant candidates.
 
 The encoder can be fine-tuned using cross-entropy loss:
 
 $$
-L_{\text {mono-BERT}}=-\sum_{q\in Q}( \sum_{j \in J_{P}^q} \log \left(s_{j}\right)-\sum_{j \in J_{N}^q} \log \left(1-s_{j}\right) ).
+L_{\text {mono-BERT}}=-\sum_{q\in Q}( \sum_{j \in J_{P}^q} \log \left(p_{j}\right)-\sum_{j \in J_{N}^q} \log \left(1-p_{j}\right) )
 $$
+
+where $p_j$ is the probability that $q$ is relevant to passage $P$.
 
 During training, each batch can consist of a query and its candidate documents (include both positive and negative) produced by previous retrieval layers.
 
-#### Duo-BERT For Pairwise Ranking
+### Duo-BERT For Pairwise Ranking
 
 
 
@@ -188,7 +224,7 @@ At inference time, the obtained $k(k -1)$ pairwise probabilities are used to pro
 ```{math}
 \begin{align*}
 \operatorname{SUM}:  s_{i} &=\sum_{j \in J_{i}} p_{i, j} \\
-	\operatorname{BINARY}: s_{i} &=\sum_{j \in J_{i}} \bm{1}_{p_{i, j} > 0.5} \\
+	\operatorname{BINARY}: s_{i} &=\sum_{j \in J_{i}} \mathbf{1}_{p_{i, j} > 0.5} \\
 	\operatorname{MIN}: s_{i}  &=\min _{j \in J_{i}} p_{i, j} \\
 	\operatorname{MAX}: s_{i} &=\max _{j \in J_{i}} p_{i, j} \\
 	\operatorname{SAMPLE}: s_{i}&=\sum_{j \in J_{i}(m)} p_{i, j}
@@ -198,7 +234,7 @@ where $J_i = \{1 <= j <= k, j\neq i\}$ and $J_i(m)$ is $m$ randomly sampled elem
 
 The SUM method measures the pairwise agreement that candidate $d_{i}$ is more relevant than the rest of the candidates $\left\{d_{j}\right\}_{j \neq i^{*}}$. The BINARY method resembles majority vote. The Min (MAX) method measures the relevance of $d_{i}$ only against its strongest (weakest) competitor. The SAMPLE method aims to decrease the high inference costs of pairwise computations via sampling. Comparison studies using MS MARCO dataset suggest that SUM and BINARY give the best results.
 
-#### Multistage Retrieval And Ranking Pipeline
+### Multistage Retrieval and Ranking Pipeline
 
 ```{figure} ../img/chapter_application_IR/ApplicationIRSearch/DeepRetrievalModels/Berts/BERT/multistage_retrieval_ranking_bert.png
 :scale: 40%
@@ -716,26 +752,34 @@ In generating these negative examples, the negative-generation model (e.g., BM25
 - Distribution mismatch, the negatives generated by the static model might quickly become less hard since the target model is constantly evolving.
 - The generated negatives can have a higher risk of being false negatives to the target model because negative-generation model and the target model are two different models.  
 
-#### Dynamic Hard Negative Examples
+#### Dynamic Hard Negative Mining
 
-Dynamic hard negative mining is a scheme proposed in ANCE{cite:p}`xiong2020approximate`. The core idea is to use the target model at previous checkpoint as the negative-generation model [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:ancenegativesamplingdemo`]. However, this negative mining approach is rather computationally demanding since corpus index need updates at every checkpoint. 
+Dynamic hard negative mining is a scheme first proposed in ANCE{cite:p}`xiong2020approximate`. The core idea is to use the target model at **previous checkpoint** as the negative-generation model [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:ancenegativesamplingdemo`], instead of only using in-batch local negatives. 
+Specifically, checkpoints from previous epoch iteration is used to retrieve top candidates. These candidates, excluding labeled positives, are used as hard negatives. As shown in {numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:ancenegativesamplingembedding`, these mined hard negatives are lying rather closer to the postive compared random negatives as well as BM25 negatives.
+
+{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:ancenegativesamplingdemo` shows the workflow for dynamic negative mining. However, this negative mining approach is rather computationally demanding since corpus index need updates at every checkpoint. 
+
+```{figure} ../img/chapter_application_IR/ApplicationIRSearch/TrainingDataSampling/NegativeSampling/ANCE_negative_sampling_embedding_space_demo.png
+:scale: 45%
+:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:ancenegativesamplingembedding
+T-SNE representations of query, relevant documents, negative training instances
+from BM25 (BM25 Neg) or randomly sampled (Rand Neg), and testing negatives (DR Neg) in dense retrieval. Image from {cite}`xiong2020approximate`.
+```
 
 ```{figure} ../img/chapter_application_IR/ApplicationIRSearch/TrainingDataSampling/NegativeSampling/ANCE_negative_sampling_demo.png
 :scale: 45%
-:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:ancenegativesamplingdemo
+:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:ancenegativesampling
 Dynamic hard negative sampling from ANCE asynchronous training framework. Negatives are drawn from index produced using models at the previous checkpoint. Image from {cite}`xiong2020approximate`.
 ```
-<!-- \begin{remark rom ANCE]
 
-	Based on our analysis, we propose Approximate nearest neighbor Negative Contrastive Estimation (ANCE), a new contrastive representation learning mechanism for dense retrieval. Instead of random or in-batch local negatives, ANCE constructs global negatives using the beingoptimized DR model to retrieve from the entire corpus. 
+RocketQA {cite:p}`qu2020rocketqa` follows similar idea in ANCE, but further leverages cross-encoder at the re-ranking stage  to generate de-noised hard negatives:
+* Top-ranked passages from the retriever's output, excluding the labeled positive passages, are used as hard negatives.
+* This will bring false negatives since annotators usually only annotate a few top-retrieved passages, therefore the cross-encoder ranker needs to get involve to remove false negatives.
 
-	This fundamentally aligns the distribution of negative samples in training and of irrelevant documents to separate in testing. From the variance reduction perspective, these ANCE negatives lift the upper bound of per instance gradient norm, reduce the variance of the
-	stochastic gradient estimation, and lead to faster learning convergence.
-\end{remark} -->
 (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:large-scale-negatives)=
-#### Large-Scale Negatives
+#### Cross-Batch Large-Scale Negatives
 
-In-batch negatives offers an efficient way to construct many negatives during training. During multiple GPU training [examplified by **RocketQA**{cite}`qu2020rocketqa`], in-batch negatives can be generalized to cross-batch negatives. 
+Fundamentally, we want large-scale negatives to better sample the underlying continuous, highdimensional embedding space. In-batch negatives offers an efficient way to construct many negatives during training; however, the number of negatives are limited by GPU memory that determines the batch size. During multiple GPU training [examplified by **RocketQA**{cite}`qu2020rocketqa`], in-batch negatives can be generalized to cross-batch negatives to generate large-scale negatives. 
 
 Specifically,
 * We first compute the document embeddings within each single GPU, and then share these documents embeddings among all the GPUs.
@@ -747,7 +791,21 @@ Specifically,
 The comparison of in-batch negative and cross-batch negative during multi-gpu training. Image from {cite}`qu2020rocketqa`.
 ```
 
-Even in the single-GPU training setting, we can leverage queue to construct large-scale negatives [**MoCo** {cite}`chen2020improvedbaselinesmomentumcontrastive`]. The key idea is that instead of discarding embeddings from previous batches, we can use a rolling queue to store them and use them as additional negatives for current batch.
+(ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:momentum-negatives)=
+#### Momentum Negatives
+
+Even in the single-GPU training setting, we can leverage queue to construct large-scale negatives [**MoCo** {cite}`chen2020improvedbaselinesmomentumcontrastive`]. 
+
+Fundamentally, we want the negatives are coming from the same or similar encoder so that their comparisons in the contrastive learning are consistent.
+
+MoCo leverages an additional momentum network, parameterized by$\theta_k$, to generate representations that are used as negatives for the main network. The parameters of the key network does not update from graident descent, instead, it is updated from the parameters of the main network network by using a exponential moving average:
+
+$$
+\theta_k \leftarrow m \theta_k+(1-m) \theta_q,
+$$
+
+where $m$ is the momentum parameter that takes its value in $[0,1]$. A queue is used to enque representations from the momentum network, which also exits old batch after exceeding queue size. The size of the queue controls the number of negative examples that the main network can see. One example application of Moco is {cite:p}`izacard2021unsupervised` [code](https://github.com/facebookresearch/contriever)
+
 
 
 #### Hard Positives
@@ -762,6 +820,29 @@ Hard negative examples produced from static or dynamic negative mining methods a
 #### False Positives
 
 Because of the noise in the labeling process (e.g., based on click data), it is also possible that a positive labeled document turns out to be irrelevant. To reduce false positive examples, one can develop more robust labeling process and merge labels from multiple sources of signals. 
+
+### Data Augmentation
+
+To alleviate the issue of limited labeled training data for bi-encoder, one can leverage the following strategy:
+* Use existing bi-encoder to retrieve top-$k$ passages
+*  Use cross-encoder or LLM to denoise generated queries by predicting relevance label, and only pseudo-label positive and negative pair with high-confidence scores.
+
+
+In the case that we want to adapt a generic retrieval models to a highly specialized domain (e.g., medical, law, scientific), we can consider  a LLM-based approach{cite:p}`dai2022promptagator`, PROMPTAGATOR, to enhance task-specific retrievers.
+
+As shown in the {numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2_fig_promptagator_demo`, PROMPTAGATOR consists of three components: 
+* Prompt-based query generation, a task-specific prompt will be combined with a LLM to produce queries for all documents or passages.
+* Consistency filtering, which cleans the generated data based on round-trip consistency - query should be answered by the passage from which the query was generated. 
+* Retriever training, in which a retriever will be trained using the filtered synthetic data.
+
+
+```{figure} ../img/chapter_application_IR/ApplicationIRSearch/TrainingDataSampling/DataAugmentation/promptagator_training.png
+---
+scale: 70%
+name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2_fig_promptagator_demo
+---
+Illustration of PROMPTAGATOR, which generates synthetic data using LLM. Synthetic data, after consistency filtering, is used to train a retriever in labeled data scarcity domain. Image from {cite:p}`dai2022promptagator`.
+```
 
 
 ## Knowledge Distillation
@@ -912,9 +993,29 @@ where $\hat{r}_{i j}^{(k)}$ is the predicted rank of the $j$-th candidate text b
 With the fused score, softened probability vector can be obtained by taking Softmax with temperature as the scaling factor.
 
 
+## Pretraining for Retrieval
+
+### Contriever
+
+Contriever {cite:p}`izacard2021unsupervised` explores the limits of contrastive pre-training to learn dense text retrievers. Key tecchniques include positive example generation from unlabeled text, large-scale negative sampling, and pretraining text selection and preparation. 
+
+Two **positive example generation** techniques are considered:
+* **Inverse Cloze Task** - Given a sequence of text $\left(w_1, \ldots, w_n\right)$, ICT samples a span $\left(w_a, \ldots, w_b\right)$, where $1 \leq a \leq b \leq n$, uses the tokens of the span as the query and the complement $\left(w_1, \ldots, w_{a-1}, w_{b+1}, \ldots, w_n\right)$ as the positive example.
+* **Random Cropping** - Samples independently two spans from a document to form a positive pair.
+
+To enable the construction of **large-scale negative samples**, MoCo technique (also see {ref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:momentum-negatives`) is used to train models with a large number of negative examples. Number of negative examples are ranging from 2,048 to 131,072. 
+
+**Pretraining dataset** consists of Wikipedia and CCNet {cite:p}`wenzek2019ccnet`. CCNet extracts clean text from Common Crawl wet files and cleans them using a pretrained 5-gram model pretrained on Wikipedia over 18 different languages - by filtering perplexity lower than an given threshold. The model filters out bad quality texts such as code or tables. **FastText** is used for language identification and deduplication using hash of the content.
+
+
+Key observations are: 
+* Neural networks trained without supervision using contrastive learning exhibit good retrieval performance, which are competitive with BM25 (albeit not state-of-the-art).
+* The number of negatives leads to better retrieval performance, especially in the unsupervised setting. However, this effect is not equally strong for all datasets.
+* These results can be further improved by fine-tuning on the supervised MS MARCO dataset, leading to strong results, in particular for recall@100.
+
 
 (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2_retriever_comparison)=
-## Comparison Between Sparse and Dense Retrieval
+## Discussion: Sparse and Dense Retrieval
 
 
 | Aspects | BM25 | Bi-Encoder | Cross-Encoder | Late-Interaction BiEncoder (Colbert) |
