@@ -1,3 +1,4 @@
+(chapter_application_IR_LLM)=
 # Application of LLM in IR (WIP)
 
 
@@ -81,27 +82,133 @@ name: chapter_application_IR_LLM_fig_QueryUnderstandingOptimization_GEFEED_workf
 The language model is prompted to sample multiple answers, allowing for a more comprehensive retrieval feedback based on different answers. Image from {cite:p}`yu2023improving`.
 ```
 
-
+(chapter_application_IR_LLM_query_doc_ranking)=
 ## Query-Doc Ranking
 
 [Is ChatGPT Good at Search? Investigating Large Language Models as Re-Ranking Agents](https://arxiv.org/pdf/2304.09542v2)
 
 [A Setwise Approach for Effective and Highly Efficient Zero-shot Ranking with Large Language Models](https://arxiv.org/abs/2310.09497)
 
-[Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting](https://aclanthology.org/2024.findings-naacl.97/)
-
 [Zero-Shot Listwise Document Reranking with a Large Language Model](https://arxiv.org/abs/2305.02156)
 
-### Rank List Generation
+(chapter_application_IR_LLM_query_doc_ranking_via_query_likelihood)=
+### Ranking via Query Likelihood
+
+```{figure} ../img/chapter_application_IR/LLM_for_IR/QueryDocRanking/query_likelihood/ranking_by_query_likelihood.png
+---
+scale: 70%
+name: chapter_application_IR_LLM_fig_ranking_by_query_likelihood
+---
+Illustration of using query likelihood to approximate the query doc relevance. Image from {cite:p}`sachan2022improving`.
+```
+
+Given a passage $d_i$ and a query $q$, the relevance score is approximated by the likelihood of the $q$ conditioned on $d_i$ plus an **instruction prompt** $\mathbb{P}$. 
+
+Specifically, we can estimate $\log p\left(q \mid {d}_i, \mathbb{P}\right)$ using a LLM to compute the average conditional loglikelihood of the query tokens:
+
+$$
+\log p\left(q \mid d_i ; \mathbb{P}\right)=\frac{1}{|q|} \sum_t \log p\left(q_t \mid q_{<t}, d_i ; \mathbb{P}\right)
+$$
+
+where $|q| = t$ denotes the number of query tokens. The instruction prompt is given by *Please write a question based on this passage* to the passage tokens as shown in {numref}`chapter_application_IR_LLM_fig_ranking_by_query_likelihood`.
+
+{cite:p}`drozdov2023parade` further extends the above query-likelihood approach by including demonstrations. Specificially, let $z_1,...,z_k$ be positive query-document pair as demonstrations, then the modified query likelihood becomes
+
+$$
+\log p\left(q \mid d_i ; z_1,...,z_k ;\mathbb{P}\right)=\frac{1}{|q|} \sum_t \log p\left(q_t \mid q_{<t}, d_i ; z_1,...,z_k ;\mathbb{P}\right).
+$$
+
+The authors found that 
+* Selecting demonstrations based on semantic similarity is not necessarily providing the best value;
+* Instead, one can use difficulty-based selection to find challenging demonstrations to include in the prompt. We estimate difficulty using demonstration query likelihood (DQL):
+
+$$
+\operatorname{DQL}(z) \propto \frac{1}{\left|q^{(z)}\right|} \log P\left(q^{(z)} \mid d^{(z)}\right)
+$$
+
+then select the demonstrations with the lowest DQL. Intuitively, this should find hard samples that potentially correspond to large gradients had we directly trained the model instead of prompting.
+
+### Ranking via Relevance Label Likelihood
+
+```{figure} ../img/chapter_application_IR/LLM_for_IR/QueryDocRanking/relevance_label_likelihood/relevance_label_likelihood_demo.png
+---
+scale: 70%
+name: chapter_application_IR_LLM_fig_ranking_by_relevance_label_likelihood
+---
+Illustration of using relevance likelihood to approximate the query doc relevance. One can use different rating class and scale to improve the results. Image from {cite:p}`zhuang2023beyond`.
+```
+
+Authors in {cite:p}`zhuang2023beyond` proposed that one can use LLM as zero-shot text ranker by prompting LLM to provide rating for a given query and doc pair. Example rating scale or class include
+* Binary class: {Yes, No}
+* Fine-grained relevance label: {Highly Relevant, Somewhat Relevant, Highly Relevant, Perfectly Relevant}
+* Rating scale: {0, 1, 2, 3, 4}
+
+We can obtain the log-likelihood of the LLM generating each relevance label:
+
+$$
+s_{i, k}=\operatorname{LLM}\left(l_k \mid q, d_i\right)
+$$
+
+where $l_k$ is the relevance class label.
+
+Once we obtain the log-likelihood of each relevance label, we can derive the ranking scores.
+
+**Expected relevance values**: First, we need to assign a series of relevance values $\left[y_0, ..., y_k\right]$ to all the relevance labels $\left[l_0, ..., l_k\right]$, where $y_k \in \mathbb{R}$. Then we can calculate the expected relevance value by:
+
+$$
+\begin{aligned}
+f\left(q, d_i\right) & =\sum p_{i, k} \cdot y_k \\
+\text { where } p_{i, k} & =\frac{\exp \left(s_{i, k}\right)}{\sum_{k^{\prime}} \exp \left(s_{i, k^{\prime}}\right)}
+\end{aligned}
+$$
+
+**Peak relevance likelihood**: We can further simplify ranking score by only using the loglikelihood of **the peak relevance label** (e.g., *Perfectly Relevant* in this example). More formally, let $l_{k^*}$ denote the relevance label with the highest relevance. We can simply rank the documents by:
+
+$$
+f\left(q, d_i\right)=s_{i, k^*}.
+$$
+
+The key findings are:
+* By using more fine grained relevance label will generally improve the zero-shot ranking performance. 
+* It is hypothesized that the inclusion of fine-grained relevance labels in the prompt may guide LLMs to better differentiate documents, especially those ranked at
+the top.
+
+
+### Pairwise and Groupwise Text Ranking
+
+```{figure} ../img/chapter_application_IR/LLM_for_IR/QueryDocRanking/pairwise_ranking/pairwise_ranking_demo.png
+---
+scale: 50%
+name: chapter_application_IR_LLM_fig_ranking_by_pairwise_ranking
+---
+An illustration of pairwise ranking prompting. The scores in scoring mode represent the log-likelihood of the model generating the target text given the prompt. Image from {cite:p}`qin2023large`.
+```
+
+Using LLM for **pointwise ranking** via query or relevance class likelihood has shown good performance, but the success is mainly limited to large-scale models. The hypothesis is that pointwise ranking requires LLM to output calibrated predictions, which can be challenging for less-competent small-scale models. Authors from {cite:p}`qin2023large` proposed that one can leverage pairwise ranking to reduce the difficulity of the task.
+
+As shown in {numref}`chapter_application_IR_LLM_fig_ranking_by_pairwise_ranking`, the pairwise ranking paradigm takes one query and a pair of documents as the input and output the comparison result. This potentially resolves the calibration issue.
+
+
+One can further consider **group-wise ranking** by prompting LLM to order the relevance of $k$ candidate passages, as shown in {numref}`chapter_application_IR_LLM_fig_QueryDocRanking_groupwise_ranking`. 
+
+```{figure} ../img/chapter_application_IR/LLM_for_IR/QueryDocRanking/groupwise_ranking/groupwise_ranking_demo.png
+---
+scale: 40%
+name: chapter_application_IR_LLM_fig_QueryDocRanking_groupwise_ranking
+---
+Illustration of groupwise_ranking for $k$ passages. Image from {cite:p}`sun2023chatgpt`.
+```
+
+With the local order established by either pairwise ranking or groupwise ranking, one can achieve global ordered rank list using a sliding window approach [{numref}`chapter_application_IR_LLM_fig_QueryDocRanking_slidingwindow_ranklist_generation`]. 
+
 
 ```{figure} ../img/chapter_application_IR/LLM_for_IR/QueryDocRanking/RankList_permutation_generation/slidingwindow_ranklist_generation.png
 ---
-scale: 60%
+scale: 40%
 name: chapter_application_IR_LLM_fig_QueryDocRanking_slidingwindow_ranklist_generation
 ---
-llustration of re-ranking 8 passages using sliding windows with a window size of 4 and a step size of 2. The blue color represents the first two windows, while the yellow color represents the last window. The sliding windows are applied in back-to-first order,. Image from {cite:p}`sun2023chatgpt`.
+Illustration of re-ranking 8 passages using sliding windows with a window size of 4 and a step size of 2. The blue color represents the first two windows, while the yellow color represents the last window. The sliding windows are applied in back-to-first order. Image from {cite:p}`sun2023chatgpt`.
 ```
-
 
 ### Ranker Distillation
 
