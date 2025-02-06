@@ -499,8 +499,8 @@ E_{\text {word }}=\left[\begin{array}{lll}
 <li><p>BERT-BASE, <span class="math notranslate nohighlight">\(L=12, d_{model}=768, H=12\)</span>, total Parameters 110M.</p></li>
 <li><p>BERT-LARGE, <span class="math notranslate nohighlight">\(L=24, d_{model} = 1024, H=16\)</span>, total parameters 340M.</p></li>
 </ul>
-<div class="pst-scrollable-table-container"><table class="table" id="id1615">
-<caption><span class="caption-number">Table 6.1 </span><span class="caption-text">The hyperparameter settings of various pretrained BERT configurations.  BERTBase and BERTLarge are the two most commonly used configurations today;</span><a class="headerlink" href="#id1615" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1624">
+<caption><span class="caption-number">Table 6.1 </span><span class="caption-text">The hyperparameter settings of various pretrained BERT configurations.  BERTBase and BERTLarge are the two most commonly used configurations today;</span><a class="headerlink" href="#id1624" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Size</p></th>
 <th class="head text-right"><p>Layers</p></th>
@@ -686,8 +686,8 @@ The two-step projection only requires parameters <span class="math notranslate n
 <li><p><em><strong>Cross-layer parameter sharing</strong></em>. In the original BERT, each encoder sub-unit (which has an attention module and a feed-forward module) has different parameters. In ALBERT, these parameters are shared in different sub-units to reduce model size and improve parameter efficiency.  The authors also mentioned that there are alternative parameter sharing strategies: only sharing feed-forward network parameters; only sharing attention module parameters; sharing both feed-forward network and attention module.</p></li>
 </ul>
 <p>The effect of embedding factorization and parameter sharing can be illustrated in the following comparison.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1616">
-<caption><span class="caption-number">Table 6.2 </span><span class="caption-text">BERT model parameters</span><a class="headerlink" href="#id1616" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1625">
+<caption><span class="caption-number">Table 6.2 </span><span class="caption-text">BERT model parameters</span><a class="headerlink" href="#id1625" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Model</p></th>
 <th class="head text-center"><p>Parameters</p></th>

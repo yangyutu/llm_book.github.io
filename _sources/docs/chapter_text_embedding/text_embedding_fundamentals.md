@@ -270,7 +270,52 @@ The workflow of CERT. Given the large-scale input texts (without labels) from
 
 ### Sentence T5
 
-{cite:p}`ni2021sentence`
+Authors from {cite:p}`ni2021sentence` nvestigated three methods for extracting T5 sentence embeddings: two utilize
+only the T5 encoder and one uses the full T5 encoder-decoder model.
+- Encoder-only first (ST5-Enc first): The encoder output of the first token is taken as the sentence embedding.
+- Encoder-only mean (ST5-Enc mean): The sentence embedding is defined as the average of the encoder outputs across all input tokens.
+- Encoder-Decoder first (ST5-EncDec first): The first decoder output is taken as the sentence embedding. To obtain the decoder output, the input text is fed into the encoder, and the standard "start" symbol is fed as the first decoder input.
+
+
+
+
+
+Key findings are:
+* Under zero-shot transfer, ST5 performs better than BERT, probabily due to the fact that T5 is pretrained on a much larger and diverse dataset.
+* Using T5 encoder with mean pooling can yield generally better embeddings than the other two options.
+* Further fine-tuning in labeled data can further improve the performance.
+
+| Model | Avg |
+| ---: | ---: |
+| BERT (CLS-vector) | 84.66 |
+| BERT (mean)| 84.94 |
+| ST5-Enc first | 83.38 |
+| ST5-Enc mean | $\mathbf{8 8 . 9 6}$ |
+| ST5-EncDec first | 81.69 |
+
+| Model | Finetune Data | Avg |
+| ---: | ---: | ---: |
+|SBERT-NLI | NLI + MNLI | 87.41 |
+| ST5-Enc mean | NLI | 88.66 |
+
+Additionally scaling up the model size can bring additional performance boost {numref}`chapter_text_embedding_fig_sentence_5_performance`; in terms of measuring embedding quality via uniformity and alignement, when models scale up, both the encoder and encoder-decoder models decrease the uniformity loss with only a slight increase in alignment loss, as shown in {numref}``
+
+```{figure} ../img/chapter_text_embedding/sentence_T5/sentence_T5_performance.png
+---
+scale: 55%
+name: chapter_text_embedding_fig_sentence_t5_performance
+---
+Scaling up ST5 model size improves performance on SentEval (left) and STS (right). Image from {cite:p}`ni2021sentence`.
+```
+
+```{figure} ../img/chapter_text_embedding/sentence_T5/sentence_T5_scaling.png
+---
+scale: 55%
+name: chapter_text_embedding_fig_sentence_t5_uniformity_alignment
+---
+Scaling up ST5 model size improves uniformality and alignment. Image from {cite:p}`ni2021sentence`.
+```
+
 
 ### Benchmark dataset
 #### MultiNLI data
@@ -316,63 +361,86 @@ $$
 
 where $\mathcal{L}: \mathbb{R}^L \times[L] \rightarrow \mathbb{R}_{+}$is the multi-class softmax cross-entropy loss function. This is a standard optimization problem that can be solved using sub-gradient descent methods. We set all the importance scales, $c_m=1$ for all $m \in \mathcal{M}$; see Section 5 for ablations. Lastly, despite only optimizing for $O(\log (d))$ nested dimensions, MRL results in accurate representations, that interpolate, for dimensions that fall between the chosen granularity of the representations (Section 4.2).
 
-## LLM Embedding Model
 
-[Improving text embeddings with large language models](https://arxiv.org/pdf/2401.00368)
-[NV-Embed: Improved Techniques for Training LLMs as Generalist Embedding Models.](https://arxiv.org/pdf/2405.17428)
+(chapter_text_embedding_sec_text_embedding_fundamentals_general_purpose_text_embedding)=
+## General-Pursose Text Embedding
+
+### Overview
+
+General-purpose text embedding aims to be a strong performing single-vector representation that can be applied in a broad range of tasks in both zero-shot or fine-tuned settings.
+
+The quality and diversity of the training data is crucial for training general-purpose text embeddings.
+
+Model training usually consists of multiple stages, including
+* A large scale unsupervised or weakly supervised contrastive learning
+* A small scale supervised constrastive learning.
+
+### E5 and mE5
+
+A crucial step for E5 contrastive pre-training is data collection and quality control. 
+
+The authors created a text pair dataset called **CCPairs** (Colossal Clean text Pairs) by harvesting heterogeneous semi-structured data sources. Let $(q, p)$ denote a text pair consisting of a query $q$ and a passage $p$. Here we use "passage" to denote word sequences of arbitrary length, which can be a short sentence, a paragraph, or a long document. The dataset includes 
+
+| Data Source | Text Pair |
+| :--- | :---: |
+| Reddit | (post, comment) |
+| Stackexchange | (question, upvoted answer) |
+| English Wikipedia | (entity name + section title, passage) |
+| Scientific papers| (title, abstract) and citation|
+| Common Crawl | (title, passage) |
+| News sources | (title, passage) |
+
+Additional rule-based filtering steps are applied to Reddit and Common Crawl. For example, we remove Reddit comments that are either too long ( $>4096$ characters) or receive score less than 1 , and remove passages from web pages with high perplexity. This yielded about 1.3B text pairs.
+
+Then, **consistency-based filter** is further used for quality improvement: a model is first trained on the 1.3 B noisy text pairs, and then used to rank each pair against a pool of 1 million random passages. A text pair is kept only if it falls in the top- $k$ (k=2) ranked lists. This step led to $\sim 270 \mathrm{M}$ text pairs for contrastive pre-training.
 
 
-
-### NV-Embed
-
-NV-Embed from Nvidia {cite:p}`lee2024nv` proposed several improvement techniques on LLM-based embedding model, which include:
-* Model architecture improvement, which introduces a **latent attention layer** to obtain better pooled embeddings.
-* Traing process improvement, which introduces a **two-stage contrastive instruction-tuning method**.
-
-There are two popular methods to obtain the embedding for a sequence of tokens: 
-* Mean pooling of the all hidden vectors of the last layer, which is commonly used in bidirectional embedding models.
-* Last <EOS> token embedding, which is more popular for decoder-only LLM based embedding models. 
- 
-However, both methods have certain limitations. Mean pooling simply takes the average of token embeddings and may dilute the important information from key phrases, meanwhile the semantics of the last <EOS> token embedding may be dominated by last few tokens.
-
-The latent attention layer aims to improve the **mean pooling method**. Denote the last layer hidden from decoder as the query $Q \in \mathbb{R}^{l \times d}$, where $l$ is the length of sequence, and $d$ is the hidden dimension. They are sent to attend the latent array $K=V \in \mathbb{R}^{r \times d}$, which are **trainable matrices**, used to obtain better representation, where $r$ is the number of latents in the dictionary. The output of this cross-attention is denoted by $O \in \mathbb{R}^{l \times d}$,
-
-$$
-O=\operatorname{softmax}\left(Q K^T\right) V.
-$$
-
-Intuitively, each token's represention in $O$ (which is a $d$ vector) is a linear combination of the $r$ row vectors in $V$(or $K$). 
-
-This has the spirit of **sparse dictionary learning**{cite:p}`mairal2009online`, which aims to learn a **sparse set of atom vectors**, such that each representation can be transformed to a linear combination of atom vectors.
-
-An additional 2-layer MLP was added to further transfrom the $O$ vectors.  Finally, a mean pooling after MLP layers to obtain the embedding of whole sequences. 
-
-In the paper, authors used latent attention layer with $r$ of 512 and the number of heads as 8 for multi-head attention.
-
-```{figure} ../img/chapter_application_IR/LLM_for_IR/Embedding/NV_embed/latent_attention_layer.png
+```{figure} ../img/chapter_text_embedding/general_text_embeddings/E5_mE5/E5_data_curation.png
 ---
-scale: 80%
-name: chapter_application_IR_LLM_fig_embedding_NV_embedding_latent_attention_layer
+scale: 55%
+name: chapter_text_embedding_general_text_embedding_fig_E5_data_curation
 ---
-The illustration of proposed architecture design comprising of decoder-only LLM followed
-by latent attention layer. Latent attention layer functions as a form of cross-attention where the decoder-only LLM output serves as queries (Q) and trainable latent array passes through the keyvalue inputs, followed by MLP. Image from {cite:p}`lee2024nv`.
+Contrastive pretraining data curation process for E5. Image from {cite:p}`wang2022text`.
 ```
 
-
-The two-stage instruction tuning method include
-* First-stage contrastive training with instructions on a variety of retrieval datasets, utilizing in-batch negatives and curated hard-negative examples. 
-* Second stage contrastive instruction-tuning on a combination of retrieval and non-retrieval datasets (e.g., classification ) without applying the trick of in-batch negatives. 
-
-The design rationale behind the two-stage finetunings are: 
-* It is found that retrieval task presents greater difficulty compared to the non-retrieval tasks there is one stage training fully dedicated to the retrieval task.
-* In second stage, as the retrieval and non-retrieval tasks are blended, it is necessary to remove in-batch negatives trick. Since the negative may come from the the class and are not true negatives. 
+Supervised finetuning
 
 
+While contrastive pre-training on the CCPairs provides a solid foundation for general-purpose embeddings, further training on labeled data can inject human knowledge into the model to boost the performance. 
 
-## LLM Embedding Distillation
+| Data Source | Target Domain |
+| :--- | :---: |
+|NLI | Semantic textual similarity |
+| NQ | Text retrieval |
+| MS MARCO | Text retrieval |
 
-{cite:p}`lee2024gecko`
+| English Wikipedia | (entity name + section title, passage) |
+| Scientific papers| (title, abstract) and citation|
+| Common Crawl | (title, passage) |
+| News sources | (title, passage) |
 
+
+Although these datasets are small, existing works [43, 44] have shown that supervised fine-tuning leads to consistent performance gains. In this paper, we choose to further train with a combination of 3 datasets: NLI ${ }^6$ (Natural Language Inference), MS-MARCO passage ranking dataset [8], and NQ (Natural Questions) dataset [30, 32]. Empirically, tasks like STS (Semantic Textual Similarity) and linear probing benefit from NLI data, while MS-MARCO and NQ datasets transfer well to retrieval tasks.
+Building on the practices of training state-of-the-art dense retrievers [50,58], we use mined hard negatives and knowledge distillation from a cross-encoder (CE) teacher model for the MS-MARCO and NQ datasets. For the NLI dataset, contradiction sentences are regarded as hard negatives. The loss function is a linear interpolation between contrastive loss $L_{\text {cont }}$ for hard labels and KL divergence $D_{\mathrm{KL}}$ for distilling soft labels from the teacher model.
+
+$$
+\min D_{\mathrm{KL}}\left(p_{\mathrm{ce}}, p_{\mathrm{stu}}\right)+\alpha L_{\mathrm{cont}}
+$$
+
+
+Where $p_{\text {ce }}$ and $p_{\text {stu }}$ are the probabilities from the cross-encoder teacher model and our student model. $\alpha$ is a hyperparameter to balance the two loss functions. $L_{\text {cont }}$ is the same as in Equation 1.
+
+|  | BM25 $^2$ | SimCSE | Contriever | E5-PT $_{\text {small }}$ | E5-PT $_{\text {base }}$ | E5-PT $_{\text {largc }}$ |
+| :---: | :---: |  :---: |  :---: | :---: | :---: | :---: |
+| MS MARCO | 22.8 | 9.4 | 20.6 | 25.4 | 26.0 | 26.2 |
+|BEIR (Avg)| 41.7 | 20.3 | 36.0 | 40.8 | 42.9 | 44.2 |
+
+{cite:p}`wang2024multilingual`
+
+|  | ANCE | GTR $_{\text {base }}$ | ColBERT | Contriever | GTR $_{\text {large }}$ | E5 $_{\text {small }}$ | E5 $_{\text {base }}$ | E5 $_{\text {large }}$ |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| MS MARCO | 38.8 | 42.0 | 40.1 | 40.7 | 43.0 | 42.3 | 43.1 | 44.1 |
+| Average | 40.5 | 44.0 | 44.4 | 46.6 | 47.0 | 46.0 | 48.7 | 50.0 |
 
 
 ## Software

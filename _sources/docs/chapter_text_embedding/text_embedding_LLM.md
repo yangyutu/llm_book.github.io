@@ -3,9 +3,6 @@
 
 ## LLM Embedding Model
 
-[Improving text embeddings with large language models](https://arxiv.org/pdf/2401.00368)
-[NV-Embed: Improved Techniques for Training LLMs as Generalist Embedding Models.](https://arxiv.org/pdf/2405.17428)
-
 
 
 ### NV-Embed
@@ -52,7 +49,76 @@ The design rationale behind the two-stage finetunings are:
 * It is found that retrieval task presents greater difficulty compared to the non-retrieval tasks there is one stage training fully dedicated to the retrieval task.
 * In second stage, as the retrieval and non-retrieval tasks are blended, it is necessary to remove in-batch negatives trick. Since the negative may come from the the class and are not true negatives. 
 
+### GTE Qwen 7B
 
+gte-Qwen2-7B-instruct is the latest addition to the gte embedding family. This model has been engineered starting from the Qwen2-7B LLM, drawing on the robust natural language processing capabilities of the Qwen1.5-7B model. Enhanced through our sophisticated embedding training techniques, the model incorporates several key advancements:
+
+Integration of bidirectional attention mechanisms, enriching its contextual understanding.
+Instruction tuning, applied solely on the query side for streamlined efficiency
+Comprehensive training across a vast, multilingual text corpus spanning diverse domains and scenarios. This training leverages both weakly supervised and supervised data, ensuring the model's applicability across numerous languages and a wide array of downstream tasks.
+
+When encoding the query, we need to add the following prompt text in front (it is not needed for document encoding). 
+Prompt:
+ "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery: "
+
+
+
+## LLM Embedding Adaptation
+
+### E5 Mistral 7B
+
+The authors in {cite:p}`wang2023improving` hypothesize that generative language modeing are two sides of the same coin, with both of them requiring the model to have a deep understanding of the natural language. Given an embedding task definition, a capable LLM could be transformed into an embedding model with ligh-weight fine-tuning, without the need of conducting extensive contrastive pretraining like small models (see {ref}`chapter_text_embedding_sec_text_embedding_fundamentals_general_purpose_text_embedding`). 
+
+
+The synthetic retrieval tasks are grouped into
+* Asymmetric tasks, which consist of tasks where the query and document are semantically related but are not paraphrases of each other. Typical scenario in commercial search engines is an asymmetric task.
+* Symmetric tasks, which involve queries and documents that have similar semantic meanings but different surface forms. Monolingual semantic textual similarity (STS) and bitext retrieval are example tasks.
+
+```{figure} ../img/chapter_text_embedding/LLM_embeddings/embedding_adaptation/instruction_tuning_data_prompt_step1.png
+---
+scale: 60%
+name: chapter_text_embedding_LLM_embeddings_embedding_adaption_fig_instruction_tuning_data_prompt_step1
+---
+Synthetic data preparation step one: prompting LLM to brainstorm retrieval tasks. Image from {cite:p}`wang2023improving`.
+```
+
+```{figure} ../img/chapter_text_embedding/LLM_embeddings/embedding_adaptation/instruction_tuning_data_prompt_step2.png
+---
+scale: 60%
+name: chapter_text_embedding_LLM_embeddings_embedding_adaption_fig_instruction_tuning_data_prompt_step2
+---
+Synthetic data preparation step two: prompting LLM to generate positive and negative pairs for a given retrieval task. Image from {cite:p}`wang2023improving`.
+```
+
+To enable LLM to generate task-dependent embedding, given a relevant query-document pair $\left(q^{+}, d^{+}\right)$, we first apply the following instruction template to the original query $q^{+}$to generate a new one $q_{\text {inst }}^{+}$:
+
+$$
+q_{\text {inst }}^{+}=\text {Instruct: }\{\text { task_definition }\} \backslash n \text { Query: }\left\{q^{+}\right\}.
+$$
+
+Here *task_definition* is a placeholder for a one-sentence description of the embedding task. 
+
+With generated synthetic data and limited labeled data from MS MARCO, one can
+* First extract text embedding from the hidden state of EOS token appended after query or doc. 
+* Then perform contrastive learning on the positive and negative examples.
+
+The evaluation and comparison with other fine-tuned models on MTEB benchmark give the following key findings:
+* Overall E5 mistral-7B with full data finetuning gives the strongest performance.
+* In the “w/ synthetic data only” setting, where no labeled data is used for training, the model's performance remains quite competitive.
+
+ 
+| # of datasets | Class.  | Clust. | PairClass.| Rerank | Retrieval | STS | Summary | Avg |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| SimCSE bert-sup | 67.3 | 33.4 | 73.7 | 47.5 | 21.8 | 79.1 | 23.3 | 48.7 |
+| Contriever | 66.7 | 41.1 | 82.5 | 53.1 | 41.9 | 76.5 | 30.4 | 56.0 |
+| GTE large | 73.3 | 46.8 | 85.0 | 59.1 | 52.2 | 83.4 | 31.7 | 63.1 |
+| E5 mistral-7b w/ full data | 78.5 | 50.3 | 88.3 | 60.2 | 56.9 | 84.6 | 31.4 | 66.6 |
+| w/ synthetic data only | 78.2 | 50.5 | 86.0 | 59.0 | 46.9 | 81.2 | 31.9 | 63.1 |
+| w/ synthetic + msmarco | 78.3 | 49.9 | 87.1 | 59.5 | 52.2 | 81.2 | 32.7 | 64.5 |
+
+```{prf:remark} Impact of contrastive pre-training
+The authors found that Mistral-7B based models, contrastive pre-training has negligible impact on the model quality. This implies that extensive auto-regressive pre-training enables LLMs to acquire good text representations, and only minimal fine-tuning is required to transform them into effective embedding models.
+```
 
 ## LLM Embedding Distillation
 

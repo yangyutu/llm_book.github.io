@@ -519,10 +519,7 @@ Model learning in information retrieval typically falls into the category of con
 
 When there is a shortage of annotation data or click behavior data, we can also leverage weakly supervised data for training {cite}`dehghani2017neural,ram2021learning,haddad2019learning,nie2018multi`. In the weakly supervised data, labels or signals are obtained from an unsupervised ranking model, such as BM25. For example, given a query, relevance scores for all documents can be computed efficiently using BM25. Documents with highest scores can be used as positive examples and documents with lower scores can be used as negatives or hard negatives. 
 
-
-
-### Model Training Objective Functions
-
+### Pointwise Ranking
 #### Pointwise Regression Objective
 
 The idea of pointwise regression objective is to model the numerical relevance score for a given query-document. During inference time, the relevance scores between a set of candidates and a given query can be predicted and ranked.  
@@ -553,7 +550,7 @@ The advantages of pointwise ranking objectives are two-fold. First, pointwise ra
 In general, however, pointwise ranking objectives are considered to be less effective in ranking tasks. Because pointwise loss functions consider no document preference or order information, they do not guarantee to produce the best ranking list when the model loss reaches the global minimum. Therefore, better ranking paradigms that directly optimize document ranking based on pairwise loss functions and even listwise loss functions.
 
 (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:triplet_loss)=
-#### Pairwise Ranking via Triplet Loss
+### Pairwise Ranking via Triplet Loss
 
 Pointwise ranking loss aims to optimize the model to directly predict relevance between query and documents on absolute score. From embedding optimization perspective, it train the neural query/document encoders to produce similar embedding vectors for a query and its relevant document and dissimilar embedding vectors for a query and its irrelevant documents. 
 
@@ -585,6 +582,7 @@ $$
 l\left(q, d^{+}, d^{-}\right):=-\max \left(0, \operatorname{sim}\left(q, d^{+}\right)-\operatorname{sim}\left(q, d^{-}\right)-\mu\right)
 $$
 
+### N-pair Contrastive Loss
 (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:N_pair_loss)=
 #### N-pair Loss
 
@@ -596,13 +594,34 @@ Visualization of the learning process in the embedding space is shown in {numref
 
 The loss function is given by
 
-$$L =-\sum_{\left\langle q_{i}, d_{i}^{+}, D_{i}^{-}\right\rangle}\log \frac{\exp(\operatorname{Sim}\left(e_{q_{i}}, e_{d_{i}^{+}}\right))}{\exp(\operatorname{Sim}\left(e_{q_{i}}, e_{d_{i}^{+}}\right))+\sum_{d^-_i\in D^-} \exp(\operatorname{Sim}\left(e_{q_{i}}, e_{d_{i}^{-}}\right))}$$
+$$
+L =-\sum_{\left\langle q_{i}, d_{i}^{+}, D_{i}^{-}\right\rangle}\log \frac{\exp(\operatorname{Sim}\left(e_{q_{i}}, e_{d_{i}^{+}}\right))}{\exp(\operatorname{Sim}\left(e_{q_{i}}, e_{d_{i}^{+}}\right))+\sum_{d^-_i\in D^-} \exp(\operatorname{Sim}\left(e_{q_{i}}, e_{d_{i}^{-}}\right))}
+$$ (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2_eq:N_pair_contrastive_loss)
 
 where $\operatorname{Sim}(e_q, e_d)$ is the similarity score function taking query embedding $e_q$ and document embedding $e_d$ as the input. 
 
 ```{figure} ../img/chapter_application_IR/ApplicationIRSearch/TrainingLoss/N_pair_loss.png
 :name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:npairloss
 The illustration of the learning process (in the embedding space) using N-pair loss.
+```
+
+```{prf:remark} Probability interprete of Log Softmax loss 
+
+From langugae modeling perspetive {cite:p}`henderson2017efficient`, given a query $q$, let $d$ be the response to $q$. The likelihood of observing $d^+$ given $q$ is by conditional probability 
+
+$$P(d^+ | q) = \frac{P(d^+, q)}{\sum_d P(d, q)}.$$
+
+Further,
+* We approximate the joint probability by $P(d, q) \propto \exp(\operatorname{Sim}(e_q, e_d))$
+* We approximate $\sum_d P(d, q)$ by the positve and sampled negatives via $\sum_{d \in \{d^+,D^-\}} \exp(\operatorname{Sim}(e_q, e_d))$
+
+Then we have
+
+$$P(d^+ | q) = \frac{\exp(\operatorname{Sim}(e_q, e_{d^+}))}{\sum_{d \in \{d^+,D^-\}} \exp(\operatorname{Sim}(e_q, e_d)) }.$$
+
+The goal is to maximize the likelihood of $P(d^+ | q)$ can be then translated to minimizing $-\log P(d^+|q)$, which leads to {eq}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2_eq:N_pair_contrastive_loss`.
+
+
 ```
 
 #### N-pair Dual Loss
@@ -642,7 +661,55 @@ $$L =-\sum_{\left\langle q_{i}, d_{i}^{+}, d_{i'}^{+} \in D_{i}^{+}, D_{i}^{-}\r
 
 where $\operatorname{Sim}(e_{d_1}, e_{d_2})$ is the similarity score function taking document embeddings $e_{d_1}$ and $e_{d_2}$ as the input. 
 
+### Listwise Ranking
 
+Although the pairwise approach offers advantages,
+it ignores the fact that ranking is a prediction task
+on list of objects.
+{cite:p}`cao2007learning`
+
+In training, a set of queries $Q=\left\{q^{(1)}, q^{(2)}, \cdots, q^{(m)}\right\}$ is given. Each query $q^{(i)}$ is associated with a list of documents $d^{(i)}=\left(d_1^{(i)}, d_2^{(i)}, \cdots, d_{n^{(i)}}^{(i)}\right)$, where $d_j^{(i)}$ denotes the $j$-th document and $n^{(i)}$ denotes the sizes of $d^{(i)}$. Furthermore, each list of documents $d^{(i)}$ is associated with a list of judgments (scores) $y^{(i)}=\left(y_1^{(i)}, y_2^{(i)}, \cdots, y_{n^{(i)}}^{(i)}\right)$ where $y_j^{(i)}$ denotes the judgment on document $d_j^{(i)}$ with respect to query $q^{(i)}$.
+
+
+We then create a ranking function $f$; for each feature vector $x_j^{(i)}$ (corresponding to document $d_j^{(i)}$ ) it outputs a score $f\left(x_j^{(i)}\right)$. For the list of feature vectors $x^{(i)}$ we obtain a list of scores $z^{(i)}=\left(f\left(x_1^{(i)}\right), \cdots, f\left(x_{n^{(i)}}^{(i)}\right)\right)$. The objective of learning is formalized as minimization of the total losses with respect to the training data.
+
+$$
+\sum_{i=1}^m L\left(y^{(i)}, z^{(i)}\right)
+$$
+
+where $L$ is a listwise loss function.
+
+One can construct the comparison of two lists by comparing the top-one probability of each document, which is defined as
+
+$$
+P_s(j)=\frac{\phi\left(s_j\right)}{\sum_{k=1}^n \phi\left(s_k\right)}
+$$
+
+where $s_j$ is the score of object $j, j=1,2, \ldots, n$ and $\phi$ is an increasing and strictly positive function.
+
+There are two important properties derived from the top-one probability definition:
+* **Forming probability** - top one probabilities $P_s(j), j=1,2, \ldots, n$ forms a probability distribution over the set of $n$ objects.
+* **Preserving order** - given any two objects $j$ and $k$, if $s_j>s_k, j \neq$ $k, j, k=1,2, \ldots, n$, then $P_s(j)>P_s(k)$.
+
+Usually, one can define $\phi$ as an exponential function. Then the top one probability is give by
+
+$$
+P_s(j)=\frac{\phi\left(s_j\right)}{\sum_{k=1}^n \phi\left(s_k\right)}=\frac{\exp \left(s_j\right)}{\sum_{k=1}^n \exp \left(s_k\right)}.
+$$
+
+With the use of top one probability, we can use Cross Entropy as the listwise loss function, 
+
+$$
+L\left(y^{(i)}, z^{(i)}\right)=-\sum_{j=1}^n P_{y^{(i)}}(j) \log \left(P_{z^{(i)}}(j)\right),
+$$
+
+which aims to bring the predicted top-one probabilities to the labeled top-one probabilities.
+
+```{prf:remark}
+The major difference in listwise loss and the pairwise loss is that the former uses document lists as instances while the latter uses document pairs as instances; When there are only two documents for each query, i.e., the listwise loss function becomes equivalent to the pairwise loss function in RankNet.
+
+The time complexity of computing pairwise loss is of order $O\left(n^2\right)$ where $n$ denotes number of documents per query. In contrast the time complexity of computing listwise loss is only of order $O\left(n\right)$, which allows listwise ranking loss to be more efficient.
+```
 
 (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:negativeSamplingStrategies)=
 ## Training Data Sampling Strategies
@@ -832,7 +899,7 @@ In the case that we want to adapt a generic retrieval models to a highly special
 
 As shown in the {numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2_fig_promptagator_demo`, PROMPTAGATOR consists of three components: 
 * Prompt-based query generation, a task-specific prompt will be combined with a LLM to produce queries for all documents or passages.
-* Consistency filtering, which cleans the generated data based on round-trip consistency - query should be answered by the passage from which the query was generated. 
+* Consistency filtering, which cleans the generated data based on round-trip consistency - query should be answered by the passage from which the query was generated. One can also consider other query doc ranking methods in {ref}`chapter_application_IR_LLM_query_doc_ranking`.
 * Retriever training, in which a retriever will be trained using the filtered synthetic data.
 
 
@@ -992,9 +1059,41 @@ where $\hat{r}_{i j}^{(k)}$ is the predicted rank of the $j$-th candidate text b
 
 With the fused score, softened probability vector can be obtained by taking Softmax with temperature as the scaling factor.
 
+#### Dynamic Listwise Distillation
 
-## Pretraining for Retrieval
+Formally, given a query $q$ in a query set $\mathcal{Q}$ and the corresponding list of candidate passages (instance list) $\mathcal{P}_q=\left\{p_{q, i}\right\}_{1 \leq i \leq m}$ related to query $q$, we can obtain the relevance scores $S_{\mathrm{BE}}(q)=$ $\left\{s_{\mathrm{BE}}(q, p)\right\}_{p \in \mathcal{P}_q}$ and $S_{\mathrm{CE}}(q)=\left\{s_{\mathrm{ce}}(q, p)\right\}_{p \in \mathcal{P}_q}$ of a query $q$ and passages in $\mathcal{P}_q$ from the dual-encoderbased retriever and the cross-encoder-based reranker, respectively. Then, we normalize them in a listwise way to obtain the corresponding relevance distributions over candidate passages:
 
+$$
+\begin{aligned}
+& \tilde{s}_{\mathrm{BE}}(q, p)=\frac{e^{s_{\mathrm{BE}}(q, p)}}{\sum_{p^{\prime} \in \mathcal{P}_q} e^{s_{\mathrm{BE}}\left(q, p^{\prime}\right)}}, \\
+& \tilde{s}_{\mathrm{CE}}(q, p)=\frac{e^{s_{\mathrm{CE}}(q, p)}}{\sum_{p^{\prime} \in \mathcal{P}_q} e^{s_{\mathrm{CE}}\left(q, p^{\prime}\right)}}
+\end{aligned}
+$$
+
+The main idea is to adaptively reduce the difference between the two distributions from the retriever and the re-ranker so as to mutually improve each other.
+
+To achieve the adaptively mutual improvement, we minimize the KL-divergence between the two relevance distributions $\left\{\tilde{s}_{\mathrm{BE}}(q, p)\right\}$ and $\left\{\tilde{s}_{\mathrm{CE}}(q, p)\right\}$ from the two modules:
+
+$$
+\mathcal{L}_{\mathrm{KL}}=\sum_{q \in \mathcal{Q}, p \in \mathcal{P}_q} \tilde{s}_{\mathrm{BE}}(q, p) \cdot \log \frac{\tilde{s}_{\mathrm{BE}}(q, p)}{\tilde{s}_{\mathrm{CE}}(q, p)}
+$$
+
+
+Additionally, we provide ground-truth guidance for the joint training. Specifically, we can use listwise ranking loss with supervised information:
+
+$$
+\mathcal{L}_{\text {sup }}=-\frac{1}{N} \sum_{q \in \mathcal{Q}, p^{+}} \log \frac{\left.e^{s \operatorname{CE}\left(q, p^{+}\right.}\right)}{e^{s \operatorname{CE}\left(q, p^{+}\right)}+\sum_{p^{-}} e^{s \operatorname{CE}\left(q, p^{-}\right)}}
+$$
+
+where $N$ is the number of training instances, and $p^{+}$and $p^{-}$denote the positive passage and negative passage in $\mathcal{P}_q$, respectively. We combine the KL-divergence loss and the supervised crossentropy loss to obtain the final loss function:
+
+$$
+\mathcal{L}_{\text {final }}=\mathcal{L}_{\mathrm{KL}}+\mathcal{L}_{\text {sup }}.
+$$
+
+
+## Generalizable Retrievers
+### Motivation
 ### Contriever
 
 Contriever {cite:p}`izacard2021unsupervised` explores the limits of contrastive pre-training to learn dense text retrievers. Key tecchniques include positive example generation from unlabeled text, large-scale negative sampling, and pretraining text selection and preparation. 
@@ -1012,6 +1111,52 @@ Key observations are:
 * Neural networks trained without supervision using contrastive learning exhibit good retrieval performance, which are competitive with BM25 (albeit not state-of-the-art).
 * The number of negatives leads to better retrieval performance, especially in the unsupervised setting. However, this effect is not equally strong for all datasets.
 * These results can be further improved by fine-tuning on the supervised MS MARCO dataset, leading to strong results, in particular for recall@100.
+
+### GTR
+
+Authors from {cite:p}`ni2021large` address the poor ood generalization of typical bi-encoder from perspective of model size and large-scale training. They developped GTR (Generalizable T5-based dense Retrievers), which used T5 encoder as the starting point, and scaling up the size of the bi-encoder model (upto 5B) while keeping the **bottleneck embedding size fixed**($d_m = 768$).
+
+Besides the model size change, the key recipe in GTR training is large scale data with multi-stage training [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch::fig:GTR_multistage_training`]:
+* First stage, contrastive pretraining on input-response pairs and question-answer pairs from online forums and QA websites including Reddit, Stack-Overflow, etc.
+* Second stage, supervised contrastive finetuning on MS Marco and NQ, with hard negative mining.
+  
+```{figure} ../img/chapter_application_IR/ApplicationIRSearch/generalizable_retriever/GTR/GTR_multistage_training.png
+:scale: 60%
+:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch::fig:GTR_multistage_training
+Illutration of GTR retriever two-stage training. Image from {cite}`ni2021large`.
+```
+
+Evaluating on the BEIR benchmark (as shown below) shows thatGTR models achieve better out-of-domain NDCG performance when increasing size from Base to XXL [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch::fig:GTR_scaling_performance`].
+
+|  | BM25 | ColBERT (d=128) | GTR-Base | GTR-Large | GTR-XL | GTR-XXL | 
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| Model size| | 110M | 110M | 335M | 1.34B | 4.8B |
+| Avg | 0.413 | 0.429 | 0.416 | 0.444 | 0.452 | 0.457 | 
+
+
+
+```{figure} ../img/chapter_application_IR/ApplicationIRSearch/generalizable_retriever/GTR/GTR_scaling_performance.png
+:scale: 80%
+:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch::fig:GTR_scaling_performance
+GTR two stage training: contrastive pretraining and supervised finetuning. Image from {cite}`ni2021large`.
+```
+
+Further ablation study on the multi-stage training (in the table below) shows that 
+* For fine-tuning only models, scaling up benefits both in-domain and out-of-domain performance.
+* For pre-training only models, the improvement on in-domain performance is not obvious; meanwhile for out-of-domain tasks, scaling up also improves the generalization.
+* Combining scaling up and a generic pretraining stage consistently improved fine-tuned-only models.
+* The gap between GTR (only PT) and GTR also shows the necessity of leveraging a high quality dataset to fine-tune the dual encoders.
+
+|Setting| Model size | GTR (only FT) | GTR (only PT) | GTR |
+| :---| :--- | :--- | :--- | :--- |
+|Indomain Performance (on MS MARCO)| Base | 0.400 | 0.258 | 0.420 |
+|| Large | 0.415 | 0.262 | 0.430 |
+|| XL | 0.418 | 0.259 | 0.439 |
+|| XXL | 0.422| 0.252 | 0.442$ |
+|ood Performance| Base | 0.387 | 0.295 | 0.416 |
+|| Large | 0.412 | 0.315 | 0.445 |
+|| XL | 0.433 | 0.315 | 0.453 |
+|| XXL | 0.430 | 0.332 | 0.458 |
 
 
 (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2_retriever_comparison)=
@@ -1071,6 +1216,57 @@ The emprically findings are summarized in the table below.
 | Trained with hard negatives | 128 dim | 90.32 | 77.92 | 54.45 | 27.34 |
 || 256 dim | 91.10 | 78.90 | 55.51 | 28.16 |
 || 768 dim | 91.48 | 79.42 | 56.05 | 28.55 |
+
+## Concept Popularity Bias and Natural Language Query Patterns
+
+Key findings are [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch::fig:conceptpopularitybias`]:
+* DPR performs well on the most common entities but quickly degrades on rarer entities. If the entity is seen in training data, it also tend to perform better than entities it has never seen. 
+* On the other hand, BM25 is less sensitive to entity frequency
+
+```{figure} ../img/chapter_application_IR/ApplicationIRSearch/Discussion/popularity_bias/popularity_bias.png
+:scale: 60%
+:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch::fig:conceptpopularitybias
+Retrieval accuracy on (a) place-of-birth questions, (b) creator questions, grouped by the entity’s frequency in Wikipedia. rand ent:randomly selected entities from Wikidata; train ent: entities in the NQ training set Image from {cite:p}`sciavolino2021simple`.
+```
+
+
+
+| Question | Retrieved results from DPR-NQ |
+| :--- | :--- |
+| Q: Where was Arve | Gold: [Title: Arve Furset] Arve Furset Arve Eilif Furset (born 5 December 1964 in <br> Furset born?  Askvoll, Western Norway) is a Norwegian composer, jazz musician (piano, keyboards) and music producer |
+| | Top-1: [Title: Gard Agdi] Gard Agdi ("Old Norse" Garðr Agði) appears in the legendary genealogies of "Hversu Noregr byggdist" as one of the three sons of ... |
+|  | Top-2: [Title: Yrsa] kidnapped the queen for a while during which time he made her  pregnant. Having returned to her kingdom, the queen bore a child, a girl which she named Yrsa after her dog. Yrsa was sent... |
+|  | Top-3: [Title: Arvid Noe] Sailor" and the anagram "Arvid Noe" to conceal his identity;  his true name, Arne Vidar Røed, became known after his death. Røed began his career as a sailor in 1961, when he... |
+
+
+FT: fine-tuning on each individual question pattern. w/ similar: fine-tuning on a
+similar, semantically equivalent question pattern. OnlyP and OnlyQ: fixing the weights of the question encoder and only updating the passage encoder, or vice
+versa.
+
+bserving the question pattern during
+training allows DPR to generalize well on unseen
+entities. On all three relations, DPR can match
+or even outperform BM25 in terms of retrieval accuracy. Training on the equivalent question pattern achieves comparable performance to the exact
+pattern, showing dense models do not rely on specific phrasing of the question.
+
+only training the passage encoder (OnlyP) is much more effective than only
+training the query encoder (OnlyQ)
+
+|  | p-of-birth | headquarter | creator |
+| :--- | :---: | :---: | :---: |
+| DPR-NQ | 25.4 | 70.0 | 54.1 |
+| FT Both | 73.9 | $\mathbf{8 4 . 0}$ | $\mathbf{8 0 . 0}$ |
+| FT OnlyP | $\mathbf{7 2 . 8}$ | $\mathbf{8 4 . 2}$ | $\mathbf{7 8 . 0}$ |
+| FT OnlyQ | 45.4 | 72.8 | 73.4 |
+| BM25 | 75.2 | 85.0 | 71.7 |
+
+Before
+fine-tuning, positive passages for place-of-birth
+questions are clustered together. Discriminating
+passages in this clustered space is more difficult using an inner product, which explains why only finetuning the question encoder yields minimal gains.
+After fine-tuning, the passages are distributed more
+sparsely, making differentiation much easier.
+
 
 (ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2_ann_search)=
 ## Approximate Nearest Neighbor Search
