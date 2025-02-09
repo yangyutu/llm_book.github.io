@@ -1,0 +1,1113 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>14. LLM Reasoning &#8212; LLM Foundations</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_training/reasoning';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="15. LLM Training Acceleration (WIP)" href="accelerated_training.html" />
+    <link rel="prev" title="13. LLM Alignement and Preference Learning" href="alignment.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/qe-logo-large.png" class="logo__image only-light" alt="LLM Foundations - Home"/>
+    <script>document.write(`<img src="../../_static/qe-logo-large.png" class="logo__image only-dark" alt="LLM Foundations - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">1. Introduction: LLM in the Age of AI</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/language_models.html">2. Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/neural_language_models.html">3. Early Neural Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/word_embeddings.html">4. Word Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/transformers.html">5. Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/bert.html">6. BERT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/t5.html">7. Seq2Seq: T5 and BART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_foundation/GPT_series.html">8. GPT Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="training_fundamentals.html">11. LLM Training Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="finetuning.html">12. LLM Finetuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alignment.html">13. LLM Alignement and Preference Learning</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">14. LLM Reasoning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accelerated_training.html">15. LLM Training Acceleration (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reinforcement_learning.html">16. *Reinforcement Learning Essentials</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_fundamentals.html">17. Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_inference/inference_acceleration.html">18. Inference Acceleration (WIP)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prompting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">19. Basic Prompting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">20. Advanced Prompting Techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Text Embedding</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_text_embedding/text_embedding_fundamentals.html">21. Text Embedding Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_text_embedding/text_embedding_LLM.html">22. LLM Text Embedding</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">23. Multimodality fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">24. Vision Language Pretraining</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">25. Information Retrieval and Sparse Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">26. Information Retrieval and Dense Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/conversational_IR.html">28. Conversational IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">29. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">30. Advanced RAG (WIP)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>LLM Reasoning</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">14.1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-benchmarks">14.2. Reasoning Benchmarks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#math-benchmarks">14.2.1. Math benchmarks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-benchmark">14.2.2. Coding benchmark</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#language-knowledge-and-logical-thinking-benchmark">14.2.3. Language, knowledge, and logical thinking benchmark</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-time-scaling-strategies">14.3. Inference-Time Scaling Strategies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-and-search">14.3.1. Sampling and Search</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proposal-distribution-refinement">14.3.2. Proposal Distribution Refinement</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-coder">14.4. DeepSeek Coder</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-curation">14.4.1. Data Curation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining-strategy">14.4.2. PreTraining Strategy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#intruction-tuning">14.4.3. Intruction Tuning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation">14.4.4. Evaluation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-math">14.5. DeepSeek Math</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pipeline">14.5.1. Data Pipeline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">14.5.2. Pretraining</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supervised-instruction-tuning">14.5.3. Supervised Instruction Tuning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">14.5.4. Evaluation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-reasoning-models">14.6. DeepSeek Reasoning Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1-zero">14.6.1. DeepSeek-R1-Zero</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1">14.6.2. DeepSeek-R1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1-distillation">14.6.3. DeepSeek-R1-Distillation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">14.7. Bibliography</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software">14.7.1. Software</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="llm-reasoning">
+<h1><span class="section-number">14. </span>LLM Reasoning<a class="headerlink" href="#llm-reasoning" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2><span class="section-number">14.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p><strong>Reasoning</strong> is the process in which</p>
+<ul class="simple">
+<li><p>a complex problem is decomposed into a sequence of smaller logical steps</p></li>
+<li><p>the correct execution of these logical steps leading to final soution of the problem.
+In the context of LLM reasoning, it refers to the process in which LLM is generating intermediate chain of thought steps that lead to the final answer.</p></li>
+</ul>
+<p>When we ask a question to LLM, the nature of question largely determines if a reasoning is required. For example,</p>
+<ul class="simple">
+<li><p><em>What is the captial of China</em> is a <strong>factual question</strong> does not require reasoning.</p></li>
+<li><p><em>A man walks at a speed of 3 mph and how har has he walked for 2 hours?</em> is a <strong>simple reasoning problem</strong>.</p></li>
+<li><p><em>Prove there are infinitely many prime numbers</em> is <strong>complex reasoning problem</strong>. Puzzles, riddles, coding, and math tasks are typically falling into the category of complex reasoning problems.</p></li>
+</ul>
+<p>Most well-trained LLMs are capable of basic reasoning skill that can be triggered by CoT prompting; but they often fall short on complex reasoning benchmark. This chapter is about understanding, measuring, and developping complex reasoning skill for LLMs.</p>
+<p>The importance of complex reasoning for LLM are:
+Sure! Here’s a simplified version of the key points:</p>
+<ul class="simple">
+<li><p><strong>Better Real-World Use</strong> – Strong reasoning helps LLMs solve complex problems in fields like law, medicine, and math, making them more useful.</p></li>
+<li><p><strong>Fixing Weaknesses</strong> – LLMs struggle with logical thinking and complex tasking in out-of-domain situations. Improving reasoning makes can potentially improve their generalization to new domains.</p></li>
+<li><p><strong>Step Toward AGI</strong> – Reasoning is key to human intelligence. Enhancing it in LLMs moves us closer to Artificial General Intelligence (AGI).</p></li>
+</ul>
+</section>
+<section id="reasoning-benchmarks">
+<h2><span class="section-number">14.2. </span>Reasoning Benchmarks<a class="headerlink" href="#reasoning-benchmarks" title="Link to this heading">#</a></h2>
+<p>Large Language Models (LLMs) are evaluated using a variety of benchmarks designed to assess their reasoning capabilities across multiple domains.hese benchmarks provide standardized tasks that test models on aspects such as logical reasoning, mathematical problem-solving, and domain-specific knowledge.ere are some of the most prominent reasoning benchmarks:</p>
+<section id="math-benchmarks">
+<h3><span class="section-number">14.2.1. </span>Math benchmarks<a class="headerlink" href="#math-benchmarks" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>GSM8K (Grade School Math)</strong> - This benchmark consists of 8,500 linguistically diverse elementary school math word problems that require two to eight basic arithmetic operations to solve <span id="id1">[<a class="reference internal" href="#id1539" title="Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, and others. Training verifiers to solve math word problems. arXiv preprint arXiv:2110.14168, 2021.">CKB+21</a>]</span>.</p></li>
+<li><p><strong>MathEval</strong> - <a class="reference external" href="https://github.com/math-eval/MathEval">MathEval</a> is a comprehensive benchmark (~20k problems) that contains 20 other benchmarks, such as GSM8K, MATH, and the math subsection of MMLU. It aims to evaluate the model’s math skill from elementary school math to high school competitions.</p></li>
+<li><p><strong>FrontierMath</strong> - This benchmark contains questions from areas of modern math that are difficult for professional mathematicians to solve <span id="id2">[<a class="reference internal" href="#id1616" title="Elliot Glazer, Ege Erdil, Tamay Besiroglu, Diego Chicharro, Evan Chen, Alex Gunning, Caroline Falkman Olsson, Jean-Stanislas Denain, Anson Ho, Emily de Oliveira Santos, and others. Frontiermath: a benchmark for evaluating advanced mathematical reasoning in ai. arXiv preprint arXiv:2411.04872, 2024.">GEB+24</a>]</span>.</p></li>
+</ul>
+</section>
+<section id="coding-benchmark">
+<h3><span class="section-number">14.2.2. </span>Coding benchmark<a class="headerlink" href="#coding-benchmark" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>HumanEval</strong> - This benchmark consists of programming problems where the solution is always a Python function, often just a few lines long <span id="id3">[<a class="reference internal" href="training_fundamentals.html#id47" title="Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde De Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, and others. Evaluating large language models trained on code. arXiv preprint arXiv:2107.03374, 2021.">CTJ+21</a>]</span>. This assesses a model’s basic ability to generate correct and functional code based on problem descriptions.</p></li>
+<li><p><strong>SWE-Bench</strong> - The SWE-Bench comprises 2,294 software engineering problems drawn from real GitHub issues and corresponding pull requests across 12 popular Python repositories <span id="id4">[<a class="reference internal" href="#id1617" title="Carlos E Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, and Karthik Narasimhan. Swe-bench: can language models resolve real-world github issues? arXiv preprint arXiv:2310.06770, 2023.">JYW+23</a>]</span>.</p></li>
+</ul>
+</section>
+<section id="language-knowledge-and-logical-thinking-benchmark">
+<h3><span class="section-number">14.2.3. </span>Language, knowledge, and logical thinking benchmark<a class="headerlink" href="#language-knowledge-and-logical-thinking-benchmark" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>MMLU (Measuring Massive Multitask Language Understanding)</strong> - MMLU consists of approximately 16,000 multiple-choice questions spanning 57 academic subjects, including mathematics, philosophy, law, and medicine <span id="id5">[<a class="reference internal" href="#id1618" title="Dan Hendrycks, Collin Burns, Steven Basart, Andy Zou, Mantas Mazeika, Dawn Song, and Jacob Steinhardt. Measuring massive multitask language understanding. arXiv preprint arXiv:2009.03300, 2020.">HBB+20</a>]</span>. It is widely used to assess a model’s breadth of knowledge and reasoning across diverse fields.</p></li>
+<li><p><strong>GPQA (Google-Proof Q&amp;A)</strong> - 448 multiple-choice questions written by domain experts in biology, physics, and chemistry, and requires PhD-level experts to solve.<span id="id6">[<a class="reference internal" href="#id1619" title="David Rein, Betty Li Hou, Asa Cooper Stickland, Jackson Petty, Richard Yuanzhe Pang, Julien Dirani, Julian Michael, and Samuel R Bowman. Gpqa: a graduate-level google-proof q&amp;a benchmark. arXiv preprint arXiv:2311.12022, 2023.">RHS+23</a>]</span>. It is designed to evaluate a model’s proficiency in solving PhD-level complex problems across different domains.</p></li>
+<li><p><strong>AGIEval</strong> - This includes questions from 20 official, public, and high-standard admission and qualification exams, such as the SAT, Gaokao, law school admission tests, math competitions, lawyer qualification tests, and national civil service exams <span id="id7">[<a class="reference internal" href="#id1620" title="Wanjun Zhong, Ruixiang Cui, Yiduo Guo, Yaobo Liang, Shuai Lu, Yanlin Wang, Amin Saied, Weizhu Chen, and Nan Duan. Agieval: a human-centric benchmark for evaluating foundation models. arXiv preprint arXiv:2304.06364, 2023.">ZCG+23</a>]</span>. It evaluates a model’s performance on standardized tests that require advanced reasoning skills.</p></li>
+<li><p><strong>ARC-AGI (Abstraction and Reasoning Corpus for Artificial General Intelligence)</strong> - <a class="reference external" href="https://arcprize.org/">RC-AGI</a> is designed to assess a model’s abstract reasoning capabilities.t involves tasks that require pattern recognition and logical inference.</p></li>
+</ul>
+</section>
+</section>
+<section id="inference-time-scaling-strategies">
+<h2><span class="section-number">14.3. </span>Inference-Time Scaling Strategies<a class="headerlink" href="#inference-time-scaling-strategies" title="Link to this heading">#</a></h2>
+<p>Inference-time scaling refers to using more compute resources during inference, instead of training stage, to improve LLM’s ability in solving complex tasks.</p>
+<p>Different ways for scaling test-time computing:</p>
+<ul class="simple">
+<li><p>Best-of-N sampling - sampling <span class="math notranslate nohighlight">\(N\)</span> outputs in parallel from a base LLM and take the best one (by a learned verifier or a reward model) as the final output.</p></li>
+<li><p>Self-critique prompting - asking the model to self-critique its response and revise its response iteratively.</p></li>
+<li><p>Guided search - using a process-based verifier to guide the LLM</p></li>
+</ul>
+<p>Key findings from <span id="id8">[<a class="reference internal" href="#id1621" title="Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.">SLXK24</a>]</span></p>
+<ul class="simple">
+<li><p>For easy and intermediate questions, it is more effective to pretrain smaller models with less compute and then apply test-time compute to improve model outputs.</p></li>
+<li><p>With the most challenging questions, there is very little benfits from scaling-up test time compute for a smaller model; instead, it is more effective to make progress by scaling up pretraining compute .</p></li>
+</ul>
+<section id="sampling-and-search">
+<h3><span class="section-number">14.3.1. </span>Sampling and Search<a class="headerlink" href="#sampling-and-search" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-search-method">
+<a class="reference internal image-reference" href="../../_images/inference_time_search_method.png"><img alt="../../_images/inference_time_search_method.png" src="../../_images/inference_time_search_method.png" style="width: 924.95px; height: 455.65000000000003px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 14.1 </span><span class="caption-text">Comparing different PRM search methods. Left: Best-of-N samples N full answers and then selects the best answer according to the PRM final score. Center: Beam search samples N candidates at each step, and selects the top M according to the PRM to continue the search from. Right: lookahead-search extends each step in beam-search to utilize a k-step lookahead while assessing which steps to retain and continue the search from. Thus lookahead-search needs more compute. Image from <span id="id9">[<a class="reference internal" href="#id1621" title="Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.">SLXK24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-search-method" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Best-of-N weighted</strong>. We sample N answers independently from the base LLM and then select the best answer according to the PRM’s final answer judgement.</p>
+<p><strong>Beam search</strong>. Beam search optimizes the PRM by searching over its per-step predictions. Our implementation is similar to BFS-V <span class="math notranslate nohighlight">\([10,48]\)</span>. Concretely, we consider a fixed number of beams <span class="math notranslate nohighlight">\(N\)</span> and a beam width <span class="math notranslate nohighlight">\(M\)</span>. We then run the following steps:</p>
+<ol class="arabic simple">
+<li><p>sample <span class="math notranslate nohighlight">\(N\)</span> initial predictions for the first step in the solution</p></li>
+<li><p>score the generated steps according to the PRM’s predicted step-wise reward-to-go estimate (which also corresponds to the total reward from the prefix since the reward is sparse in this setting)</p></li>
+<li><p>filter for only the top <span class="math notranslate nohighlight">\(\frac{N}{M}\)</span> highest scoring steps</p></li>
+<li><p>now from each candidate, sample <span class="math notranslate nohighlight">\(M\)</span> proposals from the next step, resulting in a total of <span class="math notranslate nohighlight">\(N / M \times M\)</span> candidate prefixes again. Then repeat steps 2-4 again.</p></li>
+</ol>
+<p><strong>Lookahead search.</strong> Lookahead search modifies how beam search evaluates individual steps. It uses lookahead rollouts to improve the accuracy of the PRM’s value estimation in each step of the search process. Specifically,</p>
+<ul class="simple">
+<li><p>at each step in the beam search, rather than using the PRM score at the current step to select the top candidates, lookahead search performs a simulation,</p></li>
+<li><p>Simulation involves rolling out up to <span class="math notranslate nohighlight">\(k\)</span> steps further while stopping early if the end of solution is reached. (To minimize variance in the simulation rollout, we perform rollouts using temperature 0.)</p></li>
+<li><p>The PRM’s prediction at the end of this rollout is then used to score the current step in the beam search.</p></li>
+</ul>
+<div class="proof remark admonition" id="remark-0">
+<p class="admonition-title"><span class="caption-number">Remark 14.1 </span> (Lookahead search vs beam search vs MCTS)</p>
+<section class="remark-content" id="proof-content">
+<p>That is, in other words, we can view beam search as a special case of lookahead search with <span class="math notranslate nohighlight">\(k=0\)</span>. Given an accurate PRM, increasing <span class="math notranslate nohighlight">\(k\)</span> should improve the accuracy of the per-step value estimates at the cost of additional compute.</p>
+<p>Also note that this version of lookahead search is a special case of MCTS (Monte carlo Tree Search), wherein the stochastic elements of MCTS, designed to facilitate exploration, are removed since the PRM is already trained and is frozen. These stochastic elements are largely useful for learning the value function (which we’ve already learned with our PRM), but less useful at test-time when we want to exploit rather than explore. Therefore, lookahead search is largely representative of how MCTS-style methods would be applied at test-time.</p>
+</section>
+</div><p>Key findings:</p>
+<ul class="simple">
+<li><p>On the easy questions, the verifier will make mostly correct assessments of correctness. Therefore, by applying beam search guided by PRM, we might overfit to  any spurious features learned by the verifier, causing performance degredation.</p></li>
+<li><p>On the more difficult questions, the base model is much less likely to sample the correct answer in the first place, so beam search can serve to help guide the model towards producing the correct answer more often.</p></li>
+<li><p>With a given inference time budget, beam-search is more effective on harder questions
+and at lower compute budgets, whereas best-of-N is more effective on easier questions and at higher budgets (i.e., large N).</p></li>
+</ul>
+</section>
+<section id="proposal-distribution-refinement">
+<h3><span class="section-number">14.3.2. </span>Proposal Distribution Refinement<a class="headerlink" href="#proposal-distribution-refinement" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-parallel-sampling-vs-sequential-revision">
+<a class="reference internal image-reference" href="../../_images/parallel_sampling_vs_sequential_revision.png"><img alt="../../_images/parallel_sampling_vs_sequential_revision.png" src="../../_images/parallel_sampling_vs_sequential_revision.png" style="width: 633.0px; height: 480.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 14.2 </span><span class="caption-text">Parallel sampling generates N answers independently in parallel, whereas sequential revisions generates each one in sequence conditioned on previous attempts. Image from <span id="id10">[<a class="reference internal" href="#id1621" title="Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.">SLXK24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-parallel-sampling-vs-sequential-revision" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-revision-model-with-verifier">
+<a class="reference internal image-reference" href="../../_images/revision_model_with_verifier.png"><img alt="../../_images/revision_model_with_verifier.png" src="../../_images/revision_model_with_verifier.png" style="width: 675.0px; height: 518.25px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 14.3 </span><span class="caption-text">In both the sequential and parallel cases, we can use the verifier to determine the best-of-N answers (e.g. by applying best-of-N
+weighted). We can also allocate some of our budget to parallel and some to sequential, effectively enabling a combination of the
+two sampling strategies. In this case, we use the verifier to first select the best answer within each sequential chain and then
+select the best answer accross chains. Image from <span id="id11">[<a class="reference internal" href="#id1621" title="Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.">SLXK24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-revision-model-with-verifier" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="deepseek-coder">
+<h2><span class="section-number">14.4. </span>DeepSeek Coder<a class="headerlink" href="#deepseek-coder" title="Link to this heading">#</a></h2>
+<p><span id="id12">[<a class="reference internal" href="#id1629" title="Daya Guo, Qihao Zhu, Dejian Yang, Zhenda Xie, Kai Dong, Wentao Zhang, Guanting Chen, Xiao Bi, Yu Wu, YK Li, and others. Deepseek-coder: when the large language model meets programming–the rise of code intelligence. arXiv preprint arXiv:2401.14196, 2024.">GZY+24</a>]</span></p>
+<section id="data-curation">
+<h3><span class="section-number">14.4.1. </span>Data Curation<a class="headerlink" href="#data-curation" title="Link to this heading">#</a></h3>
+<p>The training dataset of DeepSeek-Coder is composed of 87% source code, 10% English coderelated natural language corpus, and 3% code-unrelated Chinese natural language corpus.</p>
+</section>
+<section id="pretraining-strategy">
+<h3><span class="section-number">14.4.2. </span>PreTraining Strategy<a class="headerlink" href="#pretraining-strategy" title="Link to this heading">#</a></h3>
+<p>Two training strategies:</p>
+<ul class="simple">
+<li><p>Next Token Prediction. Like the typical language model next-token-prediction task. In this process, various files are concatenated to form a fixed-length entry.</p></li>
+<li><p>Fill-in-the-Middle. In the code pre-training
+scenario, it is often necessary to generate corresponding inserted content based on the given
+context and subsequent text. Due to specific dependencies in a programming language, relying
+solely on next token prediction is insufficient to learn this fill-in-the-middle capability.</p></li>
+</ul>
+<p>Fill-in-the Middle was proposed in <span id="id13">[<a class="reference internal" href="#id1630" title="Mohammad Bavarian, Heewoo Jun, Nikolas Tezak, John Schulman, Christine McLeavey, Jerry Tworek, and Mark Chen. Efficient training of language models to fill in the middle. arXiv preprint arXiv:2207.14255, 2022.">BJT+22</a>, <a class="reference internal" href="#id1631" title="Raymond Li, Loubna Ben Allal, Yangtian Zi, Niklas Muennighoff, Denis Kocetkov, Chenghao Mou, Marc Marone, Christopher Akiki, Jia Li, Jenny Chim, and others. Starcoder: may the source be with you! arXiv preprint arXiv:2305.06161, 2023.">LAZ+23</a>]</span></p>
+<p>This approach involves randomly dividing the text into three parts, then shuffling the order of these parts and connecting them with special characters. This method aims to incorporate a fill-in-the-blank pretraining task during the training process.</p>
+<p>Within the FIM methodology, two distinct modes are employed: PSM (Prefix-Suffix-Middle) and SPM
+(Suffix-Prefix-Middle). In the PSM mode, the training corpus is organized in the sequence
+of prefix, suffix, middle, aligning the text in a way that the middle segment is flanked by the
+prefix and suffix. Conversely, the SPM mode arranges the segments as suffix, prefix, middle,
+presenting a different structural challenge. These modes are instrumental in enhancing the
+model’s capability to handle various structural arrangements in code, providing a robust training
+framework for advanced code prediction tasks.</p>
+</section>
+<section id="intruction-tuning">
+<h3><span class="section-number">14.4.3. </span>Intruction Tuning<a class="headerlink" href="#intruction-tuning" title="Link to this heading">#</a></h3>
+<p>We develop DeepSeek-Coder-Instruct by enhancing the DeepSeek-Coder-Base through instructionbased fine-tuning using high-quality data.</p>
+</section>
+<section id="evaluation">
+<h3><span class="section-number">14.4.4. </span>Evaluation<a class="headerlink" href="#evaluation" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-deepseek-coder-performance">
+<a class="reference internal image-reference" href="../../_images/deepseek_coder_performance.png"><img alt="../../_images/deepseek_coder_performance.png" src="../../_images/deepseek_coder_performance.png" style="width: 774.8000000000001px; height: 375.05px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 14.4 </span><span class="caption-text">The Performance of DeepSeek-Coder. Image from <span id="id14">[<a class="reference internal" href="#id1629" title="Daya Guo, Qihao Zhu, Dejian Yang, Zhenda Xie, Kai Dong, Wentao Zhang, Guanting Chen, Xiao Bi, Yu Wu, YK Li, and others. Deepseek-coder: when the large language model meets programming–the rise of code intelligence. arXiv preprint arXiv:2401.14196, 2024.">GZY+24</a>]</span></span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-coder-performance" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="deepseek-math">
+<h2><span class="section-number">14.5. </span>DeepSeek Math<a class="headerlink" href="#deepseek-math" title="Link to this heading">#</a></h2>
+<p>DeepSeekMath 7B, which continues pretraining DeepSeek-Coder-Base-v1.5 7B with 120B math-related tokens sourced from Common
+Crawl, together with natural language and code data.</p>
+<figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-deepseek-math-performance">
+<a class="reference internal image-reference" href="../../_images/deepseek_math_performance.png"><img alt="../../_images/deepseek_math_performance.png" src="../../_images/deepseek_math_performance.png" style="width: 427.5px; height: 253.5px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 14.5 </span><span class="caption-text">The training workflow for DeepSeek-R1-Zero, which is based on pure reinforcement learning. Reward signals are based on Accuracy reward and format reward. Image from <span id="id15">[<a class="reference internal" href="#id1624" title="Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, YK Li, Y Wu, and others. Deepseekmath: pushing the limits of mathematical reasoning in open language models. arXiv preprint arXiv:2402.03300, 2024.">SWZ+24</a>]</span></span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-math-performance" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="data-pipeline">
+<h3><span class="section-number">14.5.1. </span>Data Pipeline<a class="headerlink" href="#data-pipeline" title="Link to this heading">#</a></h3>
+<p>DeepSeekMath Corpus, a large-scale high-quality pre-training corpus comprising 120B math tokens. This
+dataset is extracted from the Common Crawl (CC) using a fastText-based classifier (Joulin et al.,
+2016). In the initial iteration, the classifier is trained using instances from OpenWebMath (Paster
+et al., 2023) as positive examples, while incorporating a diverse selection of other web pages to
+serve as negative examples. Subsequently, we employ the classifier to mine additional positive
+instances from the CC, which are further refined through human annotation.</p>
+<p>By implementing a meticulously designed data selection pipeline, we successfully construct the DeepSeekMath
+Corpus, a high-quality dataset of 120B tokens from web pages filtered for mathematical content, which is almost 7 times the size of the math web pages used by Minerva
+(Lewkowycz et al., 2022a) and 9 times the size of the recently released OpenWebMath
+(Paster et al., 2023).</p>
+<figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-deepseek-math-data-pipeline">
+<a class="reference internal image-reference" href="../../_images/deepseek_math_data_pipeline.png"><img alt="../../_images/deepseek_math_data_pipeline.png" src="../../_images/deepseek_math_data_pipeline.png" style="width: 666.6px; height: 257.40000000000003px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 14.6 </span><span class="caption-text">An iterative pipeline that collects mathematical web pages from Common Crawl. Image from <span id="id16">[<a class="reference internal" href="#id1624" title="Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, YK Li, Y Wu, and others. Deepseekmath: pushing the limits of mathematical reasoning in open language models. arXiv preprint arXiv:2402.03300, 2024.">SWZ+24</a>]</span></span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-math-data-pipeline" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="pretraining">
+<h3><span class="section-number">14.5.2. </span>Pretraining<a class="headerlink" href="#pretraining" title="Link to this heading">#</a></h3>
+</section>
+<section id="supervised-instruction-tuning">
+<h3><span class="section-number">14.5.3. </span>Supervised Instruction Tuning<a class="headerlink" href="#supervised-instruction-tuning" title="Link to this heading">#</a></h3>
+<p>After pre-training, we apply mathematical instruction tuning to DeepSeekMath-Base with chain-of-thought (Wei et al., 2022), program-of-thought (Chen et al., 2022; Gao et al., 2023), and tool-integrated reasoning (Gou et al., 2023) data.</p>
+<p>We construct a mathematical instruction-tuning dataset covering English and Chinese problems from different mathematical fields and of varying complexity levels: problems are paired with solutions in chain-of-thought (CoT) (Wei et al., 2022), program-of-thought (PoT) (Chen et al., 2022; Gao et al., 2023), and tool-integrated reasoning format (Gou et al., 2023). The total number of training examples is 776 K .</p>
+<ul class="simple">
+<li><p>English mathematical datasets: We annotate GSM8K and MATH problems with toolintegrated solutions, and adopt a subset of MathInstruct (Yue et al., 2023) along with the training set of Lila-OOD (Mishra et al., 2022) where problems are solved with CoT or PoT. Our English collection covers diverse fields of mathematics, e.g., algebra, probability, number theory, calculus, and geometry.</p></li>
+<li><p>Chinese mathematical datasets: We collect Chinese K-12 mathematical problems spanning 76 sub-topics such as linear equations, with solutions annotated in both CoT and toolintegrated reasoning format.</p></li>
+</ul>
+</section>
+<section id="id17">
+<h3><span class="section-number">14.5.4. </span>Evaluation<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Math Corpus</p></th>
+<th class="head text-center"><p>Size</p></th>
+<th class="head text-center"><p>English Benchmarks</p></th>
+<th class="head text-center"><p></p></th>
+<th class="head text-center"><p></p></th>
+<th class="head text-center"><p></p></th>
+<th class="head text-center"><p></p></th>
+<th class="head text-center"><p>Chinese Benchmarks</p></th>
+<th class="head text-center"><p></p></th>
+<th class="head text-center"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>GSM8K</p></td>
+<td class="text-center"><p>MATH</p></td>
+<td class="text-center"><p>OCW</p></td>
+<td class="text-center"><p>SAT</p></td>
+<td class="text-center"><p>MMLU STEM</p></td>
+<td class="text-center"><p>CMATH</p></td>
+<td class="text-center"><p>Gaokao <br> MathCloze</p></td>
+<td class="text-center"><p>Gaokao MathQA</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>No Math Training</p></td>
+<td class="text-center"><p>N/A</p></td>
+<td class="text-center"><p>2.9%</p></td>
+<td class="text-center"><p>3.0%</p></td>
+<td class="text-center"><p>2.9%</p></td>
+<td class="text-center"><p>15.6%</p></td>
+<td class="text-center"><p>19.5%</p></td>
+<td class="text-center"><p>12.3%</p></td>
+<td class="text-center"><p>0.8%</p></td>
+<td class="text-center"><p>17.9%</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>MathPile</p></td>
+<td class="text-center"><p>8.9B</p></td>
+<td class="text-center"><p>2.7%</p></td>
+<td class="text-center"><p>3.3%</p></td>
+<td class="text-center"><p>2.2%</p></td>
+<td class="text-center"><p>12.5%</p></td>
+<td class="text-center"><p>15.7%</p></td>
+<td class="text-center"><p>1.2%</p></td>
+<td class="text-center"><p>0.0%</p></td>
+<td class="text-center"><p>2.8%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>OpenWebMath</p></td>
+<td class="text-center"><p>13.6B</p></td>
+<td class="text-center"><p>11.5%</p></td>
+<td class="text-center"><p>8.9%</p></td>
+<td class="text-center"><p>3.7%</p></td>
+<td class="text-center"><p>31.3%</p></td>
+<td class="text-center"><p>29.6%</p></td>
+<td class="text-center"><p>16.8%</p></td>
+<td class="text-center"><p>0.0%</p></td>
+<td class="text-center"><p>14.2%</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Proof-Pile-2</p></td>
+<td class="text-center"><p>51.9B</p></td>
+<td class="text-center"><p>14.3%</p></td>
+<td class="text-center"><p>11.2%</p></td>
+<td class="text-center"><p>3.7%</p></td>
+<td class="text-center"><p>43.8%</p></td>
+<td class="text-center"><p>29.2%</p></td>
+<td class="text-center"><p>19.9%</p></td>
+<td class="text-center"><p>5.1%</p></td>
+<td class="text-center"><p>11.7%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>DeepSeekMath Corpus</p></td>
+<td class="text-center"><p>120.2B</p></td>
+<td class="text-center"><p>23.8%</p></td>
+<td class="text-center"><p>13.6%</p></td>
+<td class="text-center"><p>4.8%</p></td>
+<td class="text-center"><p>56.3%</p></td>
+<td class="text-center"><p>33.1%</p></td>
+<td class="text-center"><p>41.5%</p></td>
+<td class="text-center"><p>5.9%</p></td>
+<td class="text-center"><p>23.6%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Our pre-trained base model DeepSeekMath-Base 7B achieves comparable performance
+with Minerva 540B (Lewkowycz et al., 2022a), indicating the number of parameters is not
+the only key factor in mathematical reasoning capability. A smaller model pre-trained on
+high-quality data could achieve strong performance as well.</p>
+</section>
+</section>
+<section id="deepseek-reasoning-models">
+<h2><span class="section-number">14.6. </span>DeepSeek Reasoning Models<a class="headerlink" href="#deepseek-reasoning-models" title="Link to this heading">#</a></h2>
+<section id="deepseek-r1-zero">
+<h3><span class="section-number">14.6.1. </span>DeepSeek-R1-Zero<a class="headerlink" href="#deepseek-r1-zero" title="Link to this heading">#</a></h3>
+<p>DeepSeek Team explore the potential of LLMs to develop reasoning capabilities without any supervised data, focusing on their self-evolution through a pure reinforcement learning process. The resulting model is named as <strong>DeepSeek-R1-Zero</strong>.</p>
+<p>Specifically, DeepSeek-R1-Zero starts with DeepSeek-V3-Base as the base model and employ a single-stage GRPO reinforcement learning (see <a class="reference internal" href="alignment.html#chapter-training-sec-llm-alignment-grpo"><span class="std std-ref">Group Relative Policy Optimization (GRPO)</span></a>) to improve model’s reason ability [<a class="reference internal" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-r1-zero-workflow"><span class="std std-numref">Fig. 14.7</span></a>]. The reward signal consists of two types of rewards:</p>
+<ul class="simple">
+<li><p>Accuracy rewards: The accuracy reward model evaluates whether the response is correct. (for math and coding problems, the result is deterministic)</p></li>
+<li><p>Format rewards: Encourage model to put thinking process between <code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> <code class="docutils literal notranslate"><span class="pre">&lt;/think&gt;</span></code></p></li>
+</ul>
+<figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-deepseek-r1-zero-workflow">
+<a class="reference internal image-reference" href="../../_images/deepseek_r1_zero_workflow.png"><img alt="../../_images/deepseek_r1_zero_workflow.png" src="../../_images/deepseek_r1_zero_workflow.png" style="width: 599.55px; height: 247.79999999999998px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 14.7 </span><span class="caption-text">The training workflow for DeepSeek-R1-Zero, which is based on pure reinforcement learning. Reward signals are based on Accuracy reward and format reward.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-r1-zero-workflow" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="proof remark admonition" id="remark-1">
+<p class="admonition-title"><span class="caption-number">Remark 14.2 </span> (Advantages Pure RL)</p>
+<section class="remark-content" id="proof-content">
+<p>Pure-RL is slower upfront (trial and error takes time) — but iteliminates the costly, time-intensive labeling bottleneck. Further, the human labeling CoT data is not necessarily the optimal thought process to solve any problems. Using pure RL could have following profound impact in the long run:</p>
+<ul class="simple">
+<li><p>Without the data labeling bottleneck, it’ll be faster, scalable, and way more efficient for building reasoning models.</p></li>
+<li><p>Let’s the model’s self-evolution process to explore better ways to solve problems, instead of relying on human priors. This is necessary for developing superintelligence.</p></li>
+</ul>
+</section>
+</div><p>As the training proceeds, the model started to develop sophisticated reasoning behaviors, such as reflection, where the model
+revisits and reevaluates its previous steps and then the model explores of alternative approaches to problem-solving.</p>
+<p>Such self-evolution of reasoning behavior is not a result of explicit programm but instead incentivized from the model’s interaction with the reinforcement learning environment (i.e., the reward signal).</p>
+<div class="proof remark admonition" id="remark-2">
+<p class="admonition-title"><span class="caption-number">Remark 14.3 </span> (Reward modeling for reasoning task)</p>
+<section class="remark-content" id="proof-content">
+<p>Reward modeling for reasoning task is much more straightforward than typical human preference learning tasks, which requires non-trivial efforts to build reward model to approximate complicated human preference.</p>
+<p>The reasoning tasks usually have groundtruth - correct answer or not; as a comparison, human preference is usually hard to quantify.</p>
+</section>
+</div><p>As shown in <a class="reference internal" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-rzero-thinking-time-evolution"><span class="std std-numref">Fig. 14.8</span></a>, DeepSeek-R1-Zero learns to allocate more thinking time in solving problems</p>
+<figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-deepseek-rzero-thinking-time-evolution">
+<a class="reference internal image-reference" href="../../_images/deepseek_rzero_thinking_time_evolution.png"><img alt="../../_images/deepseek_rzero_thinking_time_evolution.png" src="../../_images/deepseek_rzero_thinking_time_evolution.png" style="width: 612.75px; height: 391.5px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 14.8 </span><span class="caption-text">The average response length of DeepSeek-R1-Zero on the training set during the RL
+process. DeepSeek-R1-Zero naturally learns to solve reasoning tasks with more thinking time. Image from <span id="id18">[<a class="reference internal" href="#id1628" title="Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu, Shirong Ma, Peiyi Wang, Xiao Bi, and others. Deepseek-r1: incentivizing reasoning capability in llms via reinforcement learning. arXiv preprint arXiv:2501.12948, 2025.">GYZ+25</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-rzero-thinking-time-evolution" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Model</p></th>
+<th class="head text-center"><p>AIME 2024</p></th>
+<th class="head text-center"><p></p></th>
+<th class="head text-center"><p>MATH-500</p></th>
+<th class="head text-center"><p>GPQA <br> Diamond</p></th>
+<th class="head text-center"><p>LiveCode <br> Bench <br> pass&#64;1</p></th>
+<th class="head text-center"><p>CodeForces</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p></p></td>
+<td class="text-center"><p>pass&#64;1</p></td>
+<td class="text-center"><p>cons&#64;64</p></td>
+<td class="text-center"><p>pass&#64;1</p></td>
+<td class="text-center"><p>pass&#64;1</p></td>
+<td class="text-center"><p>pating</p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>OpenAI-o1-mini</p></td>
+<td class="text-center"><p>63.6</p></td>
+<td class="text-center"><p>80.0</p></td>
+<td class="text-center"><p>90.0</p></td>
+<td class="text-center"><p>60.0</p></td>
+<td class="text-center"><p>53.8</p></td>
+<td class="text-center"><p>1820</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>OpenAI-o1-0912</p></td>
+<td class="text-center"><p>74.4</p></td>
+<td class="text-center"><p>83.3</p></td>
+<td class="text-center"><p>94.8</p></td>
+<td class="text-center"><p>77.3</p></td>
+<td class="text-center"><p>63.4</p></td>
+<td class="text-center"><p>1843</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>DeepSeek-R1-Zero</p></td>
+<td class="text-center"><p>71.0</p></td>
+<td class="text-center"><p>86.7</p></td>
+<td class="text-center"><p>95.9</p></td>
+<td class="text-center"><p>73.3</p></td>
+<td class="text-center"><p>50.0</p></td>
+<td class="text-center"><p>1444</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>DeepSeek-R1</p></td>
+<td class="text-center"><p>71.0</p></td>
+<td class="text-center"><p>79.8</p></td>
+<td class="text-center"><p>97.3</p></td>
+<td class="text-center"><p>71.5</p></td>
+<td class="text-center"><p>65.9</p></td>
+<td class="text-center"><p>2029</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>There are also some observed drawbacks from training model - the output has issues like <strong>poor readability</strong> and <strong>language mixing</strong>.
+However, this is expected:</p>
+<ul class="simple">
+<li><p>The reward signal does not enforce readability and language mixing.</p></li>
+<li><p>Enforcing readability and language mixing could interfere with the development of reasoning ability during training process.</p></li>
+</ul>
+</section>
+<section id="deepseek-r1">
+<h3><span class="section-number">14.6.2. </span>DeepSeek-R1<a class="headerlink" href="#deepseek-r1" title="Link to this heading">#</a></h3>
+<p>On top of encourging results from  DeepSeek-R1-Zero, DeepSeek-R1 has the objectives of</p>
+<ul class="simple">
+<li><p>Further enhancing reasoning performance and accelerate convergence</p></li>
+<li><p>Improving user-friendliness by generating human readable, clear anc coherent chain of throught</p></li>
+<li><p>Improving the model’s general ability beyond reasoning tasks.</p></li>
+</ul>
+<p>DeepSeek-R1 main technical approaches improve over Zero by using high-quality <strong>cold start</strong> data and a <strong>multi-stage training</strong> pipeline.</p>
+<ul class="simple">
+<li><p>The cold start data consists of a small amount (thousands) of long and high-quality (structred, human friendly) CoT data to fine-tune the model as the initial RL actor.</p></li>
+<li><p>The multi-stage training pipeline is shown in <a class="reference internal" href="#chapter-training-fig-reasoning-deepseek-r1-workflow"><span class="std std-numref">Fig. 14.9</span></a>, which includes</p>
+<ul>
+<li><p>A supervised fine-tuning stage on cold-start data to get to DeepSeek-R0.25</p></li>
+<li><p>A subsequent reasoning-oriented RL to get to DeepSeek-R0.5</p></li>
+<li><p>Additional SFT and RL process on a combined data consisting of</p>
+<ul>
+<li><p>New CoT SFT data collected from DeepSeek-R0.5</p></li>
+<li><p>Existing supervised training data from DeepSeek V3 to enhancing non-reasoning tasks</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>In the final RL for all scenarios,</p>
+<ul class="simple">
+<li><p>Reasoning tasks rewards adopt the rule-based reward in DeepSeek-R1-Zero.</p></li>
+<li><p>Non-reasoning tasks rewards focus on aligning with human preferences, like helpfulness, harmless, and safety.</p></li>
+</ul>
+<figure class="align-default" id="chapter-training-fig-reasoning-deepseek-r1-workflow">
+<a class="reference internal image-reference" href="../../_images/deepseek_r1_workflow.png"><img alt="../../_images/deepseek_r1_workflow.png" src="../../_images/deepseek_r1_workflow.png" style="width: 718.2px; height: 490.05px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 14.9 </span><span class="caption-text">Summary of DeepSeek-R1 multi-stage training, starting from DeepSeek-V3.</span><a class="headerlink" href="#chapter-training-fig-reasoning-deepseek-r1-workflow" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>As shown in <a class="reference internal" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-r1-benchmark"><span class="std std-numref">Fig. 14.10</span></a>, DeepSeek-R1 achieves comparable performance to OpenAI-o1-1217 on reasoning tasks.</p>
+<figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-deepseek-r1-benchmark">
+<a class="reference internal image-reference" href="../../_images/deepseek_r1_benchmark.png"><img alt="../../_images/deepseek_r1_benchmark.png" src="../../_images/deepseek_r1_benchmark.png" style="width: 815.25px; height: 488.25px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 14.10 </span><span class="caption-text">Benchmark performanc of DeepSeek-R1 in reasoning oriented tasks. Image from <span id="id19">[<a class="reference internal" href="#id1628" title="Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu, Shirong Ma, Peiyi Wang, Xiao Bi, and others. Deepseek-r1: incentivizing reasoning capability in llms via reinforcement learning. arXiv preprint arXiv:2501.12948, 2025.">GYZ+25</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-r1-benchmark" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="deepseek-r1-distillation">
+<h3><span class="section-number">14.6.3. </span>DeepSeek-R1-Distillation<a class="headerlink" href="#deepseek-r1-distillation" title="Link to this heading">#</a></h3>
+<p>DeepSeek team explored a straightforward distillation approach:</p>
+<ul class="simple">
+<li><p>Using the reasoning data generated by DeepSeek-R1</p></li>
+<li><p>Only SFT is used and does not include an RL stage,</p></li>
+</ul>
+<p>As shown in Table 5, simply distilling DeepSeek-R1’s outputs enables the efficient DeepSeekR1-7B (i.e., DeepSeek-R1-Distill-Qwen-7B, abbreviated similarly below) to outperform nonreasoning models like GPT-4o-0513 across the board. DeepSeek-R1-14B surpasses QwQ-32BPreview on all evaluation metrics,</p>
+<p>DeepSeek team also conducted examperiment to answer the question if one can directly apply large-scale RL training to a student model to achieve performance comparable with distillation method?</p>
+<p>As shown in the following table:</p>
+<ul class="simple">
+<li><p>Distilling more powerful models into smaller ones gives much better results than its counterparts trained by large-scale RL, despite the latter requires enormous computational power.</p></li>
+</ul>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Model</p></th>
+<th class="head text-center"><p>AIME 2024</p></th>
+<th class="head text-center"><p></p></th>
+<th class="head text-center"><p>MATH-500</p></th>
+<th class="head text-center"><p>GPQA Diamond</p></th>
+<th class="head text-center"><p>LiveCodeBench</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p></p></td>
+<td class="text-center"><p>pass&#64;1</p></td>
+<td class="text-center"><p>cons&#64;64</p></td>
+<td class="text-center"><p>pass&#64;1</p></td>
+<td class="text-center"><p>pass&#64;1</p></td>
+<td class="text-center"><p>pass&#64;1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>QwQ-32B-Preview</p></td>
+<td class="text-center"><p>50.0</p></td>
+<td class="text-center"><p>60.0</p></td>
+<td class="text-center"><p>90.6</p></td>
+<td class="text-center"><p>54.5</p></td>
+<td class="text-center"><p>41.9</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>DeepSeek-R1-Zero-Qwen-32B</p></td>
+<td class="text-center"><p>47.0</p></td>
+<td class="text-center"><p>60.0</p></td>
+<td class="text-center"><p>91.6</p></td>
+<td class="text-center"><p>55.0</p></td>
+<td class="text-center"><p>40.2</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>DeepSeek-R1-Distill-Qwen-32B</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{7 2 . 6}\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{8 3 . 3}\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{9 4 . 3}\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{6 2 . 1}\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{5 7 . 2}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="bibliography">
+<h2><span class="section-number">14.7. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<section id="software">
+<h3><span class="section-number">14.7.1. </span>Software<a class="headerlink" href="#software" title="Link to this heading">#</a></h3>
+<p><a class="reference external" href="https://github.com/unslothai/unsloth">Unsloth</a></p>
+<div class="docutils container" id="id20">
+<div role="list" class="citation-list">
+<div class="citation" id="id1630" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">BJT+22</a><span class="fn-bracket">]</span></span>
+<p>Mohammad Bavarian, Heewoo Jun, Nikolas Tezak, John Schulman, Christine McLeavey, Jerry Tworek, and Mark Chen. Efficient training of language models to fill in the middle. <em>arXiv preprint arXiv:2207.14255</em>, 2022.</p>
+</div>
+<div class="citation" id="id54" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">CTJ+21</a><span class="fn-bracket">]</span></span>
+<p>Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde De Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, and others. Evaluating large language models trained on code. <em>arXiv preprint arXiv:2107.03374</em>, 2021.</p>
+</div>
+<div class="citation" id="id1539" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">CKB+21</a><span class="fn-bracket">]</span></span>
+<p>Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, and others. Training verifiers to solve math word problems. <em>arXiv preprint arXiv:2110.14168</em>, 2021.</p>
+</div>
+<div class="citation" id="id1616" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">GEB+24</a><span class="fn-bracket">]</span></span>
+<p>Elliot Glazer, Ege Erdil, Tamay Besiroglu, Diego Chicharro, Evan Chen, Alex Gunning, Caroline Falkman Olsson, Jean-Stanislas Denain, Anson Ho, Emily de Oliveira Santos, and others. Frontiermath: a benchmark for evaluating advanced mathematical reasoning in ai. <em>arXiv preprint arXiv:2411.04872</em>, 2024.</p>
+</div>
+<div class="citation" id="id1628" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>GYZ+25<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id18">1</a>,<a role="doc-backlink" href="#id19">2</a>)</span>
+<p>Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu, Shirong Ma, Peiyi Wang, Xiao Bi, and others. Deepseek-r1: incentivizing reasoning capability in llms via reinforcement learning. <em>arXiv preprint arXiv:2501.12948</em>, 2025.</p>
+</div>
+<div class="citation" id="id1629" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>GZY+24<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id12">1</a>,<a role="doc-backlink" href="#id14">2</a>)</span>
+<p>Daya Guo, Qihao Zhu, Dejian Yang, Zhenda Xie, Kai Dong, Wentao Zhang, Guanting Chen, Xiao Bi, Yu Wu, YK Li, and others. Deepseek-coder: when the large language model meets programming–the rise of code intelligence. <em>arXiv preprint arXiv:2401.14196</em>, 2024.</p>
+</div>
+<div class="citation" id="id1618" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">HBB+20</a><span class="fn-bracket">]</span></span>
+<p>Dan Hendrycks, Collin Burns, Steven Basart, Andy Zou, Mantas Mazeika, Dawn Song, and Jacob Steinhardt. Measuring massive multitask language understanding. <em>arXiv preprint arXiv:2009.03300</em>, 2020.</p>
+</div>
+<div class="citation" id="id1617" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">JYW+23</a><span class="fn-bracket">]</span></span>
+<p>Carlos E Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, and Karthik Narasimhan. Swe-bench: can language models resolve real-world github issues? <em>arXiv preprint arXiv:2310.06770</em>, 2023.</p>
+</div>
+<div class="citation" id="id1631" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">LAZ+23</a><span class="fn-bracket">]</span></span>
+<p>Raymond Li, Loubna Ben Allal, Yangtian Zi, Niklas Muennighoff, Denis Kocetkov, Chenghao Mou, Marc Marone, Christopher Akiki, Jia Li, Jenny Chim, and others. Starcoder: may the source be with you! <em>arXiv preprint arXiv:2305.06161</em>, 2023.</p>
+</div>
+<div class="citation" id="id1619" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">RHS+23</a><span class="fn-bracket">]</span></span>
+<p>David Rein, Betty Li Hou, Asa Cooper Stickland, Jackson Petty, Richard Yuanzhe Pang, Julien Dirani, Julian Michael, and Samuel R Bowman. Gpqa: a graduate-level google-proof q&amp;a benchmark. <em>arXiv preprint arXiv:2311.12022</em>, 2023.</p>
+</div>
+<div class="citation" id="id1624" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SWZ+24<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id15">1</a>,<a role="doc-backlink" href="#id16">2</a>)</span>
+<p>Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, YK Li, Y Wu, and others. Deepseekmath: pushing the limits of mathematical reasoning in open language models. <em>arXiv preprint arXiv:2402.03300</em>, 2024.</p>
+</div>
+<div class="citation" id="id1621" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SLXK24<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id8">1</a>,<a role="doc-backlink" href="#id9">2</a>,<a role="doc-backlink" href="#id10">3</a>,<a role="doc-backlink" href="#id11">4</a>)</span>
+<p>Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. <em>arXiv preprint arXiv:2408.03314</em>, 2024.</p>
+</div>
+<div class="citation" id="id1620" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">ZCG+23</a><span class="fn-bracket">]</span></span>
+<p>Wanjun Zhong, Ruixiang Cui, Yiduo Guo, Yaobo Liang, Shuai Lu, Yanlin Wang, Amin Saied, Weizhu Chen, and Nan Duan. Agieval: a human-centric benchmark for evaluating foundation models. <em>arXiv preprint arXiv:2304.06364</em>, 2023.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs/chapter_training"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="alignment.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">13. </span>LLM Alignement and Preference Learning</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="accelerated_training.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">15. </span>LLM Training Acceleration (WIP)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">14.1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-benchmarks">14.2. Reasoning Benchmarks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#math-benchmarks">14.2.1. Math benchmarks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-benchmark">14.2.2. Coding benchmark</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#language-knowledge-and-logical-thinking-benchmark">14.2.3. Language, knowledge, and logical thinking benchmark</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-time-scaling-strategies">14.3. Inference-Time Scaling Strategies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-and-search">14.3.1. Sampling and Search</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proposal-distribution-refinement">14.3.2. Proposal Distribution Refinement</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-coder">14.4. DeepSeek Coder</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-curation">14.4.1. Data Curation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining-strategy">14.4.2. PreTraining Strategy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#intruction-tuning">14.4.3. Intruction Tuning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation">14.4.4. Evaluation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-math">14.5. DeepSeek Math</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pipeline">14.5.1. Data Pipeline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">14.5.2. Pretraining</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supervised-instruction-tuning">14.5.3. Supervised Instruction Tuning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">14.5.4. Evaluation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-reasoning-models">14.6. DeepSeek Reasoning Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1-zero">14.6.1. DeepSeek-R1-Zero</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1">14.6.2. DeepSeek-R1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1-distillation">14.6.3. DeepSeek-R1-Distillation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">14.7. Bibliography</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software">14.7.1. Software</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuguang Yang
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

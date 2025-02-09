@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>30. Conversational IR (WIP) &#8212; LLM Foundations</title>
+    <title>18. Llama Series &#8212; LLM Foundations</title>
   
   
   
@@ -58,11 +58,11 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_application_IR/conversational_IR';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_LLM_case_study/llama_series';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="31. RAG" href="../chapter_rag/basic_rag.html" />
-    <link rel="prev" title="29. Application of LLM in IR (WIP)" href="application_LLM_in_IR.html" />
+    <link rel="next" title="19. Decoding" href="../chapter_inference/inference_fundamentals.html" />
+    <link rel="prev" title="17. DeepSeek Series" href="deepseek_series.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -201,9 +201,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">16. *Reinforcement Learning Essentials</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Case Studies</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_case_study/deepseek_series.html">17. DeepSeek Series</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_case_study/llama_series.html">18. Llama Series</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="deepseek_series.html">17. DeepSeek Series</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">18. Llama Series</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -226,11 +226,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">26. Vision Language Pretraining</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="information_retrieval_fundamentals_part1.html">27. Information Retrieval and Sparse Retrieval</a></li>
-<li class="toctree-l1"><a class="reference internal" href="information_retrieval_fundamentals_part2.html">28. Information Retrieval and Dense Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="application_LLM_in_IR.html">29. Application of LLM in IR (WIP)</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">30. Conversational IR (WIP)</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">27. Information Retrieval and Sparse Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">28. Information Retrieval and Dense Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">29. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/conversational_IR.html">30. Conversational IR (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">31. RAG</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">32. Advanced RAG (WIP)</a></li>
 </ul>
@@ -323,7 +323,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Conversational IR (WIP)</h1>
+    <h1>Llama Series</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -333,12 +333,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">30.1. Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-understanding-and-optimization">30.2. Query Understanding and Optimization</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contextual-understanding-and-query-rewrite">30.2.1. Contextual Understanding and Query Rewrite</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-clarification">30.2.2. Query Clarification</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">18.1. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -350,56 +345,11 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="conversational-ir-wip">
-<h1><span class="section-number">30. </span>Conversational IR (WIP)<a class="headerlink" href="#conversational-ir-wip" title="Link to this heading">#</a></h1>
-<section id="introduction">
-<h2><span class="section-number">30.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>Search engines like Google and Bing have become integral tools to meet users’ information needs. Recently, rapid advancements in NLP and LLM technologies have led to more intelligent and interactive user experiences in search engines. A notable advancement in this domain is <strong>conversational search</strong>, an emerging paradigm that provides natural language interactions for complex and accurate information access. Commercial conversational AI search engines, such as Perplexity and ChatGPT, have quickly attracted a large user base.</p>
-<p>Compared to traditional search engines that rely on keywords or short phrases, conversational search leverages natural language dialogue for interactions, greatly enhancing the efficiency of information exchange and optimizing the user experience.
-This interactive approach have following advatnages:</p>
-<ul class="simple">
-<li><p>It allows user to issue more complex queries, ask explanation and follow-ups for in-depth reesarch questions.</p></li>
-<li><p>The systems better answer user queries by can proactively ask clarifying questions, make recommendations, and guide users in better expressing their needs through dialogue.</p></li>
-</ul>
-<p>A typical conversational search system comprises several essential modules, each involving a variety of advanced technologies. As this field continues to evolve, it presents both significant opportunities and challenges. In this chapter, we will explore and analyze the most critical components that constitute a conversational search system, following the entire information flow. Our focus will include</p>
-<ul class="simple">
-<li><p>Query understanding, including query reformulation, and search clarification</p></li>
-<li><p>Retrieval and ranking,</p></li>
-<li><p>Response generation.</p></li>
-</ul>
-<p>These components are integrated to work collaboratively, enabling more natural and intuitive interactions between users and the system, ultimately enhancing the overall search experience.</p>
-</section>
-<section id="query-understanding-and-optimization">
-<h2><span class="section-number">30.2. </span>Query Understanding and Optimization<a class="headerlink" href="#query-understanding-and-optimization" title="Link to this heading">#</a></h2>
-<section id="contextual-understanding-and-query-rewrite">
-<h3><span class="section-number">30.2.1. </span>Contextual Understanding and Query Rewrite<a class="headerlink" href="#contextual-understanding-and-query-rewrite" title="Link to this heading">#</a></h3>
-<p>For conversational search, accurately interpreting the user’s current information needs is critical. Unlike traditional search engines that rely on isolated keyword-based queries, conversational search systems must consider the evolving context of an ongoing dialogue. As conversations progress, the context becomes increasingly complex and lengthy, posing significant challenges for traditional search engines, which often struggle with handling such multi-turn interactions.</p>
-<p><strong>Contextual understanding</strong> involves the ability of the conversational search system to grasp the nuances and shifts in the user’s intent throughout the conversation. This requires advanced natural language processing (NLP) techniques to track and maintain the context across multiple exchanges, ensuring that the system can respond appropriately to follow-up questions and clarifications. Without a robust contextual understanding, the search engine may fail to recognize the continuity of the user’s queries, leading to irrelevant or incomplete results.</p>
-<p><strong>Query rewrite</strong> plays a vital role in addressing these challenges. It involves transforming the entire conversational context, along with the current query, into a concise yet comprehensive representation of the user’s present information needs. By distilling the context and refining the query, the system can generate more accurate and relevant search results. This process ensures that subsequent components, such as retrieval and response generation, can effectively process and respond to the user’s query.</p>
-<p>For instance, consider a user who starts with the query, “What is information retrieval?” and follows up with, “Tell me some of its famous scholars.” A traditional search engine might fail to maintain the context, providing irrelevant results for the second query. In contrast, a conversational search system with effective query rewrite capabilities will recognize that the user is still referring to “information retrieval scholars” and provide accurate information accordingly.</p>
-<p>In summary, contextual understanding and query rewrite are essential components of conversational search systems. They enable the system to manage complex, multi-turn interactions and deliver precise, contextually relevant results, thereby enhancing the overall user experience.</p>
-<figure class="align-default" id="chapter-application-ir-conversational-ir-query-rewrite-anaphora-ellipsis">
-<a class="reference internal image-reference" href="../../_images/anaphora_ellipsis.png"><img alt="../../_images/anaphora_ellipsis.png" src="../../_images/anaphora_ellipsis.png" style="width: 523.1999999999999px; height: 295.8px;" />
-</a>
-<figcaption>
-<p><span class="caption-number">Fig. 30.1 </span><span class="caption-text">An example illustrating the semantic phenomena of <strong>Anaphora</strong> and <strong>Ellipsis</strong> in conversational search. Image from <span id="id1">[]</span></span><a class="headerlink" href="#chapter-application-ir-conversational-ir-query-rewrite-anaphora-ellipsis" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="query-clarification">
-<h3><span class="section-number">30.2.2. </span>Query Clarification<a class="headerlink" href="#query-clarification" title="Link to this heading">#</a></h3>
-<p>In conversational search systems, query clarification is a pivotal mechanism that enhances user interaction by addressing ambiguities and refining search intents through dynamic dialogue. Users often express their search intents ambiguously, making it challenging for the system to immediately provide accurate results.</p>
-<p>In traditional search engines, there is no intuitive and natural way to ask for clarifications. Users are typically presented with a list of results based on their initial query, which may not fully capture their intent. This often leads to a trial-and-error process where users refine their queries manually.</p>
-<p>In contrast, conversational search systems can pose clarifying questions, such as “Do you mean [specific term]?” or “Can you provide more details about [topic]?”, rather than directly answering the query. When the system detects that clarification is needed, it proactively asks these questions to better understand the user’s intent. This approach ensures that the system provides more accurate and relevant search results, enhancing the overall user experience by making the search process more personalized and effective.</p>
-<p>Implementing effective query clarification involves two primary challenges:</p>
-<ul class="simple">
-<li><p><strong>Ambiguity Detection</strong>: Accurately identifying when a user’s query is unclear or lacks sufficient detail.</p></li>
-<li><p><strong>Clarifying Question Generation</strong>: Formulating appropriate and contextually relevant questions that guide the user toward specifying their intent.</p></li>
-</ul>
-<p>Addressing these challenges is crucial for delivering a personalized and efficient search experience, as it ensures that the system comprehends the user’s needs before retrieving information.</p>
-<p>By incorporating query clarification, conversational search systems can handle complex and ambiguous user queries more effectively, leading to a more satisfying and efficient search experience.</p>
-</section>
-</section>
+  <section class="tex2jax_ignore mathjax_ignore" id="llama-series">
+<h1><span class="section-number">18. </span>Llama Series<a class="headerlink" href="#llama-series" title="Link to this heading">#</a></h1>
+<section id="bibliography">
+<h2><span class="section-number">18.1. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<span class="target" id="id1"></span></section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -415,7 +365,7 @@ This interactive approach have following advatnages:</p>
         },
         kernelOptions: {
             name: "python3",
-            path: "./docs/chapter_application_IR"
+            path: "./docs/chapter_LLM_case_study"
         },
         predefinedOutput: true
     }
@@ -433,20 +383,20 @@ This interactive approach have following advatnages:</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="application_LLM_in_IR.html"
+       href="deepseek_series.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">29. </span>Application of LLM in IR (WIP)</p>
+        <p class="prev-next-title"><span class="section-number">17. </span>DeepSeek Series</p>
       </div>
     </a>
     <a class="right-next"
-       href="../chapter_rag/basic_rag.html"
+       href="../chapter_inference/inference_fundamentals.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">31. </span>RAG</p>
+        <p class="prev-next-title"><span class="section-number">19. </span>Decoding</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -466,12 +416,7 @@ This interactive approach have following advatnages:</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">30.1. Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-understanding-and-optimization">30.2. Query Understanding and Optimization</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contextual-understanding-and-query-rewrite">30.2.1. Contextual Understanding and Query Rewrite</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#query-clarification">30.2.2. Query Clarification</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">18.1. Bibliography</a></li>
 </ul>
   </nav></div>
 

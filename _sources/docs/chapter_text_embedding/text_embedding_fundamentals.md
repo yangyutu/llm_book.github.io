@@ -6,9 +6,9 @@
 
 There are many NLP tasks involves determining the relationship of two sentences, including semantic similarity, semantic relation reasoning, questioning answering etc. For example, Quora needs to determine if a question asked by a user has a semantically similar duplicate. The GLUE benchmark as an example [\autoref{ch:neural-network-and-deep-learning:ApplicationNLP:sec:BERTDownstreamTasks}], 6 of them are tasks that require learning sentences Inter-relationship. Specifically,
 
-**MRPC**: The Microsoft Research Paraphrase Corpus {cite:p}`dolan2005automatically` is a corpus of sentence pairs automatically extracted from online news sources, with human annotations for whether the sentences in the pair are semantically equivalent.\\
+**MRPC**: The Microsoft Research Paraphrase Corpus {cite:p}`dolan2005automatically` is a corpus of sentence pairs automatically extracted from online news sources, with human annotations for whether the sentences in the pair are semantically equivalent.
 
-**QQP**: The [Quora Question Pairs](https://quoradata.quora.com/First-Quora-Dataset-Release-Question-Pairs) dataset is a collection of question pairs from the community question-answering website Quora. The task is to determine whether a pair of questions are semantically equivalent. As in MRPC, the class distribution in $\mathrm{QQP}$ is unbalanced $(63 \%$ negative), so we report both accuracy and F1 score. We use the standard test set, for which we obtained private labels from the authors. We observe that the test set has a different label distribution than the training set. \\
+**QQP**: The [Quora Question Pairs](https://quoradata.quora.com/First-Quora-Dataset-Release-Question-Pairs) dataset is a collection of question pairs from the community question-answering website Quora. The task is to determine whether a pair of questions are semantically equivalent. As in MRPC, the class distribution in $\mathrm{QQP}$ is unbalanced $(63 \%$ negative), so we report both accuracy and F1 score. We use the standard test set, for which we obtained private labels from the authors. We observe that the test set has a different label distribution than the training set. 
 
 **STS-B**: The Semantic Textual Similarity Benchmark {cite:p}`cer2017semeval` is a collection of sentence pairs drawn from news headlines, video and image captions, and natural language inference data.
 
@@ -286,7 +286,7 @@ Key findings are:
 * Further fine-tuning in labeled data can further improve the performance.
 
 | Model | Avg |
-| ---: | ---: |
+| :---: | ---: |
 | BERT (CLS-vector) | 84.66 |
 | BERT (mean)| 84.94 |
 | ST5-Enc first | 83.38 |
@@ -294,15 +294,15 @@ Key findings are:
 | ST5-EncDec first | 81.69 |
 
 | Model | Finetune Data | Avg |
-| ---: | ---: | ---: |
+| :---: | -:--: | ---: |
 |SBERT-NLI | NLI + MNLI | 87.41 |
 | ST5-Enc mean | NLI | 88.66 |
 
-Additionally scaling up the model size can bring additional performance boost {numref}`chapter_text_embedding_fig_sentence_5_performance`; in terms of measuring embedding quality via uniformity and alignement, when models scale up, both the encoder and encoder-decoder models decrease the uniformity loss with only a slight increase in alignment loss, as shown in {numref}``
+Additionally scaling up the model size can bring additional performance boost {numref}`chapter_text_embedding_fig_sentence_t5_performance`; in terms of measuring embedding quality via uniformity and alignement, when models scale up, both the encoder and encoder-decoder models decrease the uniformity loss with only a slight increase in alignment loss, as shown in {numref}``
 
 ```{figure} ../img/chapter_text_embedding/sentence_T5/sentence_T5_performance.png
 ---
-scale: 55%
+scale: 65%
 name: chapter_text_embedding_fig_sentence_t5_performance
 ---
 Scaling up ST5 model size improves performance on SentEval (left) and STS (right). Image from {cite:p}`ni2021sentence`.
@@ -310,7 +310,7 @@ Scaling up ST5 model size improves performance on SentEval (left) and STS (right
 
 ```{figure} ../img/chapter_text_embedding/sentence_T5/sentence_T5_scaling.png
 ---
-scale: 55%
+scale: 65%
 name: chapter_text_embedding_fig_sentence_t5_uniformity_alignment
 ---
 Scaling up ST5 model size improves uniformality and alignment. Image from {cite:p}`ni2021sentence`.
@@ -363,7 +363,7 @@ where $\mathcal{L}: \mathbb{R}^L \times[L] \rightarrow \mathbb{R}_{+}$is the mul
 
 
 (chapter_text_embedding_sec_text_embedding_fundamentals_general_purpose_text_embedding)=
-## General-Pursose Text Embedding
+## General-Purpose Text Embedding
 
 ### Overview
 
@@ -442,6 +442,7 @@ Where $p_{\text {ce }}$ and $p_{\text {stu }}$ are the probabilities from the cr
 | MS MARCO | 38.8 | 42.0 | 40.1 | 40.7 | 43.0 | 42.3 | 43.1 | 44.1 |
 | Average | 40.5 | 44.0 | 44.4 | 46.6 | 47.0 | 46.0 | 48.7 | 50.0 |
 
+### GTE
 
 ## Software
 

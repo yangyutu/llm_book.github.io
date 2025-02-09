@@ -137,7 +137,7 @@ Each episode in the MDP begins by sampling a datapoint $(\boldsymbol{x}, \boldsy
 
 The input $\boldsymbol{x}=\left(x_0, \cdots, x_m\right)$ is a task-specific prompt that is used as our initial state $\boldsymbol{s}_0=\left(x_0, \cdots, x_m\right)$, where $s_0 \in \mathcal{S}$ and $\mathcal{S}$ is the state space with $x_m \in \mathcal{V}$.  The transition function $P: \mathcal{S} \times \mathcal{A} \rightarrow \Delta(\mathcal{S})$ deterministically appends an action $a_t$ to the end of the state $s_{t-1}=\left(x_0, \cdots, x_m, a_0, \cdots, a_{t-1}\right)$. This continues until the end of the horizon $t \leq T$ and we obtain a state $s_T=\left(x_0, \cdots, x_m, a_0, \cdots, a_T\right)$. At the end of an episode a reward $\mathcal{R}: \mathcal{S} \times \mathcal{A} \times \mathcal{Y} \rightarrow \mathbb{R}^1$ that depends on the $\left(s_T, \boldsymbol{y}\right)$ (e.g., an automated metric like PARENT Dhingra et al. (2019)) is emitted. RL4LMs provides an OpenAI gym (Brockman et al., 2016) style -->
 
-
+(chapter_training_sec_LLM_alignment_PPO_algorithm)=
 ### The PPO Algorithm
 
 PPO is a policy gradient algorithm used to find the optimal policy $\pi^*$. We use the following notations:
@@ -168,6 +168,9 @@ $$
 
 where $D_{\text {pretrain }}$ is the pretraining distribution.he pretraining loss coefficient, $\gamma$, control the strength of the KL penalty and pretraining gradients respectively. 
 
+
+In {numref}`chapter_training_fig_alignment_PPO_training_demo`, we illustrate the basic workflow of a PPO algorithm used to improve the langauge model. A more complete workflow is discussed in {ref}`chapter_training_sec_LLM_alignment_PPO_algorithm_deep_dive`.
+
 ```{figure} ../img/chapter_training/alignment/RLHF_PPO/RLHF_PPO_training_demo.png
 ---
 scale: 35%
@@ -181,6 +184,62 @@ Illustration of PPO based optimization, which uses a Frozen LLM and KL loss to p
 $\gamma$ controls the balance between exploitation and exploration. When $\gamma \rightarrow 0$, the learning will concentrate on the max reward with full exploitation. When $\gamma \rightarrow \infty$, optimal policy will be the same as $\pi_{\mathrm{sft}}$ with full exploration.
 ```
 
+(chapter_training_sec_LLM_alignment_PPO_algorithm_deep_dive)=
+### PPO Deep Dive
+
+Given the to-be-optimized poliy $\pi(\phi)$ and a reference policy $\pi_{ref}$, the objective function (to be maximized) used to update $\pi$ is given by
+
+$$
+\operatorname{Objective}\left(\theta_{\phi}\right)=\min \left( r(y \mid x)A(s, a), \operatorname{Clip}\left(r(y \mid x), 1-\epsilon, 1+\epsilon\right) A(s, a)\right)
+$$
+
+Here
+* Here $r(y \mid x)$ is the log probability ratio between $\pi_\phi$ and $\pi_{ref}$ on generating $y$ given $x$, which is given by
+
+$$r(y \mid x) = \frac{\pi_\phi(y \mid x)}{\pi_{\theta_{ref}}(y \mid x)}$$ 
+
+* $\epsilon$ and the $\operatorname{Clip}$ are acting to prevent $\pi_\phi$ from going far away from $\pi_{ref}$.
+
+* $A(y, x)$ is a scalar representing the advantage, in terms of reward, of $y$ with respect to other possible $y'$ under policy $\pi_\phi$ (we will discuss it shortly).
+
+The interpretation of the loss function is as follows:
+* **Advantage is positive**: The objective function reduces to
+
+$$
+\operatorname{Objective}\left(\pi_\phi\right)=\min \left(r(y \mid x),(1+\epsilon)\right) A(s, a)
+$$
+
+Because the advantage is positive, the objective will increase if the action $y$ becomes more likely (i.e., if $r(y \mid x) $ increases). Here the min says that if $r(y \mid x) $ already above $1 + \epsilon$, the policy will be not updated. 
+* **Advantage is negative**: The objective function reduces to
+
+$$
+\operatorname{Objective}\left(\pi_\phi\right)=\max \left(r(y \mid x),(1-\epsilon)\right) A(s, a)
+$$
+
+Because the advantage is positive, the objective will improve if the action $y$ becomes less likely (i.e., if $r(y \mid x) $ decrease). Here the min says that if $r(y \mid x) $ already below $1 - \epsilon$, the policy will be not updated. 
+
+A typical implementation of PPO involves **four models**:
+* An actor LLM (to be optimized) which specifies the generation policy.
+* An frozen actor LLM, which specifies the reference policy.
+* A reward model, which rate the final output $y$ given prompt $x$. Reward model is trained before the PPO.
+* A value model, which estimates the expected reward at step $t$ by following **current policy**. The input to the value model is $(y_{<t}, x)$.
+
+Given an output $y$ under current policy, the advantage of this output is given $$A(y \mid x) = R(y \mid x) - V^{\pi}(x).$$
+
+A positive advantage indicates $y$ is an output better than average output from current policy and is worth reinforced; a negative advantage indicates $y$ is an output not better than the average, and it needs to be penalized. Note that the value function is a function of current policy, therefore it needs to be updated when the policy is updated.
+
+There are other advanced methods to estimate more fine-grained level advantages on the token-level, as summarized in {cite:p}`zheng2023secrets`. 
+
+
+```{figure} ../img/chapter_training/alignment/RLHF_PPO/PPO_deep_dive_workflow.png
+---
+scale: 65%
+name: chapter_training_fig_alignment_PPO_deep_dive_workflow
+---
+Illustration of complete workflow PPO optimization. Image from {cite:p}`zheng2023secrets`
+```
+
+
 
 <!-- ### The PPO algorithm
 
@@ -193,7 +252,7 @@ There are four models needed in the PPO algorithm:
 
 ### PPO implementation
 
-{cite:p}`zheng2023secrets`
+
 
  -->
 
@@ -272,6 +331,77 @@ To mitigate these drawbacks, they proposed that
 * One can measure the strength of preferences within the data using ensemble reward models.
 * Use labeling smoothing to reduce the impact of noisy labels (also discussed in {ref}`chapter_training_sec_LLM_alignment_label_smoothing_DPO`).
 * Use adaptive margin, originated from contrastive learning, in training reward model (also discussed in {ref}`chapter_training_sec_LLM_alignment_simple_DPO`).
+
+## RL Variants
+(chapter_training_sec_LLM_alignment_GRPO)=
+### Group Relative Policy Optimization (GRPO)
+
+
+
+DeepSeek team {cite:p}`shao2024deepseekmath` proposed a modified PPO, known as GRPO, to reduce the computation cost and improve the value function estimation for the original PPO algorithm. As shown in {numref}`shao2024deepseekmath`, GRPO does not need an additional value model; baseline score for advantage computation is directly estimated from group scores, significantly reducing training resources.
+
+```{figure} ../img/chapter_training/alignment/RL_variants/GRPO/PPO_vs_GRPO.png
+---
+scale: 55%
+name: chapter_training_fig_alignment_RL_variants_GRPO_vs_PPO
+---
+Comparison of PPO and GRPO. GRPO does not need an additional value model; baseline score for advantage computation is directly estimated from group scores, significantly reducing training resources. Image from {cite:p}`shao2024deepseekmath`
+```
+
+More specifically, the loss function of GRPO is given by
+
+$$\mathcal{J}_{G R P O}(\theta)=\mathbb{E}_{q \sim P(Q),\left\{o_i\right\}_{i=1}^G \sim \pi_{\theta_{o l d}}(O \mid q)} \left[
+\frac{1}{G} \sum_{i=1}^G \frac{1}{\left|o_i\right|} \sum_{t=1}^{\left|o_i\right|}\left(\min \left[r_{i,t} \hat{A}_{i, t}, \operatorname{clip}\left(r_{i,t}, 1-\varepsilon, 1+\varepsilon\right) \hat{A}_{i, t}\right]-\beta \mathbb{D}_{K L}\left[\pi_\theta| | \pi_{r e f}\right]\right)\right]
+$$ (chapter_training_sec_LLM_alignment_RL_variants_eq:GRPO)
+
+Here
+* Question $q$ is sampled from distribution $P(Q)$; $G$ output $\left\{o_i\right\}$ are sampled from the old policy $\pi_{\theta_{o l d}}(O \mid q)$.
+* $r_{i,t}$ is the log probability ratio for output $i$ at step $t$, which is given by
+
+$$r_{i,t} = \frac{\pi_\theta\left(o_{i, t} \mid q, o_{i,<t}\right)}{\pi_{\theta_{o l d}}\left(o_{i, t} \mid q, o_{i,<t}\right)}$$
+
+* $\hat{A}_{i, t}$ is the group-estiamted advantage based on reward model $R$ for output $i$ at step $t$. 
+  1. If the reward model is an **outcome reward model** that provides rewards only at the end of the each output $o_t$, then
+
+$$\hat{A}_{i, t}= \hat{A}_{i} = \frac{R_{i}-\operatorname{mean}\left(\left\{R_{1}, R_{2}, \cdots, r_{G}\right\}\right)}{\operatorname{std}\left(\left\{R_{1}, R_{2}, \cdots, r_{G}\right\}\right)}$$  
+
+  2. If the reward model is a **process reward model** that provides token-level rewards, then
+
+$$\hat{A}_{i, t}=\frac{R_{i,t}-\operatorname{mean}\left(\left\{R_{1,t}, R_{2,t}, \cdots, r_{G,t}\right\}\right)}{\operatorname{std}\left(\left\{R_{1,t}, R_{2,t}, \cdots, r_{G,t}\right\}\right)}$$  
+
+* The computation of KL divergence is based on an modified [low-variance unbiased estimator](http://joschu.net/blog/kl-approx.html)
+
+$$\mathbb{D}_{K L}\left[\pi_\theta| | \pi_{r e f}\right]_{i,t}=\frac{\pi_{r e f}\left(o_{i, t} \mid q, o_{i,<t}\right)}{\pi_\theta\left(o_{i, t} \mid q, o_{i,<t}\right)}-\log \frac{\pi_{r e f}\left(o_{i, t} \mid q, o_{i,<t}\right)}{\pi_\theta\left(o_{i, t} \mid q, o_{i,<t}\right)}-1$$
+
+When estimating advantages, GRPO directly use sample uses the average reward of multiple sampled outputs, produced in response to the same question, as the baseline.
+
+Removing value function has critical benefits:
+* The value function employed in PPO is typically another model of comparable size as
+the policy model - training the value function itself brings a substantial computational burden
+* In the LLM context, usually only the last token is assigned a reward score by the reward model, such sparse reward also presents challenge to train an accurate value function. 
+
+We summarize the GRPO algorithm in the following.
+
+
+```{prf:algorithm} Iterative Group Relative Policy Optimization
+
+**Input:**  Initial policy model $\pi_{\text{init}}$; reward models $R$; task prompts $\mathcal{D}$;  Reward model iteration $I$, number of batches $M$, and gradient steps $\mu$.  
+
+**Output:** $\pi_{\theta}$
+
+1. Initialize policy model $\pi_{\theta} \leftarrow \pi_{\text{init}}$
+2. **For** iteration = 1, ..., $I$ **do**  
+   1. Set reference model $\pi_{\text{ref}} \leftarrow \pi_{\theta}$
+   2. **For** step = 1, ..., $M$ **do**  
+      1. Sample a batch of tasks $\mathcal{D}_b$ from $\mathcal{D}$  
+      2. Update the old policy model $\pi_{\text{old}} \leftarrow \pi_{\theta}$  
+      3. Sample $G$ outputs $\{o_i\}_{i=1}^{G} \sim \pi_{\theta}(\cdot | q) $ for each question $ q \in \mathcal{D}_b $  
+      4. Compute rewards for each $o_i$
+      5. Compute $\hat{A_{i,t}}$ for the $t$-th token of $o_i$ through group relative advantage estimation.  
+      6.  **For** GRPO iteration = 1, ..., \( J \) **do**  
+          1.  Update the policy model \( \pi_{\theta} \) by maximizing the GRPO objective {eq}``  
+   3.  Update reward model $R$ through continuous training using a replay mechanism.  
+```
 
 ## DPO
 ### Overview
@@ -576,6 +706,9 @@ Two alignment algorithms are explored:
 - **Proximal Policy Optimization (PPO)** as in the standard RLHF literature.
 
 Until RLHF (V4), only Rejection Sampling SFT is only used, and after that, two algorithms were combined sequentially - applying PPO on top of the resulted Rejection Sampling checkpoint before sampling again.
+
+
+
 
 ## Bibliography
 
