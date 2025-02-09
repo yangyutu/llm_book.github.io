@@ -91,6 +91,25 @@ These solutions aim to mitigate the load imbalance challenge in MoE models, ensu
 | Complexity | More complex to implement and train | Simpler to implement and train |
 | Memory Requirement | High memory requirements to load all experts | Moderate memory requirements |
 
+Example MoE Models
+
+| Name | Details |
+| :--- | :--- |
+| Mixtral | sparse mixture of 8 7B-experts; total model parameters 47B |
+| DeepSeek V3 | sparse mixture of 24? 37B-experts; total model parameters 671B |
+
+As shown in the Mixtral {numref}`chapter_LLM_moe_arch_fig_mixtral_llama2_efficiency`, MoE can provide better efficiency-cost trade-off and achieve much better performance compared to dense model (e.g., llama2) of the same size. 
+
+```{figure} ../img/chapter_LLM_arch/MoEs/fundamentals/mixtral_llama2_efficiency/mixtral_llama2_efficiency.png
+---
+scale: 65%
+name: chapter_LLM_moe_arch_fig_mixtral_llama2_efficiency
+---
+Comparison of performance vs efficiency trade-off between Mistral-7B/Mixtral-8x7b and Llama 2 models (7B, 13B, 70B) on different tasks.  [Image source](https://mistral.ai/en/news/mixtral-of-experts).
+
+```
+
+
 ## Switch Transformer
 
 

@@ -14,9 +14,9 @@ Finally, we cover fundamentals in  **LLM optimization algorithms**. Throughout t
 
 
 
-## Pretraining
+## Pretraining Techniques
 
-### Fundamentals
+### Next-Token Prediction
 Pretraining has become a cornerstone in the development of LLM, which contributes to
 * the general langugae understand and generation ability
 * acquire world knowledge
@@ -32,7 +32,88 @@ There are scaling laws {cite:p}`kaplan2020scaling,henighan2020scaling` discovere
 * It provides to benchmark to enable LLM pretraining to be done in a predictable way.
 * It help design better training strategy by optimizing the model size and data size under compute constraint.
 
-### Data sources and cleaning
+### Fill-in-the Middle
+
+### Multiple Token Prediction
+
+Besides training using a next-token prediction loss, there are efforts exploring training language models to predict multiple future tokens at once [{numref}`chapter_training_fig_fundamentals_multiple_token_prediction_demo`].  More specifically, at each position in the training corpus, we ask the model to predict the following $n$ tokens using $n$ independent output heads, operating on top of a shared model trunk.
+
+The advantages are:
+* in higher sample efficiency.
+* 
+
+{cite:p}`gloeckle2024better`
+During inference, we employ only the next-token output head. Optionally, the other three heads may be used to speed-up
+inference time.
+
+```{figure} ../img/chapter_training/training_fundamentals/multiple_token_prediction/mtp_demo.png
+---
+scale: 50%
+name: chapter_training_fig_fundamentals_multiple_token_prediction_demo
+---
+Overview of multi-token prediction. During training, the model predicts 4 future tokens at once, by
+means of a shared trunk and 4 dedicated output heads. Image from {cite:p}`gloeckle2024better`.
+```
+
+In this work, we generalize the above by implementing a multi-token prediction task, where at each position of the training corpus, the model is instructed to predict $n$ future tokens at once. This translates into the cross-entropy loss
+
+$$
+L_n=-\sum_t \log P_\theta\left(x_{t+n: t+1} \mid x_{t: 1}\right)
+$$
+
+
+To make matters tractable, we assume that our large language model $P_\theta$ employs a shared trunk to produce a latent representation $z_{t: 1}$ of the observed context $x_{t: 1}$, then fed into $n$ independent heads to predict in parallel each of the $n$ future tokens (see Figure 1). This leads to the following factorization of the multi-token prediction cross-entropy loss:
+
+$$
+\begin{aligned}
+L_n & =-\sum_t \log P_\theta\left(x_{t+n: t+1} \mid z_{t: 1}\right) \cdot P_\theta\left(z_{t: 1} \mid x_{t: 1}\right) \\
+& =-\sum_t \sum_{i=1}^n \log P_\theta\left(x_{t+i} \mid z_{t: 1}\right) \cdot P_\theta\left(z_{t: 1} \mid x_{t: 1}\right)
+\end{aligned}
+$$
+
+
+In practice, our architecture consists of a shared transformer trunk $f_s$ producing the hidden representation $z_{t: 1}$ from the observed context $x_{t: 1}, n$ independent output heads implemented in terms of transformer layers $f_{h_i}$, and a shared unembedding matrix $f_u$. Therefore, to predict $n$ future tokens, we compute:
+
+$$
+P_\theta\left(x_{t+i} \mid x_{t: 1}\right)=\operatorname{softmax}\left(f_u\left(f_{h_i}\left(f_s\left(x_{t: 1}\right)\right)\right)\right)
+$$
+
+for $i=1, \ldots n$, where, in particular, $P_\theta\left(x_{t+1} \mid x_{t: 1}\right)$ is our next-token prediction head. See Appendix B for other variations of multi-token prediction architectures.
+
+<!-- ## Comparison
+
+| Approach | Training set | Training set size | Implementation <br> Complexity | Total training cost (inc. experimentation) |
+| :---: | :---: | :---: | :---: | :---: |
+| Prompt engineering | Not needed | 0 | Low | 0 (no training) |
+| RAG | Not needed | 0 | Low - Medium | 0 (no training) |
+| Supervised-Fine-tuning | labelled | Can be as little as few hundreds examples (e.g. with PEFT approaches) but can increase to several thousands depending on number of tasks | Medium - High <br> depending on use case | $ $100-5 \mathrm{~K}$ |
+| Continuous pre-training | unstructured | Can vary - from 10 K <br> tokens to Bitlions | Medium on Bedrock and Jumpstart, Higher with SageMaker Training | $-\$ 2500$ for scanning 18 <br> tokens for a 7B model |
+| Full Pretraining | unstructured | 100s of billion/trillion tokens (e.g. 700 billion tokens for BloombergGPT for 50B model) | Very High | $$500K | -->
+
+### Continued Pretraining
+
+Continued pretraining of LLM involves updating pre-trained models with new data (usually in large scale) instead of re-training them from scratch. 
+addresses a fundamental challenge in the application of large language models (LLMs): the mismatch between the general knowledge acquired during initial pretraining and the specific knowledge required for domain-specific tasks.
+While pretrained LLMs demonstrate impressive general language understanding, they may lack the nuanced knowledge and vocabulary necessary for specialized domains such as medicine, law, or specific scientific fields. Continued pretraining aims to bridge this gap by further training the model on domain-specific corpora, allowing it to adapt its learned representations and knowledge to better suit the target domain or task.
+It improve LLM's performance in the target domain by enhance language understanding and acquiring domain knowledge in the target domain.
+
+There are also cost associated with continued pretraining, including
+* **Catastrophic forgetting**: The model may degrade its general language understanding when it is heavily continued pretrained on the domain data.
+* **Computational cost**: Although more efficient than full pretraining, continued pretraining can still be computationally expensive for very large models.
+* **Data requirements**: High-quality, domain-specific data is crucial for effective continued pretraining.
+
+
+One example of continued pretraining is the **Linly-Chinese-LLaMA-2** project (https://github.com/CVI-SZU/Linly). The motivation behind this project is to improve the cross-lingual capability, particularly in Chinese, of many open Large Language Models (LLMs) such as Llama and Falcon. These models were initially pretrained on text data that is predominantly in English.
+
+Key technical details on the continued pretraining:
+
+**Training data composition**: The continued pretraining used hundreds of millions of high-quality public Chinese text data, including news, community Q&A, encyclopedias, literature, and scientific publications. Besides, the project incorporated 1) a large amount of Chinese-English parallel corpora in the early stages of training to help the model quickly transfer English language capabilities to Chinese and 2) English text corpus like SlimPajama and RefinedWeb to prevent the model from forgetting previously acquired knowledge. 
+
+**Training data schedule**: A curriculum learning strategy was employed. In the early stages of training, more English language materials and parallel corpora were used. As the number of training steps increased, the proportion of Chinese data was gradually increased. This helps the convergence of the model training.
+
+
+
+## Pretaining Data Sources and Cleaning
 
 The quality and diversity of training data significantly impact the performance of pretrained models. Common sources include:
 
@@ -78,82 +159,7 @@ With cleaned data from different data sources, it is essential to design data fe
 
 
 
-### Continued Pretraining
 
-Continued pretraining of LLM involves updating pre-trained models with new data (usually in large scale) instead of re-training them from scratch. 
-addresses a fundamental challenge in the application of large language models (LLMs): the mismatch between the general knowledge acquired during initial pretraining and the specific knowledge required for domain-specific tasks.
-While pretrained LLMs demonstrate impressive general language understanding, they may lack the nuanced knowledge and vocabulary necessary for specialized domains such as medicine, law, or specific scientific fields. Continued pretraining aims to bridge this gap by further training the model on domain-specific corpora, allowing it to adapt its learned representations and knowledge to better suit the target domain or task.
-It improve LLM's performance in the target domain by enhance language understanding and acquiring domain knowledge in the target domain.
-
-There are also cost associated with continued pretraining, including
-* **Catastrophic forgetting**: The model may degrade its general language understanding when it is heavily continued pretrained on the domain data.
-* **Computational cost**: Although more efficient than full pretraining, continued pretraining can still be computationally expensive for very large models.
-* **Data requirements**: High-quality, domain-specific data is crucial for effective continued pretraining.
-
-
-One example of continued pretraining is the **Linly-Chinese-LLaMA-2** project (https://github.com/CVI-SZU/Linly). The motivation behind this project is to improve the cross-lingual capability, particularly in Chinese, of many open Large Language Models (LLMs) such as Llama and Falcon. These models were initially pretrained on text data that is predominantly in English.
-
-Key technical details on the continued pretraining:
-
-**Training data composition**: The continued pretraining used hundreds of millions of high-quality public Chinese text data, including news, community Q&A, encyclopedias, literature, and scientific publications. Besides, the project incorporated 1) a large amount of Chinese-English parallel corpora in the early stages of training to help the model quickly transfer English language capabilities to Chinese and 2) English text corpus like SlimPajama and RefinedWeb to prevent the model from forgetting previously acquired knowledge. 
-
-**Training data schedule**: A curriculum learning strategy was employed. In the early stages of training, more English language materials and parallel corpora were used. As the number of training steps increased, the proportion of Chinese data was gradually increased. This helps the convergence of the model training.
-
-### Multiple Token Prediction
-
-Besides training using a next-token prediction loss, there are efforts exploring training language models to predict multiple future tokens at once [{numref}`chapter_training_fig_fundamentals_multiple_token_prediction_demo`].  More specifically, at each position in the training corpus, we ask the model to predict the following $n$ tokens using $n$ independent output heads, operating on top of a shared model trunk.
-
-The advantages are:
-* in higher sample efficiency.
-* 
-
-{cite:p}`gloeckle2024better`
-During inference, we employ only the next-token output head. Optionally, the other three heads may be used to speed-up
-inference time.
-
-```{figure} ../img/chapter_training/training_fundamentals/multiple_token_prediction/mtp_demo.png
----
-scale: 60%
-name: chapter_training_fig_fundamentals_multiple_token_prediction_demo
----
-Overview of multi-token prediction. During training, the model predicts 4 future tokens at once, by
-means of a shared trunk and 4 dedicated output heads. Image from {cite:p}`gloeckle2024better`.
-```
-
-In this work, we generalize the above by implementing a multi-token prediction task, where at each position of the training corpus, the model is instructed to predict $n$ future tokens at once. This translates into the cross-entropy loss
-
-$$
-L_n=-\sum_t \log P_\theta\left(x_{t+n: t+1} \mid x_{t: 1}\right)
-$$
-
-
-To make matters tractable, we assume that our large language model $P_\theta$ employs a shared trunk to produce a latent representation $z_{t: 1}$ of the observed context $x_{t: 1}$, then fed into $n$ independent heads to predict in parallel each of the $n$ future tokens (see Figure 1). This leads to the following factorization of the multi-token prediction cross-entropy loss:
-
-$$
-\begin{aligned}
-L_n & =-\sum_t \log P_\theta\left(x_{t+n: t+1} \mid z_{t: 1}\right) \cdot P_\theta\left(z_{t: 1} \mid x_{t: 1}\right) \\
-& =-\sum_t \sum_{i=1}^n \log P_\theta\left(x_{t+i} \mid z_{t: 1}\right) \cdot P_\theta\left(z_{t: 1} \mid x_{t: 1}\right)
-\end{aligned}
-$$
-
-
-In practice, our architecture consists of a shared transformer trunk $f_s$ producing the hidden representation $z_{t: 1}$ from the observed context $x_{t: 1}, n$ independent output heads implemented in terms of transformer layers $f_{h_i}$, and a shared unembedding matrix $f_u$. Therefore, to predict $n$ future tokens, we compute:
-
-$$
-P_\theta\left(x_{t+i} \mid x_{t: 1}\right)=\operatorname{softmax}\left(f_u\left(f_{h_i}\left(f_s\left(x_{t: 1}\right)\right)\right)\right)
-$$
-
-for $i=1, \ldots n$, where, in particular, $P_\theta\left(x_{t+1} \mid x_{t: 1}\right)$ is our next-token prediction head. See Appendix B for other variations of multi-token prediction architectures.
-
-<!-- ## Comparison
-
-| Approach | Training set | Training set size | Implementation <br> Complexity | Total training cost (inc. experimentation) |
-| :---: | :---: | :---: | :---: | :---: |
-| Prompt engineering | Not needed | 0 | Low | 0 (no training) |
-| RAG | Not needed | 0 | Low - Medium | 0 (no training) |
-| Supervised-Fine-tuning | labelled | Can be as little as few hundreds examples (e.g. with PEFT approaches) but can increase to several thousands depending on number of tasks | Medium - High <br> depending on use case | $ $100-5 \mathrm{~K}$ |
-| Continuous pre-training | unstructured | Can vary - from 10 K <br> tokens to Bitlions | Medium on Bedrock and Jumpstart, Higher with SageMaker Training | $-\$ 2500$ for scanning 18 <br> tokens for a 7B model |
-| Full Pretraining | unstructured | 100s of billion/trillion tokens (e.g. 700 billion tokens for BloombergGPT for 50B model) | Very High | $$500K | -->
 
 
 ## Optimization Algorithms
