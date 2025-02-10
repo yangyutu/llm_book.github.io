@@ -400,8 +400,8 @@ document.write(`
 <p><strong>Natural language inference</strong>: <span id="id3">[<a class="reference internal" href="#id1355" title="Samuel R Bowman, Gabor Angeli, Christopher Potts, and Christopher D Manning. A large annotated corpus for learning natural language inference. arXiv preprint arXiv:1508.05326, 2015.">BAPM15</a>]</span> Understanding entailment and contradiction is fundamental to understanding natural language, and inference about entailment and contradiction is a valuable testing ground for the development of semantic representations. The semantic concepts of entailment and contradiction are central to all aspects of natural language meaning,
 from the lexicon to the content of entire texts.
 Natural language inference is the task of determining whether a <em>hypothesis</em> is true (entailment), false (contradiction), or undetermined (neutral) given a <em>premise</em>.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1633">
-<caption><span class="caption-number">Table 23.1 </span><span class="caption-text"><em>Entailment</em>, <em>contradiction</em>, and <em>neural</em> examples in a natural language inference task.</span><a class="headerlink" href="#id1633" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1634">
+<caption><span class="caption-number">Table 23.1 </span><span class="caption-text"><em>Entailment</em>, <em>contradiction</em>, and <em>neural</em> examples in a natural language inference task.</span><a class="headerlink" href="#id1634" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Premise</p></th>
 <th class="head text-center"><p>Label</p></th>
@@ -611,8 +611,8 @@ As shown in <a class="reference internal" href="#chapter-text-embedding-fig-bert
 tive <span class="math notranslate nohighlight">\(\ell_{i}\)</span> is then defined by <span class="math notranslate nohighlight">\(N\)</span> is mini-batch size</p>
 <div class="math notranslate nohighlight">
 \[-\log \frac{e^{\operatorname{sim}\left(\mathbf{h}_{i}, \mathbf{h}_{i}^{+}\right) / \tau}}{\sum_{j=1}^{N}\left(e^{\operatorname{sim}\left(\mathbf{h}_{i}, \mathbf{h}_{j}^{+}\right) / \tau}+e^{\operatorname{sim}\left(\mathbf{h}_{i}, \mathbf{h}_{j}^{-}\right) / \tau}\right)}\]</div>
-<div class="pst-scrollable-table-container"><table class="table" id="id1634">
-<caption><span class="caption-number">Table 23.2 </span><span class="caption-text">Effects of different dropout probabilities <span class="math notranslate nohighlight">\(p\)</span> (from 0.0 to 0.5) on the STS-B development set (Spearman’s correlation). Fixed 0.1: default 0.1 dropout rate but apply the same dropout mask on both <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_i^{+}\)</span>.</span><a class="headerlink" href="#id1634" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1635">
+<caption><span class="caption-number">Table 23.2 </span><span class="caption-text">Effects of different dropout probabilities <span class="math notranslate nohighlight">\(p\)</span> (from 0.0 to 0.5) on the STS-B development set (Spearman’s correlation). Fixed 0.1: default 0.1 dropout rate but apply the same dropout mask on both <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_i^{+}\)</span>.</span><a class="headerlink" href="#id1635" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p><span class="math notranslate nohighlight">\(p\)</span></p></th>
 <th class="head text-center"><p>0.0</p></th>

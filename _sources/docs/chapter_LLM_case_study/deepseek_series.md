@@ -2,9 +2,21 @@
 
 ## DeepSeek V3
 
+
+Pretraining corpus for DeepSeek-V3 consists of 14.8T high-quality and diverse tokens in our tokenizer.
+
+
+
+### Pretraining
+
+
+
+
+
 ## DeepSeek Coder
 
 {cite:p}`guo2024deepseek`
+{cite:p}`zhu2024deepseek`
 
 ### Data Curation
 
@@ -33,21 +45,50 @@ presenting a different structural challenge. These modes are instrumental in enh
 model’s capability to handle various structural arrangements in code, providing a robust training
 framework for advanced code prediction tasks.
 
+
+### Long Context Extension
+
+we extend the context length of DeepSeek-Coder-V2 to 128K using
+Yarn (Peng et al., 2023). The hyper-parameters of YARN are the same as DeepSeek-V2: the scale
+𝑠 to 40, 𝛼 to 1, 𝛽 to 32. We further continue training the model using two stages to enhance
+its capability for handling long contexts.
+
+In the first stage, we utilize a sequence length of 32K and a batch size of 1152 for 1000 steps
+
+In the second stage, we train the model for an additional 1000 steps, employing a sequence length of 128K and a batch size of 288 sequences.
+
+
 ### Intruction Tuning
 
 We develop DeepSeek-Coder-Instruct by enhancing the DeepSeek-Coder-Base through instructionbased fine-tuning using high-quality data.
 
+
+### Reinforcement Learning
+
+Reinforcement learning was used to further enhance the reasoning and instruction-following ability.
+
+This stages involve several key elements:
+* Training task prompts collection - this involves collecting prompts related to code and math from various sources, and each code prompt comes with corresponding test cases. After filtering the prompts, there are approximately 40 k data in total.
+* Reward modeling:
+  * Rewards for math problem is constructed based on ground-truth labels. 
+  * Rewards for coding is more complex. Code compiler itself can already provide $0-1$ feedback (whether the code pass all test cases or not) but some coding task prompts have a limited number of test cases for full coverage. Instead, the team trained a reward model on the data provided by the compiler, and use the reward model to provide signal during RL training, which is more robust.
+* The reinforcement learning algorithm is GRPO (see {ref}`chapter_training_sec_LLM_alignment_GRPO`).
+
 ### Evaluation
 
-```{figure} ../img/chapter_training/reasoning/deepseek_code/deepseek_coder_performance.png
+```{figure} ../img/chapter_LLM_case_study/deepseek_series/deepseek_code/deepseek_coder_performance.png
 ---
 scale: 65%
 name: chapter_training_fig_reasoning_inference_time_method_deepseek_coder_performance
 ---
-The Performance of DeepSeek-Coder. Image from {cite:p}`guo2024deepseek`
+The performance of DeepSeek-Coder. Image from {cite:p}`guo2024deepseek`.
 ```
 
 ## DeepSeek Math
+
+### Overview
+
+
 
 DeepSeekMath 7B, which continues pretraining DeepSeek-Coder-Base-v1.5 7B with 120B math-related tokens sourced from Common
 Crawl, together with natural language and code data.
@@ -55,15 +96,18 @@ Crawl, together with natural language and code data.
 
 
 
-```{figure} ../img/chapter_training/reasoning/deepseek_math/deepseek_math_performance.png
+```{figure} ../img/chapter_LLM_case_study/deepseek_series/deepseek_math/deepseek_math_performance.png
 ---
 scale: 75%
 name: chapter_training_fig_reasoning_inference_time_method_deepseek_math_performance
 ---
-The training workflow for DeepSeek-R1-Zero, which is based on pure reinforcement learning. Reward signals are based on Accuracy reward and format reward. Image from {cite:p}`shao2024deepseekmath`
+Top1 accuracy of open-source models on the competition-level MATH benchmark Image from {cite:p}`shao2024deepseekmath`
 ```
 
 ### Data Pipeline
+
+
+
 
 DeepSeekMath Corpus, a large-scale high-quality pre-training corpus comprising 120B math tokens. This
 dataset is extracted from the Common Crawl (CC) using a fastText-based classifier (Joulin et al.,
@@ -78,8 +122,14 @@ Corpus, a high-quality dataset of 120B tokens from web pages filtered for mathem
 (Lewkowycz et al., 2022a) and 9 times the size of the recently released OpenWebMath
 (Paster et al., 2023).
 
+The DeepSeekMath Corpus is of high quality, covers multilingual mathematical content, and
+is the largest in size.
+* High-quality
+* Multilingual
+* Large-scale
 
-```{figure} ../img/chapter_training/reasoning/deepseek_math/deepseek_math_data_pipeline.png
+
+```{figure} ../img/chapter_LLM_case_study/deepseek_series/deepseek_math/deepseek_math_data_pipeline.png
 ---
 scale: 55%
 name: chapter_training_fig_reasoning_inference_time_method_deepseek_math_data_pipeline
@@ -87,35 +137,99 @@ name: chapter_training_fig_reasoning_inference_time_method_deepseek_math_data_pi
 An iterative pipeline that collects mathematical web pages from Common Crawl. Image from {cite:p}`shao2024deepseekmath`
 ```
 
-### Pretraining
 
-### Supervised Instruction Tuning
+Data validation
 
+We apply math training to a general pre-trained language model with 1.3B parameters,
+We separately train a model on each mathematical corpus for 150B tokens.
 
-After pre-training, we apply mathematical instruction tuning to DeepSeekMath-Base with chain-of-thought (Wei et al., 2022), program-of-thought (Chen et al., 2022; Gao et al., 2023), and tool-integrated reasoning (Gou et al., 2023) data.
+evaluated using few-shot chain-of-thought prompting.
 
-We construct a mathematical instruction-tuning dataset covering English and Chinese problems from different mathematical fields and of varying complexity levels: problems are paired with solutions in chain-of-thought (CoT) (Wei et al., 2022), program-of-thought (PoT) (Chen et al., 2022; Gao et al., 2023), and tool-integrated reasoning format (Gou et al., 2023). The total number of training examples is 776 K .
-- English mathematical datasets: We annotate GSM8K and MATH problems with toolintegrated solutions, and adopt a subset of MathInstruct (Yue et al., 2023) along with the training set of Lila-OOD (Mishra et al., 2022) where problems are solved with CoT or PoT. Our English collection covers diverse fields of mathematics, e.g., algebra, probability, number theory, calculus, and geometry.
-- Chinese mathematical datasets: We collect Chinese K-12 mathematical problems spanning 76 sub-topics such as linear equations, with solutions annotated in both CoT and toolintegrated reasoning format.
-
-### Evaluation
-
-
-| Math Corpus | Size | English Benchmarks |  |  |  |  | Chinese Benchmarks |  |  |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-|  |  | GSM8K | MATH | OCW | SAT | MMLU STEM | CMATH | Gaokao <br> MathCloze | Gaokao MathQA |
-| No Math Training | N/A | 2.9% | 3.0% | 2.9% | 15.6% | 19.5% | 12.3% | 0.8% | 17.9% |
-| MathPile | 8.9B | 2.7% | 3.3% | 2.2% | 12.5% | 15.7% | 1.2% | 0.0% | 2.8% |
-| OpenWebMath | 13.6B | 11.5% | 8.9% | 3.7% | 31.3% | 29.6% | 16.8% | 0.0% | 14.2% |
-| Proof-Pile-2 | 51.9B | 14.3% | 11.2% | 3.7% | 43.8% | 29.2% | 19.9% | 5.1% | 11.7% |
-| DeepSeekMath Corpus | 120.2B | 23.8% | 13.6% | 4.8% | 56.3% | 33.1% | 41.5% | 5.9% | 23.6% |
-
-
+| Math Corpus | Size | GSM8K | MATH |
+| :---: | :---: | :---: | :---: |
+| No Math Training | N/A | 2.9% | 3.0% |
+| MathPile | 8.9B | 2.7% | 3.3% |
+| OpenWebMath | 13.6B | 11.5% | 8.9% |
+| Proof-Pile-2 | 51.9B | 14.3% | 11.2% |
+| DeepSeekMath Corpus | 120.2B | 23.8% | 13.6% |
 
 Our pre-trained base model DeepSeekMath-Base 7B achieves comparable performance
 with Minerva 540B (Lewkowycz et al., 2022a), indicating the number of parameters is not
 the only key factor in mathematical reasoning capability. A smaller model pre-trained on
 high-quality data could achieve strong performance as well.
+
+
+### Pretraining
+
+
+Our model is initialized with DeepSeek-Coder-Base-v1.5 7B
+
+and trained for 500B tokens. The distribution of the data is as follows: 56%
+is from the DeepSeekMath Corpus, 4% from AlgebraicStack, 10% from arXiv, 20% is Github
+code, and the remaining 10% is natural language data from Common Crawl in both English and
+Chinese.
+
+| Data Type | Percentage |
+| :--- | :--- |
+| DeepSeekMath Corpus| 56% |
+| AlgebraicStack| 4% |
+| arXiv| 10% |
+| Github code| 20% |
+| natural language data| 10% |
+
+
+assessment
+* produce self-contained mathematical solutions without relying on external tools
+* solve mathematical problems using tools
+*  conduct formal theorem proving
+
+ Models are evaluated with chain-of-thought prompting
+
+| Model | Size | English Benchmarks |  |  |  |  | Chinese Benchmarks |  |  |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+|  |  | GSM8K | MATH | OCW | SAT | MMLU STEM | CMATH | Gaokao MathCloze | Gaokao <br> MathQA |
+| Mistral | 7B | 40.3% | 14.3% | 9.2% | 71.9% | 51.1% | 44.9% | 5.1% | 23.4% |
+| Llemma | 7B | 37.4% | 18.1% | 6.3% | 59.4% | 43.1% | 43.4% | 11.9% | 23.6% |
+| Llemma | 34B | 54.0% | 25.3% | 10.3% | 71.9% | 52.9% | 56.1% | 11.9% | 26.2% |
+| DeepSeekMath-Base |  | 64.2% | 36.2% | 15.4% | 84.4% | 56.5% | 71.7% | 20.3% | 35.3% |
+
+
+
+Findings from pretraining
+
+Code training benefits program-aided mathematical reasoning in a two-stage training setting where first stage consists of code training and second stage consists of math training. 
+
+
+
+
+
+### Post-Training: SFT and RL
+
+
+After pre-training, we apply mathematical instruction tuning to supervised intruction tuning DeepSeekMath-Base with da containing **chain-of-thought**, **program-of-thought**, and **tool-integrated reasoning**. The total number of training examples is 776K. Specifically,
+- English mathematical datasets covers diverse fields of mathematics, e.g., algebra, probability, number theory, calculus, and geometry. For example, GSM8K and MATH problems with toolintegrated solutions, and adopt a subset of MathInstruct (Yue et al., 2023) along with the training set of Lila-OOD (Mishra et al., 2022) where problems are solved with CoT or PoT. Our English collection 
+- Chinese mathematical datasets include  Chinese K-12 mathematical problems spanning 76 sub-topics such as linear equations, with solutions annotated in both CoT and toolintegrated reasoning format.
+
+
+We conduct RL based on DeepSeekMath-Instruct 7B. The training data of RL are chain-ofthought-format questions related to GSM8K and MATH from the SFT data, which consists
+of around 144K questions.
+
+
+
+| Model | Size | English Benchmarks |  | Chinese Benchmarks |  |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+|  |  | GSM8K | MATH | MGSM-zh | CMATH |
+| Gemini Ultra | - | 94.4% | 53.2% | - | - |
+| GPT-4 | - | 92.0% | 52.9% | - | 86.0% |
+| Qwen | 72B | 78.9% | 35.2% | - | - |
+| DeepSeekMath-Instruct | 7B | 82.9% | 46.8% | 73.2% | 84.6% |
+| DeepSeekMath-RL | 7B | 88.2% | 51.7% | 79.6% | 88.8% |
+
+
+DeepSeekMath-RL 7B beats all opensource models from 7B to 70B, as well as the majority of closed-source models. Although
+DeepSeekMath-RL 7B is only further trained on chain-of-thought-format instruction tuning data
+of GSM8K and MATH, it improves over DeepSeekMath-Instruct 7B on all benchmarks.
+
 
 ## DeepSeek Reasoning Models
 
@@ -129,7 +243,7 @@ Specifically, DeepSeek-R1-Zero starts with DeepSeek-V3-Base as the base model an
 * Accuracy rewards: The accuracy reward model evaluates whether the response is correct. (for math and coding problems, the result is deterministic)
 * Format rewards: Encourage model to put thinking process between `<think>` `</think>`
 
-```{figure} ../img/chapter_training/reasoning/deepseek_r1/deepseek_r1_zero_workflow.png
+```{figure} ../img/chapter_LLM_case_study/deepseek_series/deepseek_r1/deepseek_r1_zero_workflow.png
 ---
 scale: 35%
 name: chapter_training_fig_reasoning_inference_time_method_deepseek_r1_zero_workflow
@@ -157,7 +271,7 @@ The reasoning tasks usually have groundtruth - correct answer or not; as a compa
 ```
 
 As shown in {numref}`chapter_training_fig_reasoning_inference_time_method_deepseek_rzero_thinking_time_evolution`, DeepSeek-R1-Zero learns to allocate more thinking time in solving problems
-```{figure} ../img/chapter_training/reasoning/deepseek_r1/deepseek_rzero_thinking_time_evolution.png
+```{figure} ../img/chapter_LLM_case_study/deepseek_series/deepseek_r1/deepseek_rzero_thinking_time_evolution.png
 ---
 scale: 75%
 name: chapter_training_fig_reasoning_inference_time_method_deepseek_rzero_thinking_time_evolution
@@ -209,7 +323,7 @@ In the final RL for all scenarios, reward signals are coming from
 * Reasoning tasks rewards adopt the rule-based reward in DeepSeek-R1-Zero.
 * Non-reasoning tasks rewards focus on aligning with human preferences, like helpfulness, harmless, and safety.  
 
-```{figure} ../img/chapter_training/reasoning/deepseek_r1/deepseek_r1_workflow.png
+```{figure} ../img/chapter_LLM_case_study/deepseek_series/deepseek_r1/deepseek_r1_workflow.png
 ---
 scale: 45%
 name: chapter_training_fig_reasoning_deepseek_r1_workflow
@@ -230,7 +344,7 @@ The motivation and technical details on each training stage is summarized as fol
 
 As shown in {numref}`chapter_training_fig_reasoning_inference_time_method_deepseek_r1_benchmark`, DeepSeek-R1 achieves comparable performance to OpenAI-o1-1217 on reasoning tasks.
 
-```{figure} ../img/chapter_training/reasoning/deepseek_r1/deepseek_r1_benchmark.png
+```{figure} ../img/chapter_LLM_case_study/deepseek_series/deepseek_r1/deepseek_r1_benchmark.png
 ---
 scale: 75%
 name: chapter_training_fig_reasoning_inference_time_method_deepseek_r1_benchmark
