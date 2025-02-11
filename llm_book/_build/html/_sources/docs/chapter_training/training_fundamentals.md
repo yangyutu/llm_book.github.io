@@ -34,6 +34,21 @@ There are scaling laws {cite:p}`kaplan2020scaling,henighan2020scaling` discovere
 
 ### Fill-in-the Middle
 
+Fill-in-the Middle was proposed in {cite:p}`bavarian2022efficient,li2023starcoder`
+
+This approach involves randomly dividing the text into three parts, then shuffling the order of these parts and connecting them with special characters. This method aims to incorporate a fill-in-the-blank pretraining task during the training process.
+
+
+Within the FIM methodology, two distinct modes are employed: PSM (Prefix-Suffix-Middle) and SPM
+(Suffix-Prefix-Middle). In the PSM mode, the training corpus is organized in the sequence
+of prefix, suffix, middle, aligning the text in a way that the middle segment is flanked by the
+prefix and suffix. Conversely, the SPM mode arranges the segments as suffix, prefix, middle,
+presenting a different structural challenge. 
+
+These modes are instrumental in enhancing the
+model’s capability to handle various structural arrangements in code, providing a robust training
+framework for advanced code prediction tasks.
+
 ### Multiple Token Prediction
 
 Besides training using a next-token prediction loss, there are efforts exploring training language models to predict multiple future tokens at once [{numref}`chapter_training_fig_fundamentals_multiple_token_prediction_demo`].  More specifically, at each position in the training corpus, we ask the model to predict the following $n$ tokens using $n$ independent output heads, operating on top of a shared model trunk.
@@ -136,8 +151,8 @@ name: chapter_training_fig_fundamentals_pretrain_data_distribution
 Pretrain data source distribution for existing LLMs. Image from {cite:p}`zhao2023survey`.
 ```
 
-While the scale is one factor impacting resulting model performance (i.e., the scaling law), the quality of data and the ratio of different data types play an equally important role. As dominant pretraining data is from the web, data clearning and quality control is a crucial step for sucessful LLM pretraining [{numref}`chapter_training_fig_fundamentals_pretrain_data_distribution`]. 
-The following {numref}`chapter_training_fig_fundamentals_pretrain_data_clean_pipeline` summarize the key steps on cleaning training data.. 
+While the scale is one factor impacting resulting model performance (i.e., the scaling law), the quality of data and the ratio of different data types play an equally important role. As dominant pretraining data is from the web, data clearning and quality control is a crucial step for sucessful LLM pretraining [{cite:p}`wenzek2019ccnet`]. 
+The following {numref}`chapter_training_fig_fundamentals_pretrain_data_clean_pipeline` summarize the key steps on cleaning training data.
 
 ```{figure} ../img/chapter_training/training_fundamentals/pretrain_data/pretraining_data_cleaning_pipeline.png
 ---
