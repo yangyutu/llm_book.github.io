@@ -204,8 +204,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Case Studies</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_case_study/deepseek_series.html">17. DeepSeek Series</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_case_study/llama_series.html">18. Llama Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_case_study/llama_series.html">17. Llama Series (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_case_study/deepseek_series.html">18. DeepSeek Series (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -530,7 +530,7 @@ high-level principles to guide the reasoning process [<a class="reference intern
 <li><p>SELF-REFINE consistently improves over across all tasks.</p></li>
 <li><p>SELF-REFINE is very effective in langugage generation tasks, like improving generation quality and diversity. For example, in constrained
 generation task, where the model is asked to generate a sentence containing up to 30 given concepts. For this task, it is easy to miss some of the concepts on the first attempt, and SELF-REFINE allows the model to fix these mistakes subsequently.</p></li>
-<li><p>For reasoning-heavy tasks like code optimization and math reasoning, the improvement from self-refinement is very limited. Unlike language gneeration task, the model is not well-train to provide correct feedback on reasoning tasks. Studies from <span id="id11">[<a class="reference internal" href="../chapter_training/reasoning.html#id1531" title="Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, and others. Training verifiers to solve math word problems. arXiv preprint arXiv:2110.14168, 2021.">CKB+21</a>, <a class="reference internal" href="#id1615" title="Jie Huang, Xinyun Chen, Swaroop Mishra, Huaixiu Steven Zheng, Adams Wei Yu, Xinying Song, and Denny Zhou. Large language models cannot self-correct reasoning yet. arXiv preprint arXiv:2310.01798, 2023.">HCM+23</a>]</span> suggested that external feedbacks or a separately trained verifier is needed to guide the model to generate improved results.</p></li>
+<li><p>For reasoning-heavy tasks like code optimization and math reasoning, the improvement from self-refinement is very limited. Unlike language gneeration task, the model is not well-train to provide correct feedback on reasoning tasks. Studies from <span id="id11">[<a class="reference internal" href="../chapter_training/reasoning.html#id1532" title="Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, and others. Training verifiers to solve math word problems. arXiv preprint arXiv:2110.14168, 2021.">CKB+21</a>, <a class="reference internal" href="#id1615" title="Jie Huang, Xinyun Chen, Swaroop Mishra, Huaixiu Steven Zheng, Adams Wei Yu, Xinying Song, and Denny Zhou. Large language models cannot self-correct reasoning yet. arXiv preprint arXiv:2310.01798, 2023.">HCM+23</a>]</span> suggested that external feedbacks or a separately trained verifier is needed to guide the model to generate improved results.</p></li>
 </ul>
 <div class="pst-scrollable-table-container"><table class="table" id="id1626">
 <caption><span class="caption-number">Table 22.2 </span><span class="caption-text">SELF-REFINE results on various tasks using GPT-4 as base LLM.</span><a class="headerlink" href="#id1626" title="Link to this table">#</a></caption>

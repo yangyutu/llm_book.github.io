@@ -49,22 +49,20 @@ The importance of complex reasoning for LLM are:
 * **Step Toward AGI** – Reasoning is key to human intelligence. Enhancing it in LLMs moves us closer to Artificial General Intelligence (AGI).
 
 
-## Reasoning Benchmarks
-
-Large Language Models (LLMs) are evaluated using a variety of benchmarks designed to assess their reasoning capabilities across multiple domains.hese benchmarks provide standardized tasks that test models on aspects such as logical reasoning, mathematical problem-solving, and domain-specific knowledge.ere are some of the most prominent reasoning benchmarks:
-
 ### Math benchmarks
 * **GSM8K (Grade School Math)** - This benchmark consists of 8,500 linguistically diverse elementary school math word problems that require two to eight basic arithmetic operations to solve {cite:p}`cobbe2021training`.
 * **MathEval** - [MathEval](https://github.com/math-eval/MathEval) is a comprehensive benchmark (~20k problems) that contains 20 other benchmarks, such as GSM8K, MATH, and the math subsection of MMLU. It aims to evaluate the model's math skill from elementary school math to high school competitions.
 * **FrontierMath** - This benchmark contains questions from areas of modern math that are difficult for professional mathematicians to solve {cite:p}`glazer2024frontiermath`.
 
 
-### Coding benchmark
+## Coding benchmark
+
+
 * **HumanEval** - This benchmark consists of programming problems where the solution is always a Python function, often just a few lines long {cite:p}`chen2021evaluating`. This assesses a model's basic ability to generate correct and functional code based on problem descriptions. 
 * **SWE-Bench** - The SWE-Bench comprises 2,294 software engineering problems drawn from real GitHub issues and corresponding pull requests across 12 popular Python repositories {cite:p}`jimenez2023swe`. 
 
 
-### Language, knowledge, and logical thinking benchmark
+## Language, knowledge, and logical thinking benchmark
 * **MMLU (Measuring Massive Multitask Language Understanding)** - MMLU consists of approximately 16,000 multiple-choice questions spanning 57 academic subjects, including mathematics, philosophy, law, and medicine {cite:p}`hendrycks2020measuring`. It is widely used to assess a model's breadth of knowledge and reasoning across diverse fields.
 * **GPQA (Google-Proof Q&A)** - 448 multiple-choice questions written by domain experts in biology, physics, and chemistry, and requires PhD-level experts to solve.{cite:p}`rein2023gpqa`. It is designed to evaluate a model's proficiency in solving PhD-level complex problems across different domains.
 * **AGIEval** - This includes questions from 20 official, public, and high-standard admission and qualification exams, such as the SAT, Gaokao, law school admission tests, math competitions, lawyer qualification tests, and national civil service exams {cite:p}`zhong2023agieval`. It evaluates a model's performance on standardized tests that require advanced reasoning skills.
@@ -144,8 +142,23 @@ two sampling strategies. In this case, we use the verifier to first select the b
 select the best answer accross chains. Image from {cite:p}`snell2024scaling`.
 ```
 
+## Reinfrocement Learning
 
 
+
+
+
+## Preference Learning
+
+### Iterative RPO
+
+```{figure} ../img/chapter_training/reasoning/preference_learning/iterative_RPO/iterative_DPO_workflow.png
+---
+scale: 75%
+name: chapter_training_fig_reasoning_iterative_RPO_workflow
+---
+Workflow of Iterative RPO, which consists of two steps: (i) Chain-of-Thought \& Answer Generation: training prompts are used to generate candidate reasoning steps and answers from model $M_t$, and then the answers are evaluated for correctness by a given reward model. (ii) Preference Optimization: preference pairs are selected from the generated data, which are used for training via a DPO+NLL objective, resulting in model $M_{t+1}$. This whole procedure is then iterated resulting in improved reasoning ability on the next iteration, until performance saturates.Image from {cite:p}`pang2024iterative`.
+```
 
 ## Bibliography
 

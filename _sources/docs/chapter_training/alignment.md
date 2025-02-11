@@ -539,12 +539,31 @@ Nevertheless, from reward modeling perspective, DPO and RL-PPO share the vulnerb
 ```{prf:remark} Effective implementing PPO is critical
 Although RL-PPO has better robustness to imperfect reward model {cite:p}`xu2024dpo`, an effective implementation of PPO is critical. This involves tricks like advantage normalization, large batch size, and exponential moving average update for the reference model, etc.
 ```
+### Iterative DPO
+
+DPO can also be used iteratively (e.g., 3-5 iterations)to enhance the alignment results. As shown in {numref}`chapter_training_fig_alignmenet_Iterative_DPO`, 
+* Starting with a SFT model checkpoint $M_0$, one can go through the DPO data annotation and training process to arrive at $M_1$
+* Preference pair data will be collected from $M_1$ and used to train $M_2$.
+
+Iterative DPO has demonstrated its effectiveness in different scenarios {cite:p}`pang2024iterative,dubey2024llama,touvron2023llama2,yuan2024self,chen2024self`.
+
+
+```{figure} ../img/chapter_training/alignment/DPO/Iterative_DPO.png
+---
+scale: 45%
+name: chapter_training_fig_alignmenet_Iterative_DPO
+---
+Workflow of iterative DPO Image from {cite:p}`rafailov2024directpreferenceoptimizationlanguage`.
+```
+
+
+
 
 ## DPO Variants
 (chapter_training_sec_LLM_alignment_label_smoothing_DPO)=
 ### Smoothing preference label
 
-{cite:p}`Mitchell2023noteondpo` explore a more robust DPO approach when the preference labels are noisy. It assumes that the labels have been flipped with some small probability $\epsilon \in(0,0.5)$. We can use a conservative target distribution instead, $p\left(y_w \succ y_l\right)=1-\epsilon$, giving BCE loss:
+When the preference label is noisy (e.g., annotation error/noise), a more robust DPO approach is desired {cite:p}`Mitchell2023noteondpo`. It assumes that the labels have been flipped with some small probability $\epsilon \in(0,0.5)$. We can use a conservative target distribution instead, $p\left(y_w \succ y_l\right)=1-\epsilon$, giving BCE loss:
 
 $$
 \begin{aligned}
@@ -604,7 +623,8 @@ $$
 
 Note that, unlike the traditional DPO, SimPO does not require a reference model, making it more lightweight and easier to implement.
 
-### DPO-Positive
+(chapter_training_sec_LLM_alignment_DPO_variant_DPOP_regularized_DPO)=
+### DPO-Positive and Regularized DPO
 
 DPO and its variant usually perform well when the preference paired data consists of strong contrastive pairs, i.e., positive example and negative example are sharply different from edit distance perspective. For these examples, DPO can enhance the probability of generating the positive and reduce the probability of generating the negative. 
 
@@ -633,9 +653,26 @@ $$
 
 Clearly, if we want to maximize these terms for $y_w$, we need to ensure that the generating probability $\pi_{\theta}(y_w|x)$ not to reduce too much from $\pi_{\text{ref}}(y_w|x)$.
 
+On a similar line of thinking, {cite:p}`pang2024iterative` proposed using the negative log likelihood (NLL) loss as a regularizer, which gives the following loss function:
+
+$$
+\mathcal{L}_{\mathrm{DPO-R}}\left(\pi_\theta\right)=-\mathbb{E}_{\left(x, y_w, y_l\right) \sim D}\left[\log \sigma \left(\beta \left(\log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}\left(y_w \mid x\right)} -\log \frac{\pi_\theta\left(y_l \mid x\right)}{\pi_{\mathrm{ref}}\left(y_l \mid x\right)}\right)\right) + \frac{\lambda}{|y_w|}\log\left(\pi_\theta(y_w|x)\right) \right]
+$$
+
+The authors found that in reasoning tasks, having the NLL loss regularization is critical to promote the likelihood of positive (chosen) sequences [{numref}`chapter_training_fig_alignmenet_DPO_variant_DPO_NLL_regularizer`].
 
 
+```{figure} ../img/chapter_training/alignment/DPO_variants/DPO_NLL_regularizer.png
+---
+scale: 55%
+name: chapter_training_fig_alignmenet_DPO_variant_DPO_NLL_regularizer
+---
+Effect on NLL regularizer loss on applying DPO in reasoning tasks. (left) Without regularizer loss, the likelihood of chosen sequences is decreasing when the model is initialized from Llama (left) and a positive-example FT checkpoint (right). After FT, the decreasing of the likelihood is more severe.   Image from {cite:p}`pang2024iterative`.
+```
 
+### Cringe Loss
+
+{cite:p}`adolphs2022cringe,xu2023some`
 
 
 <!-- 提问：DPO的变体有哪些，主要解决DPO的什么问题？
@@ -653,59 +690,6 @@ DPOP [4]：由于LLM model很难区分编辑距离较小的pair，那么当持�
 [3] Azar M G, Rowland M, Piot B, et al. A general theoretical paradigm to understand learning from human preferences[J]. arXiv preprint arXiv:2310.12036, 2023.
 
 [4] Pal A, Karkhanis D, Dooley S, et al. g: Fixing Failure Modes of Preference Optimisation with DPO-Positive[J]. arXiv preprint arXiv:2402.13228, 2024. -->
-
-## LLama-2 Alignment in Practice
-
-
-### Overview
-
-In the following, we review key process for aligning LLama2 model to human preference [{numref}`chapter_training_fig_alignmenet_llama2_alignment`]. Specifially, LLama2 alignment consists of the following iterative steps:
-* Collecting human preference data
-* Training reward model to predict human preference
-* Using reward model to guide model improvement via rejection sampleing SFT and RLHF
-
-```{figure} ../img/chapter_training/alignment/llama2/llama2_alignment.png
----
-scale: 70%
-name: chapter_training_fig_alignmenet_llama2_alignment
----
-Overview of iterative alignment process in LLama2 after pretraining and supervised fine-tuning. Note that reward model is also iteratively updated the ensure the reward modeling remain within distribution. Image from {cite:p}`touvron2023llama`.
-```
-
-### Preference Data Collection
-
-
-To collect comprehensive human feedback data, Meta AI {cite:p}`touvron2023llama` considered both **open-source** and **in-house** data. 
-
-For open-source data, they used datasets from Anthropic, OpenAI, etc., containing approximately 1.50M human preference data points. These data primarily focused on two aspects: safety and usefulness, where safety refers to whether the model produces unsafe outputs, and usefulness refers to the extent to which the model's outputs can address human requests. 
-
-For in-house data, they hired human annotator to produce both safety and usefulness labels on about ~1.4M data points. Annotators first wrote an input prompt, then selected outputs from two models based on corresponding criteria to serve as positive and negative examples. 
-
-Note that these preference data is used in reward model training. In the iterative alignment process of LLaMA-2, the distribution of model-generated content would change, leading to degradation of the reward model. To prevent this phenomenon, **new annotated data needed to be collected during the training process to retrain the reward model.**
-
-
-### Reward Modeling
-
-After collecting human feedback data, reward models are trained based on the collected data, which are then used to provide on-the-fly feedback signal in subsequent training processes. To obtain more detailed reward signals, data related to safety tasks and usefulness tasks are used separately to train two reward models. 
-
-To better help reward models distinguish the differences between positive and negative examples, a margin $m(y^+, y^-)$ is added between human preference between positive and negative examples. The optimized training objective for the reward model is shown in the following equation:
-
-$$
-\mathcal{L}_{\text{ranking}} = -\log(\sigma(r_\theta(x, y^+) - r_\theta(x, y^-) - m(y^+, y^-)))
-$$
-
-where $x$, $y^+$, and $y^-$ represent the model input, positive example, and negative example respectively. Naturally, we use a large margin for pairs with distinct responses, and a smaller one for those with similar responses
-
-
-
-### Iterative Alignment
-
-LLama-2 took a iterative approch to align the LLM to human preference. As the alignment progresses, we are able to train better reward models and collect more prompts. We therefore can train successive versions for RLHF models, referred to here as RLHF-V1, ..., RLHF-V5.
-Two alignment algorithms are explored:
-- **SFT with Rejection Sampling**. $K$ outputs from the model (might include previous version model) and select the best candidate with the reward model. The highest rewarded output is collected to perform SFT.
-- **Proximal Policy Optimization (PPO)** as in the standard RLHF literature.
-
-Until RLHF (V4), only Rejection Sampling SFT is only used, and after that, two algorithms were combined sequentially - applying PPO on top of the resulted Rejection Sampling checkpoint before sampling again.
 
 
 

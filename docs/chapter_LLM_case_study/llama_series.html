@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>18. Llama Series &#8212; LLM Foundations</title>
+    <title>17. Llama Series (WIP) &#8212; LLM Foundations</title>
   
   
   
@@ -58,11 +58,13 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_LLM_case_study/llama_series';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="19. Decoding" href="../chapter_inference/inference_fundamentals.html" />
-    <link rel="prev" title="17. DeepSeek Series" href="deepseek_series.html" />
+    <link rel="next" title="18. DeepSeek Series (WIP)" href="deepseek_series.html" />
+    <link rel="prev" title="16. *Reinforcement Learning Essentials" href="../chapter_training/reinforcement_learning.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -202,8 +204,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Case Studies</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="deepseek_series.html">17. DeepSeek Series</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">18. Llama Series</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">17. Llama Series (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deepseek_series.html">18. DeepSeek Series (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -323,7 +325,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Llama Series</h1>
+    <h1>Llama Series (WIP)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -333,7 +335,26 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">18.1. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-1">17.1. LLama 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-2">17.2. LLama 2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">17.2.1. Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finetuning-and-alignment">17.2.2. Finetuning and Alignment</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#supervised-fine-tuning">17.2.2.1. Supervised Fine-Tuning</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-data-collection">17.2.2.2. Preference Data Collection</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#reward-modeling">17.2.2.3. Reward Modeling</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#iterative-alignment">17.2.2.4. Iterative Alignment</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-3">17.3. LLama 3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">17.3.1. Pretraining</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#post-training">17.3.2. Post-Training</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-modality-adaptation">17.3.3. Multi-modality Adaptation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#codellama">17.4. CodeLlama</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">17.5. Bibliography</a></li>
 </ul>
             </nav>
         </div>
@@ -345,11 +366,330 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="llama-series">
-<h1><span class="section-number">18. </span>Llama Series<a class="headerlink" href="#llama-series" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="llama-series-wip">
+<h1><span class="section-number">17. </span>Llama Series (WIP)<a class="headerlink" href="#llama-series-wip" title="Link to this heading">#</a></h1>
+<section id="llama-1">
+<h2><span class="section-number">17.1. </span>LLama 1<a class="headerlink" href="#llama-1" title="Link to this heading">#</a></h2>
+<p>Llama-1 is first open-source model coming from Meta <span id="id1">[<a class="reference internal" href="#id528" title="Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timothée Lacroix, Baptiste Rozière, Naman Goyal, Eric Hambro, Faisal Azhar, and et al. LLaMA: open and efficient foundation language models. ArXiv:2302.13971, 2023a.">TLI+3a</a>]</span>. Compared to GPT, the following changes have been made to enhance training stability:</p>
+<ul class="simple">
+<li><p><strong>Pre-RMSNorm</strong> is used as a layer normalization method</p></li>
+<li><p><strong>SwiGLU</strong> is used as the activation function</p></li>
+<li><p><strong>RoPE</strong> is used as position encoding to enhance long sequence modeling ability</p></li>
+</ul>
+<p>Llama-1 was conducted next-token-prediction self-supervised learning on 1.4T token. These pre-training data are mixed from multiple sources and are all public data. The data volume and sampling ratio of each source are shown in the table below</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Dataset</p></th>
+<th class="head text-center"><p>Sampling prop.</p></th>
+<th class="head text-center"><p>Epochs</p></th>
+<th class="head text-right"><p>Disk size</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>CommonCrawl</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(67.0 \%\)</span></p></td>
+<td class="text-center"><p>1.10</p></td>
+<td class="text-right"><p>3.3 TB</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>C4</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(15.0 \%\)</span></p></td>
+<td class="text-center"><p>1.06</p></td>
+<td class="text-right"><p>783 GB</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Github</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(4.5 \%\)</span></p></td>
+<td class="text-center"><p>0.64</p></td>
+<td class="text-right"><p>328 GB</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Wikipedia</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(4.5 \%\)</span></p></td>
+<td class="text-center"><p>2.45</p></td>
+<td class="text-right"><p>83 GB</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Books</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(4.5 \%\)</span></p></td>
+<td class="text-center"><p>2.23</p></td>
+<td class="text-right"><p>85 GB</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ArXiv</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(2.5 \%\)</span></p></td>
+<td class="text-center"><p>1.06</p></td>
+<td class="text-right"><p>92 GB</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>StackExchange</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(2.0 \%\)</span></p></td>
+<td class="text-center"><p>1.03</p></td>
+<td class="text-right"><p>78 GB</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Llama-1 is considered as a big milestone as it shows that</p>
+<ul class="simple">
+<li><p>It is possible to train state-of-the-art models using publicly available datasets exclusively,</p></li>
+<li><p>To optimize for inference time efficiency, one can consider training a small model with large amount of data (e.g., training time optimal effiency would suggest training on 10B model on 200B tokens <span id="id2">[<a class="reference internal" href="#id442" title="Jordan Hoffmann, Sebastian Borgeaud, Arthur Mensch, Elena Buchatskaya, Trevor Cai, Eliza Rutherford, Diego de Las Casas, Lisa Anne Hendricks, Johannes Welbl, Aidan Clark, and et al. Training compute-optimal large language models. ArXiv:2203.15556, 2022.">HBM+22</a>]</span>)</p></li>
+</ul>
+<p>Evaluting on benchmarks including common sense reasoning, closed QA, reading comprehension, mathematical reasoning, code generation, and language understanding,  LLaMA-1 13B outperforms GPT-3 (175B) on most benchmarks, and LLaMA-1 65B is competitive with the best models, Chinchilla-70B and PaLM-540B.</p>
+</section>
+<section id="llama-2">
+<h2><span class="section-number">17.2. </span>LLama 2<a class="headerlink" href="#llama-2" title="Link to this heading">#</a></h2>
+<section id="overview">
+<h3><span class="section-number">17.2.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
+<p>Contribution from Llama-2 <span id="id3">[<a class="reference internal" href="../chapter_training/alignment.html#id550" title="Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, and et al. LLaMA 2: open foundation and fine-tuned chat models. ArXiv:2307.09288, 2023b.">TMS+3b</a>]</span> are two folds:</p>
+<ul class="simple">
+<li><p>Improvement on pretraining, with slight change of model architecture:</p>
+<ul>
+<li><p>Llama-2 pre-training used 2T data tokens from publicly available sources, with 40% more data compared to Llama-1.</p></li>
+<li><p>Adopt GQA for larger sizes (i.e., 34B, 70B), and the overall parameter quantity will be reduced</p></li>
+<li><p>Double the context length from 2k to 4k</p></li>
+</ul>
+</li>
+<li><p>Concentrated improvement on post-pretraining, including SFT, iterative reward modeling, and RLHF to enhance the model’s ability in diagolue and instruction-following safely.</p></li>
+</ul>
+<p>The improvement of pretraining for Llama-2 vs Llama-1 is summarized in the following table. Essentially, additional data quantity and improved data quality bring additional gain across all benchmarks.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Model</p></th>
+<th class="head text-center"><p>Size</p></th>
+<th class="head text-center"><p>Code</p></th>
+<th class="head text-center"><p>Commonsense Reasoning</p></th>
+<th class="head text-center"><p>World Knowledge</p></th>
+<th class="head text-center"><p>Reading Comprehension</p></th>
+<th class="head text-center"><p>Math</p></th>
+<th class="head text-center"><p>MMLU</p></th>
+<th class="head text-center"><p>BBH</p></th>
+<th class="head text-center"><p>AGI Eval</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>LLAMA 1</p></td>
+<td class="text-center"><p>13B</p></td>
+<td class="text-center"><p>18.9</p></td>
+<td class="text-center"><p>66.1</p></td>
+<td class="text-center"><p>52.6</p></td>
+<td class="text-center"><p>62.3</p></td>
+<td class="text-center"><p>10.9</p></td>
+<td class="text-center"><p>46.9</p></td>
+<td class="text-center"><p>37.0</p></td>
+<td class="text-center"><p>33.9</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p></p></td>
+<td class="text-center"><p>33B</p></td>
+<td class="text-center"><p>26.0</p></td>
+<td class="text-center"><p>70.0</p></td>
+<td class="text-center"><p>58.4</p></td>
+<td class="text-center"><p>67.6</p></td>
+<td class="text-center"><p>21.4</p></td>
+<td class="text-center"><p>57.8</p></td>
+<td class="text-center"><p>39.8</p></td>
+<td class="text-center"><p>41.7</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p></p></td>
+<td class="text-center"><p>65B</p></td>
+<td class="text-center"><p>30.7</p></td>
+<td class="text-center"><p>70.7</p></td>
+<td class="text-center"><p>60.5</p></td>
+<td class="text-center"><p>68.6</p></td>
+<td class="text-center"><p>30.8</p></td>
+<td class="text-center"><p>63.4</p></td>
+<td class="text-center"><p>43.5</p></td>
+<td class="text-center"><p>47.6</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>LLAMA 2</p></td>
+<td class="text-center"><p>7B</p></td>
+<td class="text-center"><p>16.8</p></td>
+<td class="text-center"><p>63.9</p></td>
+<td class="text-center"><p>48.9</p></td>
+<td class="text-center"><p>61.3</p></td>
+<td class="text-center"><p>14.6</p></td>
+<td class="text-center"><p>45.3</p></td>
+<td class="text-center"><p>32.6</p></td>
+<td class="text-center"><p>29.3</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p></p></td>
+<td class="text-center"><p>13B</p></td>
+<td class="text-center"><p>24.5</p></td>
+<td class="text-center"><p>66.9</p></td>
+<td class="text-center"><p>55.4</p></td>
+<td class="text-center"><p>65.8</p></td>
+<td class="text-center"><p>28.7</p></td>
+<td class="text-center"><p>54.8</p></td>
+<td class="text-center"><p>39.4</p></td>
+<td class="text-center"><p>39.1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p></p></td>
+<td class="text-center"><p>34B</p></td>
+<td class="text-center"><p>27.8</p></td>
+<td class="text-center"><p>69.9</p></td>
+<td class="text-center"><p>58.7</p></td>
+<td class="text-center"><p>68.0</p></td>
+<td class="text-center"><p>24.2</p></td>
+<td class="text-center"><p>62.6</p></td>
+<td class="text-center"><p>44.1</p></td>
+<td class="text-center"><p>43.4</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p></p></td>
+<td class="text-center"><p>70B</p></td>
+<td class="text-center"><p>37.5</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{7 1 . 9}\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{6 3 . 6}\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{6 9 . 4}\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{3 5 . 2}\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{6 8 . 9}\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{5 1 . 2}\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\mathbf{5 4 . 2}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In the following, we review key process for pretraining and post-training alignment of LLama2 model to human preference [<a class="reference internal" href="#chapter-training-fig-alignmenet-llama2-alignment"><span class="std std-numref">Fig. 17.1</span></a>]. Specifially, LLama2 alignment consists of the following iterative steps:</p>
+<ul class="simple">
+<li><p>Collecting human preference data</p></li>
+<li><p>Training reward model to predict human preference, iteratively</p></li>
+<li><p>Using reward model to guide model improvement via rejection sampleing SFT and RLHF</p></li>
+</ul>
+<figure class="align-default" id="chapter-training-fig-alignmenet-llama2-alignment">
+<a class="reference internal image-reference" href="../../_images/llama2_alignment.png"><img alt="../../_images/llama2_alignment.png" src="../../_images/llama2_alignment.png" style="width: 875.6999999999999px; height: 407.4px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 17.1 </span><span class="caption-text">Overview of iterative alignment process in LLama2 after pretraining and supervised fine-tuning. Note that reward model is also iteratively updated the ensure the reward modeling remain within distribution. Image from <span id="id4">[<a class="reference internal" href="#id528" title="Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timothée Lacroix, Baptiste Rozière, Naman Goyal, Eric Hambro, Faisal Azhar, and et al. LLaMA: open and efficient foundation language models. ArXiv:2302.13971, 2023a.">TLI+3a</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignmenet-llama2-alignment" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="finetuning-and-alignment">
+<h3><span class="section-number">17.2.2. </span>Finetuning and Alignment<a class="headerlink" href="#finetuning-and-alignment" title="Link to this heading">#</a></h3>
+<section id="supervised-fine-tuning">
+<h4><span class="section-number">17.2.2.1. </span>Supervised Fine-Tuning<a class="headerlink" href="#supervised-fine-tuning" title="Link to this heading">#</a></h4>
+<p>The pretrained model was first supervised fine-tuned before further RLHF. The fine-tuned data is focused on improving the model’s helpfulness and safety by providing positive examples. The <strong>quality and diversty is more important than quanity</strong> - data in the order of tens of thousands were sufficient for high quality results.</p>
+<figure class="align-default" id="chapter-llm-case-study-fig-llama2-sft-data-example">
+<a class="reference internal image-reference" href="../../_images/SFT_data_example.png"><img alt="../../_images/SFT_data_example.png" src="../../_images/SFT_data_example.png" style="width: 652.0px; height: 307.5px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 17.2 </span><span class="caption-text">Example of a helpfulness (top) and safety (bottom) training data for SFT. Image from <span id="id5">[<a class="reference internal" href="#id528" title="Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timothée Lacroix, Baptiste Rozière, Naman Goyal, Eric Hambro, Faisal Azhar, and et al. LLaMA: open and efficient foundation language models. ArXiv:2302.13971, 2023a.">TLI+3a</a>]</span>.</span><a class="headerlink" href="#chapter-llm-case-study-fig-llama2-sft-data-example" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="preference-data-collection">
+<h4><span class="section-number">17.2.2.2. </span>Preference Data Collection<a class="headerlink" href="#preference-data-collection" title="Link to this heading">#</a></h4>
+<p>To collect comprehensive human feedback data, the Meta team considered both <strong>open-source</strong> and <strong>in-house</strong> data.</p>
+<p>For open-source data, they used datasets from Anthropic, OpenAI, etc., containing approximately 1.50M human preference data points. These data primarily focused on two aspects: safety and usefulness, where safety refers to whether the model produces unsafe outputs, and usefulness refers to the extent to which the model’s outputs can address human requests.</p>
+<p>For in-house data, they hired human annotator to produce both safety and usefulness labels on about ~1.4M data points. Annotators first wrote an input prompt, then selected outputs from two models based on corresponding criteria to serve as positive and negative examples.</p>
+<p>Note that these preference data is used in reward model training. In the iterative alignment process of LLaMA-2, the distribution of model-generated content would change, leading to degradation of the reward model. To prevent this phenomenon, <strong>new annotated data needed to be collected during the training process to retrain the reward model.</strong></p>
+</section>
+<section id="reward-modeling">
+<h4><span class="section-number">17.2.2.3. </span>Reward Modeling<a class="headerlink" href="#reward-modeling" title="Link to this heading">#</a></h4>
+<p>After collecting human feedback data, reward models are trained based on the collected data, which are then used to provide on-the-fly feedback signal in subsequent training processes. To obtain more detailed reward signals, data related to safety tasks and usefulness tasks are used separately to train two reward models.</p>
+<p>To better help reward models distinguish the differences between positive and negative examples, a margin <span class="math notranslate nohighlight">\(m(y^+, y^-)\)</span> is added between human preference between positive and negative examples. The optimized training objective for the reward model is shown in the following equation:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}_{\text{ranking}} = -\log(\sigma(r_\theta(x, y^+) - r_\theta(x, y^-) - m(y^+, y^-)))
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(y^+\)</span>, and <span class="math notranslate nohighlight">\(y^-\)</span> represent the model input, positive example, and negative example respectively. Naturally, we use a large margin for pairs with distinct responses, and a smaller one for those with similar responses</p>
+</section>
+<section id="iterative-alignment">
+<h4><span class="section-number">17.2.2.4. </span>Iterative Alignment<a class="headerlink" href="#iterative-alignment" title="Link to this heading">#</a></h4>
+<p>LLama-2 took a iterative approch to align the LLM to human preference. As the alignment progresses, we are able to train better reward models and collect more prompts. We therefore can train successive versions for RLHF models, referred to here as RLHF-V1, …, RLHF-V5.
+Two alignment algorithms are explored:</p>
+<ul class="simple">
+<li><p><strong>SFT with Rejection Sampling</strong>. <span class="math notranslate nohighlight">\(K\)</span> outputs from the model (might include previous version model) and select the best candidate with the reward model. The highest rewarded output is collected to perform SFT.</p></li>
+<li><p><strong>Proximal Policy Optimization (PPO)</strong> as in the standard RLHF literature.</p></li>
+</ul>
+<p>Until RLHF (V4), only Rejection Sampling SFT is only used, and after that, two algorithms were combined sequentially - applying PPO on top of the resulted Rejection Sampling checkpoint before sampling again.</p>
+</section>
+</section>
+</section>
+<section id="llama-3">
+<h2><span class="section-number">17.3. </span>LLama 3<a class="headerlink" href="#llama-3" title="Link to this heading">#</a></h2>
+<p>Training data: Carefully designed pre-training corpus, quantity &amp; quality, expanded to 15T Tokens, an increase of about 8
+times. Among them, the code data has been expanded 4 times, significantly improving the model’s performance in coding and
+logical reasoning abilities
+It is worth noting that LLaMA-3 does not adopt the MOE (Mixture of Experts) structure, which is mainly used to reduce
+training and inference costs, but its performance is usually not comparable to the same-scale intensive (Dense) models. As
+the model scale expands, how to reduce inference costs will become a concern. In addition, the training data of LLaMA-3
+includes a large number of code tokens and over 5% non-English tokens from more than 30 languages. This not only makes
+the model more efficient in processing English content, but also significantly improves its multilingual processing capabilities
+Meta has developed a series of data filtering pipelines to ensure data quality, including heuristic filters, NSFW filters, semantic
+duplicate data removal technology, and text classifiers for predicting data quality. The effectiveness of these tools benefits
+from the performance of previous versions of Llama, especially in identifying high-quality data
+The training process: The Llama-3 series also has two models - the pre-trained model Llama-3 and the fine-tuned model
+Llama-3-Instruct.
+Pre-training phase: In order to effectively utilize pre-training data, Llama-3 has invested a lot of effort in expanding pre-
+training. Specifically, by developing a series of scaling laws for downstream benchmark tests, the performance of the model
+on key tasks can be predicted before training, and then the best data combination can be selected</p>
+<p>Post-training phase: Supervised fine-tuning (SFT), rejection sampling, RLHF, and direct policy optimization (DPO) are
+combined for multiple rounds of alignment. The quality of the hints used for SFT and the preference ranking used for PPO and
+DPO have a huge impact on the performance of the aligned model. Some of the biggest improvements in model quality in
+LLaMA3 come from carefully screening this data and conducting multiple reviews of the multiple rounds of Quality Assurance
+provided by human annotators</p>
+<section id="pretraining">
+<h3><span class="section-number">17.3.1. </span>Pretraining<a class="headerlink" href="#pretraining" title="Link to this heading">#</a></h3>
+<p>pre-train a model with 405B parameters on 15.6T tokens using a
+context window of 8K tokens. This standard pre-training stage is followed by a continued pre-training
+stage that increases the supported context window to 128K tokens.</p>
+<p>In the final stages of pre-training, we train on long sequences to support context windows of up to 128K tokens.</p>
+<p>This long-context pre-training stage was performed using approximately 800B training tokens.</p>
+<p>We do not train on long sequences earlier because the compute in self-attention layers grows quadratically in
+the sequence length. We increase the supported context length in increments, pre-training until the model has
+successfully adapted to the increased context length.</p>
+<p>e assess successful adaptation by measuring whether</p>
+<ul class="simple">
+<li><p>Model performance on short-context evaluations has recovered completely</p></li>
+<li><p>Model perfectly solves <em>needle in a haystack</em> tasks up to that length.</p></li>
+</ul>
+</section>
+<section id="post-training">
+<h3><span class="section-number">17.3.2. </span>Post-Training<a class="headerlink" href="#post-training" title="Link to this heading">#</a></h3>
+<p>The post-training workflow in summarized in <a class="reference internal" href="#chapter-llm-case-study-fig-llama3-posttraining-overview"><span class="std std-numref">Fig. 17.3</span></a>.</p>
+<p>Key components in the workflow are:</p>
+<ul class="simple">
+<li><p>Collection of task prompts, completions, and human annotations.</p></li>
+<li><p>Reward modeling to train a reward model based on pairwise ranking loss.</p></li>
+<li><p>Rejection sampling: An LLM model checkpoint is used to generate K (between 10 and 30) responses for each prompt, and then scores these answers using the Reward Model to select the highest-scoring and best-performing answer. This process not only improves the quality of model generation, but also provides high-quality samples for further model training.</p></li>
+<li><p>Iterative improvement and rejection sampling</p></li>
+</ul>
+<figure class="align-default" id="chapter-llm-case-study-fig-llama3-posttraining-overview">
+<a class="reference internal image-reference" href="../../_images/posttraining_overview.png"><img alt="../../_images/posttraining_overview.png" src="../../_images/posttraining_overview.png" style="width: 621.5px; height: 233.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 17.3 </span><span class="caption-text">Illustration of the overall post-training approach for Llama 3. Our post-training strategy involves rejection sampling, supervised finetuning, and direct preference optimization. Image from <span id="id6">[]</span>.</span><a class="headerlink" href="#chapter-llm-case-study-fig-llama3-posttraining-overview" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>SFT
+finetune the pre-trained language model using a standard cross entropy loss
+on the target tokens (while masking loss on prompt tokens</p>
+<p>Improvement of DPO by LLaMA3</p>
+<ul class="simple">
+<li><p>In DPO loss, formating related tokens (including the header and termination tokens) are masked out to stabilize DPO training. These tokens barely contribute to the score of the responses, yet they affects the preference loss computation.</p></li>
+<li><p>Regularizated DPO: an additional negative log likelihood loss of the chosen response was added to further stabilize DPO training by maintaining the generated expected format and preventing the decrease of log probability of the chosen response. See more details in <a class="reference internal" href="../chapter_training/alignment.html#chapter-training-sec-llm-alignment-dpo-variant-dpop-regularized-dpo"><span class="std std-ref">DPO-Positive and Regularized DPO</span></a>.</p></li>
+</ul>
+</section>
+<section id="multi-modality-adaptation">
+<h3><span class="section-number">17.3.3. </span>Multi-modality Adaptation<a class="headerlink" href="#multi-modality-adaptation" title="Link to this heading">#</a></h3>
+</section>
+</section>
+<section id="codellama">
+<h2><span class="section-number">17.4. </span>CodeLlama<a class="headerlink" href="#codellama" title="Link to this heading">#</a></h2>
+</section>
 <section id="bibliography">
-<h2><span class="section-number">18.1. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<span class="target" id="id1"></span></section>
+<h2><span class="section-number">17.5. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id7">
+<div role="list" class="citation-list">
+<div class="citation" id="id442" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">HBM+22</a><span class="fn-bracket">]</span></span>
+<p>Jordan Hoffmann, Sebastian Borgeaud, Arthur Mensch, Elena Buchatskaya, Trevor Cai, Eliza Rutherford, Diego de Las Casas, Lisa Anne Hendricks, Johannes Welbl, Aidan Clark, and et al. Training compute-optimal large language models. <em>ArXiv:2203.15556</em>, 2022.</p>
+</div>
+<div class="citation" id="id528" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>TLI+3a<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id4">2</a>,<a role="doc-backlink" href="#id5">3</a>)</span>
+<p>Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timothée Lacroix, Baptiste Rozière, Naman Goyal, Eric Hambro, Faisal Azhar, and et al. LLaMA: open and efficient foundation language models. <em>ArXiv:2302.13971</em>, 2023a.</p>
+</div>
+<div class="citation" id="id529" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">TMS+3b</a><span class="fn-bracket">]</span></span>
+<p>Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, and et al. LLaMA 2: open foundation and fine-tuned chat models. <em>ArXiv:2307.09288</em>, 2023b.</p>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -383,20 +723,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="deepseek_series.html"
+       href="../chapter_training/reinforcement_learning.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">17. </span>DeepSeek Series</p>
+        <p class="prev-next-title"><span class="section-number">16. </span>*Reinforcement Learning Essentials</p>
       </div>
     </a>
     <a class="right-next"
-       href="../chapter_inference/inference_fundamentals.html"
+       href="deepseek_series.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">19. </span>Decoding</p>
+        <p class="prev-next-title"><span class="section-number">18. </span>DeepSeek Series (WIP)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -416,7 +756,26 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">18.1. Bibliography</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-1">17.1. LLama 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-2">17.2. LLama 2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">17.2.1. Overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finetuning-and-alignment">17.2.2. Finetuning and Alignment</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#supervised-fine-tuning">17.2.2.1. Supervised Fine-Tuning</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-data-collection">17.2.2.2. Preference Data Collection</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#reward-modeling">17.2.2.3. Reward Modeling</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#iterative-alignment">17.2.2.4. Iterative Alignment</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-3">17.3. LLama 3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">17.3.1. Pretraining</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#post-training">17.3.2. Post-Training</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-modality-adaptation">17.3.3. Multi-modality Adaptation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#codellama">17.4. CodeLlama</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">17.5. Bibliography</a></li>
 </ul>
   </nav></div>
 

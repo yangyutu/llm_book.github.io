@@ -1,6 +1,6 @@
-# DeepSeek Series
+# DeepSeek Series (WIP)
 
-## DeepSeek V3
+<!-- ## DeepSeek V3
 
 
 Pretraining corpus for DeepSeek-V3 consists of 14.8T high-quality and diverse tokens in our tokenizer.
@@ -10,19 +10,32 @@ Pretraining corpus for DeepSeek-V3 consists of 14.8T high-quality and diverse to
 ### Pretraining
 
 
-
+ -->
 
 
 ## DeepSeek Coder
 
+### Overview
+
+
 {cite:p}`guo2024deepseek`
-{cite:p}`zhu2024deepseek`
+
+
+```{figure} ../img/chapter_LLM_case_study/deepseek_series/deepseek_code/deepseek_coder_performance.png
+---
+scale: 65%
+name: chapter_training_fig_reasoning_inference_time_method_deepseek_coder_performance
+---
+The performance of DeepSeek-Coder. Image from {cite:p}`guo2024deepseek`.
+```
 
 ### Data Curation
 
 The training dataset of DeepSeek-Coder is composed of 87% source code, 10% English coderelated natural language corpus, and 3% code-unrelated Chinese natural language corpus.
 
-### PreTraining Strategy
+### PreTraining 
+
+
 
 Two training strategies:
 * Next Token Prediction. Like the typical language model next-token-prediction task. In this process, various files are concatenated to form a fixed-length entry. 
@@ -41,9 +54,17 @@ Within the FIM methodology, two distinct modes are employed: PSM (Prefix-Suffix-
 (Suffix-Prefix-Middle). In the PSM mode, the training corpus is organized in the sequence
 of prefix, suffix, middle, aligning the text in a way that the middle segment is flanked by the
 prefix and suffix. Conversely, the SPM mode arranges the segments as suffix, prefix, middle,
-presenting a different structural challenge. These modes are instrumental in enhancing the
+presenting a different structural challenge. 
+
+
+These modes are instrumental in enhancing the
 model’s capability to handle various structural arrangements in code, providing a robust training
 framework for advanced code prediction tasks.
+
+
+<｜fim_start｜> 𝑓𝑝𝑟𝑒<｜fim_hole｜> 𝑓𝑠𝑢 𝑓 <｜fim_end｜> 𝑓𝑚𝑖𝑑𝑑𝑙𝑒<|eos_token|>
+
+Studies shows that while FIM can improve code insertion ability, it will however negative affect code completion abilities. The pretraining adopted an FIM rate of 0.5, following the PSM mode.
 
 
 ### Long Context Extension
@@ -58,9 +79,54 @@ In the first stage, we utilize a sequence length of 32K and a batch size of 1152
 In the second stage, we train the model for an additional 1000 steps, employing a sequence length of 128K and a batch size of 288 sequences.
 
 
-### Intruction Tuning
+### Instruction FT
 
-We develop DeepSeek-Coder-Instruct by enhancing the DeepSeek-Coder-Base through instructionbased fine-tuning using high-quality data.
+We develop DeepSeek-Coder-Instruct by enhancing the DeepSeek-Coder-Base through instructionbased fine-tuning using high-quality data. 
+
+2B tokens in total
+
+### Evaluation
+
+evaluate DeepSeek-Coder on four tasks, including 
+* **code generation**, 
+* **FIM code completion**
+* **cross-file code completion**
+* **program-based math reasoning**
+
+Code Generation
+
+st cases to assess the code generated
+by a Code LLM in a zero-shot setting, while the MBPP benchmark includes 500 problems
+in a few-shot setting.
+
+After instruction fine-tuning, our model surpasses the closed-source
+GPT-3.5-Turbo model in HumanEval benchmark, significantly reducing the performance gap
+between OpenAI GPT-4 and open-source models.
+
+| Model | Size | Avg |
+| :---: | :---: | :---: |
+| CodeLlama | 34B | 41.0% |
+| GPT-3.5-Turbo | - | 64.9% |
+| GPT-4 | - | 76.5% |
+| DeepSeek-Coder-Base | 33B | 50.3% |
+| DeepSeek-Coder-Instruct | 33B | 69.2% |
+
+
+
+
+### DeepSeek Coder V2
+
+{cite:p}`zhu2024deepseek`
+
+| Aspects | V1 | V2 | 
+| :--- | :--- | :--- |
+| Architecture | Decoder-only Dense Transformer | MoE |
+| Scale | 1.3B to 33B | 16B and 236B |
+| Pretraining Data | 2T training tokens | Additional 10.2T training tokens |
+| Starting Checkpoing| | intermediate checkpoint of DeepSeek-V2 |
+| Pretraining Method| Next-Token-Prediction (NTP); Fill-In-Middle (FIM) | 16B NTP and FIM; 236B NTP |
+| Context Length | 16k | 128k | 
+| Post-Training Method| SFT  | SFT and RL|
 
 
 ### Reinforcement Learning
@@ -73,16 +139,6 @@ This stages involve several key elements:
   * Rewards for math problem is constructed based on ground-truth labels. 
   * Rewards for coding is more complex. Code compiler itself can already provide $0-1$ feedback (whether the code pass all test cases or not) but some coding task prompts have a limited number of test cases for full coverage. Instead, the team trained a reward model on the data provided by the compiler, and use the reward model to provide signal during RL training, which is more robust.
 * The reinforcement learning algorithm is GRPO (see {ref}`chapter_training_sec_LLM_alignment_GRPO`).
-
-### Evaluation
-
-```{figure} ../img/chapter_LLM_case_study/deepseek_series/deepseek_code/deepseek_coder_performance.png
----
-scale: 65%
-name: chapter_training_fig_reasoning_inference_time_method_deepseek_coder_performance
----
-The performance of DeepSeek-Coder. Image from {cite:p}`guo2024deepseek`.
-```
 
 ## DeepSeek Math
 
@@ -98,7 +154,7 @@ Crawl, together with natural language and code data.
 
 ```{figure} ../img/chapter_LLM_case_study/deepseek_series/deepseek_math/deepseek_math_performance.png
 ---
-scale: 75%
+scale: 85%
 name: chapter_training_fig_reasoning_inference_time_method_deepseek_math_performance
 ---
 Top1 accuracy of open-source models on the competition-level MATH benchmark Image from {cite:p}`shao2024deepseekmath`
