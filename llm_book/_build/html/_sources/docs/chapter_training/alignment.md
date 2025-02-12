@@ -1,5 +1,5 @@
 (chapter_training_sec_LLM_alignment)=
-# LLM Alignement and Preference Learning
+# LLM Alignment and Preference Learning
 
 ## Motivation and Overview
 

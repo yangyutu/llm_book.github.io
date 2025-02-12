@@ -197,15 +197,15 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">11. LLM Training Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="finetuning.html">12. LLM Finetuning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="alignment.html">13. LLM Alignement and Preference Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alignment.html">13. LLM Alignment and Preference Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reasoning.html">14. LLM Reasoning (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accelerated_training.html">15. LLM Training Acceleration (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reinforcement_learning.html">16. *Reinforcement Learning Essentials</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Case Studies</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_case_study/llama_series.html">17. Llama Series (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_case_study/deepseek_series.html">18. DeepSeek Series (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_case_study/llama_series.html">17. Llama Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_case_study/deepseek_series.html">18. DeepSeek Series</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -217,18 +217,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">21. Basic Prompting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">22. Advanced Prompting Techniques</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Text Embedding</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_text_embedding/text_embedding_fundamentals.html">23. Text Embedding Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_text_embedding/text_embedding_LLM.html">24. LLM Text Embedding</a></li>
-</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">25. Information Retrieval and Sparse Retrieval</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">26. Information Retrieval and Dense Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">28. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">29. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">23. Information Retrieval and Sparse Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">24. Information Retrieval and Dense Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">26. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">27. Advanced RAG (WIP)</a></li>
 </ul>
 
     </div>
@@ -331,9 +326,9 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-overview">11.1. Training Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining-techniques">11.2. Pretraining Techniques</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#next-token-prediction">11.2.1. Next-Token Prediction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fill-in-the-middle">11.2.2. Fill-in-the Middle</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-token-prediction">11.2.3. Multiple Token Prediction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#next-token-prediction-ntp">11.2.1. Next-Token Prediction (NTP)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fill-in-the-middle-fim">11.2.2. Fill-in-the Middle (FIM)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-token-prediction-mtp">11.2.3. Multiple Token Prediction (MTP)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continued-pretraining">11.2.4. Continued Pretraining</a></li>
 </ul>
 </li>
@@ -379,7 +374,7 @@ document.write(`
 <ul class="simple">
 <li><p><strong>Finetuning</strong>: Adapting the pretrained model to specific tasks or domains. Particularly, <strong>instruction finetuning</strong> involves teaching the model to follow explicit instructions or prompts by training on large-scale and diverse (instruction, response) pair data. We cover this in <a class="reference internal" href="finetuning.html#chapter-training-sec-llm-finetuning"><span class="std std-ref">LLM Finetuning</span></a>.</p></li>
 <li><p><strong>Alignment and Preference Learning</strong>: Ensuring the model’s outputs align with human values and preferences.
-we cover this direction in <a class="reference internal" href="alignment.html#chapter-training-sec-llm-alignment"><span class="std std-ref">LLM Alignement and Preference Learning</span></a>.</p></li>
+we cover this direction in <a class="reference internal" href="alignment.html#chapter-training-sec-llm-alignment"><span class="std std-ref">LLM Alignment and Preference Learning</span></a>.</p></li>
 </ul>
 </li>
 </ol>
@@ -387,8 +382,8 @@ we cover this direction in <a class="reference internal" href="alignment.html#ch
 </section>
 <section id="pretraining-techniques">
 <h2><span class="section-number">11.2. </span>Pretraining Techniques<a class="headerlink" href="#pretraining-techniques" title="Link to this heading">#</a></h2>
-<section id="next-token-prediction">
-<h3><span class="section-number">11.2.1. </span>Next-Token Prediction<a class="headerlink" href="#next-token-prediction" title="Link to this heading">#</a></h3>
+<section id="next-token-prediction-ntp">
+<h3><span class="section-number">11.2.1. </span>Next-Token Prediction (NTP)<a class="headerlink" href="#next-token-prediction-ntp" title="Link to this heading">#</a></h3>
 <p>Pretraining has become a cornerstone in the development of LLM, which contributes to</p>
 <ul class="simple">
 <li><p>the general langugae understand and generation ability</p></li>
@@ -399,50 +394,58 @@ we cover this direction in <a class="reference internal" href="alignment.html#ch
 <div class="math notranslate nohighlight">
 \[L = - \sum_{t=1}^{T} \log p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1},\theta\right)\]</div>
 <p>where <span class="math notranslate nohighlight">\(p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1}\right)\)</span> is the predicted probability distribution for token <span class="math notranslate nohighlight">\(x_t\)</span> given preceding token sequence <span class="math notranslate nohighlight">\(\mathbf{x}_{t-k-1:t-1}\)</span> with a context window size <span class="math notranslate nohighlight">\(k\)</span> (<span class="math notranslate nohighlight">\(k\)</span> can range from hundreds to tens of thousands, depending on the model configuration).</p>
-<p>There are scaling laws <span id="id1">[<a class="reference internal" href="#id48" title="Tom Henighan, Jared Kaplan, Mor Katz, Mark Chen, Christopher Hesse, Jacob Jackson, Heewoo Jun, Tom B Brown, Prafulla Dhariwal, Scott Gray, and others. Scaling laws for autoregressive generative modeling. arXiv preprint arXiv:2010.14701, 2020.">HKK+20</a>, <a class="reference internal" href="#id47" title="Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei. Scaling laws for neural language models. arXiv preprint arXiv:2001.08361, 2020.">KMH+20</a>]</span> discovered on LLM pretraining, which establishes mathematical relationships model performance given model size, dataset size, and the amount of compute. The availability of scaling laws has several benefits:</p>
+<p>There are scaling laws <span id="id1">[<a class="reference internal" href="#id50" title="Tom Henighan, Jared Kaplan, Mor Katz, Mark Chen, Christopher Hesse, Jacob Jackson, Heewoo Jun, Tom B Brown, Prafulla Dhariwal, Scott Gray, and others. Scaling laws for autoregressive generative modeling. arXiv preprint arXiv:2010.14701, 2020.">HKK+20</a>, <a class="reference internal" href="#id49" title="Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei. Scaling laws for neural language models. arXiv preprint arXiv:2001.08361, 2020.">KMH+20</a>]</span> discovered on LLM pretraining, which establishes mathematical relationships model performance given model size, dataset size, and the amount of compute. The availability of scaling laws has several benefits:</p>
 <ul class="simple">
 <li><p>It provides to benchmark to enable LLM pretraining to be done in a predictable way.</p></li>
-<li><p>It help design better training strategy by optimizing the model size and data size under compute constraint.</p></li>
+<li><p>It help design better training strategy by optimizing the model size and data size under a compute budget.</p></li>
 </ul>
 </section>
-<section id="fill-in-the-middle">
-<h3><span class="section-number">11.2.2. </span>Fill-in-the Middle<a class="headerlink" href="#fill-in-the-middle" title="Link to this heading">#</a></h3>
-<p>Fill-in-the Middle was proposed in <span id="id2">[<a class="reference internal" href="#id1625" title="Mohammad Bavarian, Heewoo Jun, Nikolas Tezak, John Schulman, Christine McLeavey, Jerry Tworek, and Mark Chen. Efficient training of language models to fill in the middle. arXiv preprint arXiv:2207.14255, 2022.">BJT+22</a>, <a class="reference internal" href="#id1626" title="Raymond Li, Loubna Ben Allal, Yangtian Zi, Niklas Muennighoff, Denis Kocetkov, Chenghao Mou, Marc Marone, Christopher Akiki, Jia Li, Jenny Chim, and others. Starcoder: may the source be with you! arXiv preprint arXiv:2305.06161, 2023.">LAZ+23</a>]</span></p>
-<p>This approach involves randomly dividing the text into three parts, then shuffling the order of these parts and connecting them with special characters. This method aims to incorporate a fill-in-the-blank pretraining task during the training process.</p>
-<p>Within the FIM methodology, two distinct modes are employed: PSM (Prefix-Suffix-Middle) and SPM
-(Suffix-Prefix-Middle). In the PSM mode, the training corpus is organized in the sequence
-of prefix, suffix, middle, aligning the text in a way that the middle segment is flanked by the
-prefix and suffix. Conversely, the SPM mode arranges the segments as suffix, prefix, middle,
-presenting a different structural challenge.</p>
-<p>These modes are instrumental in enhancing the
-model’s capability to handle various structural arrangements in code, providing a robust training
-framework for advanced code prediction tasks.</p>
-</section>
-<section id="multiple-token-prediction">
-<h3><span class="section-number">11.2.3. </span>Multiple Token Prediction<a class="headerlink" href="#multiple-token-prediction" title="Link to this heading">#</a></h3>
-<p>Besides training using a next-token prediction loss, there are efforts exploring training language models to predict multiple future tokens at once [<a class="reference internal" href="#chapter-training-fig-fundamentals-multiple-token-prediction-demo"><span class="std std-numref">Fig. 11.1</span></a>].  More specifically, at each position in the training corpus, we ask the model to predict the following <span class="math notranslate nohighlight">\(n\)</span> tokens using <span class="math notranslate nohighlight">\(n\)</span> independent output heads, operating on top of a shared model trunk.</p>
-<p>The advantages are:</p>
+<section id="fill-in-the-middle-fim">
+<h3><span class="section-number">11.2.2. </span>Fill-in-the Middle (FIM)<a class="headerlink" href="#fill-in-the-middle-fim" title="Link to this heading">#</a></h3>
+<p>Fill-in-the Middle (FIM)<span id="id2">[<a class="reference internal" href="#id1627" title="Mohammad Bavarian, Heewoo Jun, Nikolas Tezak, John Schulman, Christine McLeavey, Jerry Tworek, and Mark Chen. Efficient training of language models to fill in the middle. arXiv preprint arXiv:2207.14255, 2022.">BJT+22</a>, <a class="reference internal" href="#id1628" title="Raymond Li, Loubna Ben Allal, Yangtian Zi, Niklas Muennighoff, Denis Kocetkov, Chenghao Mou, Marc Marone, Christopher Akiki, Jia Li, Jenny Chim, and others. Starcoder: may the source be with you! arXiv preprint arXiv:2305.06161, 2023.">LAZ+23</a>]</span> was proposed in  as a technique used to improve the in-context learning and generalization capabilities of large language models (LLMs). Instead of always training the model to generate text in a left-to-right (causal) manner, FIM involves predicting a missing segment of text when given both the preceding and succeeding context.</p>
+<p>Specifially, FIM training makes LLMs better at predicting missing code/text blocks and handling real-world coding and writing workflows:</p>
 <ul class="simple">
-<li><p>in higher sample efficiency.</p></li>
-<li></li>
+<li><p>In coding applications (e.g., GitHub Copilot, OpenAI Codex), developers often insert code or docstring into existing structures rather than appending to the end;</p></li>
+<li><p>In writing and editting tasks, users need to insert or modify text within a document.</p></li>
 </ul>
-<p><span id="id3">[<a class="reference internal" href="#id1571" title="Fabian Gloeckle, Badr Youbi Idrissi, Baptiste Rozière, David Lopez-Paz, and Gabriel Synnaeve. Better &amp; faster large language models via multi-token prediction. arXiv preprint arXiv:2404.19737, 2024.">GIRoziere+24</a>]</span>
-During inference, we employ only the next-token output head. Optionally, the other three heads may be used to speed-up
-inference time.</p>
+<p>The implementation of FIM involves randomly dividing the text into three parts, then shuffling the order of these parts and connecting them with special characters. Depending on how the segments are ordered, there are two distinct modes: <strong>PSM (Prefix-Suffix-Middle)</strong> and <strong>SPM (Suffix-Prefix-Middle)</strong>.</p>
+<p>For example, in the SPM mode, the training corpus is transformed to</p>
+<div class="math notranslate nohighlight">
+\[
+&lt;\text { &lt;PRE&gt; }&gt;  prefix &lt;\text { SUF }&gt; suffix &lt;\text { MID }&gt; middle 
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(&lt;\text { &lt;PRE&gt; }&gt;, &lt;\text { SUF }&gt;, &lt;\text { MID }&gt;\)</span> are sentinel tokens.</p>
+<p>During the inference where we would like to use prefix and surfix to predict the middle, we can prompt the model with</p>
+<div class="math notranslate nohighlight">
+\[
+&lt;\text { &lt;PRE&gt; }&gt;  prefix &lt;\text { SUF }&gt; suffix &lt;\text { MID }&gt; middle 
+\]</div>
+<p>During pretraining, FIM and left-to-right autoregression can be both applied to the training corpus and then use the same NSP training task. And surpringly, FIM will not strongly compromise the left-to-right capability with high FIM rate up to 90%, and at the same time, the model acquires FIM ability for code and language (known as <strong>FIM-for-free property</strong>).
+The authors also suggested that 50% FIM rate strike a good balance. Practioners from <span id="id3">[<a class="reference internal" href="#id1626" title="Daya Guo, Qihao Zhu, Dejian Yang, Zhenda Xie, Kai Dong, Wentao Zhang, Guanting Chen, Xiao Bi, Yu Wu, YK Li, and others. Deepseek-coder: when the large language model meets programming–the rise of code intelligence. arXiv preprint arXiv:2401.14196, 2024.">GZY+24</a>]</span> also used 50% FIM rate in the pretraining for coding LLM.</p>
+</section>
+<section id="multiple-token-prediction-mtp">
+<h3><span class="section-number">11.2.3. </span>Multiple Token Prediction (MTP)<a class="headerlink" href="#multiple-token-prediction-mtp" title="Link to this heading">#</a></h3>
+<p>Besides training using a next-token prediction loss, there are efforts exploring training language models to predict multiple future tokens at once <span id="id4">[<a class="reference internal" href="#id1573" title="Fabian Gloeckle, Badr Youbi Idrissi, Baptiste Rozière, David Lopez-Paz, and Gabriel Synnaeve. Better &amp; faster large language models via multi-token prediction. arXiv preprint arXiv:2404.19737, 2024.">GIRoziere+24</a>]</span>. More specifically, at each position in the training corpus, we ask the model to predict the following <span class="math notranslate nohighlight">\(n\)</span> tokens using <span class="math notranslate nohighlight">\(n\)</span> independent output heads, operating on top of a shared model trunk[<a class="reference internal" href="#chapter-training-fig-fundamentals-multiple-token-prediction-demo"><span class="std std-numref">Fig. 11.1</span></a>].</p>
+<p>This MTP scheme brings advantages:</p>
+<ul class="simple">
+<li><p>Higher sample efficiency during training.</p></li>
+<li><p>During inference, we can either use one next-token output head or optionally use the additional heads to speed up the
+inference time.</p></li>
+</ul>
 <figure class="align-default" id="chapter-training-fig-fundamentals-multiple-token-prediction-demo">
 <a class="reference internal image-reference" href="../../_images/mtp_demo.png"><img alt="../../_images/mtp_demo.png" src="../../_images/mtp_demo.png" style="width: 583.5px; height: 326.0px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 11.1 </span><span class="caption-text">Overview of multi-token prediction. During training, the model predicts 4 future tokens at once, by
-means of a shared trunk and 4 dedicated output heads. Image from <span id="id4">[<a class="reference internal" href="#id1571" title="Fabian Gloeckle, Badr Youbi Idrissi, Baptiste Rozière, David Lopez-Paz, and Gabriel Synnaeve. Better &amp; faster large language models via multi-token prediction. arXiv preprint arXiv:2404.19737, 2024.">GIRoziere+24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-multiple-token-prediction-demo" title="Link to this image">#</a></p>
+means of a shared trunk and 4 dedicated output heads. Image from <span id="id5">[<a class="reference internal" href="#id1573" title="Fabian Gloeckle, Badr Youbi Idrissi, Baptiste Rozière, David Lopez-Paz, and Gabriel Synnaeve. Better &amp; faster large language models via multi-token prediction. arXiv preprint arXiv:2404.19737, 2024.">GIRoziere+24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-multiple-token-prediction-demo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>In this work, we generalize the above by implementing a multi-token prediction task, where at each position of the training corpus, the model is instructed to predict <span class="math notranslate nohighlight">\(n\)</span> future tokens at once. This translates into the cross-entropy loss</p>
+<p>As the model is instructed to predict <span class="math notranslate nohighlight">\(n\)</span> future tokens at once, the cross-entropy loss function is given by</p>
 <div class="math notranslate nohighlight">
 \[
 L_n=-\sum_t \log P_\theta\left(x_{t+n: t+1} \mid x_{t: 1}\right)
 \]</div>
-<p>To make matters tractable, we assume that our large language model <span class="math notranslate nohighlight">\(P_\theta\)</span> employs a shared trunk to produce a latent representation <span class="math notranslate nohighlight">\(z_{t: 1}\)</span> of the observed context <span class="math notranslate nohighlight">\(x_{t: 1}\)</span>, then fed into <span class="math notranslate nohighlight">\(n\)</span> independent heads to predict in parallel each of the <span class="math notranslate nohighlight">\(n\)</span> future tokens (see Figure 1). This leads to the following factorization of the multi-token prediction cross-entropy loss:</p>
+<p>By assuming that the model <span class="math notranslate nohighlight">\(P_\theta\)</span> employs a shared trunk to produce a latent representation <span class="math notranslate nohighlight">\(z_{t: 1}\)</span> of the observed context <span class="math notranslate nohighlight">\(x_{t: 1}\)</span>, then fed into <span class="math notranslate nohighlight">\(n\)</span> independent heads to predict in parallel each of the <span class="math notranslate nohighlight">\(n\)</span> future tokens. This leads to the following factorization of the multi-token prediction cross-entropy loss:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
@@ -455,7 +458,7 @@ L_n &amp; =-\sum_t \log P_\theta\left(x_{t+n: t+1} \mid z_{t: 1}\right) \cdot P_
 \[
 P_\theta\left(x_{t+i} \mid x_{t: 1}\right)=\operatorname{softmax}\left(f_u\left(f_{h_i}\left(f_s\left(x_{t: 1}\right)\right)\right)\right)
 \]</div>
-<p>for <span class="math notranslate nohighlight">\(i=1, \ldots n\)</span>, where, in particular, <span class="math notranslate nohighlight">\(P_\theta\left(x_{t+1} \mid x_{t: 1}\right)\)</span> is our next-token prediction head. See Appendix B for other variations of multi-token prediction architectures.</p>
+<p>Note that when <span class="math notranslate nohighlight">\(n = 1\)</span> we recovers NSP loss. In practice, one can consider <span class="math notranslate nohighlight">\(n\)</span> between 2 and 4. DeepSeek V3 <span id="id6">[<a class="reference internal" href="#id1571" title="DeepSeek-AI, Aixin Liu, Bei Feng, Bing Xue, Bingxuan Wang, and others. Deepseek-v3 technical report. 2024. URL: https://arxiv.org/abs/2412.19437, arXiv:2412.19437.">DALF+24</a>]</span> also adopted an MTP variant in their model training.</p>
 <!-- ## Comparison
 
 | Approach | Training set | Training set size | Implementation <br> Complexity | Total training cost (inc. experimentation) |
@@ -492,7 +495,7 @@ It improve LLM’s performance in the target domain by enhance language understa
 <li><p>Books and Literature: Projects like BookCorpus, the Gutenberg Project, arXiv offer high-quality, long-form text.This is an important source for LLM to learn world knowledge and liguistic information.</p></li>
 <li><p>Wikipedia: A reliable source of factual information across many languages and domains.</p></li>
 <li><p>Social Media and Forums: Platforms like Reddit or X (twitter) provide more informal, conversational language.</p></li>
-<li><p>Code: Github code (as used in Codex <span id="id5">[<a class="reference internal" href="#id49" title="Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde De Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, and others. Evaluating large language models trained on code. arXiv preprint arXiv:2107.03374, 2021.">CTJ+21</a>]</span>) and code-related question-answering
+<li><p>Code: Github code (as used in Codex <span id="id7">[<a class="reference internal" href="#id51" title="Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde De Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, and others. Evaluating large language models trained on code. arXiv preprint arXiv:2107.03374, 2021.">CTJ+21</a>]</span>) and code-related question-answering
 platforms (e.g., StackOverflow).</p></li>
 <li><p>Domain specific Corpora: Domain-specific datasets (e.g., scientific papers, legal documents) for targeted pretraining.</p></li>
 </ol>
@@ -501,16 +504,16 @@ platforms (e.g., StackOverflow).</p></li>
 <a class="reference internal image-reference" href="../../_images/training_data_distribution_summary.png"><img alt="../../_images/training_data_distribution_summary.png" src="../../_images/training_data_distribution_summary.png" style="width: 850.5px; height: 320.5px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 11.2 </span><span class="caption-text">Pretrain data source distribution for existing LLMs. Image from <span id="id6">[<a class="reference internal" href="#id1536" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-pretrain-data-distribution" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 11.2 </span><span class="caption-text">Pretrain data source distribution for existing LLMs. Image from <span id="id8">[<a class="reference internal" href="#id1538" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-pretrain-data-distribution" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>While the scale is one factor impacting resulting model performance (i.e., the scaling law), the quality of data and the ratio of different data types play an equally important role. As dominant pretraining data is from the web, data clearning and quality control is a crucial step for sucessful LLM pretraining [<span id="id7">[<a class="reference internal" href="#id1599" title="Guillaume Wenzek, Marie-Anne Lachaux, Alexis Conneau, Vishrav Chaudhary, Francisco Guzmán, Armand Joulin, and Edouard Grave. Ccnet: extracting high quality monolingual datasets from web crawl data. arXiv preprint arXiv:1911.00359, 2019.">WLC+19</a>]</span>].
+<p>While the scale is one factor impacting resulting model performance (i.e., the scaling law), the quality of data and the ratio of different data types play an equally important role. As dominant pretraining data is from the web, data clearning and quality control is a crucial step for sucessful LLM pretraining [<span id="id9">[<a class="reference internal" href="#id1601" title="Guillaume Wenzek, Marie-Anne Lachaux, Alexis Conneau, Vishrav Chaudhary, Francisco Guzmán, Armand Joulin, and Edouard Grave. Ccnet: extracting high quality monolingual datasets from web crawl data. arXiv preprint arXiv:1911.00359, 2019.">WLC+19</a>]</span>].
 The following <a class="reference internal" href="#chapter-training-fig-fundamentals-pretrain-data-clean-pipeline"><span class="std std-numref">Fig. 11.3</span></a> summarize the key steps on cleaning training data.</p>
 <figure class="align-default" id="chapter-training-fig-fundamentals-pretrain-data-clean-pipeline">
 <a class="reference internal image-reference" href="../../_images/pretraining_data_cleaning_pipeline.png"><img alt="../../_images/pretraining_data_cleaning_pipeline.png" src="../../_images/pretraining_data_cleaning_pipeline.png" style="width: 866.4px; height: 187.2px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 11.3 </span><span class="caption-text">Illustration of data cleaning pipeline for curating LLM pretraining data. Image from <span id="id8">[<a class="reference internal" href="#id1536" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-pretrain-data-clean-pipeline" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 11.3 </span><span class="caption-text">Illustration of data cleaning pipeline for curating LLM pretraining data. Image from <span id="id10">[<a class="reference internal" href="#id1538" title="Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. arXiv preprint arXiv:2303.18223, 2023.">ZZL+23</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-fundamentals-pretrain-data-clean-pipeline" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Onogoing challenges for constructing LLM pretraining data include:</p>
@@ -560,7 +563,7 @@ The following <a class="reference internal" href="#chapter-training-fig-fundamen
 <section class="remark-content" id="proof-content">
 <ul class="simple">
 <li><p>The estimation quality of gradient via minibatch gradient descent is strongly affected by the minibatch size. In general, the gradient estimate is unbiased, irrespective of the choice of minibatch size, but its variance will decrease as the minibatch increases.</p></li>
-<li><p>For larger minibatch size, we can increase learning rate since the estimated gradient is more certain. There is an empirical <em><strong>Linear Scaling Rule</strong></em>: When the minibatch size is multiplied by <span class="math notranslate nohighlight">\(k\)</span>, multiply the learning rate by <span class="math notranslate nohighlight">\(k\)</span> <span id="id9">[<a class="reference internal" href="#id1129" title="Priya Goyal, Piotr Dollár, Ross Girshick, Pieter Noordhuis, Lukasz Wesolowski, Aapo Kyrola, Andrew Tulloch, Yangqing Jia, and Kaiming He. Accurate, large minibatch sgd: training imagenet in 1 hour. arXiv preprint arXiv:1706.02677, 2017.">GDollarG+17</a>]</span>.</p></li>
+<li><p>For larger minibatch size, we can increase learning rate since the estimated gradient is more certain. There is an empirical <em><strong>Linear Scaling Rule</strong></em>: When the minibatch size is multiplied by <span class="math notranslate nohighlight">\(k\)</span>, multiply the learning rate by <span class="math notranslate nohighlight">\(k\)</span> <span id="id11">[<a class="reference internal" href="#id1131" title="Priya Goyal, Piotr Dollár, Ross Girshick, Pieter Noordhuis, Lukasz Wesolowski, Aapo Kyrola, Andrew Tulloch, Yangqing Jia, and Kaiming He. Accurate, large minibatch sgd: training imagenet in 1 hour. arXiv preprint arXiv:1706.02677, 2017.">GDollarG+17</a>]</span>.</p></li>
 </ul>
 </section>
 </div></section>
@@ -569,7 +572,7 @@ The following <a class="reference internal" href="#chapter-training-fig-fundamen
 <section id="adaptive-gradient-adagrad">
 <h4><span class="section-number">11.4.2.1. </span>Adaptive Gradient (AdaGrad)<a class="headerlink" href="#adaptive-gradient-adagrad" title="Link to this heading">#</a></h4>
 <p>For simple stochastic gradient methods, we need to set the learning rate hyperparameter or even dynamically schedule learning rate, which is usually a difficult task or problem specific. Further, a uniform learning rate is usually not an effective way for high-dimensional gradient descent methods, since one learning rate could be too large for one-dimension but, on the contrary, too small for another dimension.</p>
-<p>The AdaGrad algorithm<span id="id10">[<a class="reference internal" href="#id1128" title="John Duchi, Elad Hazan, and Yoram Singer. Adaptive subgradient methods for online learning and stochastic optimization. Journal of Machine Learning Research, 12(Jul):2121–2159, 2011.">DHS11</a>]</span> addresses the issue by choosing different learning rates for each dimension. The algorithm adaptively scales the learning rate for each dimension based on the <strong>accumulated gradient magnitude</strong> on that dimension so far.</p>
+<p>The AdaGrad algorithm<span id="id12">[<a class="reference internal" href="#id1130" title="John Duchi, Elad Hazan, and Yoram Singer. Adaptive subgradient methods for online learning and stochastic optimization. Journal of Machine Learning Research, 12(Jul):2121–2159, 2011.">DHS11</a>]</span> addresses the issue by choosing different learning rates for each dimension. The algorithm adaptively scales the learning rate for each dimension based on the <strong>accumulated gradient magnitude</strong> on that dimension so far.</p>
 <p>Let <span class="math notranslate nohighlight">\(G_k\)</span> be the <strong>accumulated gradient</strong> up to iteration <span class="math notranslate nohighlight">\(k\)</span>, given by</p>
 <div class="math notranslate nohighlight">
 \[G_k = G_{k-1} + \hat{g}_k\odot \hat{g}_k, G_0 = 0.\]</div>
@@ -588,7 +591,7 @@ The following <a class="reference internal" href="#chapter-training-fig-fundamen
 <p>Then we compute update</p>
 <div class="math notranslate nohighlight">
 \[\theta_k= \theta_{k-1} - \frac{\alpha_0}{\delta + \sqrt{G_k}} \hat{g}_k.\]</div>
-<p>which is the core part of the RMSProp algorithm <span id="id11">[<a class="reference internal" href="#id1127" title="Geoffrey Hinton. Neural Networks for Machine Learning. University of Toronto, 2012.">Hin12</a>]</span>.</p>
+<p>which is the core part of the RMSProp algorithm <span id="id13">[<a class="reference internal" href="#id1129" title="Geoffrey Hinton. Neural Networks for Machine Learning. University of Toronto, 2012.">Hin12</a>]</span>.</p>
 <p>How this modification can make the <span class="math notranslate nohighlight">\(G_k\)</span> smaller than that in the AdaGrad, as can be seen from following expansion.</p>
 <div class="proof remark admonition" id="remark-2">
 <p class="admonition-title"><span class="caption-number">Remark 11.2 </span> (Expansion of <span class="math notranslate nohighlight">\(G_k\)</span>)</p>
@@ -617,7 +620,7 @@ roughly,</p>
 </section>
 <section id="momentum-method">
 <h3><span class="section-number">11.4.3. </span>Momentum Method<a class="headerlink" href="#momentum-method" title="Link to this heading">#</a></h3>
-<p>Simple SGD with small learning rate can lead to extremely slow learning for functional surfaces with long, narrow valleys <span id="id12">[<a class="reference internal" href="#id1125" title="Ilya Sutskever, James Martens, George Dahl, and Geoffrey Hinton. On the importance of initialization and momentum in deep learning. In International conference on machine learning, 1139–1147. 2013.">SMDH13</a>]</span>. One intuition inspired by the physics of a heavy ball falling down is to add momentum to the gradient descent steps. Mathematically, adding momentum is equivalent to adding historical weighted averaged gradient to the current gradient. The total gradient will then be hopefully large enough to enable fast movement on relatively flat regions.</p>
+<p>Simple SGD with small learning rate can lead to extremely slow learning for functional surfaces with long, narrow valleys <span id="id14">[<a class="reference internal" href="#id1127" title="Ilya Sutskever, James Martens, George Dahl, and Geoffrey Hinton. On the importance of initialization and momentum in deep learning. In International conference on machine learning, 1139–1147. 2013.">SMDH13</a>]</span>. One intuition inspired by the physics of a heavy ball falling down is to add momentum to the gradient descent steps. Mathematically, adding momentum is equivalent to adding historical weighted averaged gradient to the current gradient. The total gradient will then be hopefully large enough to enable fast movement on relatively flat regions.</p>
 <figure class="align-default" id="chapter-training-fig-optimizer-sgd-momentum">
 <a class="reference internal image-reference" href="../../_images/SGDMomentum.jpg"><img alt="../../_images/SGDMomentum.jpg" src="../../_images/SGDMomentum.jpg" style="width: 927.5999999999999px; height: 210.29999999999998px;" />
 </a>
@@ -651,7 +654,7 @@ v_k &amp;= \alpha v_{k-1} - \hat{g}_k\\
 <h3><span class="section-number">11.4.4. </span>Combined Together: Adam and AdamW<a class="headerlink" href="#combined-together-adam-and-adamw" title="Link to this heading">#</a></h3>
 <section id="adam">
 <h4><span class="section-number">11.4.4.1. </span>Adam<a class="headerlink" href="#adam" title="Link to this heading">#</a></h4>
-<p>By combining the ideas of momentum and adaptive learning rate, we yield Adam, one of most popular gradient descent algorithm in deep learning community<span id="id13">[<a class="reference internal" href="#id1124" title="Diederik P Kingma and Jimmy Ba. Adam: a method for stochastic optimization. arXiv preprint arXiv:1412.6980, 2014.">KB14</a>]</span>. The name Adam is derived from adaptive moment estimation. As its name suggests, Adam will compute velocity via momentum type of averaging and adjust the learning rate using inverse of accumulated gradients.</p>
+<p>By combining the ideas of momentum and adaptive learning rate, we yield Adam, one of most popular gradient descent algorithm in deep learning community<span id="id15">[<a class="reference internal" href="#id1126" title="Diederik P Kingma and Jimmy Ba. Adam: a method for stochastic optimization. arXiv preprint arXiv:1412.6980, 2014.">KB14</a>]</span>. The name Adam is derived from adaptive moment estimation. As its name suggests, Adam will compute velocity via momentum type of averaging and adjust the learning rate using inverse of accumulated gradients.</p>
 <p>Specifically, the velocity is computed via</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -703,7 +706,7 @@ G_k &amp;= \rho_2 G_{k-1} + (1-\rho_2)\hat{g}_k \odot \hat{g}_k \\
 <div class="math notranslate nohighlight">
 \[{g}_{k} \leftarrow \nabla f_{k}\left({\theta}_{k-1}\right)+\lambda {\theta}_{k-1},\]</div>
 <p>where <span class="math notranslate nohighlight">\(\lambda\)</span> is the decay parameter, corresponding the strength of the regularization.</p>
-<p>AdamW <span id="id14">[<a class="reference internal" href="#id1371" title="Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. arXiv preprint arXiv:1711.05101, 2017.">LH17</a>]</span> is the algorithm that correctly implements Adam with <span class="math notranslate nohighlight">\(L_2\)</span> regularization, which is also called Adam with decoupled weight decay.</p>
+<p>AdamW <span id="id16">[<a class="reference internal" href="#id1373" title="Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. arXiv preprint arXiv:1711.05101, 2017.">LH17</a>]</span> is the algorithm that correctly implements Adam with <span class="math notranslate nohighlight">\(L_2\)</span> regularization, which is also called Adam with decoupled weight decay.</p>
 <p>The algorithm is given by the following.</p>
 <div class="proof algorithm admonition" id="Adam_stochastic_gradient_descent_algorithm_with_weight_decay">
 <p class="admonition-title"><span class="caption-number">Algorithm 11.3 </span> (Adam stochastic gradient descent algorithm with weight decay)</p>
@@ -739,64 +742,72 @@ G_k &amp;= \rho_2 G_{k-1} + (1-\rho_2)\hat{g}_k \odot \hat{g}_k \\
 </section>
 <section id="bibliography">
 <h2><span class="section-number">11.5. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id15">
+<div class="docutils container" id="id17">
 <div role="list" class="citation-list">
-<div class="citation" id="id1625" role="doc-biblioentry">
+<div class="citation" id="id1627" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">BJT+22</a><span class="fn-bracket">]</span></span>
 <p>Mohammad Bavarian, Heewoo Jun, Nikolas Tezak, John Schulman, Christine McLeavey, Jerry Tworek, and Mark Chen. Efficient training of language models to fill in the middle. <em>arXiv preprint arXiv:2207.14255</em>, 2022.</p>
 </div>
-<div class="citation" id="id49" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">CTJ+21</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id51" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">CTJ+21</a><span class="fn-bracket">]</span></span>
 <p>Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde De Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, and others. Evaluating large language models trained on code. <em>arXiv preprint arXiv:2107.03374</em>, 2021.</p>
 </div>
-<div class="citation" id="id1128" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">DHS11</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1571" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">DALF+24</a><span class="fn-bracket">]</span></span>
+<p>DeepSeek-AI, Aixin Liu, Bei Feng, Bing Xue, Bingxuan Wang, and others. Deepseek-v3 technical report. 2024. URL: <a class="reference external" href="https://arxiv.org/abs/2412.19437">https://arxiv.org/abs/2412.19437</a>, <a class="reference external" href="https://arxiv.org/abs/2412.19437">arXiv:2412.19437</a>.</p>
+</div>
+<div class="citation" id="id1130" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id12">DHS11</a><span class="fn-bracket">]</span></span>
 <p>John Duchi, Elad Hazan, and Yoram Singer. Adaptive subgradient methods for online learning and stochastic optimization. <em>Journal of Machine Learning Research</em>, 12(Jul):2121–2159, 2011.</p>
 </div>
-<div class="citation" id="id1571" role="doc-biblioentry">
+<div class="citation" id="id1573" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>GIRoziere+24<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id4">2</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id4">1</a>,<a role="doc-backlink" href="#id5">2</a>)</span>
 <p>Fabian Gloeckle, Badr Youbi Idrissi, Baptiste Rozière, David Lopez-Paz, and Gabriel Synnaeve. Better &amp; faster large language models via multi-token prediction. <em>arXiv preprint arXiv:2404.19737</em>, 2024.</p>
 </div>
-<div class="citation" id="id1129" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">GDollarG+17</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1131" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">GDollarG+17</a><span class="fn-bracket">]</span></span>
 <p>Priya Goyal, Piotr Dollár, Ross Girshick, Pieter Noordhuis, Lukasz Wesolowski, Aapo Kyrola, Andrew Tulloch, Yangqing Jia, and Kaiming He. Accurate, large minibatch sgd: training imagenet in 1 hour. <em>arXiv preprint arXiv:1706.02677</em>, 2017.</p>
 </div>
-<div class="citation" id="id48" role="doc-biblioentry">
+<div class="citation" id="id1626" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">GZY+24</a><span class="fn-bracket">]</span></span>
+<p>Daya Guo, Qihao Zhu, Dejian Yang, Zhenda Xie, Kai Dong, Wentao Zhang, Guanting Chen, Xiao Bi, Yu Wu, YK Li, and others. Deepseek-coder: when the large language model meets programming–the rise of code intelligence. <em>arXiv preprint arXiv:2401.14196</em>, 2024.</p>
+</div>
+<div class="citation" id="id50" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">HKK+20</a><span class="fn-bracket">]</span></span>
 <p>Tom Henighan, Jared Kaplan, Mor Katz, Mark Chen, Christopher Hesse, Jacob Jackson, Heewoo Jun, Tom B Brown, Prafulla Dhariwal, Scott Gray, and others. Scaling laws for autoregressive generative modeling. <em>arXiv preprint arXiv:2010.14701</em>, 2020.</p>
 </div>
-<div class="citation" id="id1127" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">Hin12</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1129" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">Hin12</a><span class="fn-bracket">]</span></span>
 <p>Geoffrey Hinton. <em>Neural Networks for Machine Learning</em>. University of Toronto, 2012.</p>
 </div>
-<div class="citation" id="id47" role="doc-biblioentry">
+<div class="citation" id="id49" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">KMH+20</a><span class="fn-bracket">]</span></span>
 <p>Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei. Scaling laws for neural language models. <em>arXiv preprint arXiv:2001.08361</em>, 2020.</p>
 </div>
-<div class="citation" id="id1124" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">KB14</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1126" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id15">KB14</a><span class="fn-bracket">]</span></span>
 <p>Diederik P Kingma and Jimmy Ba. Adam: a method for stochastic optimization. <em>arXiv preprint arXiv:1412.6980</em>, 2014.</p>
 </div>
-<div class="citation" id="id1626" role="doc-biblioentry">
+<div class="citation" id="id1628" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">LAZ+23</a><span class="fn-bracket">]</span></span>
 <p>Raymond Li, Loubna Ben Allal, Yangtian Zi, Niklas Muennighoff, Denis Kocetkov, Chenghao Mou, Marc Marone, Christopher Akiki, Jia Li, Jenny Chim, and others. Starcoder: may the source be with you! <em>arXiv preprint arXiv:2305.06161</em>, 2023.</p>
 </div>
-<div class="citation" id="id1371" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id14">LH17</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1373" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id16">LH17</a><span class="fn-bracket">]</span></span>
 <p>Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. <em>arXiv preprint arXiv:1711.05101</em>, 2017.</p>
 </div>
-<div class="citation" id="id1125" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id12">SMDH13</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1127" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id14">SMDH13</a><span class="fn-bracket">]</span></span>
 <p>Ilya Sutskever, James Martens, George Dahl, and Geoffrey Hinton. On the importance of initialization and momentum in deep learning. In <em>International conference on machine learning</em>, 1139–1147. 2013.</p>
 </div>
-<div class="citation" id="id1599" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">WLC+19</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1601" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">WLC+19</a><span class="fn-bracket">]</span></span>
 <p>Guillaume Wenzek, Marie-Anne Lachaux, Alexis Conneau, Vishrav Chaudhary, Francisco Guzmán, Armand Joulin, and Edouard Grave. Ccnet: extracting high quality monolingual datasets from web crawl data. <em>arXiv preprint arXiv:1911.00359</em>, 2019.</p>
 </div>
-<div class="citation" id="id1536" role="doc-biblioentry">
+<div class="citation" id="id1538" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>ZZL+23<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id6">1</a>,<a role="doc-backlink" href="#id8">2</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id8">1</a>,<a role="doc-backlink" href="#id10">2</a>)</span>
 <p>Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models. <em>arXiv preprint arXiv:2303.18223</em>, 2023.</p>
 </div>
 </div>
@@ -870,9 +881,9 @@ G_k &amp;= \rho_2 G_{k-1} + (1-\rho_2)\hat{g}_k \odot \hat{g}_k \\
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-overview">11.1. Training Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining-techniques">11.2. Pretraining Techniques</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#next-token-prediction">11.2.1. Next-Token Prediction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fill-in-the-middle">11.2.2. Fill-in-the Middle</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-token-prediction">11.2.3. Multiple Token Prediction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#next-token-prediction-ntp">11.2.1. Next-Token Prediction (NTP)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fill-in-the-middle-fim">11.2.2. Fill-in-the Middle (FIM)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-token-prediction-mtp">11.2.3. Multiple Token Prediction (MTP)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continued-pretraining">11.2.4. Continued Pretraining</a></li>
 </ul>
 </li>

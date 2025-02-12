@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>13. LLM Alignement and Preference Learning &#8212; LLM Foundations</title>
+    <title>13. LLM Alignment and Preference Learning &#8212; LLM Foundations</title>
   
   
   
@@ -197,15 +197,15 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="training_fundamentals.html">11. LLM Training Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="finetuning.html">12. LLM Finetuning</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">13. LLM Alignement and Preference Learning</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">13. LLM Alignment and Preference Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reasoning.html">14. LLM Reasoning (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accelerated_training.html">15. LLM Training Acceleration (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reinforcement_learning.html">16. *Reinforcement Learning Essentials</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Case Studies</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_case_study/llama_series.html">17. Llama Series (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_case_study/deepseek_series.html">18. DeepSeek Series (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_case_study/llama_series.html">17. Llama Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_case_study/deepseek_series.html">18. DeepSeek Series</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -217,18 +217,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/basic_prompt.html">21. Basic Prompting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_prompt/advanced_prompt.html">22. Advanced Prompting Techniques</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Text Embedding</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_text_embedding/text_embedding_fundamentals.html">23. Text Embedding Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_text_embedding/text_embedding_LLM.html">24. LLM Text Embedding</a></li>
-</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">25. Information Retrieval and Sparse Retrieval</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">26. Information Retrieval and Dense Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">28. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">29. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">23. Information Retrieval and Sparse Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">24. Information Retrieval and Dense Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">25. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">26. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">27. Advanced RAG (WIP)</a></li>
 </ul>
 
     </div>
@@ -319,7 +314,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>LLM Alignement and Preference Learning</h1>
+    <h1>LLM Alignment and Preference Learning</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -371,8 +366,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="llm-alignement-and-preference-learning">
-<span id="chapter-training-sec-llm-alignment"></span><h1><span class="section-number">13. </span>LLM Alignement and Preference Learning<a class="headerlink" href="#llm-alignement-and-preference-learning" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="llm-alignment-and-preference-learning">
+<span id="chapter-training-sec-llm-alignment"></span><h1><span class="section-number">13. </span>LLM Alignment and Preference Learning<a class="headerlink" href="#llm-alignment-and-preference-learning" title="Link to this heading">#</a></h1>
 <section id="motivation-and-overview">
 <h2><span class="section-number">13.1. </span>Motivation and Overview<a class="headerlink" href="#motivation-and-overview" title="Link to this heading">#</a></h2>
 <p>The objective function in LLM pretraining is predicting the next token in the training corpus. When the trained model is properly and carefully prompted with demonstrations (i.e., in-context learning as in <a class="reference internal" href="../chapter_foundation/GPT_series.html#content-chapter-foundation-gpt-series-gpt-3"><span class="std std-ref">GPT-3</span></a>), the model can largely accomplish useful tasks by following these demonstrations. However, these model can often generate un-desired outputs, including un-factual content, biased and harmful text, or simply do not follow the instructions in the prompt.</p>
@@ -893,7 +888,7 @@ P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}
 <li><p>Starting with a SFT model checkpoint <span class="math notranslate nohighlight">\(M_0\)</span>, one can go through the DPO data annotation and training process to arrive at <span class="math notranslate nohighlight">\(M_1\)</span></p></li>
 <li><p>Preference pair data will be collected from <span class="math notranslate nohighlight">\(M_1\)</span> and used to train <span class="math notranslate nohighlight">\(M_2\)</span>.</p></li>
 </ul>
-<p>Iterative DPO has demonstrated its effectiveness in different scenarios <span id="id20">[<a class="reference internal" href="#id1641" title="Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek Kadian, Ahmad Al-Dahle, Aiesha Letman, Akhil Mathur, Alan Schelten, Amy Yang, Angela Fan, and others. The llama 3 herd of models. arXiv preprint arXiv:2407.21783, 2024.">DJP+24</a>, <a class="reference internal" href="#id550" title="Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, and et al. LLaMA 2: open foundation and fine-tuned chat models. ArXiv:2307.09288, 2023b.">TMS+3b</a>, <a class="reference internal" href="#id1644" title="Zixiang Chen, Yihe Deng, Huizhuo Yuan, Kaixuan Ji, and Quanquan Gu. Self-play fine-tuning converts weak language models to strong language models. arXiv preprint arXiv:2401.01335, 2024.">CDY+24</a>, <a class="reference internal" href="reasoning.html#id1635" title="Richard Yuanzhe Pang, Weizhe Yuan, Kyunghyun Cho, He He, Sainbayar Sukhbaatar, and Jason Weston. Iterative reasoning preference optimization. arXiv preprint arXiv:2404.19733, 2024.">PYC+24</a>, <a class="reference internal" href="#id1643" title="Weizhe Yuan, Richard Yuanzhe Pang, Kyunghyun Cho, Sainbayar Sukhbaatar, Jing Xu, and Jason Weston. Self-rewarding language models. arXiv preprint arXiv:2401.10020, 2024.">YPC+24</a>]</span>.</p>
+<p>Iterative DPO has demonstrated its effectiveness in different scenarios <span id="id20">[<a class="reference internal" href="#id1642" title="Richard Yuanzhe Pang, Weizhe Yuan, Kyunghyun Cho, He He, Sainbayar Sukhbaatar, and Jason Weston. Iterative reasoning preference optimization. arXiv preprint arXiv:2404.19733, 2024.">PYC+24</a>, <a class="reference internal" href="#id1641" title="Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek Kadian, Ahmad Al-Dahle, Aiesha Letman, Akhil Mathur, Alan Schelten, Amy Yang, Angela Fan, and others. The llama 3 herd of models. arXiv preprint arXiv:2407.21783, 2024.">DJP+24</a>, <a class="reference internal" href="#id550" title="Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, and et al. LLaMA 2: open foundation and fine-tuned chat models. ArXiv:2307.09288, 2023b.">TMS+3b</a>, <a class="reference internal" href="#id1644" title="Zixiang Chen, Yihe Deng, Huizhuo Yuan, Kaixuan Ji, and Quanquan Gu. Self-play fine-tuning converts weak language models to strong language models. arXiv preprint arXiv:2401.01335, 2024.">CDY+24</a>, <a class="reference internal" href="#id1643" title="Weizhe Yuan, Richard Yuanzhe Pang, Kyunghyun Cho, Sainbayar Sukhbaatar, Jing Xu, and Jason Weston. Self-rewarding language models. arXiv preprint arXiv:2401.10020, 2024.">YPC+24</a>]</span>.</p>
 <figure class="align-default" id="chapter-training-fig-alignmenet-iterative-dpo">
 <a class="reference internal image-reference" href="../../_images/Iterative_DPO.png"><img alt="../../_images/Iterative_DPO.png" src="../../_images/Iterative_DPO.png" style="width: 734.4px; height: 276.75px;" />
 </a>
@@ -982,7 +977,7 @@ p\left(y_w \succ y_l \mid x\right)=\sigma\left(r\left(x, y_w\right)-r\left(x, y_
 \[\beta\left[\log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}(y_w \mid x)}-\lambda \cdot \max \left(0, \log \frac{\pi_{\mathrm{ref}}(y_w \mid x)}{\pi_\theta(y_w \mid x)}\right)\right].
 \]</div>
 <p>Clearly, if we want to maximize these terms for <span class="math notranslate nohighlight">\(y_w\)</span>, we need to ensure that the generating probability <span class="math notranslate nohighlight">\(\pi_{\theta}(y_w|x)\)</span> not to reduce too much from <span class="math notranslate nohighlight">\(\pi_{\text{ref}}(y_w|x)\)</span>.</p>
-<p>On a similar line of thinking, <span id="id25">[<a class="reference internal" href="reasoning.html#id1635" title="Richard Yuanzhe Pang, Weizhe Yuan, Kyunghyun Cho, He He, Sainbayar Sukhbaatar, and Jason Weston. Iterative reasoning preference optimization. arXiv preprint arXiv:2404.19733, 2024.">PYC+24</a>]</span> proposed using the negative log likelihood (NLL) loss as a regularizer, which gives the following loss function:</p>
+<p>On a similar line of thinking, <span id="id25">[<a class="reference internal" href="#id1642" title="Richard Yuanzhe Pang, Weizhe Yuan, Kyunghyun Cho, He He, Sainbayar Sukhbaatar, and Jason Weston. Iterative reasoning preference optimization. arXiv preprint arXiv:2404.19733, 2024.">PYC+24</a>]</span> proposed using the negative log likelihood (NLL) loss as a regularizer, which gives the following loss function:</p>
 <div class="math notranslate nohighlight">
 \[
 \mathcal{L}_{\mathrm{DPO-R}}\left(\pi_\theta\right)=-\mathbb{E}_{\left(x, y_w, y_l\right) \sim D}\left[\log \sigma \left(\beta \left(\log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}\left(y_w \mid x\right)} -\log \frac{\pi_\theta\left(y_l \mid x\right)}{\pi_{\mathrm{ref}}\left(y_l \mid x\right)}\right)\right) + \frac{\lambda}{|y_w|}\log\left(\pi_\theta(y_w|x)\right) \right]
@@ -992,7 +987,7 @@ p\left(y_w \succ y_l \mid x\right)=\sigma\left(r\left(x, y_w\right)-r\left(x, y_
 <a class="reference internal image-reference" href="../../_images/DPO_NLL_regularizer.png"><img alt="../../_images/DPO_NLL_regularizer.png" src="../../_images/DPO_NLL_regularizer.png" style="width: 685.3000000000001px; height: 228.8px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 13.10 </span><span class="caption-text">Effect on NLL regularizer loss on applying DPO in reasoning tasks. (left) Without regularizer loss, the likelihood of chosen sequences is decreasing when the model is initialized from Llama (left) and a positive-example FT checkpoint (right). After FT, the decreasing of the likelihood is more severe.   Image from <span id="id26">[<a class="reference internal" href="reasoning.html#id1635" title="Richard Yuanzhe Pang, Weizhe Yuan, Kyunghyun Cho, He He, Sainbayar Sukhbaatar, and Jason Weston. Iterative reasoning preference optimization. arXiv preprint arXiv:2404.19733, 2024.">PYC+24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignmenet-dpo-variant-dpo-nll-regularizer" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 13.10 </span><span class="caption-text">Effect on NLL regularizer loss on applying DPO in reasoning tasks. (left) Without regularizer loss, the likelihood of chosen sequences is decreasing when the model is initialized from Llama (left) and a positive-example FT checkpoint (right). After FT, the decreasing of the likelihood is more severe.   Image from <span id="id26">[<a class="reference internal" href="#id1642" title="Richard Yuanzhe Pang, Weizhe Yuan, Kyunghyun Cho, He He, Sainbayar Sukhbaatar, and Jason Weston. Iterative reasoning preference optimization. arXiv preprint arXiv:2404.19733, 2024.">PYC+24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignmenet-dpo-variant-dpo-nll-regularizer" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
