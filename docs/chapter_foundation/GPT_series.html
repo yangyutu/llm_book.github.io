@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_foundation/GPT_series';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="9. LLM Architectures Fundamentals" href="../chapter_LLM_arch/LLM_dense_architectures.html" />
+    <link rel="next" title="9. LLM Architecture Fundamentals" href="../chapter_LLM_arch/LLM_dense_architectures.html" />
     <link rel="prev" title="7. Seq2Seq: T5 and BART" href="t5.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -190,7 +190,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architecture Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
@@ -198,7 +198,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">11. LLM Training Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM Finetuning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM Alignement and Preference Learning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/reasoning.html">14. LLM Reasoning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/reasoning.html">14. LLM Reasoning (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">15. LLM Training Acceleration (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">16. *Reinforcement Learning Essentials</a></li>
 </ul>
@@ -222,19 +222,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_text_embedding/text_embedding_fundamentals.html">23. Text Embedding Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_text_embedding/text_embedding_LLM.html">24. LLM Text Embedding</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">25. Multimodality fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">26. Vision Language Pretraining</a></li>
-</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">27. Information Retrieval and Sparse Retrieval</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">28. Information Retrieval and Dense Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">29. Application of LLM in IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/conversational_IR.html">30. Conversational IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">31. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">32. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">25. Information Retrieval and Sparse Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">26. Information Retrieval and Dense Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">28. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">29. Advanced RAG (WIP)</a></li>
 </ul>
 
     </div>
@@ -504,8 +498,8 @@ and few-shot, only require the model to perform forward passes at test time.</sp
 <p>Like language modeling, the most natural ability for GPT3 is to generate smooth and nature texts.</p>
 <p>Performance is evaluated by how well humans can detect whether generated text is from a model model generated text. Regarding the test,  25 article titles and subtitles from the website are arbitrarily selected, with a mean length of 215 words. Four language models ranging in size from 125M to 175B (GPT-3) are used to generated completions from these titles and subtitles.</p>
 <p>Following shows the performance across different model sizes. As the model size increases, the generated texts are more realistic, natural, and coherent, therefore more difficult for humans to detect.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1619">
-<caption><span class="caption-number">Table 8.1 </span><span class="caption-text">Human accuracy in identifying whether short (around 200 word) news articles are model generated.</span><a class="headerlink" href="#id1619" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1630">
+<caption><span class="caption-number">Table 8.1 </span><span class="caption-text">Human accuracy in identifying whether short (around 200 word) news articles are model generated.</span><a class="headerlink" href="#id1630" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p></p></th>
 <th class="head text-center"><p>Mean accuracy</p></th>
@@ -547,8 +541,8 @@ and few-shot, only require the model to perform forward passes at test time.</sp
 <p>The following shows the performance comparison among  supervised SOTA neural machine translation models, unsupervised multi-lingual pretrained language models, and GPT-3. Supervised models are the clear winners in this domain. However, GPT-3 demonstrates its decent performance when performing translation back to English, probably because GPT-3 is a strong English language model.</p>
 <p>The performance GPT-3 also has a noticeable skew depending on language direction. Specifically, GPT-3 significantly outperforms prior unsupervised models when translating into English but under-performs when translating in the other direction.</p>
 <p>In general, across all three language models tested, there is a smooth upward trend with model capacity. While in the zero-shot setting, GPT-3 underperforms recent unsupervised model, offering a few demonstrations to GPT-3 can quickly boost the BLEU scores.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1620">
-<caption><span class="caption-number">Table 8.2 </span><span class="caption-text">Performance comparison among  supervised SOTA neural machine translation models, unsupervised multi-lingual pretrained language models, and GPT-3.</span><a class="headerlink" href="#id1620" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1631">
+<caption><span class="caption-number">Table 8.2 </span><span class="caption-text">Performance comparison among  supervised SOTA neural machine translation models, unsupervised multi-lingual pretrained language models, and GPT-3.</span><a class="headerlink" href="#id1631" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Setting</p></th>
 <th class="head text-center"><p>En → Fr</p></th>
@@ -812,7 +806,7 @@ Machine translation is typically implemented via encoder-decoder paradigm, in wh
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">9. </span>LLM Architectures Fundamentals</p>
+        <p class="prev-next-title"><span class="section-number">9. </span>LLM Architecture Fundamentals</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

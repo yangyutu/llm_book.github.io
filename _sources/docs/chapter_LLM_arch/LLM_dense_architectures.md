@@ -1,5 +1,5 @@
 (chapter_LLM_arch_sec_LLM_arch_fundamentals)=
-# LLM Architectures Fundamentals
+# LLM Architecture Fundamentals
 
 ## Overview
 

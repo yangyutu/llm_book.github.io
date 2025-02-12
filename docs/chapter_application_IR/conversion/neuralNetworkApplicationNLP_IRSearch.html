@@ -190,7 +190,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architecture Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
@@ -198,14 +198,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_training/training_fundamentals.html">11. LLM Training Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_training/finetuning.html">12. LLM Finetuning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_training/alignment.html">13. LLM Alignement and Preference Learning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_training/reasoning.html">14. LLM Reasoning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_training/reasoning.html">14. LLM Reasoning (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_training/accelerated_training.html">15. LLM Training Acceleration (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_training/reinforcement_learning.html">16. *Reinforcement Learning Essentials</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Case Studies</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_case_study/llama_series.html">17. Llama Series (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_case_study/deepseek_series.html">18. DeepSeek Series (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_case_study/llama_series.html">17. Llama Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_LLM_case_study/deepseek_series.html">18. DeepSeek Series</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -217,18 +217,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/basic_prompt.html">21. Basic Prompting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_prompt/advanced_prompt.html">22. Advanced Prompting Techniques</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Text Embedding</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_text_embedding/text_embedding_fundamentals.html">23. Text Embedding Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_text_embedding/text_embedding_LLM.html">24. LLM Text Embedding</a></li>
-</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../information_retrieval_fundamentals_part1.html">25. Information Retrieval and Sparse Retrieval</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../information_retrieval_fundamentals_part2.html">26. Information Retrieval and Dense Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/basic_rag.html">28. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/advanced_rag.html">29. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../information_retrieval_fundamentals_part1.html">23. Information Retrieval and Sparse Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../information_retrieval_fundamentals_part2.html">24. Information Retrieval and Dense Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application_LLM_in_IR.html">25. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/basic_rag.html">26. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_rag/advanced_rag.html">27. Advanced RAG (WIP)</a></li>
 </ul>
 
     </div>
@@ -1857,7 +1852,7 @@ where \)</span>f(w)<span class="math notranslate nohighlight">\( is the frequenc
 <p>The model learning from easy negative example can quickly plateau since easy negative examples produces vanishing gradients to update the model. An improvement strategy is to supply additional hard negatives with randomly sampled negatives. In the simplest case, hard negatives can be selected based on a traditional BM25model <span id="id29">[<a class="reference internal" href="../information_retrieval_fundamentals_part2.html#id1470" title="Vladimir Karpukhin, Barlas Oğuz, Sewon Min, Patrick Lewis, Ledell Wu, Sergey Edunov, Danqi Chen, and Wen-tau Yih. Dense passage retrieval for open-domain question answering. arXiv preprint arXiv:2004.04906, 2020.">KOuguzM+20</a>, <a class="reference internal" href="../information_retrieval_fundamentals_part2.html#id1458" title="Rodrigo Nogueira and Kyunghyun Cho. Passage re-ranking with bert. arXiv preprint arXiv:1901.04085, 2019.">NC19</a>]</span> or other efficient dense retriever: hard negatives are those have a high relevant score to the query but they are not relevant.</p>
 <p>As illustrated in \autoref{ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:impacthardnegativeonretrieval}, a model trained only with easy negatives can fail to distinguish fairly relevant documents from irrelevant examples; on the other hand, a model trained with some hard negatives can learn better representations:</p>
 <ul class="simple">
-<li><p>Positive document embeddings are more aligned <span id="id30">[<a class="reference internal" href="../../chapter_text_embedding/text_embedding_fundamentals.html#id1438" title="Tongzhou Wang and Phillip Isola. Understanding contrastive representation learning through alignment and uniformity on the hypersphere. In International Conference on Machine Learning, 9929–9939. PMLR, 2020.">WI20</a>]</span>; that is, they are lying closer with respect to each other.</p></li>
+<li><p>Positive document embeddings are more aligned <span id="id30">[<a class="reference internal" href="../information_retrieval_fundamentals_part2.html#id1500" title="Tongzhou Wang and Phillip Isola. Understanding contrastive representation learning through alignment and uniformity on the hypersphere. In International Conference on Machine Learning, 9929–9939. PMLR, 2020.">WI20</a>]</span>; that is, they are lying closer with respect to each other.</p></li>
 <li><p>Fairly relevant and irrelevant documents are more separated in the embedding space and thus a better decision boundary for relevant and irrelevant documents.</p></li>
 </ul>
 <figure class="align-default" id="ch-neural-network-and-deep-learning-applicationnlp-irsearch-fig-impacthardnegativeonretrieval">

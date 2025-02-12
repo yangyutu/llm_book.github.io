@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/chapter_training/alignment';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="14. LLM Reasoning" href="reasoning.html" />
+    <link rel="next" title="14. LLM Reasoning (WIP)" href="reasoning.html" />
     <link rel="prev" title="12. LLM Finetuning" href="finetuning.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -190,7 +190,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architecture Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
@@ -198,7 +198,7 @@
 <li class="toctree-l1"><a class="reference internal" href="training_fundamentals.html">11. LLM Training Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="finetuning.html">12. LLM Finetuning</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">13. LLM Alignement and Preference Learning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reasoning.html">14. LLM Reasoning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reasoning.html">14. LLM Reasoning (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accelerated_training.html">15. LLM Training Acceleration (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reinforcement_learning.html">16. *Reinforcement Learning Essentials</a></li>
 </ul>
@@ -222,19 +222,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_text_embedding/text_embedding_fundamentals.html">23. Text Embedding Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_text_embedding/text_embedding_LLM.html">24. LLM Text Embedding</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vision LLM</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/multimodality_fundamentals.html">25. Multimodality fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multimodality/vision_transformers.html">26. Vision Language Pretraining</a></li>
-</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Application in Information Retrieval and RAG</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">27. Information Retrieval and Sparse Retrieval</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">28. Information Retrieval and Dense Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">29. Application of LLM in IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/conversational_IR.html">30. Conversational IR (WIP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">31. RAG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">32. Advanced RAG (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part1.html">25. Information Retrieval and Sparse Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/information_retrieval_fundamentals_part2.html">26. Information Retrieval and Dense Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_application_IR/application_LLM_in_IR.html">27. Application of LLM in IR (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/basic_rag.html">28. RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_rag/advanced_rag.html">29. Advanced RAG (WIP)</a></li>
 </ul>
 
     </div>
@@ -438,8 +432,8 @@ on this reward model. Image from <span id="id8">[<a class="reference internal" h
 <h3><span class="section-number">13.2.2. </span>Preference Data and Reward Modeling<a class="headerlink" href="#preference-data-and-reward-modeling" title="Link to this heading">#</a></h3>
 <p>After SFT process on positive example, the trained model has improved ability on producing human preferred output. <strong>But it often has the overfitting risk and does not generalize well to unseen input data distributions.</strong> Preference data collections aims to provide both positive and negative examples, which are then used to train a reward model to help guide the model to generalize.</p>
 <p>In the preference data collection process, human labelers assess different model outputs given the same prompt input and rank the output based on the human preference. The following table show the scoring standard used in the preference ranking process.</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1641">
-<caption><span class="caption-number">Table 13.1 </span><span class="caption-text">How labeler evaluates the response quality</span><a class="headerlink" href="#id1641" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id1652">
+<caption><span class="caption-number">Table 13.1 </span><span class="caption-text">How labeler evaluates the response quality</span><a class="headerlink" href="#id1652" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Metadata</p></th>
 <th class="head text-right"><p>Scale</p></th>
@@ -899,7 +893,7 @@ P\left(y_1 \succ y_2 \mid x\right)=\frac{\exp \left[r\left(x, y_1\right)\right]}
 <li><p>Starting with a SFT model checkpoint <span class="math notranslate nohighlight">\(M_0\)</span>, one can go through the DPO data annotation and training process to arrive at <span class="math notranslate nohighlight">\(M_1\)</span></p></li>
 <li><p>Preference pair data will be collected from <span class="math notranslate nohighlight">\(M_1\)</span> and used to train <span class="math notranslate nohighlight">\(M_2\)</span>.</p></li>
 </ul>
-<p>Iterative DPO has demonstrated its effectiveness in different scenarios <span id="id20">[<a class="reference internal" href="#id550" title="Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, and et al. LLaMA 2: open foundation and fine-tuned chat models. ArXiv:2307.09288, 2023b.">TMS+3b</a>]</span>.</p>
+<p>Iterative DPO has demonstrated its effectiveness in different scenarios <span id="id20">[<a class="reference internal" href="#id1641" title="Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek Kadian, Ahmad Al-Dahle, Aiesha Letman, Akhil Mathur, Alan Schelten, Amy Yang, Angela Fan, and others. The llama 3 herd of models. arXiv preprint arXiv:2407.21783, 2024.">DJP+24</a>, <a class="reference internal" href="#id550" title="Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, and et al. LLaMA 2: open foundation and fine-tuned chat models. ArXiv:2307.09288, 2023b.">TMS+3b</a>, <a class="reference internal" href="#id1644" title="Zixiang Chen, Yihe Deng, Huizhuo Yuan, Kaixuan Ji, and Quanquan Gu. Self-play fine-tuning converts weak language models to strong language models. arXiv preprint arXiv:2401.01335, 2024.">CDY+24</a>, <a class="reference internal" href="reasoning.html#id1635" title="Richard Yuanzhe Pang, Weizhe Yuan, Kyunghyun Cho, He He, Sainbayar Sukhbaatar, and Jason Weston. Iterative reasoning preference optimization. arXiv preprint arXiv:2404.19733, 2024.">PYC+24</a>, <a class="reference internal" href="#id1643" title="Weizhe Yuan, Richard Yuanzhe Pang, Kyunghyun Cho, Sainbayar Sukhbaatar, Jing Xu, and Jason Weston. Self-rewarding language models. arXiv preprint arXiv:2401.10020, 2024.">YPC+24</a>]</span>.</p>
 <figure class="align-default" id="chapter-training-fig-alignmenet-iterative-dpo">
 <a class="reference internal image-reference" href="../../_images/Iterative_DPO.png"><img alt="../../_images/Iterative_DPO.png" src="../../_images/Iterative_DPO.png" style="width: 734.4px; height: 276.75px;" />
 </a>
@@ -988,7 +982,7 @@ p\left(y_w \succ y_l \mid x\right)=\sigma\left(r\left(x, y_w\right)-r\left(x, y_
 \[\beta\left[\log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}(y_w \mid x)}-\lambda \cdot \max \left(0, \log \frac{\pi_{\mathrm{ref}}(y_w \mid x)}{\pi_\theta(y_w \mid x)}\right)\right].
 \]</div>
 <p>Clearly, if we want to maximize these terms for <span class="math notranslate nohighlight">\(y_w\)</span>, we need to ensure that the generating probability <span class="math notranslate nohighlight">\(\pi_{\theta}(y_w|x)\)</span> not to reduce too much from <span class="math notranslate nohighlight">\(\pi_{\text{ref}}(y_w|x)\)</span>.</p>
-<p>On a similar line of thinking, <span id="id25">[]</span> proposed using the negative log likelihood (NLL) loss as a regularizer, which gives the following loss function:</p>
+<p>On a similar line of thinking, <span id="id25">[<a class="reference internal" href="reasoning.html#id1635" title="Richard Yuanzhe Pang, Weizhe Yuan, Kyunghyun Cho, He He, Sainbayar Sukhbaatar, and Jason Weston. Iterative reasoning preference optimization. arXiv preprint arXiv:2404.19733, 2024.">PYC+24</a>]</span> proposed using the negative log likelihood (NLL) loss as a regularizer, which gives the following loss function:</p>
 <div class="math notranslate nohighlight">
 \[
 \mathcal{L}_{\mathrm{DPO-R}}\left(\pi_\theta\right)=-\mathbb{E}_{\left(x, y_w, y_l\right) \sim D}\left[\log \sigma \left(\beta \left(\log \frac{\pi_\theta\left(y_w \mid x\right)}{\pi_{\mathrm{ref}}\left(y_w \mid x\right)} -\log \frac{\pi_\theta\left(y_l \mid x\right)}{\pi_{\mathrm{ref}}\left(y_l \mid x\right)}\right)\right) + \frac{\lambda}{|y_w|}\log\left(\pi_\theta(y_w|x)\right) \right]
@@ -998,13 +992,13 @@ p\left(y_w \succ y_l \mid x\right)=\sigma\left(r\left(x, y_w\right)-r\left(x, y_
 <a class="reference internal image-reference" href="../../_images/DPO_NLL_regularizer.png"><img alt="../../_images/DPO_NLL_regularizer.png" src="../../_images/DPO_NLL_regularizer.png" style="width: 685.3000000000001px; height: 228.8px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 13.10 </span><span class="caption-text">Effect on NLL regularizer loss on applying DPO in reasoning tasks. (left) Without regularizer loss, the likelihood of chosen sequences is decreasing when the model is initialized from Llama (left) and a positive-example FT checkpoint (right). After FT, the decreasing of the likelihood is more severe.   Image from <span id="id26">[]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignmenet-dpo-variant-dpo-nll-regularizer" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 13.10 </span><span class="caption-text">Effect on NLL regularizer loss on applying DPO in reasoning tasks. (left) Without regularizer loss, the likelihood of chosen sequences is decreasing when the model is initialized from Llama (left) and a positive-example FT checkpoint (right). After FT, the decreasing of the likelihood is more severe.   Image from <span id="id26">[<a class="reference internal" href="reasoning.html#id1635" title="Richard Yuanzhe Pang, Weizhe Yuan, Kyunghyun Cho, He He, Sainbayar Sukhbaatar, and Jason Weston. Iterative reasoning preference optimization. arXiv preprint arXiv:2404.19733, 2024.">PYC+24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-alignmenet-dpo-variant-dpo-nll-regularizer" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="cringe-loss">
 <h3><span class="section-number">13.5.4. </span>Cringe Loss<a class="headerlink" href="#cringe-loss" title="Link to this heading">#</a></h3>
-<p><span id="id27">[]</span></p>
+<p><span id="id27">[<a class="reference internal" href="#id1646" title="Leonard Adolphs, Tianyu Gao, Jing Xu, Kurt Shuster, Sainbayar Sukhbaatar, and Jason Weston. The cringe loss: learning what language not to model. arXiv preprint arXiv:2211.05826, 2022.">AGX+22</a>, <a class="reference internal" href="#id1645" title="Jing Xu, Andrew Lee, Sainbayar Sukhbaatar, and Jason Weston. Some things are more cringe than others: preference optimization with the pairwise cringe loss. arXiv preprint arXiv:2312.16682, 2023.">XLSW23</a>]</span></p>
 <!-- 提问：DPO的变体有哪些，主要解决DPO的什么问题？
 
 回答：
@@ -1026,6 +1020,10 @@ DPOP [4]：由于LLM model很难区分编辑距离较小的pair，那么当持�
 <h2><span class="section-number">13.6. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id28">
 <div role="list" class="citation-list">
+<div class="citation" id="id1646" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id27">AGX+22</a><span class="fn-bracket">]</span></span>
+<p>Leonard Adolphs, Tianyu Gao, Jing Xu, Kurt Shuster, Sainbayar Sukhbaatar, and Jason Weston. The cringe loss: learning what language not to model. <em>arXiv preprint arXiv:2211.05826</em>, 2022.</p>
+</div>
 <div class="citation" id="id547" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">BKK+22</a><span class="fn-bracket">]</span></span>
 <p>Yuntao Bai, Saurav Kadavath, Sandipan Kundu, Amanda Askell, Jackson Kernion, Andy Jones, Anna Chen, Anna Goldie, Azalia Mirhoseini, Cameron McKinnon, and et al. Constitutional AI: harmlessness from AI feedback. <em>ArXiv:2212.08073</em>, 2022.</p>
@@ -1033,6 +1031,14 @@ DPOP [4]：由于LLM model很难区分编辑距离较小的pair，那么当持�
 <div class="citation" id="id1553" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id17">BT52</a><span class="fn-bracket">]</span></span>
 <p>Ralph Allan Bradley and Milton E. Terry. Rank analysis of incomplete block designs: i. the method of paired comparisons. <em>Biometrika</em>, 39(3/4):324–345, 1952. URL: <a class="reference external" href="http://www.jstor.org/stable/2334029">http://www.jstor.org/stable/2334029</a> (visited on 2024-09-20).</p>
+</div>
+<div class="citation" id="id1644" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id20">CDY+24</a><span class="fn-bracket">]</span></span>
+<p>Zixiang Chen, Yihe Deng, Huizhuo Yuan, Kaixuan Ji, and Quanquan Gu. Self-play fine-tuning converts weak language models to strong language models. <em>arXiv preprint arXiv:2401.01335</em>, 2024.</p>
+</div>
+<div class="citation" id="id1641" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id20">DJP+24</a><span class="fn-bracket">]</span></span>
+<p>Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek Kadian, Ahmad Al-Dahle, Aiesha Letman, Akhil Mathur, Alan Schelten, Amy Yang, Angela Fan, and others. The llama 3 herd of models. <em>arXiv preprint arXiv:2407.21783</em>, 2024.</p>
 </div>
 <div class="citation" id="id1569" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">GSH23</a><span class="fn-bracket">]</span></span>
@@ -1058,6 +1064,11 @@ DPOP [4]：由于LLM model很难区分编辑距离较小的pair，那么当持�
 <div class="citation" id="id40" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id24">PKD+24</a><span class="fn-bracket">]</span></span>
 <p>Arka Pal, Deep Karkhanis, Samuel Dooley, Manley Roberts, Siddartha Naidu, and Colin White. Smaug: fixing failure modes of preference optimisation with dpo-positive. <em>arXiv preprint arXiv:2402.13228</em>, 2024.</p>
+</div>
+<div class="citation" id="id1642" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>PYC+24<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id20">1</a>,<a role="doc-backlink" href="#id25">2</a>,<a role="doc-backlink" href="#id26">3</a>)</span>
+<p>Richard Yuanzhe Pang, Weizhe Yuan, Kyunghyun Cho, He He, Sainbayar Sukhbaatar, and Jason Weston. Iterative reasoning preference optimization. <em>arXiv preprint arXiv:2404.19733</em>, 2024.</p>
 </div>
 <div class="citation" id="id36" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>RSM+24<span class="fn-bracket">]</span></span>
@@ -1086,10 +1097,18 @@ DPOP [4]：由于LLM model很难区分编辑距离较小的pair，那么当持�
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id12">WZC+24</a><span class="fn-bracket">]</span></span>
 <p>Binghai Wang, Rui Zheng, Lu Chen, Yan Liu, Shihan Dou, Caishuang Huang, Wei Shen, Senjie Jin, Enyu Zhou, Chenyu Shi, and others. Secrets of rlhf in large language models part ii: reward modeling. <em>arXiv preprint arXiv:2401.06080</em>, 2024.</p>
 </div>
+<div class="citation" id="id1645" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id27">XLSW23</a><span class="fn-bracket">]</span></span>
+<p>Jing Xu, Andrew Lee, Sainbayar Sukhbaatar, and Jason Weston. Some things are more cringe than others: preference optimization with the pairwise cringe loss. <em>arXiv preprint arXiv:2312.16682</em>, 2023.</p>
+</div>
 <div class="citation" id="id1570" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>XFG+24<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id18">1</a>,<a role="doc-backlink" href="#id19">2</a>)</span>
 <p>Shusheng Xu, Wei Fu, Jiaxuan Gao, Wenjie Ye, Weilin Liu, Zhiyu Mei, Guangju Wang, Chao Yu, and Yi Wu. Is dpo superior to ppo for llm alignment? a comprehensive study. <em>arXiv preprint arXiv:2404.10719</em>, 2024.</p>
+</div>
+<div class="citation" id="id1643" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id20">YPC+24</a><span class="fn-bracket">]</span></span>
+<p>Weizhe Yuan, Richard Yuanzhe Pang, Kyunghyun Cho, Sainbayar Sukhbaatar, Jing Xu, and Jason Weston. Self-rewarding language models. <em>arXiv preprint arXiv:2401.10020</em>, 2024.</p>
 </div>
 <div class="citation" id="id1573" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>ZDG+23<span class="fn-bracket">]</span></span>
@@ -1145,7 +1164,7 @@ DPOP [4]：由于LLM model很难区分编辑距离较小的pair，那么当持�
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">14. </span>LLM Reasoning</p>
+        <p class="prev-next-title"><span class="section-number">14. </span>LLM Reasoning (WIP)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

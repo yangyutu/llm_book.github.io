@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>18. DeepSeek Series (WIP) &#8212; LLM Foundations</title>
+    <title>18. DeepSeek Series &#8212; LLM Foundations</title>
   
   
   
@@ -64,7 +64,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="19. Decoding" href="../chapter_inference/inference_fundamentals.html" />
-    <link rel="prev" title="17. Llama Series (WIP)" href="llama_series.html" />
+    <link rel="prev" title="17. Llama Series" href="llama_series.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -190,7 +190,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architecture Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
@@ -198,14 +198,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/training_fundamentals.html">11. LLM Training Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/finetuning.html">12. LLM Finetuning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/alignment.html">13. LLM Alignement and Preference Learning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_training/reasoning.html">14. LLM Reasoning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_training/reasoning.html">14. LLM Reasoning (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/accelerated_training.html">15. LLM Training Acceleration (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_training/reinforcement_learning.html">16. *Reinforcement Learning Essentials</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Case Studies</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="llama_series.html">17. Llama Series (WIP)</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">18. DeepSeek Series (WIP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama_series.html">17. Llama Series</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">18. DeepSeek Series</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -319,7 +319,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>DeepSeek Series (WIP)</h1>
+    <h1>DeepSeek Series</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -329,32 +329,21 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-coder">18.1. DeepSeek Coder</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-math">18.1. DeepSeek Math</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">18.1.1. Overview</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-curation">18.1.2. Data Curation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">18.1.3. PreTraining</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#long-context-extension">18.1.4. Long Context Extension</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instruction-ft">18.1.5. Instruction FT</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation">18.1.6. Evaluation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-coder-v2">18.1.7. DeepSeek Coder V2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reinforcement-learning">18.1.8. Reinforcement Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">18.1.3. Pretraining</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#post-training-sft-and-rl">18.1.4. Post-Training: SFT and RL</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-math">18.2. DeepSeek Math</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">18.2.1. Overview</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pipeline">18.2.2. Data Pipeline</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">18.2.3. Pretraining</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#post-training-sft-and-rl">18.2.4. Post-Training: SFT and RL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-reasoning-models">18.2. DeepSeek Reasoning Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1-zero">18.2.1. DeepSeek-R1-Zero</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1">18.2.2. DeepSeek-R1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1-distillation">18.2.3. DeepSeek-R1-Distillation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-reasoning-models">18.3. DeepSeek Reasoning Models</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1-zero">18.3.1. DeepSeek-R1-Zero</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1">18.3.2. DeepSeek-R1</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1-distillation">18.3.3. DeepSeek-R1-Distillation</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">18.4. Bibliography</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software">18.4.1. Software</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">18.3. Bibliography</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software">18.3.1. Software</a></li>
 </ul>
 </li>
 </ul>
@@ -368,224 +357,50 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="deepseek-series-wip">
-<h1><span class="section-number">18. </span>DeepSeek Series (WIP)<a class="headerlink" href="#deepseek-series-wip" title="Link to this heading">#</a></h1>
-<!-- ## DeepSeek V3
-
-
-Pretraining corpus for DeepSeek-V3 consists of 14.8T high-quality and diverse tokens in our tokenizer.
-
-
-
-### Pretraining
-
-
- -->
-<section id="deepseek-coder">
-<h2><span class="section-number">18.1. </span>DeepSeek Coder<a class="headerlink" href="#deepseek-coder" title="Link to this heading">#</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="deepseek-series">
+<h1><span class="section-number">18. </span>DeepSeek Series<a class="headerlink" href="#deepseek-series" title="Link to this heading">#</a></h1>
+<section id="deepseek-math">
+<h2><span class="section-number">18.1. </span>DeepSeek Math<a class="headerlink" href="#deepseek-math" title="Link to this heading">#</a></h2>
 <section id="overview">
 <h3><span class="section-number">18.1.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
-<p><span id="id1">[<a class="reference internal" href="#id1620" title="Daya Guo, Qihao Zhu, Dejian Yang, Zhenda Xie, Kai Dong, Wentao Zhang, Guanting Chen, Xiao Bi, Yu Wu, YK Li, and others. Deepseek-coder: when the large language model meets programming–the rise of code intelligence. arXiv preprint arXiv:2401.14196, 2024.">GZY+24</a>]</span></p>
-<figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-deepseek-coder-performance">
-<a class="reference internal image-reference" href="../../_images/deepseek_coder_performance.png"><img alt="../../_images/deepseek_coder_performance.png" src="../../_images/deepseek_coder_performance.png" style="width: 774.8000000000001px; height: 375.05px;" />
-</a>
-<figcaption>
-<p><span class="caption-number">Fig. 18.1 </span><span class="caption-text">The performance of DeepSeek-Coder. Image from <span id="id2">[<a class="reference internal" href="#id1620" title="Daya Guo, Qihao Zhu, Dejian Yang, Zhenda Xie, Kai Dong, Wentao Zhang, Guanting Chen, Xiao Bi, Yu Wu, YK Li, and others. Deepseek-coder: when the large language model meets programming–the rise of code intelligence. arXiv preprint arXiv:2401.14196, 2024.">GZY+24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-coder-performance" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="data-curation">
-<h3><span class="section-number">18.1.2. </span>Data Curation<a class="headerlink" href="#data-curation" title="Link to this heading">#</a></h3>
-<p>The training dataset of DeepSeek-Coder is composed of 87% source code, 10% English coderelated natural language corpus, and 3% code-unrelated Chinese natural language corpus.</p>
-</section>
-<section id="pretraining">
-<h3><span class="section-number">18.1.3. </span>PreTraining<a class="headerlink" href="#pretraining" title="Link to this heading">#</a></h3>
-<p>Two training strategies:</p>
-<ul class="simple">
-<li><p>Next Token Prediction. Like the typical language model next-token-prediction task. In this process, various files are concatenated to form a fixed-length entry.</p></li>
-<li><p>Fill-in-the-Middle. In the code pre-training
-scenario, it is often necessary to generate corresponding inserted content based on the given
-context and subsequent text. Due to specific dependencies in a programming language, relying
-solely on next token prediction is insufficient to learn this fill-in-the-middle capability.</p></li>
-</ul>
-<p>Fill-in-the Middle was proposed in <span id="id3">[<a class="reference internal" href="#id1621" title="Mohammad Bavarian, Heewoo Jun, Nikolas Tezak, John Schulman, Christine McLeavey, Jerry Tworek, and Mark Chen. Efficient training of language models to fill in the middle. arXiv preprint arXiv:2207.14255, 2022.">BJT+22</a>, <a class="reference internal" href="#id1622" title="Raymond Li, Loubna Ben Allal, Yangtian Zi, Niklas Muennighoff, Denis Kocetkov, Chenghao Mou, Marc Marone, Christopher Akiki, Jia Li, Jenny Chim, and others. Starcoder: may the source be with you! arXiv preprint arXiv:2305.06161, 2023.">LAZ+23</a>]</span></p>
-<p>This approach involves randomly dividing the text into three parts, then shuffling the order of these parts and connecting them with special characters. This method aims to incorporate a fill-in-the-blank pretraining task during the training process.</p>
-<p>Within the FIM methodology, two distinct modes are employed: PSM (Prefix-Suffix-Middle) and SPM
-(Suffix-Prefix-Middle). In the PSM mode, the training corpus is organized in the sequence
-of prefix, suffix, middle, aligning the text in a way that the middle segment is flanked by the
-prefix and suffix. Conversely, the SPM mode arranges the segments as suffix, prefix, middle,
-presenting a different structural challenge.</p>
-<p>These modes are instrumental in enhancing the
-model’s capability to handle various structural arrangements in code, providing a robust training
-framework for advanced code prediction tasks.</p>
-<p>&lt;｜fim_start｜&gt; 𝑓𝑝𝑟𝑒&lt;｜fim_hole｜&gt; 𝑓𝑠𝑢 𝑓 &lt;｜fim_end｜&gt; 𝑓𝑚𝑖𝑑𝑑𝑙𝑒&lt;|eos_token|&gt;</p>
-<p>Studies shows that while FIM can improve code insertion ability, it will however negative affect code completion abilities. The pretraining adopted an FIM rate of 0.5, following the PSM mode.</p>
-</section>
-<section id="long-context-extension">
-<h3><span class="section-number">18.1.4. </span>Long Context Extension<a class="headerlink" href="#long-context-extension" title="Link to this heading">#</a></h3>
-<p>we extend the context length of DeepSeek-Coder-V2 to 128K using
-Yarn (Peng et al., 2023). The hyper-parameters of YARN are the same as DeepSeek-V2: the scale
-𝑠 to 40, 𝛼 to 1, 𝛽 to 32. We further continue training the model using two stages to enhance
-its capability for handling long contexts.</p>
-<p>In the first stage, we utilize a sequence length of 32K and a batch size of 1152 for 1000 steps</p>
-<p>In the second stage, we train the model for an additional 1000 steps, employing a sequence length of 128K and a batch size of 288 sequences.</p>
-</section>
-<section id="instruction-ft">
-<h3><span class="section-number">18.1.5. </span>Instruction FT<a class="headerlink" href="#instruction-ft" title="Link to this heading">#</a></h3>
-<p>We develop DeepSeek-Coder-Instruct by enhancing the DeepSeek-Coder-Base through instructionbased fine-tuning using high-quality data.</p>
-<p>2B tokens in total</p>
-</section>
-<section id="evaluation">
-<h3><span class="section-number">18.1.6. </span>Evaluation<a class="headerlink" href="#evaluation" title="Link to this heading">#</a></h3>
-<p>evaluate DeepSeek-Coder on four tasks, including</p>
-<ul class="simple">
-<li><p><strong>code generation</strong>,</p></li>
-<li><p><strong>FIM code completion</strong></p></li>
-<li><p><strong>cross-file code completion</strong></p></li>
-<li><p><strong>program-based math reasoning</strong></p></li>
-</ul>
-<p>Code Generation</p>
-<p>st cases to assess the code generated
-by a Code LLM in a zero-shot setting, while the MBPP benchmark includes 500 problems
-in a few-shot setting.</p>
-<p>After instruction fine-tuning, our model surpasses the closed-source
-GPT-3.5-Turbo model in HumanEval benchmark, significantly reducing the performance gap
-between OpenAI GPT-4 and open-source models.</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head text-center"><p>Model</p></th>
-<th class="head text-center"><p>Size</p></th>
-<th class="head text-center"><p>Avg</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="text-center"><p>CodeLlama</p></td>
-<td class="text-center"><p>34B</p></td>
-<td class="text-center"><p>41.0%</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p>GPT-3.5-Turbo</p></td>
-<td class="text-center"><p>-</p></td>
-<td class="text-center"><p>64.9%</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p>GPT-4</p></td>
-<td class="text-center"><p>-</p></td>
-<td class="text-center"><p>76.5%</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p>DeepSeek-Coder-Base</p></td>
-<td class="text-center"><p>33B</p></td>
-<td class="text-center"><p>50.3%</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p>DeepSeek-Coder-Instruct</p></td>
-<td class="text-center"><p>33B</p></td>
-<td class="text-center"><p>69.2%</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="deepseek-coder-v2">
-<h3><span class="section-number">18.1.7. </span>DeepSeek Coder V2<a class="headerlink" href="#deepseek-coder-v2" title="Link to this heading">#</a></h3>
-<p><span id="id4">[<a class="reference internal" href="#id1623" title="Qihao Zhu, Daya Guo, Zhihong Shao, Dejian Yang, Peiyi Wang, Runxin Xu, Y Wu, Yukun Li, Huazuo Gao, Shirong Ma, and others. Deepseek-coder-v2: breaking the barrier of closed-source models in code intelligence. arXiv preprint arXiv:2406.11931, 2024.">ZGS+24</a>]</span></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head text-left"><p>Aspects</p></th>
-<th class="head text-left"><p>V1</p></th>
-<th class="head text-left"><p>V2</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="text-left"><p>Architecture</p></td>
-<td class="text-left"><p>Decoder-only Dense Transformer</p></td>
-<td class="text-left"><p>MoE</p></td>
-</tr>
-<tr class="row-odd"><td class="text-left"><p>Scale</p></td>
-<td class="text-left"><p>1.3B to 33B</p></td>
-<td class="text-left"><p>16B and 236B</p></td>
-</tr>
-<tr class="row-even"><td class="text-left"><p>Pretraining Data</p></td>
-<td class="text-left"><p>2T training tokens</p></td>
-<td class="text-left"><p>Additional 10.2T training tokens</p></td>
-</tr>
-<tr class="row-odd"><td class="text-left"><p>Starting Checkpoing</p></td>
-<td class="text-left"><p></p></td>
-<td class="text-left"><p>intermediate checkpoint of DeepSeek-V2</p></td>
-</tr>
-<tr class="row-even"><td class="text-left"><p>Pretraining Method</p></td>
-<td class="text-left"><p>Next-Token-Prediction (NTP); Fill-In-Middle (FIM)</p></td>
-<td class="text-left"><p>16B NTP and FIM; 236B NTP</p></td>
-</tr>
-<tr class="row-odd"><td class="text-left"><p>Context Length</p></td>
-<td class="text-left"><p>16k</p></td>
-<td class="text-left"><p>128k</p></td>
-</tr>
-<tr class="row-even"><td class="text-left"><p>Post-Training Method</p></td>
-<td class="text-left"><p>SFT</p></td>
-<td class="text-left"><p>SFT and RL</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="reinforcement-learning">
-<h3><span class="section-number">18.1.8. </span>Reinforcement Learning<a class="headerlink" href="#reinforcement-learning" title="Link to this heading">#</a></h3>
-<p>Reinforcement learning was used to further enhance the reasoning and instruction-following ability.</p>
-<p>This stages involve several key elements:</p>
-<ul class="simple">
-<li><p>Training task prompts collection - this involves collecting prompts related to code and math from various sources, and each code prompt comes with corresponding test cases. After filtering the prompts, there are approximately 40 k data in total.</p></li>
-<li><p>Reward modeling:</p>
-<ul>
-<li><p>Rewards for math problem is constructed based on ground-truth labels.</p></li>
-<li><p>Rewards for coding is more complex. Code compiler itself can already provide <span class="math notranslate nohighlight">\(0-1\)</span> feedback (whether the code pass all test cases or not) but some coding task prompts have a limited number of test cases for full coverage. Instead, the team trained a reward model on the data provided by the compiler, and use the reward model to provide signal during RL training, which is more robust.</p></li>
-</ul>
-</li>
-<li><p>The reinforcement learning algorithm is GRPO (see <a class="reference internal" href="../chapter_training/alignment.html#chapter-training-sec-llm-alignment-grpo"><span class="std std-ref">Group Relative Policy Optimization (GRPO)</span></a>).</p></li>
-</ul>
-</section>
-</section>
-<section id="deepseek-math">
-<h2><span class="section-number">18.2. </span>DeepSeek Math<a class="headerlink" href="#deepseek-math" title="Link to this heading">#</a></h2>
-<section id="id5">
-<h3><span class="section-number">18.2.1. </span>Overview<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
-<p>DeepSeekMath 7B, which continues pretraining DeepSeek-Coder-Base-v1.5 7B with 120B math-related tokens sourced from Common
-Crawl, together with natural language and code data.</p>
+<p>DeepSeekMath-7B <span id="id1">[<a class="reference internal" href="#id1615" title="Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, YK Li, Y Wu, and others. Deepseekmath: pushing the limits of mathematical reasoning in open language models. arXiv preprint arXiv:2402.03300, 2024.">SWZ+24</a>]</span> is a task-adapted model from DeepSeek-Coder base model <span id="id2">[<a class="reference internal" href="#id1620" title="Daya Guo, Qihao Zhu, Dejian Yang, Zhenda Xie, Kai Dong, Wentao Zhang, Guanting Chen, Xiao Bi, Yu Wu, YK Li, and others. Deepseek-coder: when the large language model meets programming–the rise of code intelligence. arXiv preprint arXiv:2401.14196, 2024.">GZY+24</a>]</span>. It was continuously pretrained DeepSeek-Coder-Base-v1.5 7B with 120B math-related tokens sourced from Common Crawl, together with natural language and code data. Desipte its small size, it achieves competitive performance on a broad-range of math benchmarks <span id="id3">[]</span>.</p>
 <figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-deepseek-math-performance">
 <a class="reference internal image-reference" href="../../_images/deepseek_math_performance.png"><img alt="../../_images/deepseek_math_performance.png" src="../../_images/deepseek_math_performance.png" style="width: 484.5px; height: 287.3px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 18.2 </span><span class="caption-text">Top1 accuracy of open-source models on the competition-level MATH benchmark Image from <span id="id6">[<a class="reference internal" href="#id1615" title="Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, YK Li, Y Wu, and others. Deepseekmath: pushing the limits of mathematical reasoning in open language models. arXiv preprint arXiv:2402.03300, 2024.">SWZ+24</a>]</span></span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-math-performance" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 18.1 </span><span class="caption-text">Top1 accuracy of open-source models on the competition-level MATH benchmark. Image from <span id="id4">[<a class="reference internal" href="#id1615" title="Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, YK Li, Y Wu, and others. Deepseekmath: pushing the limits of mathematical reasoning in open language models. arXiv preprint arXiv:2402.03300, 2024.">SWZ+24</a>]</span></span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-math-performance" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-</section>
-<section id="data-pipeline">
-<h3><span class="section-number">18.2.2. </span>Data Pipeline<a class="headerlink" href="#data-pipeline" title="Link to this heading">#</a></h3>
-<p>DeepSeekMath Corpus, a large-scale high-quality pre-training corpus comprising 120B math tokens. This
-dataset is extracted from the Common Crawl (CC) using a fastText-based classifier (Joulin et al.,
-2016). In the initial iteration, the classifier is trained using instances from OpenWebMath (Paster
-et al., 2023) as positive examples, while incorporating a diverse selection of other web pages to
-serve as negative examples. Subsequently, we employ the classifier to mine additional positive
-instances from the CC, which are further refined through human annotation.</p>
-<p>By implementing a meticulously designed data selection pipeline, we successfully construct the DeepSeekMath
-Corpus, a high-quality dataset of 120B tokens from web pages filtered for mathematical content, which is almost 7 times the size of the math web pages used by Minerva
-(Lewkowycz et al., 2022a) and 9 times the size of the recently released OpenWebMath
-(Paster et al., 2023).</p>
-<p>The DeepSeekMath Corpus is of high quality, covers multilingual mathematical content, and
-is the largest in size.</p>
+<p>The key technical highlights of DeepSeek Math model are:</p>
 <ul class="simple">
-<li><p>High-quality</p></li>
-<li><p>Multilingual</p></li>
-<li><p>Large-scale</p></li>
+<li><p>The extraction curation of large-scale math related training data from publicly available web data.</p></li>
+<li><p>The introduction of Group Relative Policy Optimization (GRPO), a computation-efficient variant of PPO algorithm,</p></li>
+</ul>
+</section>
+<section id="data-curation">
+<h3><span class="section-number">18.1.2. </span>Data Curation<a class="headerlink" href="#data-curation" title="Link to this heading">#</a></h3>
+<p>DeepSeek team created the DeepSeekMath Corpus, a large-scale high-quality pre-training corpus comprising 120B math tokens. This dataset is extracted from the publically available Common Crawl (CC) and provides a compelling evidience existing public data contain trememendous valuable information for math-oriented training.</p>
+<p>The data curation process is visualied in <a class="reference internal" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-math-data-pipeline"><span class="std std-numref">Fig. 18.2</span></a>, with the following key steps:</p>
+<ul class="simple">
+<li><p>First use a high-quality MathSeed corpus as the seed corpus to train a fastText classifier.</p></li>
+<li><p>The fastText classifier is then used to select math-related corpus from the Common Crawl.</p></li>
+<li><p>Iteratively (~3 rouns) adding more positive example in the seed corpus to train better classifier</p></li>
 </ul>
 <figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-deepseek-math-data-pipeline">
 <a class="reference internal image-reference" href="../../_images/deepseek_math_data_pipeline.png"><img alt="../../_images/deepseek_math_data_pipeline.png" src="../../_images/deepseek_math_data_pipeline.png" style="width: 666.6px; height: 257.40000000000003px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 18.3 </span><span class="caption-text">An iterative pipeline that collects mathematical web pages from Common Crawl. Image from <span id="id7">[<a class="reference internal" href="#id1615" title="Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, YK Li, Y Wu, and others. Deepseekmath: pushing the limits of mathematical reasoning in open language models. arXiv preprint arXiv:2402.03300, 2024.">SWZ+24</a>]</span></span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-math-data-pipeline" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 18.2 </span><span class="caption-text">An iterative pipeline that collects mathematical web pages from Common Crawl. Image from <span id="id5">[<a class="reference internal" href="#id1615" title="Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, YK Li, Y Wu, and others. Deepseekmath: pushing the limits of mathematical reasoning in open language models. arXiv preprint arXiv:2402.03300, 2024.">SWZ+24</a>]</span></span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-math-data-pipeline" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Data validation</p>
-<p>We apply math training to a general pre-trained language model with 1.3B parameters,
-We separately train a model on each mathematical corpus for 150B tokens.</p>
-<p>evaluated using few-shot chain-of-thought prompting.</p>
+<p>The resulting DeepSeekMath Corpus is of high quality, covers multilingual mathematical content, and
+is the largest in size.</p>
+<p>To validate the quality of the DeepSeekMath corpus and compare with other open sourced math training corpus, validation experiments are carried out in the following manner:</p>
+<ul class="simple">
+<li><p>First train a 1.3B general pre-trained language model on the DeepSeekMath corpus.</p></li>
+<li><p>Then separately train a model on each mathematical corpus for 150B tokens.</p></li>
+</ul>
+<p>The evaluation of the trained model using few-shot CoT prompting is summarized in the following:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Math Corpus</p></th>
@@ -623,18 +438,11 @@ We separately train a model on each mathematical corpus for 150B tokens.</p>
 </tbody>
 </table>
 </div>
-<p>Our pre-trained base model DeepSeekMath-Base 7B achieves comparable performance
-with Minerva 540B (Lewkowycz et al., 2022a), indicating the number of parameters is not
-the only key factor in mathematical reasoning capability. A smaller model pre-trained on
-high-quality data could achieve strong performance as well.</p>
+<p>Clearly, compared to existing math corpus, training on the high-quality and large-scale DeepSeekMath Corpus can boost math skills signficantly.</p>
 </section>
-<section id="id8">
-<h3><span class="section-number">18.2.3. </span>Pretraining<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
-<p>Our model is initialized with DeepSeek-Coder-Base-v1.5 7B</p>
-<p>and trained for 500B tokens. The distribution of the data is as follows: 56%
-is from the DeepSeekMath Corpus, 4% from AlgebraicStack, 10% from arXiv, 20% is Github
-code, and the remaining 10% is natural language data from Common Crawl in both English and
-Chinese.</p>
+<section id="pretraining">
+<h3><span class="section-number">18.1.3. </span>Pretraining<a class="headerlink" href="#pretraining" title="Link to this heading">#</a></h3>
+<p>DeepSeekMath-Base 7B was initialized with DeepSeek-Coder-Base-v1.5 7B and trained on for 500B tokens with next-token prediction task. The training data has the composition:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Data Type</p></th>
@@ -660,13 +468,14 @@ Chinese.</p>
 </tbody>
 </table>
 </div>
-<p>assessment</p>
+<p>The pre-trained base 7B model and other open-sourced model were assessed from the following aspects using CoT prompting:</p>
 <ul class="simple">
-<li><p>produce self-contained mathematical solutions without relying on external tools</p></li>
-<li><p>solve mathematical problems using tools</p></li>
-<li><p>conduct formal theorem proving</p></li>
+<li><p>the ability to produce self-contained mathematical solutions without relying on external tools</p></li>
+<li><p>the ability to solve mathematical problems using tools</p></li>
+<li><p>the ability to conduct formal theorem proving</p></li>
 </ul>
-<p>Models are evaluated with chain-of-thought prompting</p>
+<p>The evalution results of self-contained math skills is summarized in the following. The result indicates that the number of parameters is not the only key factor in mathematical reasoning capability.** A smaller model pre-trained on
+high-quality data could achieve strong performance as well**. The evaluation of tool-using and theorem proving show similar trends.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Model</p></th>
@@ -726,7 +535,7 @@ Chinese.</p>
 <td class="text-center"><p>11.9%</p></td>
 <td class="text-center"><p>26.2%</p></td>
 </tr>
-<tr class="row-even"><td class="text-center"><p>DeepSeekMath-Base</p></td>
+<tr class="row-even"><td class="text-center"><p>DeepSeekMath-7B-Base</p></td>
 <td class="text-center"><p></p></td>
 <td class="text-center"><p>64.2%</p></td>
 <td class="text-center"><p>36.2%</p></td>
@@ -740,18 +549,23 @@ Chinese.</p>
 </tbody>
 </table>
 </div>
-<p>Findings from pretraining</p>
-<p>Code training benefits program-aided mathematical reasoning in a two-stage training setting where first stage consists of code training and second stage consists of math training.</p>
+<p>Additional ablation study in the pretraining process shows that <strong>code training benefits program-aided mathematical reasoning</strong> in a two-stage training setting where first stage consists of code training and second stage consists of math training.</p>
 </section>
 <section id="post-training-sft-and-rl">
-<h3><span class="section-number">18.2.4. </span>Post-Training: SFT and RL<a class="headerlink" href="#post-training-sft-and-rl" title="Link to this heading">#</a></h3>
-<p>After pre-training, we apply mathematical instruction tuning to supervised intruction tuning DeepSeekMath-Base with da containing <strong>chain-of-thought</strong>, <strong>program-of-thought</strong>, and <strong>tool-integrated reasoning</strong>. The total number of training examples is 776K. Specifically,</p>
+<h3><span class="section-number">18.1.4. </span>Post-Training: SFT and RL<a class="headerlink" href="#post-training-sft-and-rl" title="Link to this heading">#</a></h3>
+<p>After pre-training, SFT and RL were used to further improved DeepSeekMath-Base with data containing <strong>chain-of-thought</strong>, <strong>program-of-thought</strong>, and <strong>tool-integrated reasoning</strong>. The total number of training examples is 776K. Specifically,</p>
 <ul class="simple">
-<li><p>English mathematical datasets covers diverse fields of mathematics, e.g., algebra, probability, number theory, calculus, and geometry. For example, GSM8K and MATH problems with toolintegrated solutions, and adopt a subset of MathInstruct (Yue et al., 2023) along with the training set of Lila-OOD (Mishra et al., 2022) where problems are solved with CoT or PoT. Our English collection</p></li>
-<li><p>Chinese mathematical datasets include  Chinese K-12 mathematical problems spanning 76 sub-topics such as linear equations, with solutions annotated in both CoT and toolintegrated reasoning format.</p></li>
+<li><p>English mathematical datasets covers diverse fields of mathematics, e.g., algebra, probability, number theory, calculus, and geometry. For example, GSM8K and MATH problems with toolintegrated solutions, and a subset of MathInstruct <span id="id6">[<a class="reference internal" href="#id1632" title="Xiang Yue, Xingwei Qu, Ge Zhang, Yao Fu, Wenhao Huang, Huan Sun, Yu Su, and Wenhu Chen. Mammoth: building math generalist models through hybrid instruction tuning. arXiv preprint arXiv:2309.05653, 2023.">YQZ+23</a>]</span> and Lila-OOD <span id="id7">[<a class="reference internal" href="#id1633" title="Swaroop Mishra, Matthew Finlayson, Pan Lu, Leonard Tang, Sean Welleck, Chitta Baral, Tanmay Rajpurohit, Oyvind Tafjord, Ashish Sabharwal, Peter Clark, and others. Lila: a unified benchmark for mathematical reasoning. arXiv preprint arXiv:2210.17517, 2022.">MFL+22</a>]</span> where problems are solved with CoT or PoT (program of thoughts).</p></li>
+<li><p>Chinese mathematical datasets include Chinese K-12 mathematical problems spanning 76 sub-topics such as linear equations, with solutions annotated in both CoT and toolintegrated reasoning format.</p></li>
 </ul>
-<p>We conduct RL based on DeepSeekMath-Instruct 7B. The training data of RL are chain-ofthought-format questions related to GSM8K and MATH from the SFT data, which consists
-of around 144K questions.</p>
+<p>After SFT, RL is furhter applied on DeepSeekMath-Instruct 7B. The training data of RL (using GRPO, see <a class="reference internal" href="../chapter_training/alignment.html#chapter-training-sec-llm-alignment-grpo"><span class="std std-ref">Group Relative Policy Optimization (GRPO)</span></a> for more details) are chain-ofthought-format questions related to GSM8K and MATH from the SFT data, which consists of around 144K questions. Reward model is trained using methods introduced in <span id="id8">[<a class="reference internal" href="#id1634" title="Peiyi Wang, Lei Li, Zhihong Shao, RX Xu, Damai Dai, Yifei Li, Deli Chen, Y Wu, and Zhifang Sui. Math-shepherd: a label-free step-by-step verifier for llms in mathematical reasoning. arXiv preprint arXiv:2312.08935, 2023.">WLS+23</a>]</span>.</p>
+<p>The following table summarized model performance on selected math benchmarks.</p>
+<ul class="simple">
+<li><p>Applying SFT can signficantly boost the performance on the base model.</p></li>
+<li><p>Applying RL can further improve the instructed model - DeepSeekMath-RL 7B beats all opensource models from 7B to 70B, as well as the majority of closed-source models.</p></li>
+<li><p>Although DeepSeekMath-RL 7B is only further trained on chain-of-thought-format instruction tuning data
+of GSM8K and MATH, it improves over DeepSeekMath-Instruct 7B on all benchmarks, indiciating math reasoning ability is transferable.</p></li>
+</ul>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Model</p></th>
@@ -791,14 +605,21 @@ of around 144K questions.</p>
 <td class="text-center"><p>-</p></td>
 <td class="text-center"><p>-</p></td>
 </tr>
-<tr class="row-even"><td class="text-center"><p>DeepSeekMath-Instruct</p></td>
+<tr class="row-even"><td class="text-center"><p>DeepSeekMath-Base</p></td>
+<td class="text-center"><p>7B</p></td>
+<td class="text-center"><p>64.2%</p></td>
+<td class="text-center"><p>36.2%</p></td>
+<td class="text-center"><p>-</p></td>
+<td class="text-center"><p>71.7%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>DeepSeekMath-Instruct</p></td>
 <td class="text-center"><p>7B</p></td>
 <td class="text-center"><p>82.9%</p></td>
 <td class="text-center"><p>46.8%</p></td>
 <td class="text-center"><p>73.2%</p></td>
 <td class="text-center"><p>84.6%</p></td>
 </tr>
-<tr class="row-odd"><td class="text-center"><p>DeepSeekMath-RL</p></td>
+<tr class="row-even"><td class="text-center"><p>DeepSeekMath-RL</p></td>
 <td class="text-center"><p>7B</p></td>
 <td class="text-center"><p>88.2%</p></td>
 <td class="text-center"><p>51.7%</p></td>
@@ -808,17 +629,25 @@ of around 144K questions.</p>
 </tbody>
 </table>
 </div>
-<p>DeepSeekMath-RL 7B beats all opensource models from 7B to 70B, as well as the majority of closed-source models. Although
-DeepSeekMath-RL 7B is only further trained on chain-of-thought-format instruction tuning data
-of GSM8K and MATH, it improves over DeepSeekMath-Instruct 7B on all benchmarks.</p>
+<!-- ## DeepSeek V3
+
+
+Pretraining corpus for DeepSeek-V3 consists of 14.8T high-quality and diverse tokens in our tokenizer.
+
+
+
+### Pretraining
+
+
+ -->
 </section>
 </section>
 <section id="deepseek-reasoning-models">
-<h2><span class="section-number">18.3. </span>DeepSeek Reasoning Models<a class="headerlink" href="#deepseek-reasoning-models" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">18.2. </span>DeepSeek Reasoning Models<a class="headerlink" href="#deepseek-reasoning-models" title="Link to this heading">#</a></h2>
 <section id="deepseek-r1-zero">
-<h3><span class="section-number">18.3.1. </span>DeepSeek-R1-Zero<a class="headerlink" href="#deepseek-r1-zero" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">18.2.1. </span>DeepSeek-R1-Zero<a class="headerlink" href="#deepseek-r1-zero" title="Link to this heading">#</a></h3>
 <p>DeepSeek Team explore the potential of LLMs to develop reasoning capabilities without any supervised data, focusing on their self-evolution through a pure reinforcement learning process. The resulting model is named as <strong>DeepSeek-R1-Zero</strong>.</p>
-<p>Specifically, DeepSeek-R1-Zero starts with DeepSeek-V3-Base as the base model and employ a single-stage GRPO reinforcement learning (see <a class="reference internal" href="../chapter_training/alignment.html#chapter-training-sec-llm-alignment-grpo"><span class="std std-ref">Group Relative Policy Optimization (GRPO)</span></a>) to improve model’s reason ability [<a class="reference internal" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-r1-zero-workflow"><span class="std std-numref">Fig. 18.4</span></a>]. The reward signal consists of two types of rewards:</p>
+<p>Specifically, DeepSeek-R1-Zero starts with DeepSeek-V3-Base as the base model and employ a single-stage GRPO reinforcement learning (see <a class="reference internal" href="../chapter_training/alignment.html#chapter-training-sec-llm-alignment-grpo"><span class="std std-ref">Group Relative Policy Optimization (GRPO)</span></a>) to improve model’s reason ability [<a class="reference internal" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-r1-zero-workflow"><span class="std std-numref">Fig. 18.3</span></a>]. The reward signal consists of two types of rewards:</p>
 <ul class="simple">
 <li><p>Accuracy rewards: The accuracy reward model evaluates whether the response is correct. (for math and coding problems, the result is deterministic)</p></li>
 <li><p>Format rewards: Encourage model to put thinking process between <code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> <code class="docutils literal notranslate"><span class="pre">&lt;/think&gt;</span></code></p></li>
@@ -827,7 +656,7 @@ of GSM8K and MATH, it improves over DeepSeekMath-Instruct 7B on all benchmarks.<
 <a class="reference internal image-reference" href="../../_images/deepseek_r1_zero_workflow.png"><img alt="../../_images/deepseek_r1_zero_workflow.png" src="../../_images/deepseek_r1_zero_workflow.png" style="width: 599.55px; height: 247.79999999999998px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 18.4 </span><span class="caption-text">The training workflow for DeepSeek-R1-Zero, which is based on pure reinforcement learning. Reward signals are based on Accuracy reward and format reward.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-r1-zero-workflow" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 18.3 </span><span class="caption-text">The training workflow for DeepSeek-R1-Zero, which is based on pure reinforcement learning. Reward signals are based on Accuracy reward and format reward.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-r1-zero-workflow" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="proof remark admonition" id="remark-0">
@@ -848,12 +677,12 @@ revisits and reevaluates its previous steps and then the model explores of alter
 <p>Reward modeling for reasoning task is much more straightforward than typical human preference learning tasks, which requires non-trivial efforts to build reward model to approximate complicated human preference.</p>
 <p>The reasoning tasks usually have groundtruth - correct answer or not; as a comparison, human preference is usually hard to quantify.</p>
 </section>
-</div><p>As shown in <a class="reference internal" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-rzero-thinking-time-evolution"><span class="std std-numref">Fig. 18.5</span></a>, DeepSeek-R1-Zero learns to allocate more thinking time in solving problems</p>
+</div><p>As shown in <a class="reference internal" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-rzero-thinking-time-evolution"><span class="std std-numref">Fig. 18.4</span></a>, DeepSeek-R1-Zero learns to allocate more thinking time in solving problems</p>
 <figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-deepseek-rzero-thinking-time-evolution">
 <a class="reference internal image-reference" href="../../_images/deepseek_rzero_thinking_time_evolution.png"><img alt="../../_images/deepseek_rzero_thinking_time_evolution.png" src="../../_images/deepseek_rzero_thinking_time_evolution.png" style="width: 612.75px; height: 391.5px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 18.5 </span><span class="caption-text">The average response length of DeepSeek-R1-Zero on the training set during the RL
+<p><span class="caption-number">Fig. 18.4 </span><span class="caption-text">The average response length of DeepSeek-R1-Zero on the training set during the RL
 process. DeepSeek-R1-Zero naturally learns to solve reasoning tasks with more thinking time. Image from <span id="id9">[<a class="reference internal" href="#id1619" title="Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu, Shirong Ma, Peiyi Wang, Xiao Bi, and others. Deepseek-r1: incentivizing reasoning capability in llms via reinforcement learning. arXiv preprint arXiv:2501.12948, 2025.">GYZ+25</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-rzero-thinking-time-evolution" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
@@ -920,7 +749,7 @@ However, this is expected:</p>
 </ul>
 </section>
 <section id="deepseek-r1">
-<h3><span class="section-number">18.3.2. </span>DeepSeek-R1<a class="headerlink" href="#deepseek-r1" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">18.2.2. </span>DeepSeek-R1<a class="headerlink" href="#deepseek-r1" title="Link to this heading">#</a></h3>
 <p>On top of encourging results from  DeepSeek-R1-Zero, DeepSeek-R1 has the objectives of</p>
 <ul class="simple">
 <li><p>Further enhancing reasoning performance and accelerate convergence</p></li>
@@ -930,7 +759,7 @@ However, this is expected:</p>
 <p>DeepSeek-R1 main technical approaches improve over Zero by using high-quality <strong>cold start</strong> data and a <strong>multi-stage training</strong> pipeline.</p>
 <ul class="simple">
 <li><p>The cold start data consists of a small amount (thousands) of long and high-quality (structred, human friendly) CoT data to fine-tune the model as the initial RL actor.</p></li>
-<li><p>The multi-stage training pipeline is shown in <a class="reference internal" href="#chapter-training-fig-reasoning-deepseek-r1-workflow"><span class="std std-numref">Fig. 18.6</span></a>, which includes</p>
+<li><p>The multi-stage training pipeline is shown in <a class="reference internal" href="#chapter-training-fig-reasoning-deepseek-r1-workflow"><span class="std std-numref">Fig. 18.5</span></a>, which includes</p>
 <ul>
 <li><p>A supervised fine-tuning stage on cold-start data to get to DeepSeek-R0.25</p></li>
 <li><p>A subsequent reasoning-oriented RL to get to DeepSeek-R0.5</p></li>
@@ -952,7 +781,7 @@ However, this is expected:</p>
 <a class="reference internal image-reference" href="../../_images/deepseek_r1_workflow.png"><img alt="../../_images/deepseek_r1_workflow.png" src="../../_images/deepseek_r1_workflow.png" style="width: 718.2px; height: 490.05px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 18.6 </span><span class="caption-text">Summary of DeepSeek-R1 multi-stage training, starting from DeepSeek-V3.</span><a class="headerlink" href="#chapter-training-fig-reasoning-deepseek-r1-workflow" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 18.5 </span><span class="caption-text">Summary of DeepSeek-R1 multi-stage training, starting from DeepSeek-V3.</span><a class="headerlink" href="#chapter-training-fig-reasoning-deepseek-r1-workflow" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The motivation and technical details on each training stage is summarized as follows</p>
@@ -979,17 +808,17 @@ However, this is expected:</p>
 </tbody>
 </table>
 </div>
-<p>As shown in <a class="reference internal" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-r1-benchmark"><span class="std std-numref">Fig. 18.7</span></a>, DeepSeek-R1 achieves comparable performance to OpenAI-o1-1217 on reasoning tasks.</p>
+<p>As shown in <a class="reference internal" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-r1-benchmark"><span class="std std-numref">Fig. 18.6</span></a>, DeepSeek-R1 achieves comparable performance to OpenAI-o1-1217 on reasoning tasks.</p>
 <figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-deepseek-r1-benchmark">
 <a class="reference internal image-reference" href="../../_images/deepseek_r1_benchmark.png"><img alt="../../_images/deepseek_r1_benchmark.png" src="../../_images/deepseek_r1_benchmark.png" style="width: 815.25px; height: 488.25px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 18.7 </span><span class="caption-text">Benchmark performanc of DeepSeek-R1 in reasoning oriented tasks. Image from <span id="id10">[<a class="reference internal" href="#id1619" title="Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu, Shirong Ma, Peiyi Wang, Xiao Bi, and others. Deepseek-r1: incentivizing reasoning capability in llms via reinforcement learning. arXiv preprint arXiv:2501.12948, 2025.">GYZ+25</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-r1-benchmark" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 18.6 </span><span class="caption-text">Benchmark performanc of DeepSeek-R1 in reasoning oriented tasks. Image from <span id="id10">[<a class="reference internal" href="#id1619" title="Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu, Shirong Ma, Peiyi Wang, Xiao Bi, and others. Deepseek-r1: incentivizing reasoning capability in llms via reinforcement learning. arXiv preprint arXiv:2501.12948, 2025.">GYZ+25</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-deepseek-r1-benchmark" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="deepseek-r1-distillation">
-<h3><span class="section-number">18.3.3. </span>DeepSeek-R1-Distillation<a class="headerlink" href="#deepseek-r1-distillation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">18.2.3. </span>DeepSeek-R1-Distillation<a class="headerlink" href="#deepseek-r1-distillation" title="Link to this heading">#</a></h3>
 <p>DeepSeek team explored a straightforward distillation approach:</p>
 <ul class="simple">
 <li><p>Using the reasoning data generated by DeepSeek-R1</p></li>
@@ -1044,41 +873,167 @@ However, this is expected:</p>
 </tbody>
 </table>
 </div>
+<!-- 
+## DeepSeek Coder
+
+### Overview
+
+
+{cite:p}`guo2024deepseek`
+
+
+```{figure} ../img/chapter_LLM_case_study/deepseek_series/deepseek_code/deepseek_coder_performance.png
+---
+scale: 65%
+name: chapter_training_fig_reasoning_inference_time_method_deepseek_coder_performance
+---
+The performance of DeepSeek-Coder. Image from {cite:p}`guo2024deepseek`.
+```
+
+
+
+### PreTraining 
+
+
+The training dataset of DeepSeek-Coder is composed of 87% source code, 10% English coderelated natural language corpus, and 3% code-unrelated Chinese natural language corpus.
+
+Two training strategies:
+* Next Token Prediction. Like the typical language model next-token-prediction task. In this process, various files are concatenated to form a fixed-length entry. 
+* Fill-in-the-Middle. In the code pre-training
+scenario, it is often necessary to generate corresponding inserted content based on the given
+context and subsequent text. Due to specific dependencies in a programming language, relying
+solely on next token prediction is insufficient to learn this fill-in-the-middle capability.
+
+
+Fill-in-the Middle was proposed in {cite:p}`bavarian2022efficient,li2023starcoder`
+
+This approach involves randomly dividing the text into three parts, then shuffling the order of these parts and connecting them with special characters. This method aims to incorporate a fill-in-the-blank pretraining task during the training process.
+
+
+Within the FIM methodology, two distinct modes are employed: PSM (Prefix-Suffix-Middle) and SPM
+(Suffix-Prefix-Middle). In the PSM mode, the training corpus is organized in the sequence
+of prefix, suffix, middle, aligning the text in a way that the middle segment is flanked by the
+prefix and suffix. Conversely, the SPM mode arranges the segments as suffix, prefix, middle,
+presenting a different structural challenge. 
+
+
+These modes are instrumental in enhancing the
+model’s capability to handle various structural arrangements in code, providing a robust training
+framework for advanced code prediction tasks.
+
+
+<｜fim_start｜> 𝑓𝑝𝑟𝑒<｜fim_hole｜> 𝑓𝑠𝑢 𝑓 <｜fim_end｜> 𝑓𝑚𝑖𝑑𝑑𝑙𝑒<|eos_token|>
+
+Studies shows that while FIM can improve code insertion ability, it will however negative affect code completion abilities. The pretraining adopted an FIM rate of 0.5, following the PSM mode.
+
+
+### Long Context Extension
+
+we extend the context length of DeepSeek-Coder-V2 to 128K using
+Yarn (Peng et al., 2023). The hyper-parameters of YARN are the same as DeepSeek-V2: the scale
+𝑠 to 40, 𝛼 to 1, 𝛽 to 32. We further continue training the model using two stages to enhance
+its capability for handling long contexts.
+
+In the first stage, we utilize a sequence length of 32K and a batch size of 1152 for 1000 steps
+
+In the second stage, we train the model for an additional 1000 steps, employing a sequence length of 128K and a batch size of 288 sequences.
+
+
+### Instruction FT
+
+We develop DeepSeek-Coder-Instruct by enhancing the DeepSeek-Coder-Base through instructionbased fine-tuning using high-quality data. 
+
+2B tokens in total
+
+### Evaluation
+
+evaluate DeepSeek-Coder on four tasks, including 
+* **code generation**, 
+* **FIM code completion**
+* **cross-file code completion**
+* **program-based math reasoning**
+
+Code Generation
+
+st cases to assess the code generated
+by a Code LLM in a zero-shot setting, while the MBPP benchmark includes 500 problems
+in a few-shot setting.
+
+After instruction fine-tuning, our model surpasses the closed-source
+GPT-3.5-Turbo model in HumanEval benchmark, significantly reducing the performance gap
+between OpenAI GPT-4 and open-source models.
+
+| Model | Size | Avg |
+| :---: | :---: | :---: |
+| CodeLlama | 34B | 41.0% |
+| GPT-3.5-Turbo | - | 64.9% |
+| GPT-4 | - | 76.5% |
+| DeepSeek-Coder-Base | 33B | 50.3% |
+| DeepSeek-Coder-Instruct | 33B | 69.2% |
+
+
+
+
+## DeepSeek Coder V2
+### Overview
+{cite:p}`zhu2024deepseek`
+
+| Aspects | V1 | V2 | 
+| :--- | :--- | :--- |
+| Architecture | Decoder-only Dense Transformer | MoE |
+| Scale | 1.3B to 33B | 16B and 236B |
+| Pretraining Data | 2T training tokens | Additional 10.2T training tokens |
+| Starting Checkpoing| | intermediate checkpoint of DeepSeek-V2 |
+| Pretraining Method| Next-Token-Prediction (NTP); Fill-In-Middle (FIM) | 16B NTP and FIM; 236B NTP |
+| Context Length | 16k | 128k | 
+| Post-Training Method| SFT  | SFT and RL|
+
+
+### Reinforcement Learning
+
+Reinforcement learning was used to further enhance the reasoning and instruction-following ability.
+
+This stages involve several key elements:
+* Training task prompts collection - this involves collecting prompts related to code and math from various sources, and each code prompt comes with corresponding test cases. After filtering the prompts, there are approximately 40 k data in total.
+* Reward modeling:
+  * Rewards for math problem is constructed based on ground-truth labels. 
+  * Rewards for coding is more complex. Code compiler itself can already provide $0-1$ feedback (whether the code pass all test cases or not) but some coding task prompts have a limited number of test cases for full coverage. Instead, the team trained a reward model on the data provided by the compiler, and use the reward model to provide signal during RL training, which is more robust.
+* The reinforcement learning algorithm is GRPO (see {ref}`chapter_training_sec_LLM_alignment_GRPO`).
+ -->
 </section>
 </section>
 <section id="bibliography">
-<h2><span class="section-number">18.4. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">18.3. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <section id="software">
-<h3><span class="section-number">18.4.1. </span>Software<a class="headerlink" href="#software" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">18.3.1. </span>Software<a class="headerlink" href="#software" title="Link to this heading">#</a></h3>
 <p><a class="reference external" href="https://github.com/unslothai/unsloth">Unsloth</a></p>
 <div class="docutils container" id="id11">
 <div role="list" class="citation-list">
-<div class="citation" id="id1621" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">BJT+22</a><span class="fn-bracket">]</span></span>
-<p>Mohammad Bavarian, Heewoo Jun, Nikolas Tezak, John Schulman, Christine McLeavey, Jerry Tworek, and Mark Chen. Efficient training of language models to fill in the middle. <em>arXiv preprint arXiv:2207.14255</em>, 2022.</p>
-</div>
 <div class="citation" id="id1619" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>GYZ+25<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id9">1</a>,<a role="doc-backlink" href="#id10">2</a>)</span>
 <p>Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu, Shirong Ma, Peiyi Wang, Xiao Bi, and others. Deepseek-r1: incentivizing reasoning capability in llms via reinforcement learning. <em>arXiv preprint arXiv:2501.12948</em>, 2025.</p>
 </div>
 <div class="citation" id="id1620" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>GZY+24<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">GZY+24</a><span class="fn-bracket">]</span></span>
 <p>Daya Guo, Qihao Zhu, Dejian Yang, Zhenda Xie, Kai Dong, Wentao Zhang, Guanting Chen, Xiao Bi, Yu Wu, YK Li, and others. Deepseek-coder: when the large language model meets programming–the rise of code intelligence. <em>arXiv preprint arXiv:2401.14196</em>, 2024.</p>
 </div>
-<div class="citation" id="id1622" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">LAZ+23</a><span class="fn-bracket">]</span></span>
-<p>Raymond Li, Loubna Ben Allal, Yangtian Zi, Niklas Muennighoff, Denis Kocetkov, Chenghao Mou, Marc Marone, Christopher Akiki, Jia Li, Jenny Chim, and others. Starcoder: may the source be with you! <em>arXiv preprint arXiv:2305.06161</em>, 2023.</p>
+<div class="citation" id="id1633" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">MFL+22</a><span class="fn-bracket">]</span></span>
+<p>Swaroop Mishra, Matthew Finlayson, Pan Lu, Leonard Tang, Sean Welleck, Chitta Baral, Tanmay Rajpurohit, Oyvind Tafjord, Ashish Sabharwal, Peter Clark, and others. Lila: a unified benchmark for mathematical reasoning. <em>arXiv preprint arXiv:2210.17517</em>, 2022.</p>
 </div>
 <div class="citation" id="id1615" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>SWZ+24<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id6">1</a>,<a role="doc-backlink" href="#id7">2</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id4">2</a>,<a role="doc-backlink" href="#id5">3</a>)</span>
 <p>Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, YK Li, Y Wu, and others. Deepseekmath: pushing the limits of mathematical reasoning in open language models. <em>arXiv preprint arXiv:2402.03300</em>, 2024.</p>
 </div>
-<div class="citation" id="id1623" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">ZGS+24</a><span class="fn-bracket">]</span></span>
-<p>Qihao Zhu, Daya Guo, Zhihong Shao, Dejian Yang, Peiyi Wang, Runxin Xu, Y Wu, Yukun Li, Huazuo Gao, Shirong Ma, and others. Deepseek-coder-v2: breaking the barrier of closed-source models in code intelligence. <em>arXiv preprint arXiv:2406.11931</em>, 2024.</p>
+<div class="citation" id="id1634" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">WLS+23</a><span class="fn-bracket">]</span></span>
+<p>Peiyi Wang, Lei Li, Zhihong Shao, RX Xu, Damai Dai, Yifei Li, Deli Chen, Y Wu, and Zhifang Sui. Math-shepherd: a label-free step-by-step verifier for llms in mathematical reasoning. <em>arXiv preprint arXiv:2312.08935</em>, 2023.</p>
+</div>
+<div class="citation" id="id1632" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">YQZ+23</a><span class="fn-bracket">]</span></span>
+<p>Xiang Yue, Xingwei Qu, Ge Zhang, Yao Fu, Wenhao Huang, Huan Sun, Yu Su, and Wenhu Chen. Mammoth: building math generalist models through hybrid instruction tuning. <em>arXiv preprint arXiv:2309.05653</em>, 2023.</p>
 </div>
 </div>
 </div>
@@ -1122,7 +1077,7 @@ However, this is expected:</p>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">17. </span>Llama Series (WIP)</p>
+        <p class="prev-next-title"><span class="section-number">17. </span>Llama Series</p>
       </div>
     </a>
     <a class="right-next"
@@ -1150,32 +1105,21 @@ However, this is expected:</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-coder">18.1. DeepSeek Coder</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-math">18.1. DeepSeek Math</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">18.1.1. Overview</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-curation">18.1.2. Data Curation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">18.1.3. PreTraining</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#long-context-extension">18.1.4. Long Context Extension</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instruction-ft">18.1.5. Instruction FT</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation">18.1.6. Evaluation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-coder-v2">18.1.7. DeepSeek Coder V2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reinforcement-learning">18.1.8. Reinforcement Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pretraining">18.1.3. Pretraining</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#post-training-sft-and-rl">18.1.4. Post-Training: SFT and RL</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-math">18.2. DeepSeek Math</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">18.2.1. Overview</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pipeline">18.2.2. Data Pipeline</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">18.2.3. Pretraining</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#post-training-sft-and-rl">18.2.4. Post-Training: SFT and RL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-reasoning-models">18.2. DeepSeek Reasoning Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1-zero">18.2.1. DeepSeek-R1-Zero</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1">18.2.2. DeepSeek-R1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1-distillation">18.2.3. DeepSeek-R1-Distillation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-reasoning-models">18.3. DeepSeek Reasoning Models</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1-zero">18.3.1. DeepSeek-R1-Zero</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1">18.3.2. DeepSeek-R1</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-r1-distillation">18.3.3. DeepSeek-R1-Distillation</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">18.4. Bibliography</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software">18.4.1. Software</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">18.3. Bibliography</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software">18.3.1. Software</a></li>
 </ul>
 </li>
 </ul>

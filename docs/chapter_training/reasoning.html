@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>14. LLM Reasoning &#8212; LLM Foundations</title>
+    <title>14. LLM Reasoning (WIP) &#8212; LLM Foundations</title>
   
   
   
@@ -190,7 +190,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Architectures</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architectures Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_dense_architectures.html">9. LLM Architecture Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_LLM_arch/LLM_moe_sparse_architectures.html">10. MoE Sparse Architectures (WIP)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LLM Training</span></p>
@@ -198,7 +198,7 @@
 <li class="toctree-l1"><a class="reference internal" href="training_fundamentals.html">11. LLM Training Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="finetuning.html">12. LLM Finetuning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="alignment.html">13. LLM Alignement and Preference Learning</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">14. LLM Reasoning</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">14. LLM Reasoning (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accelerated_training.html">15. LLM Training Acceleration (WIP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reinforcement_learning.html">16. *Reinforcement Learning Essentials</a></li>
 </ul>
@@ -319,7 +319,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>LLM Reasoning</h1>
+    <h1>LLM Reasoning (WIP)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -329,24 +329,26 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">14.1. Introduction</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#math-benchmarks">14.1.1. Math benchmarks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">14.1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#language-knowledge-and-logical-reasoning-benchmark">14.2. Language, Knowledge, and Logical Reasoning benchmark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#math-benchmarks">14.3. Math Benchmarks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-benchmark">14.4. Coding Benchmark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-time-scaling-strategies">14.5. Inference-Time Scaling Strategies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-and-search">14.5.1. Sampling and Search</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proposal-distribution-refinement">14.5.2. Proposal Distribution Refinement</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-benchmark">14.2. Coding benchmark</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#language-knowledge-and-logical-thinking-benchmark">14.3. Language, knowledge, and logical thinking benchmark</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-time-scaling-strategies">14.4. Inference-Time Scaling Strategies</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-and-search">14.4.1. Sampling and Search</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proposal-distribution-refinement">14.4.2. Proposal Distribution Refinement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reinfrocement-learning">14.6. Reinfrocement Learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-wise-ppo">14.6.1. Step-wise PPO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kimi-scalable-rl">14.6.2. Kimi scalable RL</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reinfrocement-learning">14.5. Reinfrocement Learning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-learning">14.6. Preference Learning</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iterative-rpo">14.6.1. Iterative RPO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-learning">14.7. Preference Learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iterative-rpo">14.7.1. Iterative RPO</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">14.7. Bibliography</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software">14.7.1. Software</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">14.8. Bibliography</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software">14.8.1. Software</a></li>
 </ul>
 </li>
 </ul>
@@ -360,16 +362,16 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="llm-reasoning">
-<h1><span class="section-number">14. </span>LLM Reasoning<a class="headerlink" href="#llm-reasoning" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="llm-reasoning-wip">
+<h1><span class="section-number">14. </span>LLM Reasoning (WIP)<a class="headerlink" href="#llm-reasoning-wip" title="Link to this heading">#</a></h1>
 <section id="introduction">
 <h2><span class="section-number">14.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
 <p><strong>Reasoning</strong> is the process in which</p>
 <ul class="simple">
 <li><p>a complex problem is decomposed into a sequence of smaller logical steps</p></li>
-<li><p>the correct execution of these logical steps leading to final soution of the problem.
-In the context of LLM reasoning, it refers to the process in which LLM is generating intermediate chain of thought steps that lead to the final answer.</p></li>
+<li><p>the correct execution of these logical steps leading to final soution of the problem.</p></li>
 </ul>
+<p>In the context of LLM reasoning, it refers to the process in which LLM is generating intermediate chain of thought steps that lead to the final answer.</p>
 <p>When we ask a question to LLM, the nature of question largely determines if a reasoning is required. For example [<a class="reference internal" href="#chapter-training-fig-reasoning-simple-reasoning-vs-complex-reasoning"><span class="std std-numref">Fig. 14.1</span></a>],</p>
 <ul class="simple">
 <li><p><em>What is the captial of China</em> is a <strong>factual question</strong> does not require reasoning.</p></li>
@@ -377,7 +379,7 @@ In the context of LLM reasoning, it refers to the process in which LLM is genera
 <li><p><em>Prove there are infinitely many prime numbers</em> is <strong>complex reasoning problem</strong>. Puzzles, riddles, coding, and math tasks are typically falling into the category of complex reasoning problems.</p></li>
 </ul>
 <figure class="align-default" id="chapter-training-fig-reasoning-simple-reasoning-vs-complex-reasoning">
-<a class="reference internal image-reference" href="../../_images/simple_reasoning_vs_complex_reasoning.png"><img alt="../../_images/simple_reasoning_vs_complex_reasoning.png" src="../../_images/simple_reasoning_vs_complex_reasoning.png" style="width: 1737.45px; height: 725.4px;" />
+<a class="reference internal image-reference" href="../../_images/simple_reasoning_vs_complex_reasoning.png"><img alt="../../_images/simple_reasoning_vs_complex_reasoning.png" src="../../_images/simple_reasoning_vs_complex_reasoning.png" style="width: 801.9px; height: 334.8px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 14.1 </span><span class="caption-text">Comparison between simple reasoning task (left) and complex reasoning task (right).</span><a class="headerlink" href="#chapter-training-fig-reasoning-simple-reasoning-vs-complex-reasoning" title="Link to this image">#</a></p>
@@ -418,33 +420,34 @@ In the context of LLM reasoning, it refers to the process in which LLM is genera
 <li><p><strong>Fixing Weaknesses</strong> – LLMs struggle with logical thinking and complex tasking in out-of-domain situations. Improving reasoning makes can potentially improve their generalization to new domains.</p></li>
 <li><p><strong>Step Toward AGI</strong> – Reasoning is key to human intelligence. Enhancing it in LLMs moves us closer to Artificial General Intelligence (AGI).</p></li>
 </ul>
-<section id="math-benchmarks">
-<h3><span class="section-number">14.1.1. </span>Math benchmarks<a class="headerlink" href="#math-benchmarks" title="Link to this heading">#</a></h3>
+</section>
+<section id="language-knowledge-and-logical-reasoning-benchmark">
+<h2><span class="section-number">14.2. </span>Language, Knowledge, and Logical Reasoning benchmark<a class="headerlink" href="#language-knowledge-and-logical-reasoning-benchmark" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>GSM8K (Grade School Math)</strong> - This benchmark consists of 8,500 linguistically diverse elementary school math word problems that require two to eight basic arithmetic operations to solve <span id="id1">[<a class="reference internal" href="#id1532" title="Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, and others. Training verifiers to solve math word problems. arXiv preprint arXiv:2110.14168, 2021.">CKB+21</a>]</span>.</p></li>
-<li><p><strong>MathEval</strong> - <a class="reference external" href="https://github.com/math-eval/MathEval">MathEval</a> is a comprehensive benchmark (~20k problems) that contains 20 other benchmarks, such as GSM8K, MATH, and the math subsection of MMLU. It aims to evaluate the model’s math skill from elementary school math to high school competitions.</p></li>
-<li><p><strong>FrontierMath</strong> - This benchmark contains questions from areas of modern math that are difficult for professional mathematicians to solve <span id="id2">[<a class="reference internal" href="#id1609" title="Elliot Glazer, Ege Erdil, Tamay Besiroglu, Diego Chicharro, Evan Chen, Alex Gunning, Caroline Falkman Olsson, Jean-Stanislas Denain, Anson Ho, Emily de Oliveira Santos, and others. Frontiermath: a benchmark for evaluating advanced mathematical reasoning in ai. arXiv preprint arXiv:2411.04872, 2024.">GEB+24</a>]</span>.</p></li>
+<li><p><strong>MMLU (Measuring Massive Multitask Language Understanding)</strong> - MMLU consists of approximately 16,000 multiple-choice questions spanning 57 academic subjects, including mathematics, philosophy, law, and medicine <span id="id1">[<a class="reference internal" href="#id1619" title="Dan Hendrycks, Collin Burns, Steven Basart, Andy Zou, Mantas Mazeika, Dawn Song, and Jacob Steinhardt. Measuring massive multitask language understanding. arXiv preprint arXiv:2009.03300, 2020.">HBB+20</a>]</span>. It is widely used to assess a model’s breadth of knowledge and reasoning across diverse fields.</p></li>
+<li><p><strong>GPQA (Google-Proof Q&amp;A)</strong> - 448 multiple-choice questions written by domain experts in biology, physics, and chemistry, and requires PhD-level experts to solve.<span id="id2">[<a class="reference internal" href="#id1620" title="David Rein, Betty Li Hou, Asa Cooper Stickland, Jackson Petty, Richard Yuanzhe Pang, Julien Dirani, Julian Michael, and Samuel R Bowman. Gpqa: a graduate-level google-proof q&amp;a benchmark. arXiv preprint arXiv:2311.12022, 2023.">RHS+23</a>]</span>. It is designed to evaluate a model’s proficiency in solving PhD-level complex problems across different domains.</p></li>
+<li><p><strong>AGIEval</strong> - This includes questions from 20 official, public, and high-standard admission and qualification exams, such as the SAT, Gaokao, law school admission tests, math competitions, lawyer qualification tests, and national civil service exams <span id="id3">[<a class="reference internal" href="#id1621" title="Wanjun Zhong, Ruixiang Cui, Yiduo Guo, Yaobo Liang, Shuai Lu, Yanlin Wang, Amin Saied, Weizhu Chen, and Nan Duan. Agieval: a human-centric benchmark for evaluating foundation models. arXiv preprint arXiv:2304.06364, 2023.">ZCG+23</a>]</span>. It evaluates a model’s performance on standardized tests that require advanced reasoning skills.</p></li>
+<li><p><strong>ARC-AGI (Abstraction and Reasoning Corpus for Artificial General Intelligence)</strong> - <a class="reference external" href="https://arcprize.org/">RC-AGI</a> is designed to assess a model’s abstract reasoning capabilities.t involves tasks that require pattern recognition and logical inference.</p></li>
+<li></li>
 </ul>
 </section>
+<section id="math-benchmarks">
+<h2><span class="section-number">14.3. </span>Math Benchmarks<a class="headerlink" href="#math-benchmarks" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>GSM8K (Grade School Math)</strong> - This benchmark consists of 8,500 linguistically diverse elementary school math word problems that require two to eight basic arithmetic operations to solve <span id="id4">[<a class="reference internal" href="#id1540" title="Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, and others. Training verifiers to solve math word problems. arXiv preprint arXiv:2110.14168, 2021.">CKB+21</a>]</span>.</p></li>
+<li><p><strong>MathEval</strong> - <a class="reference external" href="https://github.com/math-eval/MathEval">MathEval</a> is a comprehensive benchmark (~20k problems) that contains 20 other benchmarks, such as GSM8K, MATH, and the math subsection of MMLU. It aims to evaluate the model’s math skill from elementary school math to high school competitions.</p></li>
+<li><p><strong>FrontierMath</strong> - This benchmark contains questions from areas of modern math that are difficult for professional mathematicians to solve <span id="id5">[<a class="reference internal" href="#id1617" title="Elliot Glazer, Ege Erdil, Tamay Besiroglu, Diego Chicharro, Evan Chen, Alex Gunning, Caroline Falkman Olsson, Jean-Stanislas Denain, Anson Ho, Emily de Oliveira Santos, and others. Frontiermath: a benchmark for evaluating advanced mathematical reasoning in ai. arXiv preprint arXiv:2411.04872, 2024.">GEB+24</a>]</span>.</p></li>
+</ul>
 </section>
 <section id="coding-benchmark">
-<h2><span class="section-number">14.2. </span>Coding benchmark<a class="headerlink" href="#coding-benchmark" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">14.4. </span>Coding Benchmark<a class="headerlink" href="#coding-benchmark" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>HumanEval</strong> - This benchmark consists of programming problems where the solution is always a Python function, often just a few lines long <span id="id3">[<a class="reference internal" href="#id47" title="Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde De Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, and others. Evaluating large language models trained on code. arXiv preprint arXiv:2107.03374, 2021.">CTJ+21</a>]</span>. This assesses a model’s basic ability to generate correct and functional code based on problem descriptions.</p></li>
-<li><p><strong>SWE-Bench</strong> - The SWE-Bench comprises 2,294 software engineering problems drawn from real GitHub issues and corresponding pull requests across 12 popular Python repositories <span id="id4">[<a class="reference internal" href="#id1610" title="Carlos E Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, and Karthik Narasimhan. Swe-bench: can language models resolve real-world github issues? arXiv preprint arXiv:2310.06770, 2023.">JYW+23</a>]</span>.</p></li>
-</ul>
-</section>
-<section id="language-knowledge-and-logical-thinking-benchmark">
-<h2><span class="section-number">14.3. </span>Language, knowledge, and logical thinking benchmark<a class="headerlink" href="#language-knowledge-and-logical-thinking-benchmark" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><strong>MMLU (Measuring Massive Multitask Language Understanding)</strong> - MMLU consists of approximately 16,000 multiple-choice questions spanning 57 academic subjects, including mathematics, philosophy, law, and medicine <span id="id5">[<a class="reference internal" href="#id1611" title="Dan Hendrycks, Collin Burns, Steven Basart, Andy Zou, Mantas Mazeika, Dawn Song, and Jacob Steinhardt. Measuring massive multitask language understanding. arXiv preprint arXiv:2009.03300, 2020.">HBB+20</a>]</span>. It is widely used to assess a model’s breadth of knowledge and reasoning across diverse fields.</p></li>
-<li><p><strong>GPQA (Google-Proof Q&amp;A)</strong> - 448 multiple-choice questions written by domain experts in biology, physics, and chemistry, and requires PhD-level experts to solve.<span id="id6">[<a class="reference internal" href="#id1612" title="David Rein, Betty Li Hou, Asa Cooper Stickland, Jackson Petty, Richard Yuanzhe Pang, Julien Dirani, Julian Michael, and Samuel R Bowman. Gpqa: a graduate-level google-proof q&amp;a benchmark. arXiv preprint arXiv:2311.12022, 2023.">RHS+23</a>]</span>. It is designed to evaluate a model’s proficiency in solving PhD-level complex problems across different domains.</p></li>
-<li><p><strong>AGIEval</strong> - This includes questions from 20 official, public, and high-standard admission and qualification exams, such as the SAT, Gaokao, law school admission tests, math competitions, lawyer qualification tests, and national civil service exams <span id="id7">[<a class="reference internal" href="#id1613" title="Wanjun Zhong, Ruixiang Cui, Yiduo Guo, Yaobo Liang, Shuai Lu, Yanlin Wang, Amin Saied, Weizhu Chen, and Nan Duan. Agieval: a human-centric benchmark for evaluating foundation models. arXiv preprint arXiv:2304.06364, 2023.">ZCG+23</a>]</span>. It evaluates a model’s performance on standardized tests that require advanced reasoning skills.</p></li>
-<li><p><strong>ARC-AGI (Abstraction and Reasoning Corpus for Artificial General Intelligence)</strong> - <a class="reference external" href="https://arcprize.org/">RC-AGI</a> is designed to assess a model’s abstract reasoning capabilities.t involves tasks that require pattern recognition and logical inference.</p></li>
+<li><p><strong>HumanEval</strong> - This benchmark consists of programming problems where the solution is always a Python function, often just a few lines long <span id="id6">[<a class="reference internal" href="training_fundamentals.html#id49" title="Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde De Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, and others. Evaluating large language models trained on code. arXiv preprint arXiv:2107.03374, 2021.">CTJ+21</a>]</span>. This assesses a model’s basic ability to generate correct and functional code based on problem descriptions.</p></li>
+<li><p><strong>SWE-Bench</strong> - The SWE-Bench comprises 2,294 software engineering problems drawn from real GitHub issues and corresponding pull requests across 12 popular Python repositories <span id="id7">[<a class="reference internal" href="#id1618" title="Carlos E Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, and Karthik Narasimhan. Swe-bench: can language models resolve real-world github issues? arXiv preprint arXiv:2310.06770, 2023.">JYW+23</a>]</span>.</p></li>
 </ul>
 </section>
 <section id="inference-time-scaling-strategies">
-<h2><span class="section-number">14.4. </span>Inference-Time Scaling Strategies<a class="headerlink" href="#inference-time-scaling-strategies" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">14.5. </span>Inference-Time Scaling Strategies<a class="headerlink" href="#inference-time-scaling-strategies" title="Link to this heading">#</a></h2>
 <p>Inference-time scaling refers to using more compute resources during inference, instead of training stage, to improve LLM’s ability in solving complex tasks.</p>
 <p>Different ways for scaling test-time computing:</p>
 <ul class="simple">
@@ -452,41 +455,41 @@ In the context of LLM reasoning, it refers to the process in which LLM is genera
 <li><p>Self-critique prompting - asking the model to self-critique its response and revise its response iteratively.</p></li>
 <li><p>Guided search - using a process-based verifier to guide the LLM</p></li>
 </ul>
-<p>Key findings from <span id="id8">[<a class="reference internal" href="#id1614" title="Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.">SLXK24</a>]</span></p>
+<p>Key findings from <span id="id8">[<a class="reference internal" href="#id1622" title="Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.">SLXK24</a>]</span></p>
 <ul class="simple">
 <li><p>For easy and intermediate questions, it is more effective to pretrain smaller models with less compute and then apply test-time compute to improve model outputs.</p></li>
 <li><p>With the most challenging questions, there is very little benfits from scaling-up test time compute for a smaller model; instead, it is more effective to make progress by scaling up pretraining compute .</p></li>
 </ul>
 <section id="sampling-and-search">
-<h3><span class="section-number">14.4.1. </span>Sampling and Search<a class="headerlink" href="#sampling-and-search" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">14.5.1. </span>Sampling and Search<a class="headerlink" href="#sampling-and-search" title="Link to this heading">#</a></h3>
 <figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-search-method">
-<a class="reference internal image-reference" href="../../_images/inference_time_search_method.png"><img alt="../../_images/inference_time_search_method.png" src="../../_images/inference_time_search_method.png" style="width: 924.95px; height: 455.65000000000003px;" />
+<a class="reference internal image-reference" href="../../_images/inference_time_search_method.png"><img alt="../../_images/inference_time_search_method.png" src="../../_images/inference_time_search_method.png" style="width: 782.6500000000001px; height: 385.55px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 14.2 </span><span class="caption-text">Comparing different PRM search methods. Left: Best-of-N samples N full answers and then selects the best answer according to the PRM final score. Center: Beam search samples N candidates at each step, and selects the top M according to the PRM to continue the search from. Right: lookahead-search extends each step in beam-search to utilize a k-step lookahead while assessing which steps to retain and continue the search from. Thus lookahead-search needs more compute. Image from <span id="id9">[<a class="reference internal" href="#id1614" title="Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.">SLXK24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-search-method" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 14.2 </span><span class="caption-text">Comparing different sampling and search methods. Left: Best-of-N samples N full answers and then selects the best answer. Center: Beam search samples N candidates at each step, and selects the top M according to the process reward model to continue the search. Right: lookahead-search extends each step in beam-search to utilize a k-step lookahead while assessing which steps to retain and continue the search. Thus lookahead-search needs more compute. Image from <span id="id9">[<a class="reference internal" href="#id1622" title="Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.">SLXK24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-search-method" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p><strong>Best-of-N weighted</strong>. We sample N answers independently from the base LLM and then select the best answer according to the PRM’s final answer judgement.</p>
-<p><strong>Beam search</strong>. Beam search optimizes the PRM by searching over its per-step predictions. Our implementation is similar to BFS-V <span class="math notranslate nohighlight">\([10,48]\)</span>. Concretely, we consider a fixed number of beams <span class="math notranslate nohighlight">\(N\)</span> and a beam width <span class="math notranslate nohighlight">\(M\)</span>. We then run the following steps:</p>
+<p>The most straightforward model to use inference time budget is to sample more sequence outputs and conduct search in the sequence space with the aid of scoring function. <a class="reference internal" href="#chapter-training-fig-reasoning-inference-time-method-search-method"><span class="std std-numref">Fig. 14.2</span></a> summarizes different sampling and search methods.</p>
+<p>The most basic sampling method is <strong>Best-of-N weighted sampling</strong>. We sample <span class="math notranslate nohighlight">\(N\)</span> outputs independently from an LLM and then select the best answer according to some scoring function.</p>
+<p><strong>Beam search</strong>. Beam search optimizes final sequence output by selecting each step guided by a process reward model (PRM). searching over its per-step predictions. Consider a fixed number of beams <span class="math notranslate nohighlight">\(N\)</span> and a beam width <span class="math notranslate nohighlight">\(M\)</span>. We then run the following steps:</p>
 <ol class="arabic simple">
-<li><p>sample <span class="math notranslate nohighlight">\(N\)</span> initial predictions for the first step in the solution</p></li>
-<li><p>score the generated steps according to the PRM’s predicted step-wise reward-to-go estimate (which also corresponds to the total reward from the prefix since the reward is sparse in this setting)</p></li>
-<li><p>filter for only the top <span class="math notranslate nohighlight">\(\frac{N}{M}\)</span> highest scoring steps</p></li>
-<li><p>now from each candidate, sample <span class="math notranslate nohighlight">\(M\)</span> proposals from the next step, resulting in a total of <span class="math notranslate nohighlight">\(N / M \times M\)</span> candidate prefixes again. Then repeat steps 2-4 again.</p></li>
+<li><p>Sample <span class="math notranslate nohighlight">\(N\)</span> candidate tokens for the first step</p></li>
+<li><p>Score the generated tokens according to the PRM’s predicted step-wise reward-to-go estimate (which also corresponds to the total reward from the existing prefix + generated token )</p></li>
+<li><p>Keep for only the top <span class="math notranslate nohighlight">\(\frac{N}{M}\)</span> highest scoring steps</p></li>
+<li><p>From each selected candidate, sample <span class="math notranslate nohighlight">\(M\)</span> proposals as the next step, resulting in a total of <span class="math notranslate nohighlight">\(N / M \times M = N\)</span> candidate prefixes again. Then repeat steps 2-4 again.</p></li>
 </ol>
-<p><strong>Lookahead search.</strong> Lookahead search modifies how beam search evaluates individual steps. It uses lookahead rollouts to improve the accuracy of the PRM’s value estimation in each step of the search process. Specifically,</p>
+<p><strong>Lookahead search.</strong> Lookahead search modifies how beam search estimate the potential reward for each proposed move. It uses lookahead rollouts to improve the accuracy of the PRM’s value estimation in each step of the search process. Specifically,</p>
 <ul class="simple">
-<li><p>at each step in the beam search, rather than using the PRM score at the current step to select the top candidates, lookahead search performs a simulation,</p></li>
-<li><p>Simulation involves rolling out up to <span class="math notranslate nohighlight">\(k\)</span> steps further while stopping early if the end of solution is reached. (To minimize variance in the simulation rollout, we perform rollouts using temperature 0.)</p></li>
-<li><p>The PRM’s prediction at the end of this rollout is then used to score the current step in the beam search.</p></li>
+<li><p>At each step in the beam search, rather than using the PRM score at the current step to select the top candidates, lookahead search performs a simulation at zero temperature.</p></li>
+<li><p>The Simulation involves rolling out up to <span class="math notranslate nohighlight">\(k\)</span> steps further while stopping early if the end of solution is reached. * The PRM’s prediction at the end of this rollout is then used to score the current step in the beam search.</p></li>
 </ul>
 <div class="proof remark admonition" id="remark-0">
 <p class="admonition-title"><span class="caption-number">Remark 14.1 </span> (Lookahead search vs beam search vs MCTS)</p>
 <section class="remark-content" id="proof-content">
-<p>That is, in other words, we can view beam search as a special case of lookahead search with <span class="math notranslate nohighlight">\(k=0\)</span>. Given an accurate PRM, increasing <span class="math notranslate nohighlight">\(k\)</span> should improve the accuracy of the per-step value estimates at the cost of additional compute.</p>
-<p>Also note that this version of lookahead search is a special case of MCTS (Monte carlo Tree Search), wherein the stochastic elements of MCTS, designed to facilitate exploration, are removed since the PRM is already trained and is frozen. These stochastic elements are largely useful for learning the value function (which we’ve already learned with our PRM), but less useful at test-time when we want to exploit rather than explore. Therefore, lookahead search is largely representative of how MCTS-style methods would be applied at test-time.</p>
+<p>Beam search can be viewed as as a special case of lookahead search with <span class="math notranslate nohighlight">\(k=0\)</span>. Increasing <span class="math notranslate nohighlight">\(k\)</span> usually improve the accuracy of the per-step value estimates at the cost of additional compute, as it is closer to the final delayed reward signal.</p>
+<p>Lookahead search can also be viewed as a special case of MCTS (Monte carlo Tree Search). MCTS has stochasticity built-in to facilitate exploration and the learning of PRM from broadly sampled sequences. Here as the focus is on exploitation of the learned PRM, so the lookahead rollout will be simulated at zero-temperature.</p>
 </section>
-</div><p>Key findings:</p>
+</div><p>Authors from <span id="id10">[<a class="reference internal" href="#id1622" title="Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.">SLXK24</a>]</span> compare the efficiency of above methods in solving reasoning problems.  key findings are:</p>
 <ul class="simple">
 <li><p>On the easy questions, the verifier will make mostly correct assessments of correctness. Therefore, by applying beam search guided by PRM, we might overfit to  any spurious features learned by the verifier, causing performance degredation.</p></li>
 <li><p>On the more difficult questions, the base model is much less likely to sample the correct answer in the first place, so beam search can serve to help guide the model towards producing the correct answer more often.</p></li>
@@ -495,86 +498,135 @@ and at lower compute budgets, whereas best-of-N is more effective on easier ques
 </ul>
 </section>
 <section id="proposal-distribution-refinement">
-<h3><span class="section-number">14.4.2. </span>Proposal Distribution Refinement<a class="headerlink" href="#proposal-distribution-refinement" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">14.5.2. </span>Proposal Distribution Refinement<a class="headerlink" href="#proposal-distribution-refinement" title="Link to this heading">#</a></h3>
+<p>One can also enable models to modify their own proposal distribution at the test time, i.e., the probability of generating <span class="math notranslate nohighlight">\(y\)</span> given prompt <span class="math notranslate nohighlight">\(x\)</span>. The simplest approach is via prompting. For example, one can prompt the model to self-critique and to sequentially correct their own mistakes. However, without external feedback, directly prompting an off-the-shelf LLM to self-crique is usually ineffective for reasoning tasks <span id="id11">[]</span>.</p>
+<p>One approach explored by <span id="id12">[<a class="reference internal" href="#id1622" title="Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.">SLXK24</a>]</span> is to train a model to revise their own answers iteratively, based on previous attempts at the question, therefore allowing the model to dynamically improve it’s own distribution at test time. <a class="reference internal" href="#chapter-training-fig-reasoning-inference-time-method-parallel-sampling-vs-sequential-revision"><span class="std std-numref">Fig. 14.3</span></a> highlights the difference between <strong>parallel sampling</strong> approach and the <strong>sequential revision</strong> approach.</p>
 <figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-parallel-sampling-vs-sequential-revision">
 <a class="reference internal image-reference" href="../../_images/parallel_sampling_vs_sequential_revision.png"><img alt="../../_images/parallel_sampling_vs_sequential_revision.png" src="../../_images/parallel_sampling_vs_sequential_revision.png" style="width: 633.0px; height: 480.0px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 14.3 </span><span class="caption-text">Parallel sampling generates N answers independently in parallel, whereas sequential revisions generates each one in sequence conditioned on previous attempts. Image from <span id="id10">[<a class="reference internal" href="#id1614" title="Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.">SLXK24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-parallel-sampling-vs-sequential-revision" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 14.3 </span><span class="caption-text">Parallel sampling generates N answers independently in parallel, whereas sequential revisions generates each one in sequence conditioned on previous attempts. Image from <span id="id13">[<a class="reference internal" href="#id1622" title="Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.">SLXK24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-parallel-sampling-vs-sequential-revision" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
+<p>Given a finetuned revision model, we can then sample a sequence of revisions from the model at test-time. Ideally, the more revision steps (thus more inference time costs), the higher chances the model can get the task correct. One can further strategically combine parallel sampling, sequential revision, and external verifier to yield a much stronger inference-time system, as shown in <a class="reference internal" href="#chapter-training-fig-reasoning-inference-time-method-revision-model-with-verifier"><span class="std std-numref">Fig. 14.4</span></a>. To achieve best performance with given inference time budget, one needs to allocate inference time budget to each sub-component wisely.</p>
+<p>Authors in <span id="id14">[<a class="reference internal" href="#id1622" title="Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.">SLXK24</a>]</span> found that to best leverage the inference time budget, there exists an ideal sequential to parallel ratio, which has the dependency on problem difficulity level. In general,</p>
+<ul class="simple">
+<li><p>Easy questions benefit more from sequential revisions, as revision is more of local refinement.</p></li>
+<li><p>For difficult questions it is optimal to strike a balance between sequential and parallel computation.</p></li>
+</ul>
 <figure class="align-default" id="chapter-training-fig-reasoning-inference-time-method-revision-model-with-verifier">
 <a class="reference internal image-reference" href="../../_images/revision_model_with_verifier.png"><img alt="../../_images/revision_model_with_verifier.png" src="../../_images/revision_model_with_verifier.png" style="width: 675.0px; height: 518.25px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 14.4 </span><span class="caption-text">In both the sequential and parallel cases, we can use the verifier to determine the best-of-N answers (e.g. by applying best-of-N
-weighted). We can also allocate some of our budget to parallel and some to sequential, effectively enabling a combination of the
-two sampling strategies. In this case, we use the verifier to first select the best answer within each sequential chain and then
-select the best answer accross chains. Image from <span id="id11">[<a class="reference internal" href="#id1614" title="Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.">SLXK24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-revision-model-with-verifier" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 14.4 </span><span class="caption-text">Combining parallel sampling, sequential revision, and external verifier to yield a much stronger inference-time system. In both the sequential and parallel cases, we can use the verifier to determine the best-of-N answers. We can also allocate some of our budget to parallel and some to sequential, effectively enabling a combination of the two sampling strategies. In this case, we use the verifier to first select the best answer within each sequential chain and then select the best answer accross chains. Image from <span id="id15">[<a class="reference internal" href="#id1622" title="Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.">SLXK24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-inference-time-method-revision-model-with-verifier" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 </section>
 <section id="reinfrocement-learning">
-<h2><span class="section-number">14.5. </span>Reinfrocement Learning<a class="headerlink" href="#reinfrocement-learning" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">14.6. </span>Reinfrocement Learning<a class="headerlink" href="#reinfrocement-learning" title="Link to this heading">#</a></h2>
+<section id="step-wise-ppo">
+<h3><span class="section-number">14.6.1. </span>Step-wise PPO<a class="headerlink" href="#step-wise-ppo" title="Link to this heading">#</a></h3>
+<p><span id="id16">[<a class="reference internal" href="#id1644" title="Peiyi Wang, Lei Li, Zhihong Shao, RX Xu, Damai Dai, Yifei Li, Deli Chen, Y Wu, and Zhifang Sui. Math-shepherd: a label-free step-by-step verifier for llms in mathematical reasoning. arXiv preprint arXiv:2312.08935, 2023.">WLS+23</a>]</span></p>
+</section>
+<section id="kimi-scalable-rl">
+<h3><span class="section-number">14.6.2. </span>Kimi scalable RL<a class="headerlink" href="#kimi-scalable-rl" title="Link to this heading">#</a></h3>
+<p><span id="id17">[<a class="reference internal" href="#id1640" title="Kimi Team, Angang Du, Bofei Gao, Bowei Xing, Changjiu Jiang, Cheng Chen, Cheng Li, Chenjun Xiao, Chenzhuang Du, Chonghua Liao, and others. Kimi k1. 5: scaling reinforcement learning with llms. arXiv preprint arXiv:2501.12599, 2025.">TDG+25</a>]</span></p>
+</section>
 </section>
 <section id="preference-learning">
-<h2><span class="section-number">14.6. </span>Preference Learning<a class="headerlink" href="#preference-learning" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">14.7. </span>Preference Learning<a class="headerlink" href="#preference-learning" title="Link to this heading">#</a></h2>
 <section id="iterative-rpo">
-<h3><span class="section-number">14.6.1. </span>Iterative RPO<a class="headerlink" href="#iterative-rpo" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">14.7.1. </span>Iterative RPO<a class="headerlink" href="#iterative-rpo" title="Link to this heading">#</a></h3>
+<p>Authors from <span id="id18">[<a class="reference internal" href="#id1635" title="Richard Yuanzhe Pang, Weizhe Yuan, Kyunghyun Cho, He He, Sainbayar Sukhbaatar, and Jason Weston. Iterative reasoning preference optimization. arXiv preprint arXiv:2404.19733, 2024.">PYC+24</a>]</span> proposed the iterative reasoning preference optimization (iteration RPO) to enhance model’s math reasoning ability. The overview workflow is visualized in <a class="reference internal" href="#chapter-training-fig-reasoning-iterative-rpo-workflow"><span class="std std-numref">Fig. 14.5</span></a>. In each iteration, there are following key steps:</p>
+<ul class="simple">
+<li><p><strong>CoT and answer generation</strong>, in which thinking process and answers are generated and scored.</p></li>
+<li><p><strong>Preference optimization</strong>, in which scored thinking process and answers are used to construct preference pair data and perform DPO training.</p></li>
+</ul>
 <figure class="align-default" id="chapter-training-fig-reasoning-iterative-rpo-workflow">
-<a class="reference internal image-reference" href="docs/img/chapter_training/reasoning/preference_learning/iterative_RPO/iterative_DPO_workflow.png"><img alt="docs/img/chapter_training/reasoning/preference_learning/iterative_RPO/iterative_DPO_workflow.png" src="docs/img/chapter_training/reasoning/preference_learning/iterative_RPO/iterative_DPO_workflow.png" />
-<aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/mnt/d/Dropbox/llm_book/llm_book_jupyterbook/llm_book/docs/chapter_training/reasoning.md</span>, line 155)</p>
-<p>Cannot scale image!
-  Could not get size from &quot;docs/img/chapter_training/reasoning/preference_learning/iterative_RPO/iterative_DPO_workflow.png&quot;:
-  [Errno 2] No such file or directory: '/mnt/d/Dropbox/llm_book/llm_book_jupyterbook/docs/img/chapter_training/reasoning/preference_learning/iterative_RPO/iterative_DPO_workflow.png'</p>
-</aside>
+<a class="reference internal image-reference" href="../../_images/iterative_RPO_workflow.png"><img alt="../../_images/iterative_RPO_workflow.png" src="../../_images/iterative_RPO_workflow.png" style="width: 845.65px; height: 213.85px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 14.5 </span><span class="caption-text">Workflow of Iterative RPO, which consists of two steps: (i) Chain-of-Thought &amp; Answer Generation: training prompts are used to generate candidate reasoning steps and answers from model <span class="math notranslate nohighlight">\(M_t\)</span>, and then the answers are evaluated for correctness by a given reward model. (ii) Preference Optimization: preference pairs are selected from the generated data, which are used for training via a DPO+NLL objective, resulting in model <span class="math notranslate nohighlight">\(M_{t+1}\)</span>. This whole procedure is then iterated resulting in improved reasoning ability on the next iteration, until performance saturates.Image from <span id="id12">[]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-iterative-rpo-workflow" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 14.5 </span><span class="caption-text">Workflow of Iterative RPO, which consists of two steps: (i) Chain-of-Thought &amp; Answer Generation: training prompts are used to generate candidate reasoning steps and answers from model <span class="math notranslate nohighlight">\(M_t\)</span>, and then the answers are evaluated for correctness by a given reward model. (ii) Preference Optimization: preference pairs are selected from the generated data, which are used for training via a DPO+NLL objective, resulting in model <span class="math notranslate nohighlight">\(M_{t+1}\)</span>. This whole procedure is then iterated resulting in improved reasoning ability on the next iteration, until performance saturates.Image from <span id="id19">[<a class="reference internal" href="#id1635" title="Richard Yuanzhe Pang, Weizhe Yuan, Kyunghyun Cho, He He, Sainbayar Sukhbaatar, and Jason Weston. Iterative reasoning preference optimization. arXiv preprint arXiv:2404.19733, 2024.">PYC+24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-iterative-rpo-workflow" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>More specificially,  given the current model <span class="math notranslate nohighlight">\(M_t\)</span>, we generate <span class="math notranslate nohighlight">\(N\)</span> different responses for every input, where each response consists of CoT reasoning <span class="math notranslate nohighlight">\(c\)</span> followed by a final answer <span class="math notranslate nohighlight">\(y\)</span> :
+$<span class="math notranslate nohighlight">\(
+\left(c_i^n, y_i^n\right) \sim M_t\left(x_i\right) \quad \text { for all } x_i \in D \text { and } n \in \{1,...,N\}.
+\)</span>$</p>
+<p>The <strong>reward for the response is binary</strong> - whether the prediction matches the answer.</p>
+<p>Within the generated <span class="math notranslate nohighlight">\(\{c_i^n, y_i^n\}\)</span>, one can group them into the winning CoT &amp; answer and losing CoT &amp; answer. The authors used a regularized DPO version (see <a class="reference internal" href="alignment.html#chapter-training-sec-llm-alignment-dpo-variant-dpop-regularized-dpo"><span class="std std-ref">DPO-Positive and Regularized DPO</span></a>), with the loss function (for each pair) given by</p>
+<div class="math notranslate nohighlight">
+\[
+L_{DPO_R}=-\underbrace{\log \sigma\left(\beta \log \frac{M_\theta\left(c_i^w, y_i^w \mid x_i\right)}{M_t\left(c_i^w, y_i^w \mid x_i\right)}-\beta \log \frac{M_\theta\left(c_i^l, y_i^l \mid x_i\right)}{M_t\left(c_i^l, y_i^l \mid x_i\right)}\right)}_{\text{DPO}}-\alpha \underbrace{\frac{\log M_\theta\left(c_i^w, y_i^w \mid x_i\right)}{\left|c_i^w\right|+\left|y_i^w\right|}}_{\text{Regularization}} .
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(M(x)\)</span> denotes the probability of sequence <span class="math notranslate nohighlight">\(x\)</span> under the current model <span class="math notranslate nohighlight">\(M\)</span>; previous iteration’s model <span class="math notranslate nohighlight">\(M_t\)</span> is used as the reference model. The regularization term aims to promote the likelihood of winning sequences during the contrastive learning process.</p>
+<div class="proof remark admonition" id="remark-1">
+<p class="admonition-title"><span class="caption-number">Remark 14.2 </span> (The importance regularization)</p>
+<section class="remark-content" id="proof-content">
+<p>In math reasoning tasks, there could be cases that a minor differences on one of the multi-step reasoning process can lead to incorrect results. As discussed in <a class="reference internal" href="alignment.html#chapter-training-sec-llm-alignment-dpo-variant-dpop-regularized-dpo"><span class="std std-ref">DPO-Positive and Regularized DPO</span></a>, when winning squencues are lexically similar to losing sequences, it require additional regularization in prevent the likelihood of winning sequences from going down.</p>
+</section>
+</div><p>The authors also conducted study to understand if SFT alone (without DPO) can fundamentally enhance the reasoning abilities. Their studies <a class="reference internal" href="#chapter-training-fig-reasoning-iterative-rpo-sft-limitation"><span class="std std-numref">Fig. 14.6</span></a> show that SFT will promote the likelihood of both winning and losing sequences, which is insufficient to enhance the correct reasoning ability.</p>
+<figure class="align-default" id="chapter-training-fig-reasoning-iterative-rpo-sft-limitation">
+<a class="reference internal image-reference" href="../../_images/SFT_limitation.png"><img alt="../../_images/SFT_limitation.png" src="../../_images/SFT_limitation.png" style="width: 932.25px; height: 305.25px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 14.6 </span><span class="caption-text">SFT has the negative effect of promoting both chosen/positive and rejected/negative sequences, even if it is trained on gold-positive. As a comparison, DPO with regularizer loss can effectively promote chosen sequences and demote rejected sequences. Image from <span id="id20">[<a class="reference internal" href="#id1635" title="Richard Yuanzhe Pang, Weizhe Yuan, Kyunghyun Cho, He He, Sainbayar Sukhbaatar, and Jason Weston. Iterative reasoning preference optimization. arXiv preprint arXiv:2404.19733, 2024.">PYC+24</a>]</span>.</span><a class="headerlink" href="#chapter-training-fig-reasoning-iterative-rpo-sft-limitation" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 </section>
 <section id="bibliography">
-<h2><span class="section-number">14.7. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">14.8. </span>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading">#</a></h2>
 <section id="software">
-<h3><span class="section-number">14.7.1. </span>Software<a class="headerlink" href="#software" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">14.8.1. </span>Software<a class="headerlink" href="#software" title="Link to this heading">#</a></h3>
 <p><a class="reference external" href="https://github.com/unslothai/unsloth">Unsloth</a></p>
-<div class="docutils container" id="id13">
+<div class="docutils container" id="id21">
 <div role="list" class="citation-list">
-<div class="citation" id="id47" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">CTJ+21</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id55" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">CTJ+21</a><span class="fn-bracket">]</span></span>
 <p>Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde De Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, and others. Evaluating large language models trained on code. <em>arXiv preprint arXiv:2107.03374</em>, 2021.</p>
 </div>
-<div class="citation" id="id1532" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">CKB+21</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1540" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">CKB+21</a><span class="fn-bracket">]</span></span>
 <p>Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, and others. Training verifiers to solve math word problems. <em>arXiv preprint arXiv:2110.14168</em>, 2021.</p>
 </div>
-<div class="citation" id="id1609" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">GEB+24</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1617" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">GEB+24</a><span class="fn-bracket">]</span></span>
 <p>Elliot Glazer, Ege Erdil, Tamay Besiroglu, Diego Chicharro, Evan Chen, Alex Gunning, Caroline Falkman Olsson, Jean-Stanislas Denain, Anson Ho, Emily de Oliveira Santos, and others. Frontiermath: a benchmark for evaluating advanced mathematical reasoning in ai. <em>arXiv preprint arXiv:2411.04872</em>, 2024.</p>
 </div>
-<div class="citation" id="id1611" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">HBB+20</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1619" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">HBB+20</a><span class="fn-bracket">]</span></span>
 <p>Dan Hendrycks, Collin Burns, Steven Basart, Andy Zou, Mantas Mazeika, Dawn Song, and Jacob Steinhardt. Measuring massive multitask language understanding. <em>arXiv preprint arXiv:2009.03300</em>, 2020.</p>
 </div>
-<div class="citation" id="id1610" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">JYW+23</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1618" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">JYW+23</a><span class="fn-bracket">]</span></span>
 <p>Carlos E Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, and Karthik Narasimhan. Swe-bench: can language models resolve real-world github issues? <em>arXiv preprint arXiv:2310.06770</em>, 2023.</p>
 </div>
-<div class="citation" id="id1612" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">RHS+23</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1635" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>PYC+24<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id18">1</a>,<a role="doc-backlink" href="#id19">2</a>,<a role="doc-backlink" href="#id20">3</a>)</span>
+<p>Richard Yuanzhe Pang, Weizhe Yuan, Kyunghyun Cho, He He, Sainbayar Sukhbaatar, and Jason Weston. Iterative reasoning preference optimization. <em>arXiv preprint arXiv:2404.19733</em>, 2024.</p>
+</div>
+<div class="citation" id="id1620" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">RHS+23</a><span class="fn-bracket">]</span></span>
 <p>David Rein, Betty Li Hou, Asa Cooper Stickland, Jackson Petty, Richard Yuanzhe Pang, Julien Dirani, Julian Michael, and Samuel R Bowman. Gpqa: a graduate-level google-proof q&amp;a benchmark. <em>arXiv preprint arXiv:2311.12022</em>, 2023.</p>
 </div>
-<div class="citation" id="id1614" role="doc-biblioentry">
+<div class="citation" id="id1622" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>SLXK24<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id8">1</a>,<a role="doc-backlink" href="#id9">2</a>,<a role="doc-backlink" href="#id10">3</a>,<a role="doc-backlink" href="#id11">4</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id8">1</a>,<a role="doc-backlink" href="#id9">2</a>,<a role="doc-backlink" href="#id10">3</a>,<a role="doc-backlink" href="#id12">4</a>,<a role="doc-backlink" href="#id13">5</a>,<a role="doc-backlink" href="#id14">6</a>,<a role="doc-backlink" href="#id15">7</a>)</span>
 <p>Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. <em>arXiv preprint arXiv:2408.03314</em>, 2024.</p>
 </div>
-<div class="citation" id="id1613" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">ZCG+23</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id1640" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id17">TDG+25</a><span class="fn-bracket">]</span></span>
+<p>Kimi Team, Angang Du, Bofei Gao, Bowei Xing, Changjiu Jiang, Cheng Chen, Cheng Li, Chenjun Xiao, Chenzhuang Du, Chonghua Liao, and others. Kimi k1. 5: scaling reinforcement learning with llms. <em>arXiv preprint arXiv:2501.12599</em>, 2025.</p>
+</div>
+<div class="citation" id="id1644" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id16">WLS+23</a><span class="fn-bracket">]</span></span>
+<p>Peiyi Wang, Lei Li, Zhihong Shao, RX Xu, Damai Dai, Yifei Li, Deli Chen, Y Wu, and Zhifang Sui. Math-shepherd: a label-free step-by-step verifier for llms in mathematical reasoning. <em>arXiv preprint arXiv:2312.08935</em>, 2023.</p>
+</div>
+<div class="citation" id="id1621" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">ZCG+23</a><span class="fn-bracket">]</span></span>
 <p>Wanjun Zhong, Ruixiang Cui, Yiduo Guo, Yaobo Liang, Shuai Lu, Yanlin Wang, Amin Saied, Weizhu Chen, and Nan Duan. Agieval: a human-centric benchmark for evaluating foundation models. <em>arXiv preprint arXiv:2304.06364</em>, 2023.</p>
 </div>
 </div>
@@ -647,24 +699,26 @@ select the best answer accross chains. Image from <span id="id11">[<a class="ref
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">14.1. Introduction</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#math-benchmarks">14.1.1. Math benchmarks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">14.1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#language-knowledge-and-logical-reasoning-benchmark">14.2. Language, Knowledge, and Logical Reasoning benchmark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#math-benchmarks">14.3. Math Benchmarks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-benchmark">14.4. Coding Benchmark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-time-scaling-strategies">14.5. Inference-Time Scaling Strategies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-and-search">14.5.1. Sampling and Search</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proposal-distribution-refinement">14.5.2. Proposal Distribution Refinement</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-benchmark">14.2. Coding benchmark</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#language-knowledge-and-logical-thinking-benchmark">14.3. Language, knowledge, and logical thinking benchmark</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-time-scaling-strategies">14.4. Inference-Time Scaling Strategies</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-and-search">14.4.1. Sampling and Search</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proposal-distribution-refinement">14.4.2. Proposal Distribution Refinement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reinfrocement-learning">14.6. Reinfrocement Learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-wise-ppo">14.6.1. Step-wise PPO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kimi-scalable-rl">14.6.2. Kimi scalable RL</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reinfrocement-learning">14.5. Reinfrocement Learning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-learning">14.6. Preference Learning</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iterative-rpo">14.6.1. Iterative RPO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-learning">14.7. Preference Learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iterative-rpo">14.7.1. Iterative RPO</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">14.7. Bibliography</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software">14.7.1. Software</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">14.8. Bibliography</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software">14.8.1. Software</a></li>
 </ul>
 </li>
 </ul>
