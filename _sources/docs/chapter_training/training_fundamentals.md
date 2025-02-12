@@ -16,7 +16,7 @@ Finally, we cover fundamentals in  **LLM optimization algorithms**. Throughout t
 
 ## Pretraining Techniques
 
-### Next-Token Prediction
+### Next-Token Prediction (NTP)
 Pretraining has become a cornerstone in the development of LLM, which contributes to
 * the general langugae understand and generation ability
 * acquire world knowledge
@@ -30,36 +30,45 @@ where $p\left(x_{t} \mid \mathbf{x}_{t-k-1:t-1}\right)$ is the predicted probabi
 
 There are scaling laws {cite:p}`kaplan2020scaling,henighan2020scaling` discovered on LLM pretraining, which establishes mathematical relationships model performance given model size, dataset size, and the amount of compute. The availability of scaling laws has several benefits:
 * It provides to benchmark to enable LLM pretraining to be done in a predictable way.
-* It help design better training strategy by optimizing the model size and data size under compute constraint.
+* It help design better training strategy by optimizing the model size and data size under a compute budget.
 
-### Fill-in-the Middle
+### Fill-in-the Middle (FIM)
 
-Fill-in-the Middle was proposed in {cite:p}`bavarian2022efficient,li2023starcoder`
+Fill-in-the Middle (FIM){cite:p}`bavarian2022efficient,li2023starcoder` was proposed in  as a technique used to improve the in-context learning and generalization capabilities of large language models (LLMs). Instead of always training the model to generate text in a left-to-right (causal) manner, FIM involves predicting a missing segment of text when given both the preceding and succeeding context.
 
-This approach involves randomly dividing the text into three parts, then shuffling the order of these parts and connecting them with special characters. This method aims to incorporate a fill-in-the-blank pretraining task during the training process.
+Specifially, FIM training makes LLMs better at predicting missing code/text blocks and handling real-world coding and writing workflows:
+* In coding applications (e.g., GitHub Copilot, OpenAI Codex), developers often insert code or docstring into existing structures rather than appending to the end; 
+* In writing and editting tasks, users need to insert or modify text within a document.
 
 
-Within the FIM methodology, two distinct modes are employed: PSM (Prefix-Suffix-Middle) and SPM
-(Suffix-Prefix-Middle). In the PSM mode, the training corpus is organized in the sequence
-of prefix, suffix, middle, aligning the text in a way that the middle segment is flanked by the
-prefix and suffix. Conversely, the SPM mode arranges the segments as suffix, prefix, middle,
-presenting a different structural challenge. 
+The implementation of FIM involves randomly dividing the text into three parts, then shuffling the order of these parts and connecting them with special characters. Depending on how the segments are ordered, there are two distinct modes: **PSM (Prefix-Suffix-Middle)** and **SPM (Suffix-Prefix-Middle)**. 
 
-These modes are instrumental in enhancing the
-model’s capability to handle various structural arrangements in code, providing a robust training
-framework for advanced code prediction tasks.
+For example, in the SPM mode, the training corpus is transformed to
 
-### Multiple Token Prediction
+$$
+<\text { <PRE> }>  prefix <\text { SUF }> suffix <\text { MID }> middle 
+$$
 
-Besides training using a next-token prediction loss, there are efforts exploring training language models to predict multiple future tokens at once [{numref}`chapter_training_fig_fundamentals_multiple_token_prediction_demo`].  More specifically, at each position in the training corpus, we ask the model to predict the following $n$ tokens using $n$ independent output heads, operating on top of a shared model trunk.
+where $<\text { <PRE> }>, <\text { SUF }>, <\text { MID }>$ are sentinel tokens.
 
-The advantages are:
-* in higher sample efficiency.
-* 
+During the inference where we would like to use prefix and surfix to predict the middle, we can prompt the model with
 
-{cite:p}`gloeckle2024better`
-During inference, we employ only the next-token output head. Optionally, the other three heads may be used to speed-up
+$$
+<\text { <PRE> }>  prefix <\text { SUF }> suffix <\text { MID }> middle 
+$$
+
+During pretraining, FIM and left-to-right autoregression can be both applied to the training corpus and then use the same NSP training task. And surpringly, FIM will not strongly compromise the left-to-right capability with high FIM rate up to 90%, and at the same time, the model acquires FIM ability for code and language (known as **FIM-for-free property**).
+The authors also suggested that 50% FIM rate strike a good balance. Practioners from {cite:p}`guo2024deepseek` also used 50% FIM rate in the pretraining for coding LLM.  
+
+### Multiple Token Prediction (MTP)
+
+Besides training using a next-token prediction loss, there are efforts exploring training language models to predict multiple future tokens at once {cite:p}`gloeckle2024better`. More specifically, at each position in the training corpus, we ask the model to predict the following $n$ tokens using $n$ independent output heads, operating on top of a shared model trunk[{numref}`chapter_training_fig_fundamentals_multiple_token_prediction_demo`].
+
+This MTP scheme brings advantages:
+* Higher sample efficiency during training.
+* During inference, we can either use one next-token output head or optionally use the additional heads to speed up the
 inference time.
+
 
 ```{figure} ../img/chapter_training/training_fundamentals/multiple_token_prediction/mtp_demo.png
 ---
@@ -70,14 +79,13 @@ Overview of multi-token prediction. During training, the model predicts 4 future
 means of a shared trunk and 4 dedicated output heads. Image from {cite:p}`gloeckle2024better`.
 ```
 
-In this work, we generalize the above by implementing a multi-token prediction task, where at each position of the training corpus, the model is instructed to predict $n$ future tokens at once. This translates into the cross-entropy loss
+As the model is instructed to predict $n$ future tokens at once, the cross-entropy loss function is given by
 
 $$
 L_n=-\sum_t \log P_\theta\left(x_{t+n: t+1} \mid x_{t: 1}\right)
 $$
 
-
-To make matters tractable, we assume that our large language model $P_\theta$ employs a shared trunk to produce a latent representation $z_{t: 1}$ of the observed context $x_{t: 1}$, then fed into $n$ independent heads to predict in parallel each of the $n$ future tokens (see Figure 1). This leads to the following factorization of the multi-token prediction cross-entropy loss:
+By assuming that the model $P_\theta$ employs a shared trunk to produce a latent representation $z_{t: 1}$ of the observed context $x_{t: 1}$, then fed into $n$ independent heads to predict in parallel each of the $n$ future tokens. This leads to the following factorization of the multi-token prediction cross-entropy loss:
 
 $$
 \begin{aligned}
@@ -93,7 +101,8 @@ $$
 P_\theta\left(x_{t+i} \mid x_{t: 1}\right)=\operatorname{softmax}\left(f_u\left(f_{h_i}\left(f_s\left(x_{t: 1}\right)\right)\right)\right)
 $$
 
-for $i=1, \ldots n$, where, in particular, $P_\theta\left(x_{t+1} \mid x_{t: 1}\right)$ is our next-token prediction head. See Appendix B for other variations of multi-token prediction architectures.
+Note that when $n = 1$ we recovers NSP loss. In practice, one can consider $n$ between 2 and 4. DeepSeek V3 {cite:p}`deepseekai2024deepseekv3technicalreport` also adopted an MTP variant in their model training.
+
 
 <!-- ## Comparison
 

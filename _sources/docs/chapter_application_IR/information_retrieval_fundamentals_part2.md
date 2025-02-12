@@ -46,13 +46,15 @@ In recent years, there has been increasing effort on accelerating maximum inner 
 
 #### DSSM
 
-Deep structured semantic model (DSSM) {cite}`huang2013learning` improves the previous latent semantic models in two aspects: 1) DSSM is supervised learning based on labeled data, while latent semantic models are unsupervised learning; 2) DSSM utilize deep neural networks to capture more semantic meanings. 
+Deep structured semantic model (DSSM) {cite}`huang2013learning` improves the previous latent semantic models in two aspects: 
+* DSSM is supervised learning based on labeled data, while latent semantic models are unsupervised learning; 
+* DSSM utilize deep neural networks to capture more semantic meanings. 
 
-The high-level architecture of DSSM is illustrated in {numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:dssm`. First, we represent a query and a document (only its title) by a sparse vector, respectively. Second, we apply a non-linear projection to map the query and the document sparse vectors to two low-dimensional embedding vectors in a common semantic space. Finally, the relevance of each document given the query is calculated as the cosine similarity between their embedding vectors in that semantic space. 
+The high-level architecture of DSSM is illustrated in {numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2:fig:dssm`. First, we represent a query and a document (only its title) by a sparse vector, respectively. Second, we apply a non-linear projection to map the query and the document sparse vectors to two low-dimensional embedding vectors in a common semantic space. Finally, the relevance of each document given the query is calculated as the cosine similarity between their embedding vectors in that semantic space. 
 
 ```{figure} ../img/chapter_application_IR/ApplicationIRSearch/DeepRetrievalModels/DSSM/dssm.png
 :scale: 40%
-:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:dssm
+:name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch_part2:fig:dssm
 The architecture of DSSM. Two MLP encoders with shared parameters are used to encode a query and a document into dense vectors. Query and document are both represented by term vectors. The final relevance score is computed via dot product between the query vector and the document vector.
 ```
 
@@ -279,7 +281,7 @@ The document encoder can be run offline to pre-encodes all documents and caches 
 ```{figure} ../img/chapter_application_IR/ApplicationIRSearch/DeepRetrievalModels/Berts/DC_BERT/DC_bert.png
 :scale: 30%
 :name: ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:dcbert
-The overall architecture of DC-BERT [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:fig:dcbert`] consists of a dual-BERT component for decoupled encoding, a Transformer component for question-document interactions, and a classifier component for document relevance scoring.
+The overall architecture of DC-BERT consists of a dual-BERT component for decoupled encoding, a Transformer component for question-document interactions, and a classifier component for document relevance scoring.
 ```
 
 **Dual-BERT component**. DC-BERT contains two pre-trained BERT models to independently encode the question and each retrieved document. During training, the parameters of both BERT models are fine-tuned to optimize the learning objective.
@@ -351,9 +353,9 @@ An representative cross-encoder that is extended to take into account multiple-a
 
 ### Introduction
 
-In classic representation-based learning for semantic retrieval [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:classicRepresentationLearning`], we use two encoders (i.e., bi-encoders) to separately encoder a query and a candidate document into two dense vectors in the embedding space, and then a score function, such as cosine similarity, to produce the final relevance score. In this paradigm, there is a single global, static representation for each query and each document. Specifically, the document's embedding remain the same regardless of the document length, the content structure of document (e.g., multiple topics) and the variation of queries that are relevant to the document. It is very common that a document with hundreds of tokens might contain several distinct subtopics, some important semantic information might be easily missed or biased by each other when compressing a document into a dense vector.  As such, this simple bi-encoder structure may cause serious information loss when used to encode documents. <sup>[^2]</sup>
+In classic representation-based learning for semantic retrieval [{ref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:classicRepresentationLearning`], we use two encoders (i.e., **bi-encoders**) to separately encoder a query and a candidate document into two dense vectors in the embedding space, and then a score function, such as cosine similarity, to produce the final relevance score. In this paradigm, there is a single global, static representation for each query and each document. Specifically, the document's embedding remain the same regardless of the document length, the content structure of document (e.g., multiple topics) and the variation of queries that are relevant to the document. It is very common that a document with hundreds of tokens might contain several distinct subtopics, some important semantic information might be easily missed or biased by each other when compressing a document into a dense vector.  As such, this simple bi-encoder structure may cause serious information loss when used to encode documents. <sup>[^2]</sup>
 
-On the other hand,  cross-encoders based on BERT variants [{numref}`ch:neural-network-and-deep-learning:ApplicationNLP_IRSearch:sec:classicRepresentationLearning`] utilize multiple self-attention layers not only to extract contextualized features from queries and documents but also capture the interactions between them. Cross-encoders only produce intermediate representations that take a pair of query and document as the joint input. While BERT-based cross-encoders brought significant performance gain,  they are computationally prohibitive and impractical for online inference. 
+On the other hand,  **cross-encoders** based on BERT variants utilize multiple self-attention layers not only to extract contextualized features from queries and documents but also capture the interactions between them. Cross-encoders only produce intermediate representations that take a pair of query and document as the joint input. While BERT-based cross-encoders brought significant performance gain,  they are computationally prohibitive and impractical for online inference. 
 
 In this section, we focus on different strategies {cite}`humeau2019poly, tang2021improving, luan2021sparse` to encode documents by multi-vector representations, which enriches the single vector representation produced by a bi-encoder. With additional computational overhead, these strategies can gain much improvement of the encoding quality while retaining the fast retrieval strengths of Bi-encoder.
 
